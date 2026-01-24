@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Plugin
  * @subpackage Workflow
- * @method WorkflowArtAllocation createNewItem
- * @method WorkflowArtAllocation|bool next
+ * @extends ItemCollection<WorkflowArtAllocation>
  */
 class WorkflowArtAllocations extends ItemCollection
 {
@@ -31,35 +30,37 @@ class WorkflowArtAllocations extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('workflow_art_allocation'), "idartallocation");
-        $this->_setItemClass("WorkflowArtAllocation");
+        parent::__construct(cDb::getTableName('workflow_art_allocation'), 'idartallocation');
+        $this->_setItemClass('WorkflowArtAllocation');
     }
 
     /**
-     * @param $idartlang
-     *
-     * @return bool|Item
+     * @param $articleLanguageId
+     * @return WorkflowArtAllocation|false
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idartlang)
+    public function create($articleLanguageId)
     {
-        $idartlang = cSecurity::toInteger($idartlang);
+        $articleLanguageId = cSecurity::toInteger($articleLanguageId);
 
-        $sql = "SELECT `idartlang` FROM `%s` WHERE idartlang = %d";
-        $this->db->query($sql, cRegistry::getDbTableName('art_lang'), $idartlang);
+        $this->db->query(
+            "SELECT `idartlang` FROM `%s` WHERE idartlang = %d",
+            cDb::getTableName('art_lang'),
+            $articleLanguageId
+        );
         if (!$this->db->nextRecord()) {
             $this->lasterror = i18n("Article doesn't exist", "workflow");
             return false;
         }
 
-        $this->select("idartlang = $idartlang");
+        $this->select("`idartlang` = $articleLanguageId");
         if ($this->next() !== false) {
             $this->lasterror = i18n("Article is already assigned to a usersequence step.", "workflow");
             return false;
         }
 
         $newItem = $this->createNewItem();
-        $newItem->setField("idartlang", $idartlang);
+        $newItem->setField('idartlang', $articleLanguageId);
         $newItem->store();
 
         return $newItem;
@@ -86,7 +87,7 @@ class WorkflowArtAllocation extends Item
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('workflow_art_allocation'), "idartallocation");
+        parent::__construct(cDb::getTableName('workflow_art_allocation'), 'idartallocation');
     }
 
     /**
@@ -96,7 +97,7 @@ class WorkflowArtAllocation extends Item
     public function getWorkflowItem()
     {
         $userSequence = new WorkflowUserSequence();
-        $userSequence->loadByPrimaryKey($this->values["idusersequence"]);
+        $userSequence->loadByPrimaryKey($this->values['idusersequence']);
 
         return $userSequence->getWorkflowItem();
     }
@@ -109,13 +110,13 @@ class WorkflowArtAllocation extends Item
      */
     public function currentItemPosition()
     {
-        $idworkflowitem = cSecurity::toInteger($this->get("idworkflowitem"));
+        $workflowItemId = cSecurity::toInteger($this->get('idworkflowitem'));
 
         $workflowItems = new WorkflowItems();
-        $workflowItems->select("idworkflowitem = $idworkflowitem");
+        $workflowItems->select("`idworkflowitem` = $workflowItemId");
 
         if (($item = $workflowItems->next()) !== false) {
-            return $item->get("position");
+            return $item->get('position');
         } else {
             return false;
         }
@@ -127,135 +128,192 @@ class WorkflowArtAllocation extends Item
      */
     public function currentUserPosition()
     {
-        return $this->get("position");
+        return $this->get('position');
     }
 
     /**
      * Override store function to send mails
      *
-     * @return bool
-     * @throws cDbException|cException|cInvalidArgumentException
+     * @inheritDoc
+     * @throws cException
      */
     public function store()
     {
         $mailer = new cMailer();
 
-        if (array_key_exists("idusersequence", $this->modifiedValues)) {
+        if (array_key_exists('idusersequence', $this->modifiedValues)) {
             $userSequence = new WorkflowUserSequence();
-            $userSequence->loadByPrimaryKey($this->values["idusersequence"]);
+            $userSequence->loadByPrimaryKey($this->values['idusersequence']);
 
-            $email = $userSequence->get("emailnoti");
-            $escal = $userSequence->get("escalationnoti");
+            $email = $userSequence->get('emailnoti');
+            $escal = $userSequence->get('escalationnoti');
 
             if ($email == 1 || $escal == 1) {
                 // Grab the required information
-                $curEditor = getGroupOrUserName($userSequence->get("iduser"));
-                $idartlang = $this->get("idartlang");
-                $timeunit = $userSequence->get("timeunit");
-                $timelimit = $userSequence->get("timelimit");
+                $curEditor = getGroupOrUserName($userSequence->get('iduser'));
+                $articleLanguageId = $this->get('idartlang');
+                $timeUnit = $userSequence->get('timeunit');
+                $timeLimit = $userSequence->get('timelimit');
 
-                $idart = 0;
-                $idcat = 0;
+                $articleId = 0;
+                $categoryId = 0;
                 $title = '';
                 $author = '';
                 $catName = '';
 
                 $db = cRegistry::getDb();
 
-                $sql = "SELECT `author`, `title`, `idart` FROM `%s` WHERE idartlang = %d";
-                $db->query($sql, cRegistry::getDbTableName('art_lang'), $idartlang);
+                $db->query(
+                    "SELECT `author`, `title`, `idart` FROM `%s` WHERE idartlang = %d",
+                    cDb::getTableName('art_lang'),
+                    $articleLanguageId
+                );
                 if ($db->nextRecord()) {
-                    $idart = $db->f("idart");
-                    $title = $db->f("title");
-                    $author = $db->f("author");
+                    $articleId = cSecurity::toInteger($db->f('idart'));
+                    $title = $db->f('title');
+                    $author = $db->f('author');
                 }
 
                 // Extract category
-                if ($idart > 0) {
-                    $sql = "SELECT `idcat` FROM `%s` WHERE `idart` = %d";
-                    $db->query($sql, cRegistry::getDbTableName('cat_art'), $idart);
+                if ($articleId > 0) {
+                    $db->query(
+                        "SELECT `idcat` FROM `%s` WHERE `idart` = %d",
+                        cDb::getTableName('cat_art'),
+                        $articleId
+                    );
                     if ($db->nextRecord()) {
-                        $idcat = $db->f("idcat");
+                        $categoryId = cSecurity::toInteger($db->f('idcat'));
                     }
                 }
 
-                if ($idcat > 0) {
-                    $sql = "SELECT `name` FROM `%s` WHERE `idcat` = %d";
-                    $db->query($sql, cRegistry::getDbTableName('cat_lang'), $idcat);
+                if ($categoryId > 0) {
+                    $db->query(
+                        "SELECT `name` FROM `%s` WHERE `idcat` = %d",
+                        cDb::getTableName('cat_lang'),
+                        $categoryId
+                    );
                     if ($db->nextRecord()) {
-                        $catName = $db->f("name");
+                        $catName = $db->f('name');
                     }
                 }
 
-                $starttime = time();
+                $startTime = time();
 
-                switch ($timeunit) {
-                    case "Seconds":
-                        $maxtime = $starttime + $timelimit;
+                // TODO Code is redundant with contenido/plugins/workflow/cronjobs/advance_workflow.php
+                switch ($timeUnit) {
+                    case 'Seconds':
+                        $maxTime = $startTime + $timeLimit;
                         break;
-                    case "Minutes":
-                        $maxtime = $starttime + ($timelimit * 60);
+                    case 'Minutes':
+                        $maxTime = $startTime + ($timeLimit * 60);
                         break;
-                    case "Hours":
-                        $maxtime = $starttime + ($timelimit * 3600);
+                    case 'Hours':
+                        $maxTime = $startTime + ($timeLimit * 3600);
                         break;
-                    case "Days":
-                        $maxtime = $starttime + ($timelimit * 86400);
+                    case 'Days':
+                        $maxTime = $startTime + ($timeLimit * 86400);
                         break;
-                    case "Weeks":
-                        $maxtime = $starttime + ($timelimit * 604800);
+                    case 'Weeks':
+                        $maxTime = $startTime + ($timeLimit * 604800);
                         break;
-                    case "Months":
-                        $maxtime = $starttime + ($timelimit * 2678400);
+                    case 'Months':
+                        $maxTime = $startTime + ($timeLimit * 2678400);
                         break;
-                    case "Years":
-                        $maxtime = $starttime + ($timelimit * 31536000);
+                    case 'Years':
+                        $maxTime = $startTime + ($timeLimit * 31536000);
                         break;
                     default:
-                        $maxtime = $starttime + $timelimit;
+                        $maxTime = $startTime + $timeLimit;
                 }
 
                 if ($email == 1) {
-                    $email = i18n("Hello %s,\n\n" . "you are assigned as the next editor for the Article %s.\n\n" . "More informations:\n" . "Article: %s\n" . "Category: %s\n" . "Editor: %s\n" . "Author: %s\n" . "Editable from: %s\n" . "Editable to: %s\n");
-
-                    $filledMail = sprintf($email, $curEditor, $title, $title, $catName, $curEditor, $author, date("Y-m-d H:i:s", $starttime), date("Y-m-d H:i:s", $maxtime));
+                    $filledMail = sprintf(
+                        i18n("Hello %s,\n\nyou are assigned as the next editor for the Article %s.\n\nMore informations:\nArticle: %s\nCategory: %s\nEditor: %s\nAuthor: %s\nEditable from: %s\nEditable to: %s\n"),
+                        $curEditor,
+                        $title,
+                        $title,
+                        $catName,
+                        $curEditor,
+                        $author,
+                        date('Y-m-d H:i:s', $startTime),
+                        date('Y-m-d H:i:s', $maxTime)
+                    );
                     $user = new cApiUser();
 
-                    if (isGroup($userSequence->get("iduser"))) {
-                        $sql = "SELECT `idgroupuser`, `user_id` FROM `%s` WHERE `group_id` = '%s'";
-                        $db->query($sql, cRegistry::getDbTableName('groupmembers'), $userSequence->get("iduser"));
+                    if (isGroup($userSequence->get('iduser'))) {
+                        $db->query(
+                            "SELECT `idgroupuser`, `user_id` FROM `%s` WHERE `group_id` = '%s'",
+                            cDb::getTableName('groupmembers'),
+                            $userSequence->get('iduser')
+                        );
                         while ($db->nextRecord()) {
-                            $user->loadByPrimaryKey($db->f("user_id"));
-                            $mailer->sendMail(NULL, $user->getField("email"), stripslashes(i18n('Workflow notification')), $filledMail);
+                            $user->loadByPrimaryKey($db->f('user_id'));
+                            $mailer->sendMail(
+                                NULL,
+                                $user->getField('email'),
+                                stripslashes(i18n('Workflow notification')),
+                                $filledMail
+                            );
                         }
                     } else {
-                        $user->loadByPrimaryKey($userSequence->get("iduser"));
-                        $mailer->sendMail(NULL, $user->getField("email"), stripslashes(i18n('Workflow notification')), $filledMail);
+                        $user->loadByPrimaryKey($userSequence->get('iduser'));
+                        $mailer->sendMail(
+                            NULL,
+                            $user->getField('email'),
+                            stripslashes(i18n('Workflow notification')),
+                            $filledMail
+                        );
                     }
                 } else {
-                    $email = i18n("Hello %s,\n\n" . "you are assigned as the escalator for the Article %s.\n\n" . "More informations:\n" . "Article: %s\n" . "Category: %s\n" . "Editor: %s\n" . "Author: %s\n" . "Editable from: %s\n" . "Editable to: %s\n");
-
-                    $filledMail = sprintf($email, $curEditor, $title, $title, $catName, $curEditor, $author, date("Y-m-d H:i:s", $starttime), date("Y-m-d H:i:s", $maxtime));
+                    $filledMail = sprintf(
+                        i18n("Hello %s,\n\nyou are assigned as the escalator for the Article %s.\n\nMore informations:\nArticle: %s\nCategory: %s\nEditor: %s\nAuthor: %s\nEditable from: %s\nEditable to: %s\n"),
+                        $curEditor,
+                        $title,
+                        $title,
+                        $catName,
+                        $curEditor,
+                        $author,
+                        date('Y-m-d H:i:s', $startTime),
+                        date('Y-m-d H:i:s', $maxTime)
+                    );
 
                     $user = new cApiUser();
 
-                    if (isGroup($userSequence->get("iduser"))) {
-                        $sql = "SELECT `idgroupuser`, `user_id` FROM `%s` WHERE `group_id` = '%s'";
-                        $db->query($sql, cRegistry::getDbTableName('groupmembers'), $userSequence->get("iduser"));
+                    if (isGroup($userSequence->get('iduser'))) {
+                        $db->query(
+                            "SELECT `idgroupuser`, `user_id` FROM `%s` WHERE `group_id` = '%s'",
+                            cDb::getTableName('groupmembers'),
+                            $userSequence->get('iduser')
+                        );
                         while ($db->nextRecord()) {
-                            $user->loadByPrimaryKey($db->f("user_id"));
-                            $mailer->sendMail(NULL, $user->getField("email"), stripslashes(i18n('Workflow escalation')), $filledMail);
+                            $user->loadByPrimaryKey($db->f('user_id'));
+                            $mailer->sendMail(
+                                NULL,
+                                $user->getField('email'),
+                                stripslashes(i18n('Workflow escalation')),
+                                $filledMail
+                            );
                         }
                     } else {
-                        $user->loadByPrimaryKey($userSequence->get("iduser"));
-                        $mailer->sendMail(NULL, $user->getField("email"), stripslashes(i18n('Workflow escalation')), $filledMail);
+                        $user->loadByPrimaryKey($userSequence->get('iduser'));
+                        $mailer->sendMail(
+                            NULL,
+                            $user->getField('email'),
+                            stripslashes(i18n('Workflow escalation')),
+                            $filledMail
+                        );
                     }
                 }
             }
         }
 
         if (parent::store()) {
-            $this->db->query("UPDATE `" . $this->table . "` SET `starttime` = NOW() WHERE `" . $this->getPrimaryKeyName() . "` = '" . $this->get($this->getPrimaryKeyName()) . "'");
+            $this->db->query(
+                "UPDATE `%s` SET `starttime` = NOW() WHERE `%s` = %d",
+                $this->table,
+                $this->getPrimaryKeyName(),
+                $this->get($this->getPrimaryKeyName())
+            );
             return true;
         } else {
             return false;

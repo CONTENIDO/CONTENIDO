@@ -433,9 +433,9 @@
                     url: self.pathBackend + 'ajaxmain.php',
                     data: 'ajax=linkeditorimagelist&dir=' + self.selectedPath + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                     success: function(msg) {
-						if (Con.checkAjaxResponse(msg) === false)  {
-							return false;
-						}
+                        if (Con.checkAjaxResponse(msg) === false)  {
+                            return false;
+                        }
 
                         self.$frame.find('img.loading').hide();
                         self.$frame.find('input.jqueryAjaxUpload').css('visibility', 'visible');
@@ -469,7 +469,7 @@
                 url: self.pathBackend + 'ajaxmain.php',
                 data: 'ajax=upl_mkdir&id=' + self.id + '&idartlang=' + self.idArtLang + '&path=' + dirname + '&foldername=' + folderName + '&contenido=' + self.session,
                 success: function(msg) { //make create folder
-					if (Con.checkAjaxResponse(msg) === false)  {
+    				if (Con.checkAjaxResponse(msg) === false)  {
 						return false;
 					}
 

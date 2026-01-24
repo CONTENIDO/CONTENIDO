@@ -19,23 +19,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiTemplateConfiguration createNewItem
- * @method cApiTemplateConfiguration|bool next
+ * @extends ItemCollection<cApiTemplateConfiguration>
  */
 class cApiTemplateConfigurationCollection extends ItemCollection
 {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param bool $select [optional]
-     *                     where clause to use for selection (see ItemCollection::select())
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param string|false $select [optional] Where clause to use for selection {@see ItemCollection::select()}
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($select = false)
     {
-        parent::__construct(cRegistry::getDbTableName('tpl_conf'), 'idtplcfg');
+        parent::__construct(cDb::getTableName('tpl_conf'), 'idtplcfg');
         $this->_setItemClass('cApiTemplateConfiguration');
 
         // set the join partners so that joins can be used via link() method
@@ -47,89 +43,81 @@ class cApiTemplateConfigurationCollection extends ItemCollection
     }
 
     /**
-     * Deletes template configuration entry, removes also all related container
-     * configurations.
+     * Deletes template configuration entry, removes also all related container configurations.
      *
-     * @param int $idtplcfg
-     *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @inheritDoc
+     * @param int $id The template configuration id.
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function delete($idtplcfg)
+    public function delete($id)
     {
-        $result = parent::delete($idtplcfg);
+        $id = cSecurity::toInteger($id);
 
         // Delete also all container configurations
-        $oContainerConfColl = new cApiContainerConfigurationCollection('idtplcfg = ' . (int)$idtplcfg);
-        $oContainerConfColl->deleteByWhereClause('idtplcfg = ' . (int)$idtplcfg);
+        $containerConfColl = new cApiContainerConfigurationCollection();
+        $containerConfColl->deleteByWhereClause(sprintf('`idtplcfg` = %s', $id));
 
-        return $result;
+        return parent::delete($id);
     }
 
     /**
      * Creates a template config item entry
      *
-     * @param int $idtpl
+     * @param int $templateId
      * @param int $status [optional]
      * @param string $author [optional]
      * @param string $created [optional]
-     * @param string $lastmodified [optional]
-     *
+     * @param string $lastModified [optional]
      * @return cApiTemplateConfiguration
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idtpl, $status = 0, $author = '', $created = '', $lastmodified = '')
+    public function create($templateId, $status = 0, $author = '', $created = '', $lastModified = '')
     {
         if (empty($author)) {
-            $auth = cRegistry::getAuth();
-            $author = $auth->auth['uname'];
+            $author = cRegistry::getAuth()->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
         }
-        if (empty($lastmodified)) {
-            $lastmodified = '0000-00-00 00:00:00';
+        if (empty($lastModified)) {
+            $lastModified = '0000-00-00 00:00:00';
         }
 
         $item = $this->createNewItem();
-        $item->set('idtpl', $idtpl);
+        $item->set('idtpl', $templateId);
         $item->set('author', $author);
         $item->set('status', $status);
         $item->set('created', $created);
-        $item->set('lastmodified', $lastmodified);
+        $item->set('lastmodified', $lastModified);
         $item->store();
 
         return $item;
     }
 
     /**
-     * If there is a pre-configuration of template, copy its settings into
-     * template configuration
+     * If there is a pre-configuration of template, copy its settings into template configuration
      *
-     * @param int $idtpl
-     * @param int $idtplcfg
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param int $templateId
+     * @param int $templateConfigurationId
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function copyTemplatePreconfiguration($idtpl, $idtplcfg)
+    public function copyTemplatePreconfiguration($templateId, $templateConfigurationId)
     {
-        $oTemplateColl = new cApiTemplateCollection('idtpl = ' . (int)$idtpl);
+        $templateColl = new cApiTemplateCollection(sprintf('`idtpl` = %d', $templateId));
 
-        if (($oTemplate = $oTemplateColl->next()) !== false) {
-            if ($oTemplate->get('idtplcfg') > 0) {
-                $oContainerConfColl = new cApiContainerConfigurationCollection('idtplcfg = ' . $oTemplate->get('idtplcfg'));
-                $aStandardConfig = [];
-                while (($oContainerConf = $oContainerConfColl->next()) !== false) {
-                    $aStandardConfig[$oContainerConf->get('number')] = $oContainerConf->get('container');
+        if (($template = $templateColl->next()) !== false) {
+            if ($template->get('idtplcfg') > 0) {
+                $containerConfColl = new cApiContainerConfigurationCollection(sprintf(
+                    '`idtplconf` = %d',
+                    $template->get('idtplcfg')
+                ));
+                $standardConfig = [];
+                while ($containerConf = $containerConfColl->next()) {
+                    $standardConfig[$containerConf->get('number')] = $containerConf->get('container');
                 }
 
-                foreach ($aStandardConfig as $number => $container) {
-                    $oContainerConfColl->create($idtplcfg, $number, $container);
+                foreach ($standardConfig as $number => $container) {
+                    $containerConfColl->create($templateConfigurationId, $number, $container);
                 }
             }
         }
@@ -147,32 +135,24 @@ class cApiTemplateConfiguration extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('tpl_conf'), 'idtplcfg');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('tpl_conf'), 'idtplcfg');
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * User-defined setter for template configuration fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idtpl':
@@ -181,6 +161,6 @@ class cApiTemplateConfiguration extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 }

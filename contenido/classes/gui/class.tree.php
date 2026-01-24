@@ -25,60 +25,44 @@ class cGuiTree extends cTree
 {
 
     /**
-     *
      * @var string
      */
-    const TREEVIEW_GRIDLINE_SOLID = 'solid';
+    public const TREEVIEW_GRIDLINE_SOLID = 'solid';
 
     /**
-     *
      * @var string
      */
-    const TREEVIEW_GRIDLINE_DASHED = 'dashed';
+    public const TREEVIEW_GRIDLINE_DASHED = 'dashed';
 
     /**
-     *
      * @var string
      */
-    const TREEVIEW_GRIDLINE_DOTTED = 'dotted';
+    public const TREEVIEW_GRIDLINE_DOTTED = 'dotted';
 
     /**
-     *
      * @var string
      */
-    const TREEVIEW_GRIDLINE_NONE = 'none';
+    public const TREEVIEW_GRIDLINE_NONE = 'none';
 
     /**
-     *
-     * @var string
-     * @deprecated [2015-05-21]
-     *    This constant is no longer supported (no replacement)
+     * @deprecated [2015-05-21] This constant is no longer supported (no replacement)
      */
-    const TREEVIEW_BACKGROUND_NONE = 'none';
+    public const TREEVIEW_BACKGROUND_NONE = 'none';
 
     /**
-     *
-     * @var string
-     * @deprecated [2015-05-21]
-     *         This constant is no longer supported (no replacement)
+     * @deprecated [2015-05-21] This constant is no longer supported (no replacement)
      */
-    const TREEVIEW_BACKGROUND_SHADED = 'shaded';
+    public const TREEVIEW_BACKGROUND_SHADED = 'shaded';
 
     /**
-     *
-     * @var string
-     * @deprecated [2015-05-21]
-     *         This constant is no longer supported (no replacement)
+     * @deprecated [2015-05-21] This constant is no longer supported (no replacement)
      */
-    const TREEVIEW_MOUSEOVER_NONE = 'none';
+    public const TREEVIEW_MOUSEOVER_NONE = 'none';
 
     /**
-     *
-     * @var string
-     * @deprecated [2015-05-21]
-     *         This constant is no longer supported (no replacement)
+     * @deprecated [2015-05-21] This constant is no longer supported (no replacement)
      */
-    const TREEVIEW_MOUSEOVER_MARK = 'mark';
+    public const TREEVIEW_MOUSEOVER_MARK = 'mark';
 
     /**
      * @var cApiUser
@@ -105,11 +89,10 @@ class cGuiTree extends cTree
      *
      * @param string $uuid
      * @param false|string $treename [optional]
+     * @throws cDbException|cException
      */
     public function __construct($uuid, $treename = false)
     {
-        global $cfg, $auth;
-
         parent::__construct();
 
         $this->_uuid = $uuid;
@@ -119,17 +102,15 @@ class cGuiTree extends cTree
             $this->setTreeName($treename);
         }
 
-        $this->_user = new cApiUser($auth->auth["uid"]);
+        $this->_user = new cApiUser(cRegistry::getAuth()->getUserId());
     }
 
     /**
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function processParameters()
     {
-        if (($items = $this->_user->getUserProperty("expandstate", $this->_uuid)) !== false) {
+        if (($items = $this->_user->getUserProperty('expandstate', $this->_uuid)) !== false) {
             $list = unserialize($items);
 
             foreach ($list as $litem) {
@@ -157,12 +138,11 @@ class cGuiTree extends cTree
     }
 
     /**
-     * @param int $mode
-     *         Sets the gridline mode to one of the following values:
-     *         - cGuiTree::TREEVIEW_GRIDLINE_SOLID
-     *         - cGuiTree::TREEVIEW_GRIDLINE_DASHED
-     *         - cGuiTree::TREEVIEW_GRIDLINE_DOTTED
-     *         - cGuiTree::TREEVIEW_GRIDLINE_NONE
+     * @param int $mode Sets the gridline mode to one of the following values:
+     *      - cGuiTree::TREEVIEW_GRIDLINE_SOLID
+     *      - cGuiTree::TREEVIEW_GRIDLINE_DASHED
+     *      - cGuiTree::TREEVIEW_GRIDLINE_DOTTED
+     *      - cGuiTree::TREEVIEW_GRIDLINE_NONE
      */
     public function setGridlineMode($mode)
     {
@@ -170,53 +150,38 @@ class cGuiTree extends cTree
     }
 
     /**
-     *
-     * @param string|mixed $mode
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
+     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      */
     public function setBackgroundMode($mode)
     {
         cDeprecated('This method is deprecated and is not needed any longer');
-        $this->_backgroundMode = $mode;
     }
 
     /**
-     *
-     * @param string|mixed $mode
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
+     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      */
     public function setMouseoverMode($mode)
     {
         cDeprecated('This method is deprecated and is not needed any longer');
-        $this->_mouseoverMode = $mode;
     }
 
     /**
-     *
-     * @param string|mixed $colors
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
+     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      */
     public function setBackgroundColors($colors)
     {
         cDeprecated('This method is deprecated and is not needed any longer');
-        $this->_backgroundColors = $colors;
     }
 
     /**
-     *
-     * @param bool $with_root [optional]
-     * @return string
+     * @param bool $withRoot [optional]
      */
-    public function render($with_root = true)
+    public function render(bool $withRoot = true): string
     {
-
         /* @var $objects cTreeItem[] */
         $objects = $this->flatTraverse(0);
 
-        if ($with_root == false) {
+        if (!$withRoot) {
             unset($objects[0]);
         }
 
@@ -273,7 +238,7 @@ class cGuiTree extends cTree
                             $link->setContent($img);
                             $out .= $link->render();
                         } else {
-                            if ($level == 1 && $with_root == false) {
+                            if ($level == 1 && !$withRoot) {
                                 $out .= $img_spacer->render();
                             } else {
                                 $img->setSrc($this->_buildImagePath("grid_linedownrightend.gif"));
@@ -291,7 +256,7 @@ class cGuiTree extends cTree
                             $link->setContent($img);
                             $out .= $link->render();
                         } else {
-                            if ($level == 1 && $with_root == false) {
+                            if ($level == 1 && !$withRoot) {
                                 $out .= $img_spacer->render();
                             } else {
                                 $img->setSrc($this->_buildImagePath("grid_linedownright.gif"));
@@ -302,10 +267,10 @@ class cGuiTree extends cTree
                         $lastitem[$level] = false;
                     }
                 } else {
-                    if ($lastitem[$level] == true) {
+                    if ($lastitem[$level]) {
                         $out .= $img_spacer->render();
                     } else {
-                        if ($level == 1 && $with_root == false) {
+                        if ($level == 1 && !$withRoot) {
                             $out .= $img_spacer->render();
                         } else {
                             $img->setSrc($this->_buildImagePath("/grid_linedown.gif"));
@@ -350,8 +315,8 @@ class cGuiTree extends cTree
                     }
                 }
             } else {
-                if (isset($object->_attributes["icon"])) {
-                    $img->setSrc($object->_attributes["icon"]);
+                if (isset($object->_attributes['icon'])) {
+                    $img->setSrc($object->_attributes['icon']);
                     $renderedIcon = $img->render();
                     $renderedName = $object->getName();
                 } else {
@@ -387,13 +352,11 @@ class cGuiTree extends cTree
     }
 
     /**
-     *
      * @param cTreeItem $object
      * @return string
      */
     public function _getExpandCollapseIcon($object)
     {
-
         $img = $object->getCollapsed() ? "grid_expand.gif" : "grid_collapse.gif";
 
         return $this->_buildImagePath($img);
@@ -404,9 +367,8 @@ class cGuiTree extends cTree
      *
      * @param cHTMLLink $link
      * @param cTreeItem $object
-     * @return cHTMLLink
      */
-    public function _setExpandCollapseLink($link, $object)
+    public function _setExpandCollapseLink($link, $object): cHTMLLink
     {
         if (!empty($this->_name)) {
             $treename = $this->_name . "_";
@@ -415,7 +377,7 @@ class cGuiTree extends cTree
         $link->unsetCustom($treename . "expand");
         $link->unsetCustom($treename . "collapse");
 
-        if ($object->getCollapsed() == true) {
+        if ($object->getCollapsed()) {
             $link->setCustom($treename . "expand", $object->getId());
         } else {
             $link->setCustom($treename . "collapse", $object->getId());
@@ -425,17 +387,14 @@ class cGuiTree extends cTree
     }
 
     /**
-     *
      * @param string $image
-     * @return string
      */
-    public function _buildImagePath($image)
+    public function _buildImagePath($image): string
     {
         return "./images/" . $this->_gridlineMode . "/" . $image;
     }
 
     /**
-     *
      * @param string $link
      */
     public function setBaseLink($link)

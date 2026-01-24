@@ -15,24 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Returns encoding for language with ID $iLang (global $lang in CONTENIDO
- * style).
- * The parameter $db has to be an instance of cDb (global $db in con)
- * and
- * $cfg is the equivalent to global $cfg array in CONTENIDO.
- * If no encoding is found or any parameter is not valid, the function will
- * return
- * false, otherwise the encoding as string like it is stored in database.
- *
- * @param cDb $db
- *         not used any more!
- * @param int $lang
- *
- * @return string|bool
- * @throws cInvalidArgumentException
- * @deprecated [2015-05-21]
- *         use cRegistry::getEncoding
- *
+ * @deprecated [2015-05-21] use {@see cRegistry::getEncoding()} instead
  */
 function getEncodingByLanguage($db, $lang)
 {
@@ -43,11 +26,8 @@ function getEncodingByLanguage($db, $lang)
 /**
  * Special version of htmlentites for iso-8859-2
  * Returns transformed string
- *
- * @param string $input
- * @return string
  */
-function htmlentities_iso88592($input = '')
+function htmlentities_iso88592(string $input = ''): string
 {
     $arrEntities_pl = [
         '&ecirc;',

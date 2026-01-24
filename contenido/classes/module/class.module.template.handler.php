@@ -37,119 +37,106 @@ class cModuleTemplateHandler extends cModuleHandler
 {
 
     /**
-     * Form fields
-     *
+     * @var string Template code
+     */
+    private $code;
+
+    /**
+     * @var string Template file name.
+     */
+    private $file;
+
+    /**
+     * @var string Temporary template file name?
+     */
+    private $tmpFile;
+
+    /**
+     * @var string Backend area.
+     */
+    private $area;
+
+    /**
+     * @var int Backend frame.
+     */
+    private $frame;
+
+    /**
+     * @var string Status, 'send', '', or `null`
+     */
+    private $status;
+
+    /**
+     * @var string Backend action.
+     */
+    private $action;
+
+    /**
      * @var string
      */
-    private $_code;
+    private $new;
 
     /**
-     *
      * @var string
      */
-    private $_file;
+    private $delete;
 
     /**
-     *
-     * @var string
+     * @var string Selected template file.
      */
-    private $_tmpFile;
+    private $selectedFile;
 
     /**
-     *
-     * @var int
-     */
-    private $_area;
-
-    /**
-     *
-     * @var int
-     */
-    private $_frame;
-
-    /**
-     *
-     * @var string
-     */
-    private $_status;
-
-    /**
-     *
-     * @var string
-     */
-    private $_action;
-
-    /**
-     *
-     * @var string
-     */
-    private $_new;
-
-    /**
-     *
-     * @var string
-     */
-    private $_delete;
-
-    /**
-     *
-     * @var string
-     */
-    private $_selectedFile;
-
-    /**
-     *
      * @var ?cGuiPage
      */
-    private $_page = NULL;
+    private $guiPage;
 
     /**
-     *
      * @var cGuiNotification
      */
-    private $_notification = NULL;
+    private $guiNotification;
 
     /**
-     * The file end of template files.
+     * The extension of template files.
      *
      * @var string
      */
-    private $_templateFileEnding = 'html';
+    private $templateFileExt = 'html';
 
     /**
-     * The name of the new file.
+     * The name of the new template file.
      *
      * @var string
      */
-    private $_newFileName = 'newfilename';
+    private $newTemplateFilename = 'newfilename';
 
     /**
-     * Action name for create htmltpl
+     * Action name for create a template file
      *
      * @var string
      */
-    private $_actionCreate = 'htmltpl_create';
+    private $actionCreate = 'htmltpl_create';
 
     /**
-     * Action name for edit htmltpl
+     * Action name for edit a template file
      *
      * @var string
      */
-    private $_actionEdit = 'htmltpl_edit';
+    private $actionEdit = 'htmltpl_edit';
 
     /**
-     * Action name for delete htmltpl_edit
+     * Action name for delete a template file
      *
      * @var string
      */
-    private $_actionDelete = 'htmltpl_delete';
+    private $actionDelete = 'htmltpl_delete';
 
     /**
-     * In template, we test if we have permission for htmltpl.
+     * In the template, we test if we have permission for a template file.
      *
      * @var string
      */
-    private $_testArea = 'htmltpl';
+    private $testArea = 'htmltpl';
 
     /**
      * Constructor to create an instance of this class.
@@ -158,125 +145,109 @@ class cModuleTemplateHandler extends cModuleHandler
      *         The module instance or the module recordset array from the
      *         database or the id of the module
      * @param ?cGuiPage $page
-     *
      * @throws cException
      */
-    public function __construct($module, $page)
+    public function __construct($module, ?cGuiPage $page = null)
     {
         parent::__construct($module);
-        $this->_page = $page;
-        $this->_notification = new cGuiNotification();
+        $this->guiPage = $page;
+        $this->guiNotification = new cGuiNotification();
     }
 
     /**
-     * Set the new delete from Form.
-     * This is set if user had pushed the delete button or the new button.
-     *
-     * @param string $new
-     * @param string $delete
+     * Set the new delete from the form.
+     * This is set if the user had pushed the delete button or the new button.
      */
-    public function setNewDelete($new, $delete)
+    public function setNewDelete(string $new, string $delete)
     {
-        $this->_new = $new;
-        $this->_delete = $delete;
+        $this->new = $new;
+        $this->delete = $delete;
     }
 
     /**
-     * Set the code from Form!
-     *
-     * @param string $code
+     * Set the code from the form!
      */
-    public function setCode($code)
+    public function setCode(string $code)
     {
-        $this->_code = stripslashes($code);
+        $this->code = stripslashes($code);
     }
 
     /**
-     * Set the selected file from Form.
-     *
-     * @param string $selectedFile
+     * Set the selected file from the form.
      */
-    public function setSelectedFile($selectedFile)
+    public function setSelectedFile(string $selectedFile)
     {
-        $this->_selectedFile = $selectedFile;
+        $this->selectedFile = $selectedFile;
     }
 
     /**
-     * Set the file and tmpFile from Form.
+     * Set the file and tmpFile from the form.
      * (get it with $_Request...)
-     *
-     * @param string $file
-     * @param string $tmpFile
      */
-    public function setFiles($file, $tmpFile)
+    public function setFiles(string $file, string $tmpFile)
     {
-        $this->_file = $file;
-        $this->_tmpFile = $tmpFile;
+        $this->file = $file;
+        $this->tmpFile = $tmpFile;
     }
 
     /**
      * Set the status it can be sent or empty ''
-     *
-     * @param string $status
      */
-    public function setStatus($status)
+    public function setStatus(string $status)
     {
-        $this->_status = $status;
+        $this->status = $status;
     }
 
     /**
      * Set $frame and idmod and are.
-     *
-     * @param int $frame
-     * @param int $idmod
-     * @param int $area
      */
-    public function setFrameIdmodArea($frame, $idmod, $area)
+    public function setFrameIdmodArea(int $frame, int $idmod, string $area)
     {
-        $this->_frame = $frame;
-        $this->_idmod = $idmod;
-        $this->_area = $area;
+        $this->frame = $frame;
+        $this->moduleId = $idmod;
+        $this->area = $area;
     }
 
     /**
-     * We have two actions wich could send from form.
-     *
-     * @param string $action
+     * We have two actions which could send from form.
      */
-    public function setAction($action)
+    public function setAction(string $action)
     {
-        $this->_action = $action;
+        $this->action = $action;
     }
 
     /**
-     * Checks write permissions for module template
+     * Sets the write permissions for a module template file
      *
-     * @return void|bool
      * @throws cException
      */
-    public function checkWritePermissions()
+    public function checkWritePermissions(): ?bool
     {
-        if ($this->moduleWriteable('template') === false && cFileHandler::exists(parent::getModulePath() . $this->_directories['template']) === false) {
-            $this->_notification->displayNotification(cGuiNotification::LEVEL_WARNING, sprintf(i18n("You have no write permissions for this module: %s"), parent::getModuleName()));
+        if (
+            $this->moduleWriteable('template') === false
+            && cFileHandler::exists(parent::getModulePath() . $this->directories['template']) === false
+        ) {
+            $this->guiNotification->displayNotification(
+                cGuiNotification::LEVEL_WARNING,
+                sprintf(i18n("You have no write permissions for this module: %s"), parent::getModuleName())
+            );
+            return null;
         } else {
             return true;
         }
     }
 
     /**
-     * The method decide what action is send from
-     * user (form).
+     * The method decides what action is sent from the user (form).
      *
-     * @return string
-     *         [new, delete,empty,save,rename, default]
-     * @throws cException
-     *         if one of the filenames is not set
+     * @return string [new, delete, empty, save, rename, default]
+     * @throws cException If one of the filenames is not set
      */
-    private function _getAction(): string
+    private function getAction(): string
     {
         global $newModTpl, $deleteModTpl;
 
-        if (isset($this->_status)) {
+        if (isset($this->status)) {
             if (isset($newModTpl)) {
                 return 'new';
             }
@@ -285,22 +256,21 @@ class cModuleTemplateHandler extends cModuleHandler
                 return 'delete';
             }
 
-            if (isset($this->_file) && isset($this->_tmpFile)) {
-                if ($this->_file == $this->_tmpFile) {
-                    // file ist empty also no file in template
-                    // directory
-                    if (empty($this->_file)) {
+            if (isset($this->file) && isset($this->tmpFile)) {
+                if ($this->file == $this->tmpFile) {
+                    // file ist empty also no file in the template directory
+                    if (empty($this->file)) {
                         return 'empty';
                     } else {
                         return 'save';
                     }
                 }
 
-                if ($this->_file != $this->_tmpFile) {
+                if ($this->file != $this->tmpFile) {
                     return 'rename';
                 }
             } else {
-                // one of files (file or tmp_file) is not set
+                // one of the files (file or tmp_file) is not set
                 throw new cException(i18n('Field of the file name is empty!'));
             }
         }
@@ -310,99 +280,100 @@ class cModuleTemplateHandler extends cModuleHandler
 
     /**
      * Checks if the selected file has changed.
-     *
-     * @return bool
      */
-    private function _hasSelectedFileChanged(): bool
+    private function hasSelectedFileChanged(): bool
     {
-        if ($this->_file != $this->_selectedFile) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->file != $this->selectedFile;
     }
 
     /**
-     * Save the code in the file
+     * Save the code in the template file.
      *
      * @throws cException
      */
-    private function _save()
+    private function saveAction()
     {
         // if user selected other file display it
-        if ($this->_hasSelectedFileChanged()) {
-            $this->_file = $this->_selectedFile;
-            $this->_tmpFile = $this->_selectedFile;
+        if ($this->hasSelectedFileChanged()) {
+            $this->file = $this->selectedFile;
+            $this->tmpFile = $this->selectedFile;
         }
 
-        if (isset($this->_code)) {
-            // trigger a smarty cache rebuild for template if changes were saved
-            // you need a installed and active smarty plugin (example client)
+        if (isset($this->code)) {
+            // to trigger a smarty cache rebuild for a new template file,
+            // you need an installed and active smarty plugin (example client)
             if (class_exists('cSmartyFrontend')) {
                 $tpl = cSmartyFrontend::getInstance();
-                $tpl->clearCache($this->getTemplatePath($this->_file));
+                $tpl->clearCache($this->getTemplatePath($this->file));
             }
 
-            // save the contents of file
-            $ret = $this->createModuleFile('template', $this->_file, $this->_code);
-            // show message
-            if (true === $ret) {
-                $this->_notification->displayNotification(cGuiNotification::LEVEL_OK, i18n('Saved changes successfully!'));
+            // save the contents of a file
+            $success = $this->createModuleFile('template', $this->file, $this->code);
+            if ($success) {
+                $this->guiNotification->displayNotification(
+                    cGuiNotification::LEVEL_OK,
+                    i18n('Saved changes successfully!')
+                );
             }
         }
     }
 
     /**
-     * rename a file in template directory
+     * Rename a file in the template directory
      *
      * @throws cException if rename was not successful
      */
-    private function _rename()
+    private function renameAction()
     {
-        // trigger a smarty cache rebuild for old and new template file name
-        // you need a installed and active smarty plugin (example client)
+        // to trigger a smarty cache rebuild for a new template file,
+        // you need an installed and active smarty plugin (example client)
         if (class_exists('cSmartyFrontend')) {
             $tpl = cSmartyFrontend::getInstance();
-            $tpl->clearCache($this->getTemplatePath($this->_tmpFile));
-            $tpl->clearCache($this->getTemplatePath($this->_file));
+            $tpl->clearCache($this->getTemplatePath($this->tmpFile));
+            $tpl->clearCache($this->getTemplatePath($this->file));
         }
 
-        if ($this->renameModuleFile('template', $this->_tmpFile, $this->_file) == false) {
+        if (!$this->renameModuleFile('template', $this->tmpFile, $this->file)) {
             throw new cException(i18n('Rename of the file failed!'));
         } else {
-            $this->createModuleFile('template', $this->_file, $this->_code);
-            $this->_notification->displayNotification(cGuiNotification::LEVEL_OK, i18n('Renamed the template file successfully!'));
+            $this->createModuleFile('template', $this->file, $this->code);
+            $this->guiNotification->displayNotification(
+                cGuiNotification::LEVEL_OK,
+                i18n('Renamed the template file successfully!')
+            );
 
         }
-        $this->_tmpFile = cString::replaceDiacritics($this->_file);
+        $this->tmpFile = cString::replaceDiacritics($this->file);
     }
 
     /**
-     * Create new file
+     * Create a new template file.
      *
-     * @throws cInvalidArgumentException
-     * @throws cException
+     * @throws cInvalidArgumentException|cException
      */
-    private function _new()
+    private function newAction()
     {
-        // if target filename already exists insert few random characters into target filename
-        $fileName = $this->_newFileName . '.' . $this->_templateFileEnding;
+        // if target filename already exists insert few random characters into the target filename
+        $fileName = $this->newTemplateFilename . '.' . $this->templateFileExt;
         while ($this->existFile('template', $fileName)) {
-            $fileName = $this->_newFileName . $this->getRandomCharacters(5) . '.' . $this->_templateFileEnding;
+            $fileName = $this->newTemplateFilename . $this->getRandomCharacters(5) . '.' . $this->templateFileExt;
         }
-        $this->createModuleFile('template', $fileName, '');
-        $this->_notification->displayNotification(cGuiNotification::LEVEL_OK, i18n('Created a new template file successfully!'));
+        $this->createModuleFile('template', $fileName);
+        $this->guiNotification->displayNotification(
+            cGuiNotification::LEVEL_OK,
+            i18n('Created a new template file successfully!')
+        );
 
-        // trigger a smarty cache rebuild for new template file
-        // you need a installed and active smarty plugin (example client)
+        // to trigger a smarty cache rebuild for a new template file,
+        // you need an installed and active smarty plugin (example client)
         if (class_exists('cSmartyFrontend')) {
             $tpl = cSmartyFrontend::getInstance();
             $tpl->clearCache($this->getTemplatePath($fileName));
         }
 
         // set to new fileName
-        $this->_file = $fileName;
-        $this->_tmpFile = $fileName;
+        $this->file = $fileName;
+        $this->tmpFile = $fileName;
     }
 
     /**
@@ -410,64 +381,62 @@ class cModuleTemplateHandler extends cModuleHandler
      *
      * @throws cException
      */
-    private function _delete()
+    private function deleteAction()
     {
-        // trigger a smarty cache rebuild for template that should be deleted
+        // to trigger a smarty cache rebuild for a new template file,
         // you need an installed and active smarty plugin (example client)
         if (class_exists('cSmartyFrontend')) {
             $tpl = cSmartyFrontend::getInstance();
-            $tpl->clearCache($this->getTemplatePath($this->_tmpFile));
+            $tpl->clearCache($this->getTemplatePath($this->tmpFile));
         }
 
-        $ret = $this->deleteFile('template', $this->_tmpFile);
-        if ($ret == true) {
-            $this->_notification->displayNotification(cGuiNotification::LEVEL_OK, i18n('Deleted the template file successfully!'));
+        $success = $this->deleteFile('template', $this->tmpFile);
+        if ($success) {
+            $this->guiNotification->displayNotification(
+                cGuiNotification::LEVEL_OK,
+                i18n('Deleted the template file successfully!')
+            );
         }
-        $files = $this->getAllFilesFromDirectory('template');
 
-        if (is_array($files)) {
-            if (!array_key_exists('0', $files)) {
-                $this->_file = '';
-                $this->_tmpFile = '';
-            } else {
-                $this->_file = $files[0];
-                $this->_tmpFile = $files[0];
-            }
-        }
+        $this->reSetFiles();
     }
 
     /**
      * Default case
      */
-    public function _default()
+    public function defaultAction()
+    {
+        $this->reSetFiles();
+    }
+
+    /**
+     * @since CONTENIDO 4.10.2
+     */
+    private function reSetFiles()
     {
         $files = $this->getAllFilesFromDirectory('template');
 
-        // one or more templates files are in template directory
+        // one or more template files are in the template directory
         if (count($files) > 0) {
-            $this->_tmpFile = $files[0];
-            $this->_file = $files[0];
+            $this->tmpFile = $files[0];
+            $this->file = $files[0];
         } else {
-            // template directory is empty
-            $this->_file = '';
-            $this->_tmpFile = '';
+            // the template directory is empty
+            $this->file = '';
+            $this->tmpFile = '';
         }
     }
 
     /**
      * Have the user permissions for the actions.
      *
-     * @param cPermission $perm
-     * @param cGuiNotification $notification
-     * @param string $action
-     * @return bool
      * @throws cDbException|cException
      */
-    private function _havePermission($perm, $notification, $action)
+    private function havePermission(cPermission $perm, cGuiNotification $notification, string $action): bool
     {
         switch ($action) {
             case 'new':
-                if (!$perm->have_perm_area_action($this->_testArea, $this->_actionCreate)) {
+                if (!$perm->have_perm_area_action($this->testArea, $this->actionCreate)) {
                     $notification->displayNotification('error', i18n('Permission denied'));
                     return false;
                 } else {
@@ -475,14 +444,14 @@ class cModuleTemplateHandler extends cModuleHandler
                 }
             case 'save':
             case 'rename':
-                if (!$perm->have_perm_area_action($this->_testArea, $this->_actionEdit)) {
+                if (!$perm->have_perm_area_action($this->testArea, $this->actionEdit)) {
                     $notification->displayNotification('error', i18n('Permission denied'));
                     return false;
                 } else {
                     return true;
                 }
             case 'delete':
-                if (!$perm->have_perm_area_action($this->_testArea, $this->_actionDelete)) {
+                if (!$perm->have_perm_area_action($this->testArea, $this->actionDelete)) {
                     $notification->displayNotification('error', i18n('Permission denied'));
                     return false;
                 } else {
@@ -494,18 +463,16 @@ class cModuleTemplateHandler extends cModuleHandler
     }
 
     /**
-     * This method test the code if the client setting htmlvalidator
-     * is not set to false.
+     * This method tests the code if the client setting htmlvalidator is not set to false.
      *
-     * @param cGuiNotification $notification
      * @throws cDbException|cException
      */
-    private function _validateHTML($notification)
+    private function validateHtml(cGuiNotification $notification)
     {
-        // Try to validate html
-        if (getEffectiveSetting('layout', 'htmlvalidator', 'true') == 'true' && $this->_code !== '') {
+        // Try to validate HTML
+        if (getEffectiveSetting('layout', 'htmlvalidator', 'true') == 'true' && $this->code !== '') {
             $v = new cHTMLValidator();
-            $v->validate($this->_code);
+            $v->validate($this->code);
             $msg = '';
 
             foreach ($v->getMissingNodes() as $value) {
@@ -537,96 +504,92 @@ class cModuleTemplateHandler extends cModuleHandler
     }
 
     /**
-     * @param string $belang
-     * @param bool $readOnly
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    private function _makeForm($belang, $readOnly)
+    private function makeForm(string $belang, bool $readOnly)
     {
-        $fileForm = new cGuiTableForm("file__chooser");
+        $fileForm = new cGuiTableForm('file__chooser');
         $fileForm->addTableClass('mgb10');
         $fileForm->setHeader(i18n('Choose file'));
-        $fileForm->setVar('area', $this->_area);
-        $fileForm->setVar('action', $this->_action);
-        $fileForm->setVar('frame', $this->_frame);
+        $fileForm->setVar('area', $this->area);
+        $fileForm->setVar('action', $this->action);
+        $fileForm->setVar('frame', $this->frame);
         $fileForm->setVar('status', 'send');
-        $fileForm->setVar('tmp_file', conHtmlSpecialChars($this->_tmpFile));
-        $fileForm->setVar('idmod', $this->_idmod);
-        $fileForm->setVar('file', conHtmlSpecialChars($this->_file));
+        $fileForm->setVar('tmp_file', conHtmlSpecialChars($this->tmpFile));
+        $fileForm->setVar('idmod', $this->moduleId);
+        $fileForm->setVar('file', conHtmlSpecialChars($this->file));
 
         $form = new cGuiTableForm('file_editor');
         $form->setTableID('mod_template');
         $form->setHeader(i18n('Edit file'));
         $form->addTableClass('col_flx_m_50p col_first_100');
-        $form->setVar('area', $this->_area);
-        $form->setVar('action', $this->_action);
-        $form->setVar('frame', $this->_frame);
+        $form->setVar('area', $this->area);
+        $form->setVar('action', $this->action);
+        $form->setVar('frame', $this->frame);
         $form->setVar('status', 'send');
-        $form->setVar('tmp_file', conHtmlSpecialChars($this->_tmpFile));
-        $form->setVar('idmod', $this->_idmod);
-        $form->setVar('file', conHtmlSpecialChars($this->_file));
-        $form->setVar('selectedFile', cString::replaceDiacritics(conHtmlSpecialChars($this->_file)));
+        $form->setVar('tmp_file', conHtmlSpecialChars($this->tmpFile));
+        $form->setVar('idmod', $this->moduleId);
+        $form->setVar('file', conHtmlSpecialChars($this->file));
+        $form->setVar('selectedFile', cString::replaceDiacritics(conHtmlSpecialChars($this->file)));
 
         $selectFile = new cHTMLSelectElement('selectedFile');
-        $selectFile->setClass("fileChooser");
-        // array with all files in template directory
+        $selectFile->setClass('fileChooser');
+        // array with all files in the template directory
         $filesArray = $this->getAllFilesFromDirectory('template');
 
-        if (true === is_array($filesArray)) {
-            // make options fields
-            foreach ($filesArray as $key => $file) {
-                // ignore dirs
-                if (is_dir($file)) {
-                    continue;
-                }
-
-                // escape option elements to prevent JS injection into form
-                $optionField = new cHTMLOptionElement(conHtmlSpecialChars($file), conHtmlSpecialChars($file));
-
-                // select the current file
-                if ($file == cString::replaceDiacritics($this->_file)) {
-                    $optionField->setAttribute('selected', 'selected');
-                }
-
-                $selectFile->addOptionElement($key, $optionField);
+        // make options fields
+        foreach ($filesArray as $key => $file) {
+            // ignore dirs
+            if (is_dir($file)) {
+                continue;
             }
+
+            // escape option elements to prevent JS injection into form
+            $optionField = new cHTMLOptionElement(conHtmlSpecialChars($file), conHtmlSpecialChars($file));
+
+            // select the current file
+            if ($file == cString::replaceDiacritics($this->file)) {
+                $optionField->setAttribute('selected', 'selected');
+            }
+
+            $selectFile->addOptionElement($key, $optionField);
         }
 
         $aDelete = new cHTMLLink('main.php');
         $aDelete->setID("deleteLink");
         $aDelete->setContent(i18n("Delete HTML-template"));
         $aDelete->setClass('con_func_button deletefunction');
-        $aDelete->setCustom("deleteModTpl", "1");
-        $aDelete->setCustom('area', $this->_area);
-        $aDelete->setCustom('action', $this->_actionDelete);
-        $aDelete->setCustom('frame', $this->_frame);
+        $aDelete->setCustom('deleteModTpl', '1');
+        $aDelete->setCustom('area', $this->area);
+        $aDelete->setCustom('action', $this->actionDelete);
+        $aDelete->setCustom('frame', $this->frame);
         $aDelete->setCustom('status', 'send');
-        $aDelete->setCustom('idmod', $this->_idmod);
-        $aDelete->setCustom('file', urlencode($this->_file));
-        $aDelete->setCustom('tmp_file', urlencode($this->_tmpFile));
+        $aDelete->setCustom('idmod', $this->moduleId);
+        $aDelete->setCustom('file', urlencode($this->file));
+        $aDelete->setCustom('tmp_file', urlencode($this->tmpFile));
 
         $aAdd = new cHTMLLink('main.php');
         $aAdd->setContent(i18n('New HTML-template'));
         $aAdd->setClass('con_func_button addfunction');
-        $aAdd->setCustom("newModTpl", "1");
-        $aAdd->setCustom('area', $this->_area);
-        $aAdd->setCustom('action', $this->_actionCreate);
-        $aAdd->setCustom('frame', $this->_frame);
+        $aAdd->setCustom('newModTpl', '1');
+        $aAdd->setCustom('area', $this->area);
+        $aAdd->setCustom('action', $this->actionCreate);
+        $aAdd->setCustom('frame', $this->frame);
         $aAdd->setCustom('status', 'send');
-        $aAdd->setCustom('tmp_file', urlencode($this->_tmpFile));
-        $aAdd->setCustom('idmod', $this->_idmod);
-        $aAdd->setCustom('file', urlencode($this->_file));
+        $aAdd->setCustom('tmp_file', urlencode($this->tmpFile));
+        $aAdd->setCustom('idmod', $this->moduleId);
+        $aAdd->setCustom('file', urlencode($this->file));
 
         // $oName = new cHTMLLabel($sFilename, '');
-        $oName = new cHTMLTextbox('file', cString::replaceDiacritics(conHtmlSpecialChars($this->_file)), 60);
+        $oName = new cHTMLTextbox('file', cString::replaceDiacritics(conHtmlSpecialChars($this->file)), 60);
 
-        $oCode = new cHTMLTextarea('code', conHtmlSpecialChars($this->_code), 100, 35, 'code');
+        $oCode = new cHTMLTextarea('code', conHtmlSpecialChars($this->code), 100, 35, 'code');
         $oCode->setClass('con_code');
         $oCode->updateAttributes(['wrap' => getEffectiveSetting('html_editor', 'wrap', 'off'),]);
 
         $fileForm->add(i18n('Action'), $aAdd->toHtml());
-        // show only if file exists
-        if ($this->_file) {
+        // show only if a file exists
+        if ($this->file) {
             $fileForm->add(i18n('Action'), $aDelete->toHtml());
             $fileForm->add(i18n('File'), $selectFile);
         }
@@ -635,25 +598,34 @@ class cModuleTemplateHandler extends cModuleHandler
             $oName->setDisabled(true);
         }
 
-        // add fields only if template file exists
-        if ($this->_file) {
+        // add fields only if a template file exists
+        if ($this->file) {
             $form->add(i18n('Name'), $oName);
             $form->add(i18n('Code'), $oCode);
         }
-        $this->_page->setContent([$fileForm]);
-        if ($this->_file) {
-            $this->_page->appendContent($form);
+        $this->guiPage->setContent([$fileForm]);
+        if ($this->file) {
+            $this->guiPage->appendContent($form);
         }
 
-        $oCodeMirror = new CodeMirror('code', 'html', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $this->_cfg);
+        $oCodeMirror = new CodeMirror(
+            'code',
+            'html',
+            cString::getPartOfString(cString::toLowerCase($belang), 0, 2),
+            true,
+            $this->cfg
+        );
         if ($readOnly) {
-            $oCodeMirror->setProperty("readOnly", "true");
+            $oCodeMirror->setProperty('readOnly', 'true');
 
-            $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n('Overwriting files is disabled'), 's');
+            $form->setActionButton(
+                'submit',
+                cRegistry::getBackendUrl() . 'images/but_ok_off.gif',
+                i18n('Overwriting files is disabled'),
+                's'
+            );
         }
-        $this->_page->addScript($oCodeMirror->renderScript());
-
-        // $this->_page->addScript('reload', $this->_reloadScript);
+        $this->guiPage->addScript($oCodeMirror->renderScript());
     }
 
     /**
@@ -661,24 +633,22 @@ class cModuleTemplateHandler extends cModuleHandler
      *
      * @param cPermission $perm
      * @param cGuiNotification $notification
-     * @param string $belang
-     *         Backend language (not sure about this...)
-     * @param bool $readOnly
-     *         render in read only mode
+     * @param string $belang Backend language (not sure about this...)
+     * @param bool $readOnly render in read-only mode
      * @throws cDbException|cException
      */
-    public function display($perm, $notification, $belang, $readOnly)
+    public function display(cPermission $perm, cGuiNotification $notification, string $belang, bool $readOnly)
     {
         // No need to build the form if the gui page is not set!
         // This is the case when the module translations are managed at the backend area "Content > Translations".
-        if (!$this->_page) {
+        if (!$this->guiPage) {
             return;
         }
 
-        $myAction = $this->_getAction();
+        $myAction = $this->getAction();
 
         // if the user doesn't have permissions
-        if (!$this->_havePermission($perm, $notification, $myAction)) {
+        if (!$this->havePermission($perm, $notification, $myAction)) {
             return;
         }
 
@@ -686,34 +656,34 @@ class cModuleTemplateHandler extends cModuleHandler
             switch ($myAction) {
                 case 'save':
                     if (!$readOnly) {
-                        $this->_save();
+                        $this->saveAction();
                     }
                     break;
                 case 'rename':
                     if (!$readOnly) {
-                        $this->_rename();
+                        $this->renameAction();
                     }
                     break;
                 case 'new':
                     if (!$readOnly) {
-                        $this->_new();
+                        $this->newAction();
                     }
                     break;
                 case 'delete':
                     if (!$readOnly) {
-                        $this->_delete();
+                        $this->deleteAction();
                     }
                     break;
                 default:
-                    $this->_default();
+                    $this->defaultAction();
                     break;
             }
 
-            $this->_code = $this->getFilesContent('template', '', $this->_file);
-            $this->_validateHTML($notification);
-            $this->_makeForm($belang, $readOnly);
+            $this->code = $this->getFilesContent('template', '', $this->file);
+            $this->validateHtml($notification);
+            $this->makeForm($belang, $readOnly);
         } catch (Exception $e) {
-            $this->_page->displayError(i18n($e->getMessage()));
+            $this->guiPage->displayError(i18n($e->getMessage()));
         }
     }
 

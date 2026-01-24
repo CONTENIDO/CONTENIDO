@@ -14,6 +14,14 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cTemplate $tpl
+ */
+
+$cfg = cRegistry::getConfig();
+$perm = cRegistry::getPerm();
+$sess = cRegistry::getSession();
+
 if (!isset($path)) {
     $path = '';
 }

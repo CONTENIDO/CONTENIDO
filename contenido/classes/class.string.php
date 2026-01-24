@@ -160,8 +160,8 @@ class cString extends cStringMultiByteWrapper
      * @param string $needle String to search for
      * @param bool $beforeNeedle If true, return everything BEFORE needle
      * @return string|false
-     * @link https://php.net/manual/de/function.mb-strstr.php
-     * @link https://php.net/manual/de/function.strstr.php
+     * @link https://www.php.net/manual/en/function.mb-strstr.php
+     * @link https://www.php.net/manual/en/function.strstr.php
      */
     public static function strstr(string $haystack, string $needle, bool $beforeNeedle = false)
     {

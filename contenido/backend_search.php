@@ -3,6 +3,9 @@
 /**
  * This file performs various searches on articles from backend.
  *
+ * NOTE:
+ * Has some similarities with `contenido/includes/include.con_art_overview.php`.
+ *
  * @package    Core
  * @subpackage Backend
  * @author     Holger Librenz
@@ -20,7 +23,7 @@ if (!defined('CON_FRAMEWORK')) {
 global $idtpl, $properties, $tplconfig;
 
 // CONTENIDO startup process
-include_once('./includes/startup.php');
+include_once(__DIR__ . '/includes/startup.php');
 
 $cfg['debug']['backend_exectime']['fullstart'] = getmicrotime();
 
@@ -32,20 +35,18 @@ cRegistry::bootstrap([
 
 $cfg = cRegistry::getConfig();
 $belang = cRegistry::getBackendLanguage();
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$lang = cRegistry::getLanguageId();
 $auth = cRegistry::getAuth();
 $perm = cRegistry::getPerm();
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getClientId();
 $area = cRegistry::getArea();
 $frame = cRegistry::getFrame();
+$sess = cRegistry::getSession();
 
 i18nInit($cfg['path']['contenido_locale'], $belang);
 
 // Initialize variables
 $db = cRegistry::getDb();
-
-// Language ID
-$iSpeachId = $lang;
 
 // Search - ID
 $iSearchId = NULL;
@@ -64,8 +65,6 @@ $sSearchStrDateTo = '';
 
 $bLostAndFound = false;
 
-$iLangId = $lang > 0 ? $lang : 1;
-
 $sDateFormat = getEffectiveSetting('dateformat', 'date', 'Y-m-d');
 
 $sLoadSubnavi = '';
@@ -74,14 +73,14 @@ $iDisplayMenu = 0;
 $iIdTpl = 0;
 $aScripts = [];
 
-$sSession = cRegistry::getBackendSessionId() ?? '';
+$backendSessionId = cRegistry::getBackendSessionId() ?? '';
 
-$iSpeachIdTmp = $_POST['speach'] ?? '';
-if (is_numeric($iSpeachIdTmp)) {
-    $iSpeachId = $iSpeachIdTmp;
+$postLang = cSecurity::toInteger($_POST['lang'] ?? '');
+if ($postLang > 0 && $postLang !== $lang) {
+    $lang = $postLang;
 }
 
-if (!empty($sSession)) {
+if (!empty($backendSessionId)) {
     // Backend
     cRegistry::bootstrap([
         'sess' => 'cSession',
@@ -99,8 +98,8 @@ if (!empty($sSession)) {
 }
 
 // Get sorting values - make sure that they only contain valid values!
-$sSortByValues = ['title', 'lastmodified', 'published', 'artsort'];
-$sSortBy = isset($_POST['sortby']) && in_array($_POST['sortby'], $sSortByValues) ? $_POST['sortby'] : 'lastmodified';
+$sortByValues = ['title', 'lastmodified', 'published', 'artsort'];
+$sSortBy = isset($_POST['sortby']) && in_array($_POST['sortby'], $sortByValues) ? $_POST['sortby'] : 'lastmodified';
 $sSortMode = (isset($_POST['sortmode']) && $_POST['sortmode'] == 'asc') ? 'asc' : 'desc';
 
 /*
@@ -138,7 +137,7 @@ foreach ($aSearchFields as $field) {
     $aSearch[$field] = '';
 }
 
-if (sizeof($_GET) == 0 && isset($_POST['save_search'])) {
+if (count($_GET) == 0 && isset($_POST['save_search'])) {
     // Save current search
     $itemtype = rand(0, 10000);
     $itemid = time();
@@ -167,7 +166,7 @@ if (sizeof($_GET) == 0 && isset($_POST['save_search'])) {
 
     // Message for successful saving
     $sSaveSuccessful = i18n("Thank you for saving this search from extinction!");
-} elseif (sizeof($_GET) > 0) {
+} elseif (count($_GET) > 0) {
     // Stored search has been called
 
     $itemtypeReq = cSecurity::toInteger($_GET['itemtype'] ?? '0');
@@ -192,11 +191,11 @@ if (sizeof($_GET) == 0 && isset($_POST['save_search'])) {
         $aSearch['save_date_to_month'] = date('m', $actDate);
         $aSearch['save_date_to_year'] = date('Y', $actDate);
     } elseif (isset($_GET['myarticles'])) {
-        $aSearch['save_author'] = $auth->auth['uname'];
+        $aSearch['save_author'] = $auth->getUsername();
     } elseif (isset($_GET['lostfound'])) {
         $bLostAndFound = true;
     }
-} elseif (sizeof($_GET) == 0 && isset($_POST)) {
+} elseif (count($_GET) == 0 && isset($_POST)) {
     // Regular search, take over send form data
     $aSearch['save_title'] = trim(strip_tags($_POST['bs_search_text']));
     $aSearch['save_id'] = cSecurity::toInteger($_POST['bs_search_id']);
@@ -215,7 +214,7 @@ if (!empty($aSearch['save_title'])) {
     $sSearchStr = $aSearch['save_title'];
 }
 // Article ID
-if ($aSearch['save_id'] > 0) {
+if (($aSearch['save_id'] ?? 0) > 0) {
     $iSearchId = $aSearch['save_id'];
 }
 // Date
@@ -227,21 +226,21 @@ if (!empty($aSearch['save_date_field']) && $aSearch['save_date_field'] != 'n/a')
     $sDateFieldName = '';
 }
 // Author
-$sSearchStrAuthor = !empty($aSearch['save_author']) ? $aSearch['save_author'] : 'n/a';
+$sSearchStrAuthor = empty($aSearch['save_author']) ? 'n/a' : $aSearch['save_author'];
 
 // Build the query to search for the article
 $sql = "SELECT
           DISTINCT a.idart, a.idartlang, a.title, a.online, a.locked, a.idartlang, a.created, a.published,
           a.artsort, a.lastmodified, b.idcat, b.idcatart, b.idcatart, c.startidartlang,
           c.idcatlang, e.name as 'tplname'
-        FROM " . $cfg['tab']['art_lang'] . " as a
-          LEFT JOIN " . $cfg['tab']['cat_art'] . " as b ON a.idart = b.idart
-          LEFT JOIN " . $cfg['tab']['cat_lang'] . " as c ON a.idartlang = c.startidartlang
-          LEFT JOIN " . $cfg['tab']['tpl_conf'] . " as d ON a.idtplcfg = d.idtplcfg
-          LEFT JOIN " . $cfg['tab']['tpl'] . " as e ON d.idtpl = e.`idtpl`
-          LEFT JOIN " . $cfg['tab']['content'] . " as f ON f.idartlang = a.idartlang
+        FROM " . cDb::getTableName('art_lang') . " as a
+          LEFT JOIN " . cDb::getTableName('cat_art') . " as b ON a.idart = b.idart
+          LEFT JOIN " . cDb::getTableName('cat_lang') . " as c ON a.idartlang = c.startidartlang
+          LEFT JOIN " . cDb::getTableName('tpl_conf') . " as d ON a.idtplcfg = d.idtplcfg
+          LEFT JOIN " . cDb::getTableName('tpl') . " as e ON d.idtpl = e.`idtpl`
+          LEFT JOIN " . cDb::getTableName('content') . " as f ON f.idartlang = a.idartlang
         WHERE
-          (a.idlang = " . cSecurity::toInteger($iSpeachId) . ")
+          (a.idlang = " . cSecurity::toInteger($lang) . ")
         ";
 
 $sWhere = '';
@@ -286,20 +285,20 @@ if (!empty($sWhere)) {
               DISTINCT a.idart, a.idartlang, a.title, a.online, a.locked, a.idartlang, a.created, a.published,
               a.artsort, a.lastmodified, b.idcat, b.idcatart, b.idcatart, c.startidartlang,
               c.idcatlang, e.name as 'tplname'
-            FROM " . $cfg['tab']['art_lang'] . " as a
-              LEFT JOIN " . $cfg['tab']['cat_art'] . " as b ON a.idart = b.idart
-              LEFT JOIN " . $cfg['tab']['cat_lang'] . " as c ON a.idartlang = c.startidartlang
-              LEFT JOIN " . $cfg['tab']['tpl_conf'] . " as d ON a.idtplcfg = d.idtplcfg
-              LEFT JOIN " . $cfg['tab']['tpl'] . " as e ON d.idtpl = e.`idtpl`
+            FROM " . cDb::getTableName('art_lang') . " as a
+              LEFT JOIN " . cDb::getTableName('cat_art') . " as b ON a.idart = b.idart
+              LEFT JOIN " . cDb::getTableName('cat_lang') . " as c ON a.idartlang = c.startidartlang
+              LEFT JOIN " . cDb::getTableName('tpl_conf') . " as d ON a.idtplcfg = d.idtplcfg
+              LEFT JOIN " . cDb::getTableName('tpl') . " as e ON d.idtpl = e.`idtpl`
             WHERE
-                (a.idart NOT IN (SELECT " . $cfg['tab']['cat_art'] . ".idart FROM " . $cfg['tab']['cat_art'] . "))
+                (a.idart NOT IN (SELECT " . cDb::getTableName('cat_art') . ".idart FROM " . cDb::getTableName('cat_art') . "))
             OR
-                (b.idcat NOT IN (SELECT " . $cfg['tab']['cat'] . ".idcat FROM " . $cfg['tab']['cat'] . "));";
+                (b.idcat NOT IN (SELECT " . cDb::getTableName('cat') . ".idcat FROM " . cDb::getTableName('cat') . "));";
     $db->query($sql);
 }
 
 $aTableHeaders = [];
-foreach ($sSortByValues as $value) {
+foreach ($sortByValues as $value) {
     $sTableHeader = '<a href="#" class="gray">';
     switch ($value) {
         case 'title':
@@ -320,7 +319,7 @@ foreach ($sSortByValues as $value) {
     $sTableHeader .= '</a>';
     // Add the sorting arrow
     if ($value == $sSortBy) {
-        $imageSrc = ($sSortMode == 'asc') ? 'images/sort_up.gif' : 'images/sort_down.gif';
+        $imageSrc = $sSortMode === 'asc' ? $cfg['path']['images'] . 'sort_up.gif' : $cfg['path']['images'] . 'sort_down.gif';
         $sTableHeader .= '<img src="' . $imageSrc . '">';
     }
     $aTableHeaders[$value] = $sTableHeader;
@@ -350,15 +349,15 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
     $sNoArticle = i18n("Missing search value.");
     $sNothingFound = i18n("No article found.");
 
-    if ($bNoCriteria && !$bLostAndFound) {
-        $sErrOut = $sNoArticle;
-    } else {
-        $sErrOut = $sNothingFound;
-    }
+    $sErrOut = $bNoCriteria && !$bLostAndFound ? $sNoArticle : $sNothingFound;
 
     $sRow = '<tr><td colspan="7">' . $sErrOut . '</td></tr>';
     $tpl->set('d', 'ROWS', $sRow);
-    $sLoadSubnavi = 'Con.getFrame(\'right_top\').location.href = \'main.php?area=con&frame=3&idcat=0&idtpl=' . $iIdTpl . '&contenido=' . $sSession . "';";
+
+    $sLoadSubnavi = sprintf(
+        "Con.getFrame('right_top').location.href = '%s';",
+        $sess->url("main.php?area=con&frame=3&idcat=0&idtpl=$iIdTpl")
+    );
     $tpl->next();
 } else {
     $bHit = false;
@@ -366,18 +365,20 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
     // First collects base infos about found article like idartlang, idcat, etc.
     $backendSearchHelper->initializeArticleInfos($db);
 
+    $lngAreYouSureToDeleteTheFollowingArticleX = i18n("Are you sure to delete the following article:<br><br><b>%s</b>");
+    $lngDeleteArticle = i18n("Delete article");
+    $lngDuplicateArticle = i18n("Duplicate article");
     $lngFlagAsNormalArticle = i18n('Flag as normal article');
     $lngFlagAsStartArticle = i18n('Flag as start article');
-    $lndMakeOffline = i18n('Make offline');
-    $lndMakeOnline = i18n('Make online');
-    $lngUnfreezeArticle = i18n('Unfreeze article');
     $lngFreezeArticle = i18n('Freeze article');
+    $lngMakeOffline = i18n("Make offline");
+    $lngMakeOnline = i18n("Make online");
+    $lngNone = i18n("None");
+    $lngNormalArticle = i18n("Normal article");
     $lngReminder = i18n("Reminder");
     $lngSetReminder = i18n("Set reminder / add to todo list");
-    $lngDuplicateArticle = i18n("Duplicate article");
-    $lngDeleteArticle = i18n("Delete article");
-    $lngDeleteArticleQuestion = i18n("Do you really want to delete the following article");
-    $lngNone = i18n("None");
+    $lngStartArticle = i18n("Start article");
+    $lngUnfreezeArticle = i18n('Unfreeze article');
 
     for ($i = 0; $i < $iAffectedRows; $i++) {
         $sRow = '';
@@ -419,34 +420,73 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
                 $iIdTpl = $idtpl;
             }
 
-            // Convert to start article/regular article
+            // Make start article/regular article link
+            // TODO: Backend article search doesn't support changing the start article status.
+            //       This would lead to issues, since the view display all found articles in various
+            //       categories, therefore the block below is disabled by `0 == 1`!
             if ($backendSearchHelper->hasArticleMakeStartPermission($idcat) && 0 == 1) {
                 if ($startidartlang == $idartlang) {
-                    $makeStartarticle = "<td class=\"text_center\"><a class=\"con_img_button\" href=\"main.php?area=con&idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=0&contenido=$sSession\" title=\"{$lngFlagAsNormalArticle}\"><img src=\"images/isstart1.gif\" title=\"{$lngFlagAsNormalArticle}\" alt=\"{$lngFlagAsNormalArticle}\"></a></td>";
+                    $link = new cHTMLLink(
+                        $sess->url("main.php?area=con&idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=0"),
+                        cHTMLImage::img($cfg['path']['images'] . 'isstart1.gif', $lngFlagAsNormalArticle),
+                        'con_img_button mgl3'
+                    );
+                    $link->setAttribute('title', $lngFlagAsNormalArticle);
+                    $startArticleLink = $link->render();
                 } else {
-                    $makeStartarticle = "<td class=\"text_center\"><a class=\"con_img_button\" href=\"main.php?area=con&idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=1&contenido=$sSession\" title=\"{$lngFlagAsStartArticle}\"><img src=\"images/isstart0.gif\" title=\"{$lngFlagAsStartArticle}\" alt=\"{$lngFlagAsStartArticle}\"></a></td>";
+                    $link = new cHTMLLink(
+                        $sess->url("main.php?area=con&idcat=$idcat&action=con_makestart&idcatart=$idcatart&frame=4&is_start=1"),
+                        cHTMLImage::img($cfg['path']['images'] . '/isstart0.gif', $lngFlagAsStartArticle),
+                        'con_img_button mgl3'
+                    );
+                    $link->setAttribute('title', $lngFlagAsStartArticle);
+                    $startArticleLink = $link->render();
                 }
             } else {
+                // Display only the article/regular article status
                 if ($startidartlang == $idartlang) {
-                    $makeStartarticle = "<td class=\"text_center\"><img class=\"con_img_button_off\" src=\"images/isstart1.gif\" title=\"{$lngFlagAsNormalArticle}\" alt=\"{$lngFlagAsNormalArticle}\"></td>";
+                    $startArticleLink = cHTMLImage::img($cfg['path']['images'] . 'isstart1.gif', $lngStartArticle, ['class' => 'con_img_button mgl3']);
                 } else {
-                    $makeStartarticle = "<td class=\"text_center\"><img class=\"con_img_button_off\" src=\"images/isstart0.gif\" title=\"{$lngFlagAsStartArticle}\" alt=\"{$lngFlagAsStartArticle}\"></td>";
+                    $startArticleLink = cHTMLImage::img($cfg['path']['images'] . 'isstart0.gif', $lngNormalArticle, ['class' => 'con_img_button mgl3']);
                 }
             }
 
-            // Set online/offline
-            if ($online == 1) {
-                $bgColorRow = "background-color: #E2E2E2;";
-                $setOnOff = "<a href=\"main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&contenido=$sSession\" title=\"{$lndMakeOffline}\"><img src=\"images/online.gif\" title=\"{$lndMakeOffline}\" alt=\"{$lndMakeOffline}\"></a>";
+            // Set article online/offline link
+            if ($online) {
+                $link = new cHTMLLink(
+                    $sess->url("main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart"),
+                    cHTMLImage::img($cfg['path']['images'] . 'online.gif', $lngMakeOffline),
+                    'con_img_button mgl3'
+                );
+                $link->setAttribute('title', $lngMakeOffline);
+                $setOnOff = $link->render();
             } else {
-                $bgColorRow = "background-color: #E2D9D9;";
-                $setOnOff = "<a href=\"main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart&contenido=$sSession\" title=\"{$lndMakeOnline}\"><img src=\"images/offline.gif\" title=\"{$lndMakeOnline}\" alt=\"{$lndMakeOnline}\"></a>";
+                $link = new cHTMLLink(
+                    $sess->url("main.php?area=con&idcat=$idcat&action=con_makeonline&frame=4&idart=$idart"),
+                    cHTMLImage::img($cfg['path']['images'] . 'offline.gif', $lngMakeOnline),
+                    'con_img_button mgl3'
+                );
+                $link->setAttribute('title', $lngMakeOnline);
+                $setOnOff = $link->render();
             }
-            // Lock/unlock article
+
+            // Article locked/unlocked
             if ($locked == 1) {
-                $lockArticle = "<a href=\"main.php?area=con&idcat=$idcat&action=con_lock&frame=4&idart=$idart&contenido=$sSession\" title=\"{$lngUnfreezeArticle}\"><img src=\"images/lock_closed.gif\" title=\"{$lngUnfreezeArticle}\" alt=\"{$lngUnfreezeArticle}\"></a>";
+                $link = new cHTMLLink(
+                    $sess->url("main.php?area=con&idcat=$idcat&action=con_lock&frame=4&idart=$idart"),
+                    cHTMLImage::img($cfg['path']['images'] . 'lock_closed.gif', $lngUnfreezeArticle),
+                    'con_img_button mgl3'
+                );
+                $link->setAttribute('title', $lngUnfreezeArticle);
+                $lockArticle = $link->render();
             } else {
-                $lockArticle = "<a href=\"main.php?area=con&idcat=$idcat&action=con_lock&frame=4&idart=$idart&contenido=$sSession\" title=\"{$lngFreezeArticle}\"><img src=\"images/lock_open.gif\" title=\"{$lngFreezeArticle}\" alt=\"{$lngFreezeArticle}\"></a>";
+                $link = new cHTMLLink(
+                    $sess->url("main.php?area=con&idcat=$idcat&action=con_lock&frame=4&idart=$idart"),
+                    cHTMLImage::img($cfg['path']['images'] . 'lock_open.gif', $lngFreezeArticle),
+                    'con_img_button mgl3'
+                );
+                $link->setAttribute('title', $lngFreezeArticle);
+                $lockArticle = $link->render();
             }
 
             // Template name
@@ -454,46 +494,63 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
                 $sTemplateName = conHtmlentities($templatename);
             } else {
                 $templateInfo = $backendSearchHelper->getCategoryTemplateInfos($idcat);
-                $sTemplateName = !empty($templateInfo['name']) ? '<i>' . $templateInfo['name'] . '</i>' : "--- " . $lngNone . " ---";
+                $sTemplateName = empty($templateInfo['name']) ? '--- ' . $lngNone . ' ---' : '<i>' . $templateInfo['name'] . '</i>';
             }
 
-            $sRowId = "$idart-$idartlang-$idcat-0-$idcatart-$iLangId";
+            $sRowId = "$idart-$idartlang-$idcat-0-$idcatart-$lang";
 
             if ($i == 0) {
                 $tpl->set('s', 'FIRST_ROWID', $sRowId);
             }
 
+            // Article title
             $categoryBreadcrumb = $backendSearchHelper->getCategoryBreadcrumb($idcat);
-
             $sTitle = cSecurity::unFilter($title);
+            $categoryBreadcrumb = '<i><span style="font-size: 80%">' . $categoryBreadcrumb . '</span></i><br>' . $sTitle;
             if ($backendSearchHelper->hasArticleEditContentPermission($idcat)) {
-                $editart = "<a href=\"main.php?area=con_editcontent&action=con_editart&changeview=edit&idartlang=$idartlang&idart=$idart&idcat=$idcat&frame=4&contenido=$sSession\" title=\"idart: $idart idcatart: $idcatart\"><i><span style='font-size: 80%'>" . $categoryBreadcrumb . "</span></i><br>" . $sTitle . "</a>";
+                $link = new cHTMLLink(
+                    $sess->url("main.php?area=con_editcontent&action=con_editart&changeview=edit&idartlang=$idartlang&idart=$idart&idcat=$idcat&frame=4"),
+                    $categoryBreadcrumb
+                );
+                $link->setAttribute('title', "idart: $idart idcatart: $idcatart");
+                $articleTitleLink = $link->render();
             } else {
-                $editart = "<i><span style='font-size: 80%'>" . $categoryBreadcrumb . "</span></i><br>" . $sTitle;
+                $articleTitleLink = $categoryBreadcrumb;
             }
 
+            // Duplicate article link
             if ($backendSearchHelper->hasArticleDuplicatePermission($idcat)) {
-                $duplicate = "<a href=\"main.php?area=con&idcat=$idcat&action=con_duplicate&duplicate=$idart&frame=4&contenido=$sSession\" title=\"$lngDuplicateArticle\"><img src=\"images/but_copy.gif\" title=\"$lngDuplicateArticle\" alt=\"$lngDuplicateArticle\"></a>";
+                // add count_duplicate param to identify if the duplicate action is called from click or back button.
+                $link = new cHTMLLink(
+                    $sess->url("main.php?area=con&idcat=$idcat&action=con_duplicate&duplicate=$idart&count_duplicate=" . $_SESSION['count_duplicate'] . "&frame=4"),
+                    cHTMLImage::img($cfg['path']['images'] . 'but_copy.gif', $lngDuplicateArticle),
+                    'con_img_button mgl3'
+                );
+                $link->setAttribute('title', $lngDuplicateArticle);
+                $duplicateLink = $link->render();
             } else {
-                $duplicate = "";
+                $duplicateLink = '';
             }
 
+            // Delete article link
             if ($backendSearchHelper->hasArticleDeletePermission($idcat)) {
-                $sTitle = conHtmlSpecialChars($title);
-                if (cString::getStringLength($sTitle) > 30) {
-                    $sTitle = cString::getPartOfString($sTitle, 0, 27) . "...";
+                $tmpTitle = conHtmlSpecialChars($title);
+                if (cString::getStringLength($tmpTitle) > 30) {
+                    $tmpTitle = cString::getPartOfString($tmpTitle, 0, 27) . '...';
                 }
 
-                $delete = '
-                <a
-                    href="javascript:void(0)"
-                    onclick="Con.showConfirmation(&quot;' . $lngDeleteArticleQuestion . ':<br><br><b>' . conHtmlSpecialChars($sTitle) . '</b>&quot;, function() {deleteArticle(' . $idart . ', ' . $idcat . ');});"
-                    title="' . $lngDeleteArticle . '"
-                >
-                    <img src="images/delete.gif" title="' . $lngDeleteArticle . '" alt="' . $lngDeleteArticle . '">
-                </a>';
+                $confirmString = sprintf($lngAreYouSureToDeleteTheFollowingArticleX, conHtmlSpecialChars($tmpTitle));
+
+                $link = new cHTMLLink(
+                    'javascript:void(0)',
+                    cHTMLImage::img($cfg['path']['images'] . 'delete.gif', $lngDeleteArticle),
+                    'con_img_button mgl3'
+                );
+                $link->setAttribute('title', $lngDeleteArticle);
+                $link->setEvent('click', "Con.showConfirmation('$confirmString', function() {deleteArticle($idart, $idcat);});");
+                $deleteLink = $link->render();
             } else {
-                $delete = "";
+                $deleteLink = '';
             }
 
             if (!is_numeric($artsort) && empty($artsort)) {
@@ -507,18 +564,18 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
             }
 
             $sRow = '<tr id="' . $sRowId . '" class="row_mark" data-idcat="' . $idcat . '" data-idart="' . $idart . '">' . "\n";
-            $sRow .= $makeStartarticle . "\n";
-            $sRow .= "<td>$editart</td>
+            $sRow .= "<td class=\"text_center\">$startArticleLink</td>\n";
+            $sRow .= "<td>$articleTitleLink</td>
                       <td>$lastmodified</td>
                       <td>$published</td>
                       <td class=\"text_center\">" . $artsort . "</td>
                       <td>$sTemplateName</td>
                       <td>
-                          <a id=\"m1\" onclick=\"javascript:window.open('main.php?subject=$lngReminder&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=625');\" title=\"$lngSetReminder\" href=\"#\"><img id=\"m2\" alt=\"$lngSetReminder\" src=\"images/but_setreminder.gif\"></a>
+                          <a id=\"m1\" onclick=\"window.open('" . $sess->url("main.php?subject=$lngReminder&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart") . "', 'todo', 'scrollbars=yes, height=300, width=625');\" title=\"$lngSetReminder\" href=\"#\"><img id=\"m2\" alt=\"$lngSetReminder\" src=\"images/but_setreminder.gif\"></a>
                           $properties
                           $tplconfig
-                          $duplicate
-                          $delete
+                          $duplicateLink
+                          $deleteLink
                       </td>
                   </tr>";
 
@@ -537,7 +594,10 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
     if ($bLostAndFound) {
         $iDisplayMenu = 1;
     }
-    $sLoadSubnavi = 'Con.getFrame(\'right_top\').location.href = \'main.php?area=con&frame=3&idcat=' . $iIdCat . '&idtpl=' . $iIdTpl . '&display_menu=' . $iDisplayMenu . '&contenido=' . $sSession . "';";
+    $sLoadSubnavi = sprintf(
+        "Con.getFrame('right_top').location.href = '%s';",
+        $sess->url("main.php?area=con&frame=3&idcat=$iIdCat&idtpl=$iIdTpl&display_menu=$iDisplayMenu")
+    );
 }
 
 
@@ -545,14 +605,14 @@ if ($iAffectedRows <= 0 || (empty($sWhere) && !$bLostAndFound)) {
 # Save Search Parameters
 ###########################
 
-if (sizeof($_GET) == 0 && isset($_POST) && !$bNoCriteria) {
+if (count($_GET) == 0 && isset($_POST) && !$bNoCriteria) {
     // Build form with hidden fields that contain all search parameters to be stored using generic db
     $searchForm = '
         <form id="save_search" target="right_bottom" method="post" action="backend_search.php">
             <input type="hidden" name="area" value="' . $area . '">
             <input type="hidden" name="frame" value="' . $frame . '">
-            <input type="hidden" name="contenido" value="' . $sSession . '">
-            <input type="hidden" name="speach" value="' . $lang . '">
+            <input type="hidden" name="contenido" value="' . $backendSessionId . '">
+            <input type="hidden" name="lang" value="' . $lang . '">
             <input type="hidden" name="save_search" id="save_search" value="true">
             <input type="hidden" name="save_title" id="save_title" value="' . $sSearchStr . '">
             <input type="hidden" name="save_id" id="save_id" value="' . $iSearchId . '">
@@ -578,7 +638,7 @@ $tpl->set('s', 'SUBNAVI', $sLoadSubnavi);
 
 // Finalize debug of backend rendering
 ob_start();
-cDebug::out(cBuildBackendRenderDebugInfo($cfg, $oldMemUsage, basename(__FILE__)));
+cDebug::out(cBuildBackendRenderDebugInfo($cfg, $oldMemUsage ?? 0, basename(__FILE__)));
 $output = ob_get_contents();
 ob_end_clean();
 $tpl->set('s', 'DEBUGMESSAGE', $output);

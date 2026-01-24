@@ -10,11 +10,11 @@
         <copyright>four for business AG</copyright>
         <mail>frederic.schneider@4fb.de</mail>
         <website>https://www.4fb.de</website>
-        <version>2.1.0</version>
+        <version>2.1.1</version>
     </general>
 
     <requirements php="7.1">
-        <contenido minversion="4.10.0" />
+        <contenido minversion="4.10.2-dev"/>
     </requirements>
 
     <contenido>

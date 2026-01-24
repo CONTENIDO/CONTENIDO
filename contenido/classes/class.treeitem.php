@@ -18,15 +18,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Class TreeItem
  * Class to create tree-based items
  *
- * The treeitem class allows you to logically store
- * tree-based structures.
+ * The treeitem class allows you to logically store tree-based structures.
  *
  * Example:
  *
- * Let's have a tree with 3 nodes. It's important that
- * we always have a "root" key.
+ * Let's have a tree with 3 nodes. It's important that we always have a "root" key.
  *
- * $root = new TreeItem("root", 1);
+ * $root = new TreeItem('root', 1);
  * $item1 = new TreeItem("node1",2);
  * $item2 = new TreeItem("node2",3);
  * $item3 = new TreeItem("node3",4);
@@ -37,8 +35,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * This represents the tree we described above.
  *
- * If you know the ID of the item you want to add
- * to, there's no need to have a specific item handy,
+ * If you know the ID of the item you want to add to, there's no need to have a specific item handy,
  * but rather you can use the "addItemToID" function.
  *
  * @package    Core
@@ -48,72 +45,52 @@ class TreeItem
 {
 
     /**
-     * Sub Items for this tree item
-     *
-     * @var TreeItem[]|object[]
+     * @var TreeItem[]|object[] Sub Items for this tree item
      */
     protected $_subitems;
 
     /**
-     * Determinate if this tree item is collapsed
-     *
-     * @var bool
+     * @var bool Determinate if this tree item is collapsed
      */
     protected $_collapsed;
 
     /**
-     * ID for this item
-     *
-     * @var string
+     * @var string|int ID for this item
      */
     protected $_id;
 
     /**
-     * Name for this item
-     *
-     * @var string
+     * @var string Name for this item
      */
     protected $_name;
 
     /**
-     * Icon for the collapsed item
-     *
-     * @var string
+     * @var string Icon for the collapsed item
      */
-    protected $_collapsed_icon;
+    protected $_collapsed_icon = '';
 
     /**
-     * Icon for the expanded item
-     *
-     * @var string
+     * @var string Icon for the expanded item
      */
-    protected $_expanded_icon;
+    protected $_expanded_icon = '';
 
     /**
-     * Icon for last node in a branch
-     *
-     * @var string
+     * @var string Icon for last node in a branch
      */
-    protected $_lastnode_icon;
+    protected $_lastnode_icon = '';
 
     /**
-     * Contains the level of this item
-     *
-     * @var int
+     * @var int Contains the level of this item
      */
     protected $_level;
 
     /**
-     * Contains custom entries
-     *
-     * @var array
+     * @var array Contains custom entries
      */
     protected $_custom;
 
     /**
-     * Parent id of this item
-     *
-     * @var string|int
+     * @var string|int Parent id of this item
      */
     protected $_parentId;
 
@@ -122,14 +99,11 @@ class TreeItem
      *
      * Creates a new, independent tree item.
      *
-     * @param string $name [optional]
-     *         The name of that item
-     * @param string $id [optional]
-     *         The unique ID of that item
-     * @param bool $collapsed [optional]
-     *         Is this item collapsed by default
+     * @param string $name [optional] The name of that item
+     * @param string|int $id [optional] The unique ID of that item
+     * @param bool $collapsed [optional] Is this item collapsed by default
      */
-    public function __construct($name = "", $id = "", $collapsed = false)
+    public function __construct($name = "", $id = "", bool $collapsed = false)
     {
         $this->_name = $name;
         $this->_id = $id;
@@ -144,25 +118,23 @@ class TreeItem
     /**
      * Magic getter function for outdated variable names.
      *
-     * @param string $name
-     *         Name of the variable
-     * @return int|string|void
-     * @throws cInvalidArgumentException
+     * @param string $name Name of the variable
+     * @return int|string|null
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         if ($name === 'parent' || $name == '_parent') {
             cDeprecated("The property `' . $name . '` is deprecated since CONTENIDO 4.10.2, use `TreeItem::getParentId()` instead.");
             return $this->_parentId;
         }
+
+        return null;
     }
 
     /**
      * Get method for _collapsed_icon variable
-     *
-     * @return string
      */
-    public function getCollapsedIcon()
+    public function getCollapsedIcon(): string
     {
         return $this->_collapsed_icon;
     }
@@ -200,10 +172,8 @@ class TreeItem
 
     /**
      * Get method for _expanded_icon variable
-     *
-     * @return string
      */
-    public function getExpandedIcon()
+    public function getExpandedIcon(): string
     {
         return $this->_expanded_icon;
     }
@@ -211,7 +181,7 @@ class TreeItem
     /**
      * Get method for _id variable
      *
-     * @return string
+     * @return string|int
      */
     public function getId()
     {
@@ -220,10 +190,8 @@ class TreeItem
 
     /**
      * Get method for _name variable
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->_name;
     }
@@ -297,10 +265,8 @@ class TreeItem
 
     /**
      * Get status of collapsed (_collapsed variable)
-     *
-     * @return bool
      */
-    public function isCollapsed()
+    public function isCollapsed(): bool
     {
         return $this->_collapsed;
     }
@@ -348,37 +314,31 @@ class TreeItem
 
     /**
      * Retrieves a specific item by its ID.
-     * Note that this
-     * function traverses all sub-items to find the correct item.
+     * Note that this function traverses all sub-items to find the correct item.
      *
-     * @param string $id
-     *         the ID to find
-     * @return TreeItem|object|false
-     *         The item, or false if nothing was found
+     * @param string $id The ID to find
+     * @return TreeItem|object|null The item, or null if nothing was found
      */
-    public function &getItemByID($id)
+    public function getItemByID($id)
     {
         if ($this->_id == $id) {
             return $this;
         } else {
             foreach (array_keys($this->_subitems) as $key) {
-                $retObj = &$this->_subitems[$key]->getItemByID($id);
-                if ($retObj->id == $id) {
+                $retObj = $this->_subitems[$key]->getItemByID($id);
+                if ($retObj && $retObj->id == $id) {
                     return $retObj;
                 }
             }
         }
 
-        // Return variable as reference
-        $result = false;
-        return $result;
+        return null;
     }
 
     /**
      * Removes an item with a specific ID.
      *
-     * @param string $id
-     *         the ID to find
+     * @param string $id The ID to find
      */
     public function removeItem($id)
     {
@@ -392,19 +352,17 @@ class TreeItem
     /**
      * Checks if a specific custom attribute is set.
      *
-     * @param string $item
-     *         the attribute name to find
-     * @return bool
+     * @param string $item The attribute name to find
      */
-    public function isCustomAttributeSet($item)
+    public function isCustomAttributeSet($item): bool
     {
         if (array_key_exists($item, $this->_custom)) {
             return true;
-        } else {
-            foreach (array_keys($this->_subitems) as $key) {
-                if ($this->_subitems[$key]->isCustomAttributeSet($item)) {
-                    return true;
-                }
+        }
+
+        foreach (array_keys($this->_subitems) as $key) {
+            if ($this->_subitems[$key]->isCustomAttributeSet($item)) {
+                return true;
             }
         }
 
@@ -536,16 +494,15 @@ class TreeItem
     /**
      *
      * @param int|bool $item_id
-     * @return bool
      */
-    public function hasCollapsedNode($item_id)
+    public function hasCollapsedNode($item_id): bool
     {
         $parentNodeList = [];
         $this->getTreeParentNodes($parentNodeList, $item_id);
         $collapsedList = [];
         $this->getRealCollapsedList($collapsedList);
 
-        return sizeof(array_intersect($parentNodeList, $collapsedList)) > 0;
+        return count(array_intersect($parentNodeList, $collapsedList)) > 0;
     }
 
     /**
@@ -557,7 +514,7 @@ class TreeItem
     public function getTreeParentNodes(array &$parentNodes, $id)
     {
         $curItem = $this->getItemByID($id);
-        $parentId = $curItem->getParentId();
+        $parentId = $curItem ? $curItem->getParentId() : -1;
 
         if ($parentId && $parentId != -1) {
             $parentNodes[] = $parentId;
@@ -602,7 +559,7 @@ class TreeItem
         // remove all nodes that have no sub-nodes
         foreach ($list as $key) {
             $item = $this->getItemByID($key);
-            if (sizeof($item->getSubItems()) > 0) {
+            if ($item && count($item->getSubItems()) > 0) {
                 $cleared_list[] = $key;
             }
         }

@@ -32,7 +32,7 @@ abstract class Swift_Mime_Headers_AbstractHeader implements Swift_Mime_Header
     /**
      * The Encoder used to encode this Header.
      *
-     * @var Swift_Encoder
+     * @var Swift_Encoder|Swift_Mime_HeaderEncoder|object
      */
     private $_encoder;
 
@@ -209,9 +209,6 @@ abstract class Swift_Mime_Headers_AbstractHeader implements Swift_Mime_Header
 
     /**
      * Returns a string representation of this object.
-     *
-     * @return string
-     *
      * @see toString()
      */
     public function __toString()
@@ -235,12 +232,12 @@ abstract class Swift_Mime_Headers_AbstractHeader implements Swift_Mime_Header
      * @param Swift_Mime_Header        $header
      * @param string                   $string  as displayed
      * @param string                   $charset of the text
-     * @param Swift_Mime_HeaderEncoder $encoder
+     * @param ?Swift_Mime_HeaderEncoder $encoder
      * @param bool                     $shorten the first line to make remove for header name
      *
      * @return string
      */
-    protected function createPhrase(Swift_Mime_Header $header, $string, $charset, Swift_Mime_HeaderEncoder $encoder = null, $shorten = false)
+    protected function createPhrase(Swift_Mime_Header $header, $string, $charset, ?Swift_Mime_HeaderEncoder $encoder = null, bool $shorten = false)
     {
         // Treat token as exactly what was given
         $phraseStr = $string;

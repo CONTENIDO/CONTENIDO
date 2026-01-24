@@ -33,32 +33,31 @@ class cHTMLTextarea extends cHTMLFormElement
      * If no additional parameters are specified, the default width is
      * 60 chars, and the height is 5 chars.
      *
-     * @param string $name
-     *         Name of the element
-     * @param string $initvalue [optional]
-     *         Initial value of the textarea
-     * @param int $width [optional]
-     *         width of the textarea
-     * @param int $height [optional]
-     *         height of the textarea
-     * @param string $id [optional]
-     *         ID of the element
-     * @param bool $disabled [optional]
-     *         Item disabled flag (non-empty to set disabled)
-     * @param int|null $tabindex [optional]
-     *         Tab index for form elements
-     * @param string $accesskey [optional]
-     *         Key to access the field
-     * @param string $class [optional]
-     *         the class of this element
+     * @param string $name Name of the element
+     * @param string $value [optional] Initial value of the textarea
+     * @param int $width [optional] Width of the textarea
+     * @param int $height [optional] Height of the textarea
+     * @param string $id [optional] ID of the element
+     * @param bool $disabled [optional] Item disabled flag (non-empty to set disabled)
+     * @param ?int $tabindex [optional] Tab index for form elements
+     * @param string $accessKey [optional] Key to access the field
+     * @param string $class [optional] The class of this element
      */
     public function __construct(
-        $name, $initvalue = '', $width = '', $height = '', $id = '', $disabled = false, $tabindex = null, $accesskey = '', $class = ''
+        $name,
+        $value = '',
+        $width = '',
+        $height = '',
+        $id = '',
+        $disabled = false,
+        $tabindex = null,
+        $accessKey = '',
+        $class = ''
     )
     {
-        parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
+        parent::__construct($name, $id, $disabled, $tabindex, $accessKey, $class);
         $this->_tag = 'textarea';
-        $this->setValue($initvalue);
+        $this->setValue($value);
         $this->_contentlessTag = false;
         $this->setWidth($width);
         $this->setHeight($height);
@@ -67,15 +66,11 @@ class cHTMLTextarea extends cHTMLFormElement
     /**
      * Sets the width of the text box.
      *
-     * @param int $width
-     *         width of the text box
-     * @return cHTMLTextarea
-     *         $this for chaining
+     * @param int $width Width of the text box
      */
-    public function setWidth($width): cHTMLTextarea
+    public function setWidth($width): self
     {
-        $width = intval($width);
-
+        $width = cSecurity::toInteger($width);
         if ($width <= 0) {
             $width = 50;
         }
@@ -86,15 +81,11 @@ class cHTMLTextarea extends cHTMLFormElement
     /**
      * Sets the maximum input length of the text box.
      *
-     * @param int $height
-     *         maximum input length
-     * @return cHTMLTextarea
-     *         $this for chaining
+     * @param int $height Maximum input length
      */
-    public function setHeight($height): cHTMLTextarea
+    public function setHeight($height): self
     {
-        $height = intval($height);
-
+        $height = cSecurity::toInteger($height);
         if ($height <= 0) {
             $height = 5;
         }
@@ -105,12 +96,9 @@ class cHTMLTextarea extends cHTMLFormElement
     /**
      * Sets the initial value of the text box.
      *
-     * @param string $value
-     *         Initial value
-     * @return cHTMLTextarea
-     *         $this for chaining
+     * @param string $value Initial value
      */
-    public function setValue($value): cHTMLTextarea
+    public function setValue($value): self
     {
         $this->_value = $value;
 
@@ -118,10 +106,7 @@ class cHTMLTextarea extends cHTMLFormElement
     }
 
     /**
-     * Renders the textarea
-     *
-     * @return string
-     *         Rendered HTML
+     * @inheritDoc
      */
     public function toHtml(): string
     {

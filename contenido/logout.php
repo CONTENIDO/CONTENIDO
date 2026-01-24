@@ -24,7 +24,7 @@ if (!defined('CON_FRAMEWORK')) {
  */
 
 // CONTENIDO startup process
-include_once('./includes/startup.php');
+include_once(__DIR__ . '/includes/startup.php');
 
 cRegistry::bootstrap([
     'sess' => 'cSession',
@@ -36,15 +36,11 @@ i18nInit($cfg['path']['contenido_locale'], $belang);
 
 require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 
-$db = cRegistry::getDb();
+$userId = $auth->getUserId();
 
-$iUserId = $auth->auth['uid'];
+(new cApiInUseCollection())->removeUserMarks($userId);
 
-$oInUse = new cApiInUseCollection();
-$oInUse->removeUserMarks($iUserId);
-
-$oActiveUser = new cApiOnlineUserCollection();
-$oActiveUser->deleteUser($iUserId);
+(new cApiOnlineUserCollection())->deleteUser($userId);
 
 $auth->logout();
 $sess->delete();

@@ -70,13 +70,13 @@ abstract class cUpgradeJobAbstract
 
     /**
      * This must be set. 0 means this upgrade job will be executed every time.
-     * Anyhting else should be a valid CONTENIDO version. Only if the upgraded version
+     * Anything else should be a valid CONTENIDO version. Only if the upgraded version
      * is older than this string the job will be executed.
      *
      * Setting this to '4.8.18' would mean that any version lower than 4.8.18 will get the upgrade job.
      * @var string
      */
-    public $maxVersion = "0";
+    public $maxVersion = '0';
 
     /**
      * Constructor, sets some properties
@@ -91,7 +91,7 @@ abstract class cUpgradeJobAbstract
         $this->_oDb = $db;
         $this->_aCfg = (is_array($cfg)) ? $cfg : $GLOBALS['cfg'];
         $this->_aCfgClient = (is_array($cfgClient)) ? $cfg : $GLOBALS['cfgClient'];
-        $this->_setupType = $_SESSION['setuptype'];
+        $this->_setupType = $_SESSION['setuptype'] ?? '';
         // set default configuration for DB connection
         cDb::setDefaultConfiguration($cfg['db']);
 
@@ -116,7 +116,7 @@ abstract class cUpgradeJobAbstract
      */
     final public function execute()
     {
-        if (version_compare($this->_version, $this->maxVersion, "<") || $this->maxVersion === "0") {
+        if (version_compare($this->_version, $this->maxVersion, '<') || $this->maxVersion === '0') {
             $this->_execute();
         }
     }
@@ -136,7 +136,7 @@ abstract class cUpgradeJobAbstract
         $oClientColl->select();
 
         $aClients = [];
-        while (($oClient = $oClientColl->next()) !== false) {
+        while ($oClient = $oClientColl->next()) {
             $obj = clone $oClient;
             $aClients[$obj->get('idclient')] = $obj;
         }
@@ -147,13 +147,13 @@ abstract class cUpgradeJobAbstract
      * Returns list of all available languages
      * @return cApiLanguage[]
      */
-    protected function _getAllLanguages()
+    protected function _getAllLanguages(): array
     {
         $oLanguageColl = new cApiLanguageCollection();
         $oLanguageColl->select();
 
         $aLanguages = [];
-        while (($oLang = $oLanguageColl->next()) !== false) {
+        while ($oLang = $oLanguageColl->next()) {
             $obj = clone $oLang;
             $aLanguages[$obj->get('idlang')] = $obj;
         }

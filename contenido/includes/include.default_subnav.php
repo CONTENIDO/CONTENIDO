@@ -14,6 +14,14 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cTemplate $tpl
+ */
+
+$cfg = cRegistry::getConfig();
+$area = cRegistry::getArea();
+$sess = cRegistry::getSession();
+
 // In some cases dont print menue
 if (isset($dont_print_subnav) && $dont_print_subnav == 1) {
     $tpl->reset();
@@ -105,10 +113,13 @@ foreach ($areasNavSubs as $areasNavSub) {
 
 // Is there a menu (left frame)?
 if ($db->numRows() == 0) {
-    $sql = $db->prepare("SELECT menuless FROM `%s` WHERE name = '%s' AND parent_id = 0", $cfg['tab']['area'], $area);
-    $db->query($sql);
+    $db->query(
+        "SELECT `menuless` FROM `%s` WHERE `name` = '%s' AND `parent_id` = 0",
+        cDb::getTableName('area'),
+        $area
+    );
     while ($db->nextRecord()) {
-        $bMenuless = $db->f('menuless') ? true : false;
+        $bMenuless = cSecurity::toBoolean($db->f('menuless'));
     }
 }
 

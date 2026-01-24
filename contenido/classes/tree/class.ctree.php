@@ -24,11 +24,9 @@ class cTree extends cTreeItem
 {
 
     /**
-     * Tree icon
-     *
-     * @var string
+     * @var string Tree icon
      */
-    protected $_treeIcon;
+    protected $_treeIcon = '';
 
     /**
      * Constructor to create an instance of this class.
@@ -38,7 +36,7 @@ class cTree extends cTreeItem
      * This is a bug, feel free to fix it.
      *
      */
-    public function __construct($name = "")
+    public function __construct(string $name = "")
     {
         parent::__construct(0, $name);
     }
@@ -46,10 +44,9 @@ class cTree extends cTreeItem
     /**
      * Sets a new name for the tree.
      *
-     * @param string $name
-     *         Name of the tree
+     * @param string $name Name of the tree
      */
-    public function setTreeName($name)
+    public function setTreeName(string $name)
     {
         $this->setName($name);
     }
@@ -57,30 +54,24 @@ class cTree extends cTreeItem
     /**
      * Tree icon setter.
      * Short form for setTreeIcon().
-     *
-     * @param string $path
      */
-    public function setIcon($path)
+    public function setIcon(string $path)
     {
         $this->setTreeIcon($path);
     }
 
     /**
      * Tree icon setter.
-     *
-     * @param string $path
      */
-    public function setTreeIcon($path)
+    public function setTreeIcon(string $path)
     {
         $this->_treeIcon = $path;
     }
 
     /**
      * Tree icon getter.
-     *
-     * @return string
      */
-    public function getTreeIcon()
+    public function getTreeIcon(): string
     {
         return $this->_treeIcon;
     }

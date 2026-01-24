@@ -26,10 +26,8 @@ class cHTMLSpan extends cHTMLContentElement
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $content [optional]
-     *         String or object with the contents
-     * @param string $class [optional]
-     *         the class of this element
+     * @param mixed $content [optional] String or object with the contents
+     * @param string $class [optional] The class of this element
      */
     public function __construct($content = '', $class = "")
     {

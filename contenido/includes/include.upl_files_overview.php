@@ -35,10 +35,12 @@ cInclude('includes', 'functions.file.php');
 $page = new cGuiPage('upl_files_overview', '', 0);
 
 // Display critical error if client or language does not exist
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
 if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegistry::getLanguage()->isLoaded())) {
-    $message = $client && !cRegistry::getClient()->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
+    $message = $client && !cRegistry::getClient()->isLoaded()
+        ? i18n('No Client selected')
+        : i18n('No language selected');
     $oPage = new cGuiPage('upl_files_upload');
     $oPage->displayCriticalError($message);
     $oPage->render();
@@ -80,7 +82,10 @@ if (!in_array($sortmode, ['ASC', 'DESC'])) {
     $sortmode = 'DESC';
 }
 
-if ((empty($browserparameters) || !is_array($browserparameters)) && ($appendparameters != 'imagebrowser' || $appendparameters != 'filebrowser')) {
+if (
+    (empty($browserparameters) || !is_array($browserparameters))
+    && ($appendparameters != 'imagebrowser' || $appendparameters != 'filebrowser')
+) {
     $browserparameters = [];
 }
 
@@ -104,13 +109,9 @@ $uploadCollection = new cApiUploadCollection();
 
 $dbfsCollection = new cApiDbfsCollection();
 
-if (cApiDbfs::isDbfs($path)) {
-    $qpath = $path . '/';
-} else {
-    $qpath = $path;
-}
+$qpath = cApiDbfs::isDbfs($path) ? $path . '/' : $path;
 
-if ((is_writable($clientsUploadPath . $path) || cApiDbfs::isDbfs($path)) && (int)$client > 0) {
+if ((cFileHandler::writeable($clientsUploadPath . $path) || cApiDbfs::isDbfs($path)) && (int)$client > 0) {
     $bDirectoryIsWritable = true;
 } else {
     $bDirectoryIsWritable = false;
@@ -141,17 +142,19 @@ if ($action === 'upl_modify_file' && !empty($file)) {
     }
 
     // Did the user upload a new file?
-    if ($bDirectoryIsWritable && count($_FILES) == 1 && ($_FILES['file']['size'] > 0) && ($_FILES['file']['name'] != '')) {
+    if (
+        $bDirectoryIsWritable && count($_FILES) == 1
+        && ($_FILES['file']['size'] > 0) && ($_FILES['file']['name'] != '')
+    ) {
         if ($_FILES['file']['tmp_name'] != '') {
             $tmp_name = $_FILES['file']['tmp_name'];
-            $_cecIterator = $_cecRegistry->getIterator('Contenido.Upload.UploadPreprocess');
-
-            if ($_cecIterator->count() > 0) {
+            $cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.Upload.UploadPreprocess');
+            if ($cecIterator->count() > 0) {
                 // Copy file to a temporary location
                 move_uploaded_file($tmp_name, $backendPath . $cfg['path']['temp'] . $file);
                 $tmp_name = $backendPath . $cfg['path']['temp'] . $file;
 
-                while ($chainEntry = $_cecIterator->next()) {
+                while ($chainEntry = $cecIterator->next()) {
                     if (cApiDbfs::isDbfs($path)) {
                         $sPathPrepend = '';
                         $sPathAppend = '/';
@@ -160,7 +163,10 @@ if ($action === 'upl_modify_file' && !empty($file)) {
                         $sPathAppend = '';
                     }
 
-                    $modified = $chainEntry->execute($tmp_name, $sPathPrepend . $path . $sPathAppend . uplCreateFriendlyName($_FILES['file']['name']));
+                    $modified = $chainEntry->execute(
+                        $tmp_name,
+                        $sPathPrepend . $path . $sPathAppend . uplCreateFriendlyName($_FILES['file']['name'])
+                    );
 
                     if ($modified !== false) {
                         $tmp_name = $modified;
@@ -183,7 +189,12 @@ if ($action === 'upl_modify_file' && !empty($file)) {
         }
     }
 
-    $uploadCollection->select("idclient = '$client' AND dirname='" . $uploadCollection->escape($qpath) . "' AND filename='" . $uploadCollection->escape($file) . "'");
+    $uploadCollection->select(sprintf(
+        "`idclient` = %d AND `dirname` = '%s' AND `filename` = '%s'",
+        $client,
+        $uploadCollection->escape($qpath),
+        $uploadCollection->escape($file)
+    ));
     $upload = $uploadCollection->next();
     if ($upload) {
         // $upload->set('description', stripslashes($description));
@@ -203,7 +214,7 @@ if ($action === 'upl_modify_file' && !empty($file)) {
         $properties->setValue('upload', $qpath . $file, 'file', 'dateend', $dateEnd);
     }
 
-    $author = $auth->auth['uid'];
+    $author = $auth->getUserId();
     $created = date('Y-m-d H:i:s');
 
     /**
@@ -233,7 +244,19 @@ if ($action === 'upl_modify_file' && !empty($file)) {
         } else {
             // Create new entry
             $oUploadMetaColl = new cApiUploadMetaCollection();
-            $oUploadMeta = $oUploadMetaColl->create($iIdupl, $lang, $medianame, $description, $keywords, $medianotes, $copyright, $author, $created, $created, $author);
+            $oUploadMeta = $oUploadMetaColl->create(
+                $iIdupl,
+                $lang,
+                $medianame,
+                $description,
+                $keywords,
+                $medianotes,
+                $copyright,
+                $author,
+                $created,
+                $created,
+                $author
+            );
         }
     }
 }
@@ -256,7 +279,10 @@ if ($action === 'upl_delete' && $perm->have_perm_area_action($area, $action) && 
         }
     }
     if ($res === false) {
-        $notification->displayNotification('warning', sprintf(i18n("Failed to remove directory %s"), $path));
+        $notification->displayNotification(
+            'warning',
+            sprintf(i18n("Failed to remove directory %s"), $path)
+        );
     }
 }
 
@@ -270,17 +296,20 @@ if ($action === 'upl_multidelete' && $perm->have_perm_area_action($area, $action
         // Check if it is in the upload table
         foreach ($fdelete as $fileNameToDelete) {
             $fileNameToDelete = basename(cSecurity::escapeString($fileNameToDelete));
-            $uploadCollection->select("idclient = '$client' AND dirname='" . $uploadCollection->escape($qpath) . "' AND filename='" . $uploadCollection->escape($fileNameToDelete) . "'");
-            if (false !== $item = $uploadCollection->next()) {
+            $uploadCollection->select(sprintf(
+                "`idclient` = %d AND `dirname` = '%s' AND `filename` = '%s'",
+                $client,
+                $uploadCollection->escape($qpath),
+                $uploadCollection->escape($fileNameToDelete)
+            ));
+            if (($item = $uploadCollection->next()) !== false) {
                 if (cApiDbfs::isDbfs($qpath)) {
                     $dbfsCollection->remove($qpath . $fileNameToDelete);
 
                     // call chain once for each deleted file
-                    $_cecIterator = cRegistry::getCecRegistry()->getIterator('Contenido.Upl_edit.Delete');
-                    if ($_cecIterator->count() > 0) {
-                        while (false !== $chainEntry = $_cecIterator->next()) {
-                            $chainEntry->execute($item->get('idupl'), $qpath, $fileNameToDelete);
-                        }
+                    $cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.Upl_edit.Delete');
+                    while ($chainEntry = $cecIterator->next()) {
+                        $chainEntry->execute($item->get('idupl'), $qpath, $fileNameToDelete);
                     }
                 } else {
                     $uploadCollection->delete($item->get('idupl'));
@@ -292,11 +321,9 @@ if ($action === 'upl_multidelete' && $perm->have_perm_area_action($area, $action
         }
 
         // call chain once for all deleted files
-        $_cecIterator = cRegistry::getCecRegistry()->getIterator('Contenido.Upl_edit.DeleteBatch');
-        if ($_cecIterator->count() > 0) {
-            while (false !== $chainEntry = $_cecIterator->next()) {
-                $chainEntry->execute($uploadObjects);
-            }
+        $cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.Upl_edit.DeleteBatch');
+        while ($chainEntry = $cecIterator->next()) {
+            $chainEntry->execute($uploadObjects);
         }
     }
 }
@@ -307,14 +334,18 @@ if ($action === 'upl_upload' && $bDirectoryIsWritable) {
             foreach ($_FILES['file']['name'] as $key => $value) {
                 if ($_FILES['file']['tmp_name'][$key] != '') {
                     $tmp_name = $_FILES['file']['tmp_name'][$key];
-                    $_cecIterator = $_cecRegistry->getIterator('Contenido.Upload.UploadPreprocess');
-
-                    if ($_cecIterator->count() > 0) {
+                    $cleanFilename = uplCreateFriendlyName($_FILES['file']['name'][$key]);
+                    $cecIterator = cApiCecRegistry::getInstance()
+                        ->getIterator('Contenido.Upload.UploadPreprocess');
+                    if ($cecIterator->count() > 0) {
                         // Copy file to a temporary location
-                        move_uploaded_file($tmp_name, $backendPath . $cfg['path']['temp'] . $_FILES['file']['name'][$key]);
+                        move_uploaded_file(
+                            $tmp_name,
+                            $backendPath . $cfg['path']['temp'] . $_FILES['file']['name'][$key]
+                        );
                         $tmp_name = $backendPath . $cfg['path']['temp'] . $_FILES['file']['name'][$key];
 
-                        while (false !== $chainEntry = $_cecIterator->next()) {
+                        while ($chainEntry = $cecIterator->next()) {
                             if (cApiDbfs::isDbfs($path)) {
                                 $sPathPrepend = '';
                                 $sPathAppend = '/';
@@ -323,7 +354,10 @@ if ($action === 'upl_upload' && $bDirectoryIsWritable) {
                                 $sPathAppend = '';
                             }
 
-                            $modified = $chainEntry->execute($tmp_name, $sPathPrepend . $path . $sPathAppend . uplCreateFriendlyName($_FILES['file']['name'][$key]));
+                            $modified = $chainEntry->execute(
+                                $tmp_name,
+                                $sPathPrepend . $path . $sPathAppend . $cleanFilename
+                            );
                             if ($modified !== false) {
                                 $tmp_name = $modified;
                             }
@@ -331,20 +365,23 @@ if ($action === 'upl_upload' && $bDirectoryIsWritable) {
                     }
 
                     if (cApiDbfs::isDbfs($qpath)) {
-                        $dbfsCollection->writeFromFile($tmp_name, $qpath . uplCreateFriendlyName($_FILES['file']['name'][$key]));
+                        $dbfsCollection->writeFromFile(
+                            $tmp_name, $qpath . $cleanFilename
+                        );
                         unlink($tmp_name);
                     } else {
                         if (is_uploaded_file($tmp_name)) {
-                            $final_filename = $clientsUploadPath . $path . uplCreateFriendlyName($_FILES['file']['name'][$key]);
+                            $final_filename = $clientsUploadPath . $path . $cleanFilename;
 
                             move_uploaded_file($tmp_name, $final_filename);
 
-                            $iterator = $_cecRegistry->getIterator('Contenido.Upload.UploadPostprocess');
-                            while ($chainEntry = $iterator->next()) {
+                            $cecIterator = cApiCecRegistry::getInstance()
+                                ->getIterator('Contenido.Upload.UploadPostprocess');
+                            while ($chainEntry = $cecIterator->next()) {
                                 $chainEntry->execute($final_filename);
                             }
                         } else {
-                            rename($tmp_name, $clientsUploadPath . $path . uplCreateFriendlyName($_FILES['file']['name'][$key]));
+                            rename($tmp_name, $clientsUploadPath . $path . $cleanFilename);
                         }
                     }
                 }
@@ -520,14 +557,13 @@ $rownum = 0;
 $properties = new cApiPropertyCollection();
 
 while ($item = $uploadCollection->next()) {
-
     // Get name of directory, filename and size of file
     $dirname = $item->get('dirname');
     $filename = $item->get('filename');
     $filesize = $item->get('size');
 
     // Do not display directories and "filenames" begin with a dot
-    if (true === cDirHandler::exists($clientsUploadPath . $dirname . $filename) || cString::findFirstPos($filename, ".") === 0) {
+    if (cDirHandler::exists($clientsUploadPath . $dirname . $filename) || cString::findFirstPos($filename, ".") === 0) {
         continue;
     }
 

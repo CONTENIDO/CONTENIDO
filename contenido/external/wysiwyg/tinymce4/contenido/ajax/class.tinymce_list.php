@@ -27,7 +27,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // CONTENIDO startup process
-$contenido_path = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../../../../../')) . '/';
+$contenido_path = str_replace('\\', '/', realpath(__DIR__ . '/../../../../../')) . '/';
 
 if (!is_file($contenido_path . 'includes/startup.php')) {
     die("<h1>Fatal Error</h1><br>Couldn't include CONTENIDO startup.");
@@ -41,7 +41,7 @@ cRegistry::bootstrap([
 ]);
 
 // include editor config/combat file
-include(dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'config.php');
+include(dirname(__DIR__) . '/config.php');
 
 $db = cRegistry::getDb();
 
@@ -58,7 +58,7 @@ class cTinyMCE4List {
      */
     public function __construct($mode = null) {
         // output an empty list for no specified mode
-        if (false === isset($mode)) {
+        if (!isset($mode)) {
             echo '[]';
             return;
         }
@@ -140,7 +140,7 @@ class cTinyMCE4List {
             // get reference to last element of array
             $scope = &$scope[key($scope)];
             // add menu property to object if it does not exist
-            if (false === isset($scope->menu)) {
+            if (!isset($scope->menu)) {
                 $scope->menu = [];
             }
             // get reference to menu
@@ -160,8 +160,10 @@ class cTinyMCE4List {
      * get a list of links to articles for current client and language
      * @return array The array of articles filled with link objects
      */
-    private function _buildLinkList() {
-        global $client, $lang;
+    private function _buildLinkList(): array
+    {
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
 
         $catTree = new cApiCategoryTreeCollection();
         $catList = $catTree->getCategoryTreeStructureByClientIdAndLanguageId($client, $lang);
@@ -206,7 +208,7 @@ class cTinyMCE4List {
             ];
 
             foreach ($articleCollector as $articleLanguage) {
-                $tmp_title = $articleLanguage->get("title");
+                $tmp_title = $articleLanguage->get('title');
 
                 if (cString::getStringLength($tmp_title) > 32) {
                     $tmp_title = cString::getPartOfString($tmp_title, 0, 32);
@@ -218,7 +220,7 @@ class cTinyMCE4List {
                     $tmp_title .= "*";
                 }
 
-                if ('0' === $articleLanguage->get("online")) {
+                if ('0' === $articleLanguage->get('online')) {
                     $tmp_title = "[" . $tmp_title . "]";
                 }
                 $articleEntry = new stdClass();

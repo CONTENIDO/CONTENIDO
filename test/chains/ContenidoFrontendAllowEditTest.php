@@ -84,17 +84,17 @@ class ContenidoFrontendAllowEditTest extends TestCase
     public function testOneChain()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test');
 
         // set n' execute chain
         cApiCecHook::setBreakCondition(false, true); // break at "false", default value "true"
         $allow = cApiCecHook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_idart, $this->_uid);
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test');
 
         $this->assertEquals(true, $allow);
     }
@@ -106,21 +106,21 @@ class ContenidoFrontendAllowEditTest extends TestCase
     public function testTwoChains()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test');
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test2');
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test3');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test2');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test3');
 
         // set n' execute chain
         cApiCecHook::setBreakCondition(false, true); // break at "false", default value "true"
         $allow = cApiCecHook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_idart, $this->_uid);
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test');
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test2');
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test2');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test2');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoFrontendAllowEdit_Test2');
 
         $this->assertEquals(false, $allow);
     }

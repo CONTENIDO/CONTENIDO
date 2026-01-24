@@ -376,7 +376,7 @@ class Smarty_Internal_Templatelexer
     } // end function
 
 
-    const TEXT = 1;
+    public const TEXT = 1;
     public function yy_r1_1()
     {
 
@@ -489,7 +489,7 @@ class Smarty_Internal_Templatelexer
     } // end function
 
 
-    const TAG = 2;
+    public const TAG = 2;
     public function yy_r2_1()
     {
 
@@ -631,7 +631,7 @@ class Smarty_Internal_Templatelexer
     } // end function
 
 
-    const TAGBODY = 3;
+    public const TAGBODY = 3;
     public function yy_r3_1()
     {
 
@@ -927,7 +927,7 @@ class Smarty_Internal_Templatelexer
     } // end function
 
 
-    const LITERAL = 4;
+    public const LITERAL = 4;
     public function yy_r4_1()
     {
 
@@ -1018,7 +1018,7 @@ class Smarty_Internal_Templatelexer
     } // end function
 
 
-    const DOUBLEQUOTEDSTRING = 5;
+    public const DOUBLEQUOTEDSTRING = 5;
     public function yy_r5_1()
     {
 

@@ -27,7 +27,7 @@ $action = cRegistry::getAction();
 $db = cRegistry::getDb();
 
 $fegroups = new cApiFrontendGroupCollection();
-$page = new cGuiPage("grouprights_memberselect", "", 0);
+$page = new cGuiPage('grouprights_memberselect', '', 0);
 
 cIncludePlugins('frontendgroups');
 
@@ -45,14 +45,14 @@ $groupmembers = new cApiFrontendGroupMemberCollection();
 $fegroup->loadByPrimaryKey($requestIdFrontendGroup);
 $sRefreshRightTopLinkJs = "";
 
-if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $action)) {
+if ($action === 'frontendgroup_create' && $perm->have_perm_area_action($area, $action)) {
     $fegroup = $fegroups->create(" " . i18n("-- New group --"));
-    $requestIdFrontendGroup = $fegroup->get("idfrontendgroup");
+    $requestIdFrontendGroup = $fegroup->get('idfrontendgroup');
     $sRefreshRightTopLink = $sess->url('main.php?frame=3&area=' . $area . '&idfrontendgroup=' . $requestIdFrontendGroup);
     $sRefreshRightTopLink = "Con.multiLink('right_top', '" . $sRefreshRightTopLink . "')";
     $sRefreshRightTopLinkJs = '<script type="text/javascript">' . $sRefreshRightTopLink . '</script>';
     $successMessage = i18n("Created new frontend-group successfully");
-} elseif ($action == "frontendgroups_user_delete" && $perm->have_perm_area_action($area, $action)) {
+} elseif ($action === 'frontendgroups_user_delete' && $perm->have_perm_area_action($area, $action)) {
     $aDeleteMembers = [];
     if (!is_array($requestUserInGroup)) {
         if ($requestUserInGroup > 0) {
@@ -68,7 +68,7 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
     $successMessage = i18n("Removed user from group successfully!");
     // also save other variables
     $action = "frontendgroup_save_group";
-} elseif ($action == "frontendgroup_user_add" && $perm->have_perm_area_action($area, $action)) {
+} elseif ($action == 'frontendgroup_user_add' && $perm->have_perm_area_action($area, $action)) {
     if (count($requestNewMember) > 0) {
         foreach ($requestNewMember as $add) {
             $groupmembers->create($requestIdFrontendGroup, $add);
@@ -77,7 +77,7 @@ if ($action == "frontendgroup_create" && $perm->have_perm_area_action($area, $ac
     $successMessage = i18n("Added user to group successfully!");
     // also save other variables
     $action = "frontendgroup_save_group";
-} elseif ($action == "frontendgroup_delete" && $perm->have_perm_area_action($area, $action)) {
+} elseif ($action == 'frontendgroup_delete' && $perm->have_perm_area_action($area, $action)) {
     $fegroups->delete($requestIdFrontendGroup);
     $requestIdFrontendGroup = 0;
     $fegroup = new cApiFrontendGroup();
@@ -105,16 +105,16 @@ JS;
     $reloadLeftBottom = '';
 }
 
-if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
+if ($fegroup->isLoaded() && $fegroup->get('idclient') == $client) {
     $messages = [];
 
-    if ($action == "frontendgroup_save_group" && $perm->have_perm_area_action($area, $action)) {
-        if ($fegroup->get("groupname") != stripslashes($requestGroupName)) {
+    if ($action == 'frontendgroup_save_group' && $perm->have_perm_area_action($area, $action)) {
+        if ($fegroup->get('groupname') != stripslashes($requestGroupName)) {
             $fegroups->select("groupname = '$requestGroupName' and idclient='$client'");
             if ($fegroups->next()) {
                 $messages[] = i18n("Could not set new group name: Group already exists");
             } else {
-                $fegroup->set("groupname", stripslashes($requestGroupName));
+                $fegroup->set('groupname', stripslashes($requestGroupName));
 
                 if (!isset($successMessage)) {
                     $successMessage = i18n("Saved changes successfully!");
@@ -125,9 +125,9 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
         //Reset all other default groups
         if ($requestDefaultGroup == 1) {
             $sSql = 'UPDATE `%s` SET defaultgroup = 0 WHERE idfrontendgroup != %d AND idclient = %d;';
-            $db->query($sSql, $cfg['tab']['frontendgroups'], $requestIdFrontendGroup, $client);
+            $db->query($sSql, cDb::getTableName('frontendgroups'), $requestIdFrontendGroup, $client);
         }
-        $fegroup->set("defaultgroup", $requestDefaultGroup);
+        $fegroup->set('defaultgroup', $requestDefaultGroup);
 
         // Check out if there are any plugins
         if (cHasPlugins('frontendgroups')) {
@@ -155,8 +155,8 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
 
     $cells = [];
     foreach ($addeduserobjects as $addeduserobject) {
-        if ((int)$addeduserobject->get("idfrontenduser") != 0 && $addeduserobject->get("username") != '') {
-            $cells[$addeduserobject->get("idfrontenduser")] = $addeduserobject->get("username");
+        if ((int)$addeduserobject->get('idfrontenduser') != 0 && $addeduserobject->get('username') != '') {
+            $cells[$addeduserobject->get('idfrontenduser')] = $addeduserobject->get('username');
         }
     }
     asort($cells);
@@ -169,8 +169,8 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
 
     $items = [];
     while ($feuser = $feusers->next()) {
-        $idfrontenduser = $feuser->get("idfrontenduser");
-        $sUsername = $feuser->get("username");
+        $idfrontenduser = $feuser->get('idfrontenduser');
+        $sUsername = $feuser->get('username');
         if (!in_array($idfrontenduser, $addedusers)) {
             if ((int)$idfrontenduser != 0 && $sUsername != '') {
                 $items[$idfrontenduser] = $sUsername;
@@ -185,10 +185,10 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
     }
     $page->set('s', 'NON_GROUP_OPTIONS', $sNonGroupOptions);
 
-    $groupname = new cHTMLTextbox("groupname", $fegroup->get("groupname"), 40);
+    $groupname = new cHTMLTextbox('groupname', $fegroup->get('groupname'), 40);
 
-    $defaultgroup = new cHTMLCheckbox("defaultgroup", "1");
-    $defaultgroup->setChecked($fegroup->get("defaultgroup"));
+    $defaultgroup = new cHTMLCheckbox('defaultgroup', '1');
+    $defaultgroup->setChecked($fegroup->get('defaultgroup'));
 
     $page->set('d', 'LABEL', i18n("Group name"));
     $page->set('d', 'INPUT', $groupname->render());
@@ -247,7 +247,7 @@ if (true === $fegroup->isLoaded() && $fegroup->get("idclient") == $client) {
 
     $page->render();
 } else {
-    $page = new cGuiPage("frontend.group_edit");
+    $page = new cGuiPage('frontend.group_edit');
     if (!empty($reloadLeftBottom)) {
         $page->addScript($reloadLeftBottom);
     }

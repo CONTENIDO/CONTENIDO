@@ -24,50 +24,42 @@ class cGuiMenu
 {
 
     /**
-     * The id of the generic menu
-     * @var string
+     * @var string The id of the generic menu
      */
     public $menuId;
 
     /**
-     *
      * @var array
      */
     public $link;
 
     /**
-     *
      * @var array
      */
     public $title = [];
 
     /**
-     *
      * @var array
      */
     public $id = [];
 
     /**
-     *
      * @var array
      */
     public $tooltips = [];
 
     /**
-     * Menu item left image source
-     * @var string[]
+     * @var string[] Menu item left image source
      */
     public $image = [];
 
     /**
-     * Menu item left image width
-     * @var int[]
+     * @var int[] Menu item left image width
      */
     public $imagewidth = [];
 
     /**
-     * Menu item left image alternate text
-     * @var string[]
+     * @var string[] Menu item left image alternate text
      */
     public $imageAlt = [];
 
@@ -78,20 +70,17 @@ class cGuiMenu
     public $alt;
 
     /**
-     *
      * @var array
      */
     public $actions = [];
 
     /**
-     *
      * @todo what is this property supposed to be?
      * @var mixed
      */
     public $caption;
 
     /**
-     *
      * @todo what is this property supposed to be?
      * @var mixed
      */
@@ -104,9 +93,7 @@ class cGuiMenu
     public $show;
 
     /**
-     * The marked item.
-     *
-     * @var mixed
+     * @var mixed The marked item.
      */
     protected $_marked = false;
 
@@ -116,17 +103,14 @@ class cGuiMenu
     public $rowmark;
 
     /**
-     * Max length of tooltips (descriptions).
-     *
-     * @var int
+     * @var int Max length of tooltips (descriptions).
      */
     protected $_toolTipMaxLength;
 
     /**
      * Constructor to create an instance of this class.
-     * @param string $menuId
      */
-    public function __construct($menuId = 'generic_menu_list')
+    public function __construct(string $menuId = 'generic_menu_list')
     {
         $this->setRowmark(true);
         $this->setMenuId($menuId);
@@ -134,7 +118,6 @@ class cGuiMenu
     }
 
     /**
-     *
      * @param mixed $item
      * @param string $title
      */
@@ -144,7 +127,6 @@ class cGuiMenu
     }
 
     /**
-     *
      * @param mixed $item
      * @param int|string $id
      */
@@ -154,7 +136,6 @@ class cGuiMenu
     }
 
     /**
-     *
      * @param mixed $item
      * @param string $tooltip
      */
@@ -164,21 +145,18 @@ class cGuiMenu
     }
 
     /**
-     * Sets the max length for tooltips (description), longer descriptions
-     * will be truncated with ellipsis. A value of 0 removes the maximum
-     * length constraint.
+     * Sets the max length for tooltips (description), longer descriptions will be truncated
+     * with ellipsis. A value of 0 removes the maximum length constraint.
      *
-     * @param int $maxlength
-     * @return void
+     * @param int $maxLength
      * @since CONTENIDO 4.10.2
      */
-    public function setToolTipMaxLength(int $maxlength = 0)
+    public function setToolTipMaxLength(int $maxLength = 0)
     {
-        $this->_toolTipMaxLength = $maxlength;
+        $this->_toolTipMaxLength = $maxLength;
     }
 
     /**
-     *
      * @param bool $rowmark [optional]
      */
     public function setRowmark($rowmark = true)
@@ -186,11 +164,7 @@ class cGuiMenu
         $this->rowmark = $rowmark;
     }
 
-    /**
-     *
-     * @param string $menuId
-     */
-    public function setMenuId($menuId = 'generic_menu_list')
+    public function setMenuId(string $menuId = 'generic_menu_list')
     {
         $this->menuId = $menuId;
     }
@@ -213,15 +187,13 @@ class cGuiMenu
     /**
      *
      * @param mixed $item
-     * @param cHTMLContentElement $link
      */
-    public function setLink($item, $link)
+    public function setLink($item, cHTMLContentElement $link)
     {
         $this->link[$item] = $link;
     }
 
     /**
-     *
      * @param mixed $item
      * @param mixed $key
      * @param string $action
@@ -232,7 +204,6 @@ class cGuiMenu
     }
 
     /**
-     *
      * @param mixed $item
      */
     public function setMarked($item)
@@ -242,8 +213,6 @@ class cGuiMenu
 
     /**
      * Checks whether the menu has any items.
-     *
-     * @return bool
      */
     public function hasItems(): bool
     {
@@ -251,13 +220,10 @@ class cGuiMenu
     }
 
     /**
-     *
-     * @param bool $print [optional]
-     *
-     * @return string
+     * @return ?string
      * @throws cInvalidArgumentException
      */
-    public function render($print = true)
+    public function render(bool $print = true): ?string
     {
         $cfg = cRegistry::getConfig();
         $tpl = new cTemplate();
@@ -321,13 +287,11 @@ class cGuiMenu
 
                 $actions = '';
                 if (isset($this->actions[$key]) && is_array($this->actions[$key])) {
-                    foreach ($this->actions[$key] as $key => $singleAction) {
-                        #$actions .= '&nbsp;' . $singleAction . '&nbsp;';
+                    foreach ($this->actions[$key] as $singleAction) {
                         $actions .= $singleAction;
                     }
                 }
                 if ($actions) {
-                    #$actions = str_replace('&nbsp;&nbsp;', '&nbsp;', $actions);
                     $actions = str_replace('&nbsp;', '', $actions);
                 }
 
@@ -337,12 +301,13 @@ class cGuiMenu
         }
         $rendered = $tpl->generate(cRegistry::getBackendPath() . $cfg['path']['templates'] . $cfg['templates']['generic_menu'], true);
 
-        if ($this->rowmark == true && is_array($this->link) && count($this->link) > 0) {
+        if ($this->rowmark && is_array($this->link) && count($this->link) > 0) {
             $rendered .= "\n" . $this->_getRowMouseEventHandlerJs();
         }
 
-        if ($print == true) {
+        if ($print) {
             echo $rendered;
+            return null;
         } else {
             return $rendered;
         }
@@ -350,13 +315,11 @@ class cGuiMenu
 
     /**
      * Returns JavaScript code to initialize mouse event handler for the table rows.
-     *
-     * @return string
      */
-    protected function _getRowMouseEventHandlerJs()
+    protected function _getRowMouseEventHandlerJs(): string
     {
         $class = __CLASS__;
-        $js = <<<JS
+        return <<<JS
 <!-- $class -->
 <script type="text/javascript">
     (function(Con, $) {
@@ -367,6 +330,5 @@ class cGuiMenu
 </script>
 <!-- /$class -->
 JS;
-        return $js;
     }
 }

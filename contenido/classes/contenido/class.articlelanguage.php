@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiArticleLanguage createNewItem
- * @method cApiArticleLanguage|bool next
+ * @extends ItemCollection<cApiArticleLanguage>
  */
 class cApiArticleLanguageCollection extends ItemCollection
 {
@@ -36,15 +35,12 @@ class cApiArticleLanguageCollection extends ItemCollection
     /**
      * Constructor to create an instance of this class.
      *
-     * @param bool $select [optional]
-     *                     where clause to use for selection (see ItemCollection::select())
-     *
+     * @param string|false $select [optional] Where clause to use for selection {@see ItemCollection::select()}
      * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($select = false)
     {
-        $table = cRegistry::getDbTableName('art_lang');
-        parent::__construct($table, 'idartlang');
+        parent::__construct(cDb::getTableName('art_lang'), 'idartlang');
         $this->_setItemClass('cApiArticleLanguage');
 
         // set the join partners so that joins can be used via link() method
@@ -60,17 +56,14 @@ class cApiArticleLanguageCollection extends ItemCollection
     /**
      * Creates an article language item entry.
      *
-     * @param array $parameters
-     *
      * @return cApiArticleLanguage
-     *
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create(array $parameters)
     {
         if (empty($parameters['author'])) {
             $auth = cRegistry::getAuth();
-            $parameters['author'] = $auth->auth['uname'];
+            $parameters['author'] = $auth->getUsername();
         }
         if (empty($parameters['created'])) {
             $parameters['created'] = date('Y-m-d H:i:s');
@@ -79,7 +72,9 @@ class cApiArticleLanguageCollection extends ItemCollection
             $parameters['lastmodified'] = date('Y-m-d H:i:s');
         }
 
-        $parameters['urlname'] = (trim($parameters['urlname']) == '') ? trim($parameters['title']) : trim($parameters['urlname']);
+        $parameters['urlname'] = trim($parameters['urlname']) == ''
+            ? trim($parameters['title'])
+            : trim($parameters['urlname']);
 
         $item = $this->createNewItem();
 
@@ -124,30 +119,35 @@ class cApiArticleLanguageCollection extends ItemCollection
     /**
      * Returns id (idartlang) of articlelanguage by article id and language id
      *
-     * @param int $idart
-     * @param int $idlang
-     * @return int
-     * @throws cDbException|cInvalidArgumentException
+     * @param int $articleId
+     * @param int $languageId
+     * @throws cDbException
      */
-    public function getIdByArticleIdAndLanguageId($idart, $idlang): int
+    public function getIdByArticleIdAndLanguageId($articleId, $languageId): int
     {
-        $sql = "SELECT `idartlang` FROM `%s` WHERE `idart` = %d AND `idlang` = %d";
-        $this->db->query($sql, $this->table, $idart, $idlang);
+        $this->db->query(
+            "SELECT `idartlang` FROM `%s` WHERE `idart` = %d AND `idlang` = %d",
+            $this->table,
+            $articleId,
+            $languageId
+        );
+
         return $this->db->nextRecord() ? cSecurity::toInteger($this->db->f('idartlang')) : 0;
     }
 
     /**
-     * Resets all articles having an associated artspec.
+     * Resets all articles having an associated article specification.
      *
-     * @param int $idArtSpec
-     * @return bool
      * @throws cDbException
      * @since CONTENIDO 4.10.2
      */
-    public function resetArtSpec(int $idArtSpec): bool
+    public function resetArtSpec(int $artSpecId): bool
     {
-        $sql = 'UPDATE `%s` SET `artspec` = 0 WHERE `artspec` = %d';
-        return (bool) $this->db->query($sql, $this->table, $idArtSpec);
+        return cSecurity::toBoolean($this->db->query(
+            'UPDATE `%s` SET `artspec` = 0 WHERE `artspec` = %d',
+            $this->table,
+            $artSpecId
+        ));
     }
 
 }
@@ -157,57 +157,61 @@ class cApiArticleLanguageCollection extends ItemCollection
  *
  * This object represents a CONTENIDO article
  *
- * Create object with
- * $obj = new cApiArticleLanguage(idartlang);
- * or with
+ * <pre>
+ * // Create an object with
+ * $obj = new cApiArticleLanguage($articleLanguageId);
+ * // or with
  * $obj = new cApiArticleLanguage();
- * $obj->loadByArticleAndLanguageId(idart, lang);
+ * $obj->loadByArticleAndLanguageId($articleId, $languageId);
  *
- * You can now read the article properties with
- * $obj->getField(property);
+ * // You can now read the article properties with
+ * $obj->getField($property);
+ * </pre>
  *
  * List of article properties:
+ * - idartlang - Language dependant article id
+ * - idart - Language independent article id
+ * - idclient - Id of the client
+ * - idtplcfg - Template configuration id
+ * - title - Internal Title
+ * - pagetitle - HTML Title
+ * - summary - Article summary
+ * - created - Date created
+ * - lastmodified - Date lastmodified
+ * - author - Article author (username)
+ * - online - On-/offline
+ * - redirect - Redirect
+ * - redirect_url - Redirect URL
+ * - artsort - Article sort key
+ * - timemgmt - Time management
+ * - datestart - Time management start date
+ * - dateend - Time management end date
+ * - status - Article status
+ * - free_use_01 - Free to use
+ * - free_use_02 - Free to use
+ * - free_use_03 - Free to use
+ * - time_move_cat - Move category after time management
+ * - time_target_cat - Move category to this cat after time management
+ * - time_online_move - Set article online after move
+ * - external_redirect - Open article in new window
+ * - locked - Article is locked for editing
+ * - searchable - Whether article should be found via search
+ * - sitemapprio - The priority for the sitemap
  *
- * idartlang - Language dependant article id
- * idart - Language independent article id
- * idclient - Id of the client
- * idtplcfg - Template configuration id
- * title - Internal Title
- * pagetitle - HTML Title
- * summary - Article summary
- * created - Date created
- * lastmodified - Date lastmodified
- * author - Article author (username)
- * online - On-/offline
- * redirect - Redirect
- * redirect_url - Redirect URL
- * artsort - Article sort key
- * timemgmt - Time management
- * datestart - Time management start date
- * dateend - Time management end date
- * status - Article status
- * free_use_01 - Free to use
- * free_use_02 - Free to use
- * free_use_03 - Free to use
- * time_move_cat - Move category after time management
- * time_target_cat - Move category to this cat after time management
- * time_online_move - Set article online after move
- * external_redirect - Open article in new window
- * locked - Article is locked for editing
- * searchable - Whether article should be found via search
- * sitemapprio - The priority for the sitemap
+ * You can extract article content with following method:
+ * <pre>
+ * $obj->getContent('contype' [, number]) ;
+ * </pre>
  *
- * You can extract article content with the
- * $obj->getContent(contype [, number]) method.
- *
- * To extract the first headline you can use:
- *
+ * To extract the first headline, you can use:
+ * <pre>
  * $headline = $obj->getContent("htmlhead", 1);
+ * </pre>
  *
- * If the second parameter is omitted the method returns an array with all
- * available
+ * If the second parameter is omitted, the method returns an array with all available
  * content of this type. The array has the following schema:
  *
+ * <pre>
  * [number => content];
  *
  * $headlines = $obj->getContent("htmlhead");
@@ -215,25 +219,25 @@ class cApiArticleLanguageCollection extends ItemCollection
  * $headlines[1] First headline
  * $headlines[2] Second headline
  * $headlines[6] Sixth headline
+ * </pre>
  *
- * Legal content type string are defined in the CONTENIDO system table
- * 'con_type'.
+ * Legal content type strings are defined in the CONTENIDO system table 'con_type'.
+ *
  * Default content types are:
  *
- * NOTE: This parameter is case-insensitive, you can use html or cms_HTML or
- * CmS_HtMl.
+ * NOTE: This parameter is case insensitive, you can use html or cms_HTML or CmS_HtMl.
  * Your don't need start with cms, but it won't crash if you do so.
  *
- * htmlhead - HTML Headline
- * html - HTML Text
- * headline - Headline (no HTML)
- * text - Text (no HTML)
- * img - Upload id of the element
- * imgdescr - Image description
- * link - Link (URL)
- * linktarget - Linktarget (_self, _blank, _top ...)
- * linkdescr - Link description
- * swf - Upload id of the element
+ * - htmlhead - HTML Headline
+ * - html - HTML Text
+ * - headline - Headline (no HTML)
+ * - text - Text (no HTML)
+ * - img - Upload id of the element
+ * - imgdescr - Image description
+ * - link - Link (URL)
+ * - linktarget - Linktarget (_self, _blank, _top ...)
+ * - linkdescr - Link description
+ * - swf - Upload id of the element
  *
  * @package    Core
  * @subpackage GenericDB_Model
@@ -242,53 +246,47 @@ class cApiArticleLanguage extends Item
 {
 
     /**
-     * Config array
-     *
-     * @var array
+     * @var array Config array
      */
     public $tab;
 
     /**
-     * Article content
-     *
      * @deprecated [2015-05-27]
-     * @var array
+     * @var array Article content
      */
     public $content = NULL;
 
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
+     * @param mixed $id Specifies the ID of the item to load
      * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        $table = cRegistry::getDbTableName('art_lang');
-        parent::__construct($table, 'idartlang');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('art_lang'), 'idartlang');
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
-     * Create a version of this article language with its contents/metatags;
+     * Create a version of this article language with its contents/meta-tags;
      * the version is the new editable article language version
      *
-     * @param string $type
-     *         meta, content or complete
-     *
+     * @param string $type meta, content or complete
      * @throws cDbException|cException
      */
     public function markAsEditable($type = '')
     {
-        // create new editable version
+        // create a new editable version
         $maxVersion = 0;
-        $sql = 'SELECT MAX(version) AS `max` FROM `%s` WHERE `idartlang` = %d';
-        $this->db->query($sql, cRegistry::getDbTableName('art_lang_version'), $this->get('idartlang'));
+        $this->db->query(
+            'SELECT MAX(`version`) AS `max` FROM `%s` WHERE `idartlang` = %d',
+            cDb::getTableName('art_lang_version'),
+            $this->get('idartlang')
+        );
         while ($this->db->nextRecord()) {
             $maxVersion = cSecurity::toInteger($this->db->f('max'));
         }
@@ -300,7 +298,11 @@ class cApiArticleLanguage extends Item
 
         if ($type == 'content' || $type == 'complete') {
             // load content of article language version into $artLangVersion->content
-            $artLangVersion->loadByArticleLanguageIdAndVersion($artLangVersion->get('idartlang'), $artLangVersion->get('version'), true);
+            $artLangVersion->loadByArticleLanguageIdAndVersion(
+                cSecurity::toInteger($artLangVersion->get('idartlang')),
+                cSecurity::toInteger($artLangVersion->get('version')),
+                true
+            );
             $contentVersion = new cApiContent();
             $oType = new cApiType();
             $this->_loadArticleContent();
@@ -323,7 +325,11 @@ class cApiArticleLanguage extends Item
                 foreach ($typeids as $typeid => $value) {
                     $oType->loadByType($type);
                     if (isset($this->content[$type][$typeid])) {
-                        $contentVersion->loadByArticleLanguageIdTypeAndTypeId($this->get('idartlang'), $oType->get('idtype'), $typeid);
+                        $contentVersion->loadByArticleLanguageIdTypeAndTypeId(
+                            $this->get('idartlang'),
+                            $oType->get('idtype'),
+                            $typeid
+                        );
                         if ($contentVersion->isLoaded()) {
                             $contentVersion->markAsEditable($artLangVersion->get('version'), 0);
                         }
@@ -344,7 +350,7 @@ class cApiArticleLanguage extends Item
         }
 
         if ($type == 'meta' || $type == 'complete') {
-            // set new meta tag versions
+            // set new meta-tag versions
             $metaTag = new cApiMetaTag();
 
             $oMetaTagCollection = new cApiMetaTagCollection();
@@ -361,30 +367,24 @@ class cApiArticleLanguage extends Item
     /**
      * Load data by article and language id
      *
-     * @param int $idart
-     *         Article id
-     * @param int $idlang
-     *         Language id
-     *         Flag to fetch content
-     * @return bool
-     *         true on success, otherwise false
-     *
+     * @param int $articleId Article id
+     * @param int $languageId Language id
+     * @return bool true on success, otherwise false
      * @throws cDbException|cException
      */
-    public function loadByArticleAndLanguageId($idart, $idlang)
+    public function loadByArticleAndLanguageId($articleId, $languageId): bool
     {
         $result = true;
         if (!$this->isLoaded()) {
-            $aProps = [
-                'idart' => $idart,
-                'idlang' => $idlang
-            ];
-            $aRecordSet = $this->_oCache->getItemByProperties($aProps);
-            if ($aRecordSet) {
+            $recordSet = $this->_oCache->getItemByProperties([
+                'idart' => $articleId,
+                'idlang' => $languageId
+            ]);
+            if ($recordSet) {
                 // entry in cache found, load entry from cache
-                $this->loadByRecordSet($aRecordSet);
+                $this->loadByRecordSet($recordSet);
             } else {
-                $idartlang = $this->_getIdArtLang($idart, $idlang);
+                $idartlang = $this->_getIdArtLang($articleId, $languageId);
                 $result = $this->loadByPrimaryKey($idartlang);
             }
         }
@@ -395,35 +395,22 @@ class cApiArticleLanguage extends Item
     /**
      * Extract 'idartlang' for a specified 'idart' and 'idlang'
      *
-     * @param int $idart
-     *         Article id
-     * @param int $idlang
-     *         Language id
-     *
-     * @return int
-     *         Language dependant article id
-     *
-     * @throws cDbException|cInvalidArgumentException
+     * @param int $articleId Article id
+     * @param int $languageId Language id
+     * @return int Language dependant article id
+     * @throws cDbException
      */
-    protected function _getIdArtLang($idart, $idlang)
+    protected function _getIdArtLang($articleId, $languageId)
     {
         $sql = 'SELECT `idartlang` FROM `%s` WHERE `idart` = %d AND `idlang` = %d';
-        $this->db->query($sql, cRegistry::getDbTableName('art_lang'), $idart, $idlang);
+        $this->db->query($sql, cDb::getTableName('art_lang'), $articleId, $languageId);
         $this->db->nextRecord();
 
-        return $this->db->f('idartlang');
+        return cSecurity::toInteger($this->db->f('idartlang'));
     }
 
     /**
-     * Load the articles content and stores it in the 'content' property of the
-     * article object.
-     *
-     * $article->content[type][number] = value;
-     *
-     * @throws cDbException|cInvalidArgumentException
-     * @deprecated [2015-05-15]
-     *         use _loadArticleContent, automatically loaded with getContent()
-     *
+     * @deprecated [2015-05-15] use _loadArticleContent, automatically loaded with getContent()
      */
     public function loadArticleContent()
     {
@@ -432,15 +419,7 @@ class cApiArticleLanguage extends Item
     }
 
     /**
-     * Load the articles content and stores it in the 'content' property of the
-     * article object.
-     *
-     * $article->content[type][number] = value;
-     *
-     * @throws cDbException|cInvalidArgumentException
-     * @deprecated [2015-05-15]
-     *         use _loadArticleContent, automatically loaded with getContent()
-     *
+     * @deprecated [2015-05-15] use _loadArticleContent, automatically loaded with getContent()
      */
     protected function _getArticleContent()
     {
@@ -454,7 +433,7 @@ class cApiArticleLanguage extends Item
      *
      * $article->content[type][number] = value;
      *
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     protected function _loadArticleContent()
     {
@@ -462,13 +441,18 @@ class cApiArticleLanguage extends Item
             return;
         }
 
-        $sql = 'SELECT b.type, a.typeid, a.value FROM `%s` AS a, `%s` AS b ' . 'WHERE a.idartlang = %d AND b.idtype = a.idtype ORDER BY a.idtype, a.typeid';
-
-        $this->db->query($sql, cRegistry::getDbTableName('content'), cRegistry::getDbTableName('type'), $this->get('idartlang'));
+        $this->db->query(
+            'SELECT b.type, a.typeid, a.value FROM `%s` AS a, `%s` AS b '
+                . 'WHERE a.idartlang = %d AND b.idtype = a.idtype ORDER BY a.idtype, a.typeid',
+            cDb::getTableName('content'),
+            cDb::getTableName('type'),
+            $this->get('idartlang')
+        );
 
         $this->content = [];
         while ($this->db->nextRecord()) {
-            $this->content[cString::toLowerCase($this->db->f('type'))][$this->db->f('typeid')] = $this->db->f('value');
+            $type = cString::toLowerCase($this->db->f('type'));
+            $this->content[$type][$this->db->f('typeid')] = $this->db->f('value');
         }
     }
 
@@ -506,14 +490,13 @@ class cApiArticleLanguage extends Item
      * searchable - Whether article should be found via search
      * sitemapprio - The priority for the sitemap
      *
+     * @inheritDoc
      * @param string $name
-     * @param bool $bSafe [optional]
-     *         Flag to run defined outFilter on passed value
+     * @param bool $safe Flag to run defined outFilter on passed value
      *         NOTE: It's not used ATM!
-     * @return string|null
-     *         Value of property
+     * @return ?string Value of property
      */
-    public function getField($name, $bSafe = true)
+    public function getField($name, $safe = true)
     {
         return $this->values[$name] ?? null;
     }
@@ -521,15 +504,9 @@ class cApiArticleLanguage extends Item
     /**
      * Predefined setter for article language fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     *
-     * @return bool
-     * @throws cInvalidArgumentException
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'urlname':
@@ -557,7 +534,7 @@ class cApiArticleLanguage extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
     /**
@@ -566,36 +543,30 @@ class cApiArticleLanguage extends Item
      * Returns the specified content element or an ["id" => "value"] if the
      * second parameter is omitted.
      *
-     * Legal content type string are defined in the CONTENIDO system table
-     * 'con_type'.
+     * Legal content type string are defined in the CONTENIDO system table 'con_type'.
+     *
      * Default content types are:
      *
-     * NOTE: Parameter is case-insensitive, you can use html or cms_HTML or
-     * CmS_HtMl.
+     * NOTE: Parameter is case-insensitive, you can use html or cms_HTML or CMS_HtMl.
      * You don't need to start with cms, but it won't crash if you do so.
      *
-     * htmlhead - HTML Headline
-     * html - HTML Text
-     * headline - Headline (no HTML)
-     * text - Text (no HTML)
-     * img - Upload id of the element
-     * imgdescr - Image description
-     * link - Link (URL)
-     * linktarget - Linktarget (_self, _blank, _top ...)
-     * linkdescr - Link description
-     * swf - Upload id of the element
+     * - htmlhead - HTML Headline
+     * - html - HTML Text
+     * - headline - Headline (no HTML)
+     * - text - Text (no HTML)
+     * - img - Upload id of the element
+     * - imgdescr - Image description
+     * - link - Link (URL)
+     * - linktarget - Linktarget (_self, _blank, _top ...)
+     * - linkdescr - Link description
+     * - swf - Upload id of the element
      *
-     * @param string $type
-     *                     CMS_TYPE - Legal cms type string
-     * @param int|NULL $id [optional]
-     *                     Id of the content
-     *
+     * @param string $type CMS_TYPE - Legal cms type string
+     * @param ?int $id The id of the content
      * @return string|array
-     *         data
-     *
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
-    public function getContent($type = '', $id = NULL)
+    public function getContent(string $type = '', $id = NULL)
     {
         if (NULL === $this->content) {
             $this->_loadArticleContent();
@@ -611,7 +582,7 @@ class cApiArticleLanguage extends Item
 
         $type = cString::toLowerCase($type);
 
-        if (false === cString::findFirstPosCI($type, 'cms_')) {
+        if (cString::findFirstPosCI($type, 'cms_') === false) {
             $type = 'cms_' . $type;
         }
 
@@ -627,20 +598,14 @@ class cApiArticleLanguage extends Item
     /**
      * Similar to getContent this function returns the cContentType object
      *
-     * @param string $type
-     *         Name of the content type
-     * @param int $id
-     *         Id of the content type in this article
-     *
-     * @return bool|cContentTypeAbstract
-     *         Returns false if the name was invalid
-     *
-     * @throws cDbException|cInvalidArgumentException
+     * @param string $type Name of the content type
+     * @param int $id The id of the content type in this article
+     * @return bool|cContentTypeAbstract Returns false if the name was invalid
+     * @throws cDbException
      */
-    public function getContentObject($type, $id)
+    public function getContentObject(string $type, $id)
     {
-        $typeClassName = 'cContentType' . ucfirst(cString::toLowerCase(str_replace('CMS_', '', $type)));
-
+        $typeClassName = cTypeGenerator::getContentTypeClassName($type);
         if (!class_exists($typeClassName)) {
             return false;
         }
@@ -651,54 +616,38 @@ class cApiArticleLanguage extends Item
     /**
      * Similar to getContent this function returns the view code of the cContentType object
      *
-     * @param string $type
-     *         Name of the content type
-     * @param int $id
-     *         Id of the content type in this article
-     *
-     * @return string
-     *
-     * @throws cDbException|cInvalidArgumentException
+     * @param string $type Name of the content type
+     * @param int $id The id of the content type in this article
+     * @throws cDbException
      */
-    public function getContentViewCode($type, $id)
+    public function getContentViewCode(string $type, $id): string
     {
         $object = $this->getContentObject($type, $id);
-        if ($object === false) {
-            return '';
-        }
 
-        return $object->generateViewCode();
+        return $object ? $object->generateViewCode() : '';
     }
 
     /**
      * Returns all available content types
      *
-     * @return array
-     *
-     * @throws cException
-     *         if no content has been loaded
+     * @throws cException if no content has been loaded
      */
-    public function getContentTypes()
+    public function getContentTypes(): array
     {
         if (empty($this->content)) {
             $this->_loadArticleContent();
         }
 
-        return (is_array($this->content)) ? array_keys($this->content) : [];
+        return is_array($this->content) ? array_keys($this->content) : [];
     }
 
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId [optional]
-     *                          change language id for URL (optional)
-     *
-     * @return string
-     *         link
-     *
+     * @param int $changeLanguageId [optional] Change language id for URL (optional)
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function getLink($changeLangId = 0)
+    public function getLink($changeLanguageId = 0): string
     {
         if ($this->isLoaded() === false) {
             return '';
@@ -706,9 +655,9 @@ class cApiArticleLanguage extends Item
 
         $options = [];
         $options['idart'] = $this->get('idart');
-        $options['lang'] = ($changeLangId == 0) ? $this->get('idlang') : $changeLangId;
-        if ($changeLangId > 0) {
-            $options['changelang'] = $changeLangId;
+        $options['lang'] = $changeLanguageId == 0 ? $this->get('idlang') : $changeLanguageId;
+        if ($changeLanguageId > 0) {
+            $options['changelang'] = $changeLanguageId;
         }
 
         return cUri::getInstance()->build($options);

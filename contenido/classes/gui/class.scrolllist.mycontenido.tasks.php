@@ -21,7 +21,7 @@ class cGuiScrollListMyContenidoTasks extends cGuiScrollList
     /**
      * Default date format as fallback
      */
-    const DEFAULT_DATE_FORMAT = 'Y-m-d H:i:s';
+    public const DEFAULT_DATE_FORMAT = 'Y-m-d H:i:s';
 
     /**
      * @var cHTMLLink
@@ -59,8 +59,7 @@ class cGuiScrollListMyContenidoTasks extends cGuiScrollList
     /**
      * Is called when a new column is rendered.
      *
-     * @param int|string $column
-     *         The current column which is being rendered
+     * @param int|string $column The current column which is being rendered
      * @see cGuiScrollList::onRenderColumn()
      */
     public function onRenderColumn($column)
@@ -190,7 +189,7 @@ class cGuiScrollListMyContenidoTasks extends cGuiScrollList
 
         // Due date
         if ($field == 8) {
-            if ($value !== "") {
+            if ($value !== '') {
                 if (round($value, 2) == 0) {
                     return i18n("Today");
                 } else {
@@ -211,7 +210,7 @@ class cGuiScrollListMyContenidoTasks extends cGuiScrollList
 }
 
 /**
- * @deprecated [2024-02-04] Since 4.10.2, use {@see cGuiScrollListMyContenidoTasks} instead!
+ * @deprecated [2024-02-04] Since CONTENIDO 4.10.2, use {@see cGuiScrollListMyContenidoTasks} instead!
  */
 class TODOBackendList extends cGuiScrollListMyContenidoTasks
 {

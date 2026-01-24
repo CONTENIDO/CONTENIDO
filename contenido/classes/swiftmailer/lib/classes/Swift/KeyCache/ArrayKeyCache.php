@@ -110,11 +110,11 @@ class Swift_KeyCache_ArrayKeyCache implements Swift_KeyCache
      *
      * @param string                $nsKey
      * @param string                $itemKey
-     * @param Swift_InputByteStream $writeThrough
+     * @param ?Swift_InputByteStream $writeThrough
      *
-     * @return Swift_InputByteStream
+     * @return ?Swift_InputByteStream
      */
-    public function getInputByteStream($nsKey, $itemKey, Swift_InputByteStream $writeThrough = null)
+    public function getInputByteStream($nsKey, $itemKey, ?Swift_InputByteStream $writeThrough = null)
     {
         $is = clone $this->_stream;
         $is->setKeyCache($this);
@@ -141,6 +141,8 @@ class Swift_KeyCache_ArrayKeyCache implements Swift_KeyCache
         if ($this->hasKey($nsKey, $itemKey)) {
             return $this->_contents[$nsKey][$itemKey];
         }
+
+        return '';
     }
 
     /**

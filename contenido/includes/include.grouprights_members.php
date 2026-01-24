@@ -27,7 +27,7 @@ $frame = cRegistry::getFrame();
 
 $filter_in = isset($_POST['filter_in']) ? cSecurity::toString($_POST['filter_in']) : '';
 $filter_non = isset($_POST['filter_non']) ? cSecurity::toString($_POST['filter_non']) : '';
-$user_in_group = isset($_POST['user_in_group']) ? $_POST['user_in_group'] : '';
+$user_in_group = $_POST['user_in_group'] ?? '';
 
 $db2 = cRegistry::getDb();
 // $page = new cTemplate();
@@ -35,13 +35,13 @@ $db2 = cRegistry::getDb();
 $page = new cGuiPage('grouprights_memberselect', '', '1');
 
 if (!$perm->have_perm_area_action($area, $action)) {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
     return;
 } elseif (!isset($groupid)) {
     return;
 }
 
-if (($action == "group_deletemember") && ($perm->have_perm_area_action($area, $action))) {
+if ($action === 'group_deletemember' && $perm->have_perm_area_action($area, $action)) {
     if (!is_array($user_in_group)) {
         $aDeleteMembers = [];
         if ($user_in_group > 0) {
@@ -59,7 +59,7 @@ if (($action == "group_deletemember") && ($perm->have_perm_area_action($area, $a
     $notification->displayNotification(cGuiNotification::LEVEL_OK, i18n("Removed member from group successfully!"));
 }
 
-if (($action == "group_addmember") && ($perm->have_perm_area_action($area, $action))) {
+if ($action === 'group_addmember' && $perm->have_perm_area_action($area, $action)) {
     if (is_array($newmember)) {
         $notiAdded = '';
         $notiAlreadyExisting = '';
@@ -70,7 +70,7 @@ if (($action == "group_addmember") && ($perm->have_perm_area_action($area, $acti
                 $myUser->loadUserByUsername($value);
             }
 
-            if ($myUser->getField("user_id") == "") {
+            if ($myUser->getField('user_id') == '') {
                 continue;
             }
 
@@ -99,10 +99,10 @@ if (($action == "group_addmember") && ($perm->have_perm_area_action($area, $acti
     }
 }
 
-$tab1 = $cfg['tab']['groupmembers'];
-$tab2 = $cfg['tab']['user'];
+$tab1 = cDb::getTableName('groupmembers');
+$tab2 = cDb::getTableName('user');
 
-$sortby = getEffectiveSetting("backend", "sort_backend_users_by", "");
+$sortby = getEffectiveSetting('backend', 'sort_backend_users_by');
 
 if ($sortby != '') {
     $sql = "SELECT " . $tab1 . ".idgroupuser, " . $tab1 . ".user_id FROM " . $tab1 . "
@@ -122,11 +122,11 @@ $aAddedUsers = [];
 $myUser = new cApiUser();
 
 while ($db->nextRecord()) {
-    $myUser->loadByPrimaryKey($db->f("user_id"));
-    $aAddedUsers[] = $myUser->getField("username");
+    $myUser->loadByPrimaryKey($db->f('user_id'));
+    $aAddedUsers[] = $myUser->getField('username');
 
-    $sOptionLabel = $myUser->getField("realname") . ' (' . $myUser->getField("username") . ')';
-    $sOptionValue = $db->f("idgroupuser");
+    $sOptionLabel = $myUser->getField('realname') . ' (' . $myUser->getField('username') . ')';
+    $sOptionValue = $db->f('idgroupuser');
     if ($sOptionValue != '' && $sOptionLabel != '') {
         $sInGroupOptions .= '<option value="' . $sOptionValue . '">' . $sOptionLabel . '</option>' . "\n";
     }
@@ -135,28 +135,25 @@ while ($db->nextRecord()) {
 $page->set('s', 'IN_GROUP_OPTIONS', $sInGroupOptions);
 
 // Sort user list by given criteria
-$orderBy = getEffectiveSetting('backend', 'sort_backend_users_by', '');
+$orderBy = getEffectiveSetting('backend', 'sort_backend_users_by');
 
 $userColl = new cApiUserCollection();
-$users = $userColl->getAccessibleUsers(explode(',', $auth->auth['perm']), false, $orderBy);
+$users = $userColl->getAccessibleUsers($auth->getPermsArray(), false, $orderBy);
 
 $bAddedUser = false;
 $sNonGroupOptions = '';
-if (is_array($users)) {
-    foreach ($users as $key => $value) {
-        if (!in_array($value["username"], $aAddedUsers)) {
-            $bAddedUser = true;
-            $sOptionLabel = $value["realname"] . " (" . $value["username"] . ")";
-            $sOptionValue = $key;
-            if ($sOptionValue != '' && $sOptionLabel != '') {
-                $sNonGroupOptions .= '<option value="' . $sOptionValue . '">' . $sOptionLabel . '</option>' . "\n";
-            }
+foreach ($users as $key => $value) {
+    if (!in_array($value['username'], $aAddedUsers)) {
+        $bAddedUser = true;
+        $sOptionLabel = $value['realname'] . " (" . $value['username'] . ")";
+        $sOptionValue = $key;
+        if ($sOptionValue != '' && $sOptionLabel != '') {
+            $sNonGroupOptions .= '<option value="' . $sOptionValue . '">' . $sOptionLabel . '</option>' . "\n";
         }
     }
 }
 
 $page->set('s', 'NON_GROUP_OPTIONS', $sNonGroupOptions);
-
 $page->set('s', 'CATNAME', i18n("Manage group members"));
 $page->set('s', 'CATFIELD', "&nbsp;");
 $page->set('s', 'FORM_ACTION', $sess->url('main.php'));

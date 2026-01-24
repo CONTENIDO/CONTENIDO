@@ -16,7 +16,7 @@ $filelistIndex = 1;
 
 $art = new cApiArticleLanguage();
 $art->loadByArticleAndLanguageId(cRegistry::getArticleId(), cRegistry::getLanguageId());
-$contentValue = $art->getContent("FILELIST", $filelistIndex);
+$contentValue = $art->getContent('FILELIST', $filelistIndex);
 
 $filelist = new cContentTypeFilelist($contentValue, $filelistIndex, []);
 $files = $filelist->getConfiguredFiles();

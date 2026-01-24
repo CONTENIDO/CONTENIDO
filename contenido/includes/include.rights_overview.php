@@ -34,7 +34,7 @@ $sess = cRegistry::getSession();
 
 if (!($perm->have_perm_area_action($area, $action) || $perm->have_perm_area_action('user', $action))) {
     // access denied
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
     return;
 }
 
@@ -58,7 +58,7 @@ $sNotification = '';
 if ($action == 'user_delete') {
     $oUserColl = new cApiUserCollection();
 
-    $page = new cGuiPage("rights_overview");
+    $page = new cGuiPage('rights_overview');
 
     // Prevent deletion of last system administrator
     $oUserColl->query();
@@ -106,10 +106,8 @@ if ($action == 'user_edit') {
                 $sNotification = $notification->returnNotification("warning", i18n("You can only assign users to a client with languages."));
                 $bError = true;
             } else {
-
                 // Client has one or more assigned language(s)
                 foreach ($mlang as $selectedLanguage) {
-
                     if (!$clientLanguageCollection->hasLanguageInClients($selectedLanguage, $mclient)) {
                         // Selected language are not assigned to selected client
                         $sNotification = $notification->returnNotification("warning", i18n("You have to select a client with a language of that client."));
@@ -226,7 +224,7 @@ $tpl->next();
 
 $tpl->set('d', 'ROW_ID', "name");
 $tpl->set('d', 'CATNAME', i18n("Name"));
-$oTxtName = new cHTMLTextbox("realname", conHtmlSpecialChars($oUser->getField('realname') ?? ''), 40, 255);
+$oTxtName = new cHTMLTextbox('realname', conHtmlSpecialChars($oUser->getField('realname') ?? ''), 40, 255);
 $tpl->set('d', 'CATFIELD', $oTxtName->render());
 $tpl->next();
 

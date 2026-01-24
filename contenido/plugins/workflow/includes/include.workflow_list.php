@@ -23,8 +23,8 @@ $requestIdWorkflow = cSecurity::toInteger($_GET['idworkflow'] ?? '0');
 $page = new cGuiPage('workflow_list', 'workflow');
 $page->addStyle('workflow.css');
 $workflows = new Workflows();
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
 $delTitle = i18n('Delete workflow', 'workflow');
 
 $page->addScript('parameterCollector.js');
@@ -32,7 +32,7 @@ $page->addScript('parameterCollector.js');
 $ui = new cGuiMenu();
 $workflows->select("idclient = '$client' AND idlang = '$lang'");
 
-while (($workflow = $workflows->next()) !== false) {
+while ($workflow = $workflows->next()) {
     $wfid = cSecurity::toInteger($workflow->getField('idworkflow'));
     $wfname = preg_replace("/\"/", '', ($workflow->getField('name')));
     $wfdescription = preg_replace("/\"/", '', ($workflow->getField('description')));

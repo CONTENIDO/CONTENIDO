@@ -45,17 +45,17 @@ $modidartlang = cSecurity::toInteger($modidartlang ?? '0');
 
 ob_start();
 
-if ($usershow == "") {
-    $usershow = $auth->auth["uid"];
+if ($usershow == '') {
+    $usershow = $auth->getUserId();
 }
 
-if (!$perm->have_perm_area_action($area, "workflow_task_user_select")) {
-    $usershow = $auth->auth["uid"];
+if (!$perm->have_perm_area_action($area, 'workflow_task_user_select')) {
+    $usershow = $auth->getUserId();
 }
 
-if ($action == "workflow_do_action") {
+if ($action === 'workflow_do_action') {
     $selectedAction = "wfselect" . $modidartlang;
-    doWorkflowAction($modidartlang, $GLOBALS[$selectedAction]);
+    piwf_doWorkflowAction($modidartlang, $GLOBALS[$selectedAction]);
 }
 
 $usersequence = [];
@@ -63,11 +63,11 @@ $lastusersequence = [];
 $article = [];
 
 $wfa->select();
-while (($wfaitem = $wfa->next()) !== false) {
-    $wfaid = $wfaitem->get("idartallocation");
-    $usersequence[$wfaid] = $wfaitem->get("idusersequence");
-    $lastusersequence[$wfaid] = $wfaitem->get("lastusersequence");
-    $article[$wfaid] = $wfaitem->get("idartlang");
+while ($wfaitem = $wfa->next()) {
+    $wfaid = $wfaitem->get('idartallocation');
+    $usersequence[$wfaid] = $wfaitem->get('idusersequence');
+    $lastusersequence[$wfaid] = $wfaitem->get('lastusersequence');
+    $article[$wfaid] = $wfaitem->get('idartlang');
 }
 
 $userids = [];
@@ -75,7 +75,7 @@ if (is_array($usersequence)) {
     foreach ($usersequence as $key => $value) {
         $wfu->select("idusersequence = '$value'");
         if (($obj = $wfu->next()) !== false) {
-            $userids[$key] = $obj->get("iduser");
+            $userids[$key] = $obj->get('iduser');
         }
     }
 }
@@ -90,11 +90,11 @@ if (is_array($userids)) {
 
         if ($user->loadByPrimaryKey($value) == false) {
             // Yes, it's a group. Let's try to load the group members!
-            $sql = "SELECT user_id FROM " . cRegistry::getDbTableName('groupmembers') . " WHERE group_id = '" . $db2->escape($value) . "'";
+            $sql = "SELECT user_id FROM " . cDb::getTableName('groupmembers') . " WHERE group_id = '" . $db2->escape($value) . "'";
             $db2->query($sql);
 
             while ($db2->nextRecord()) {
-                if ($db2->f("user_id") == $usershow) {
+                if ($db2->f('user_id') == $usershow) {
                     $isCurrent[$key] = true;
                 }
             }
@@ -115,13 +115,13 @@ $tpl->setEncoding('iso-8859-1');
 $iIDCat = 0;
 $iIDTpl = 0;
 
-if ($perm->have_perm_area_action($area, "workflow_task_user_select")) {
-    $form = new cHTMLForm("showusers", $sess->url("main.php?area=$area&frame=$frame"));
-    $form->setVar("area", $area);
+if ($perm->have_perm_area_action($area, 'workflow_task_user_select')) {
+    $form = new cHTMLForm('showusers', $sess->url("main.php?area=$area&frame=$frame"));
+    $form->setVar('area', $area);
     $form->setEvent("submit", "setUsershow();");
-    $form->setVar("frame", $frame);
-    $form->setVar("action", "workflow_task_user_select");
-    $form->appendContent(i18n("Show users") . ": " . getUsers("show", $usershow));
+    $form->setVar('frame', $frame);
+    $form->setVar('action', 'workflow_task_user_select');
+    $form->appendContent(i18n("Show users") . ": " . piwf_getUsers("show", $usershow));
     $form->appendContent('<input class="align_middle" type="image" src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . "submit.gif" . '">');
 
     $tpl->set('s', 'USERSELECT', $form->render());
@@ -155,12 +155,12 @@ if (is_array($isCurrent)) {
             $sql = "SELECT B.idcat AS idcat, A.title AS title, A.created AS created, A.lastmodified AS changed,
                            A.idart as idart, E.name as tpl_name, A.idartlang as idartlang, F.idcatlang as idcatlang,
                            B.idcatart as idcatart, A.idlang as art_lang, F.startidartlang as startidartlang
-                    FROM (" . cRegistry::getDbTableName('art_lang') . " AS A,
-                         " . cRegistry::getDbTableName('cat_art') . " AS B,
-                          " . cRegistry::getDbTableName('art') . " AS C)
-                          LEFT JOIN " . cRegistry::getDbTableName('tpl_conf') . " as D ON A.idtplcfg = D.idtplcfg
-                          LEFT JOIN " . cRegistry::getDbTableName('tpl') . " as E ON D.idtpl = E.`idtpl`
-                          LEFT JOIN " . cRegistry::getDbTableName('cat_lang') . " as F ON B.idcat = F.`idcat`
+                    FROM (" . cDb::getTableName('art_lang') . " AS A,
+                         " . cDb::getTableName('cat_art') . " AS B,
+                          " . cDb::getTableName('art') . " AS C)
+                          LEFT JOIN " . cDb::getTableName('tpl_conf') . " as D ON A.idtplcfg = D.idtplcfg
+                          LEFT JOIN " . cDb::getTableName('tpl') . " as E ON D.idtpl = E.`idtpl`
+                          LEFT JOIN " . cDb::getTableName('cat_lang') . " as F ON B.idcat = F.`idcat`
                          WHERE A.idartlang = '$idartlang' AND
                                A.idart = B.idart AND
                                A.idart = C.idart AND
@@ -170,26 +170,40 @@ if (is_array($isCurrent)) {
             $db->query($sql);
 
             if ($db->nextRecord()) {
-                global $area;
-                // $area = "con";
-                $idcat = $db->f("idcat");
-                $idart = $db->f("idart");
+                // $area = 'con';
+                $idcat = $db->f('idcat');
+                $idart = $db->f('idart');
 
                 // Create javascript multilink
-                $tmp_mstr = '<a href="javascript:void(0)" onclick="Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')"  title="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '" title="idart: ' . $db->f('idart') . ' idcatart: ' . $db->f('idcatart') . '">%s</a>';
+                $mstr = sprintf(
+                    '<a href="javascript:void(0)" onclick="Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')"  title="idart: %d idcatart: %d">%s</a>',
+                    'right_top',
+                    $sess->url("main.php?area=con&frame=3&idcat=$idcat&idtpl=$idtpl"),
+                    'right_bottom',
+                    $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idcat=$idcat&idtpl=$idtpl&idart=$idart"),
+                    $db->f('idart'),
+                    $db->f('idcatart'),
+                    $db->f('title')
+                );
 
-                $mstr = sprintf($tmp_mstr, 'right_top', $sess->url("main.php?area=con&frame=3&idcat=$idcat&idtpl=$idtpl"), 'right_bottom', $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idcat=$idcat&idtpl=$idtpl&idart=$idart"), $db->f("title"));
-
-                $laststatus = getLastWorkflowStatus($idartlang);
+                $laststatus = piwf_getLastWorkflowStatus($idartlang);
                 $username = getGroupOrUserName($userids[$key]);
-                $actionSelect = piworkflowRenderColumn($idcat, $idart, $db->f('idartlang'), 'wfaction');
+                $actionSelect = piwf_renderColumn($idcat, $idart, $db->f('idartlang'), 'wfaction');
 
                 $currentUserSequence->loadByPrimaryKey($usersequence[$key]);
                 $workflowItem = $currentUserSequence->getWorkflowItem();
-                $step = $workflowItem->get("name");
-                $description = $workflowItem->get("description");
+                $step = $workflowItem->get('name');
+                $description = $workflowItem->get('description');
 
-                $sRowId = $db->f('idart') . '-' . $db->f('idartlang') . '-' . $db->f('idcat') . '-' . $db->f('idcatlang') . '-' . $db->f('idcatart') . '-' . $db->f('art_lang');
+                $sRowId = sprintf(
+                    '%d-%d-%d-%d-%d-%d',
+                    $db->f('idart'),
+                    $db->f('idartlang'),
+                    $db->f('idcat'),
+                    $db->f('idcatlang'),
+                    $db->f('idcatart'),
+                    $db->f('art_lang')
+                );
 
                 if ($db->f('startidartlang') == $db->f('idartlang')) {
                     $makeStartarticle = "<img src=\"images/isstart1.gif\" border=\"0\" title=\"{$sFlagTitle}\" alt=\"{$sFlagTitle}\">";
@@ -202,14 +216,12 @@ if (is_array($isCurrent)) {
                 $sReminderHtml = "<a id=\"m1\" onclick=\"window.open('main.php?subject=$todoListeSubject&amp;area=todo&amp;frame=1&amp;itemtype=idart&amp;itemid=$idart&amp;contenido=$sSession', 'todo', 'scrollbars=yes, height=300, width=550');\" href=\"#\"><img alt=\"$sReminder\" title=\"$sReminder\" id=\"m2\" src=\"images/but_setreminder.gif\" border=\"0\"></a>";
 
                 $templatename = $db->f('tpl_name');
-                if (!empty($templatename)) {
-                    $templatename = conHtmlentities($templatename);
-                } else {
-                    $templatename = '--- ' . i18n("None") . ' ---';
-                }
+                $templatename = empty($templatename)
+                    ? '--- ' . i18n("None") . ' ---'
+                    : conHtmlentities($templatename);
 
                 if ($i == 0) {
-                    $iIDCat = $db->f("idcat");
+                    $iIDCat = $db->f('idcat');
                     $iIDTpl = $idtpl;
                     $tpl->set('s', 'FIRST_ROWID', $sRowId);
                 }

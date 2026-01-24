@@ -39,14 +39,14 @@ abstract class cCodeGeneratorAbstract
     protected $_feDebugOptions = [];
 
     /**
-     * Collected CSS data for current template.
+     * Collected CSS data for the current template.
      *
      * @var string
      */
     protected $_cssData = '';
 
     /**
-     * Collected JS data for current template.
+     * Collected JS data for the current template.
      *
      * @var string
      */
@@ -180,31 +180,31 @@ abstract class cCodeGeneratorAbstract
     }
 
     /**
-     * Generates the code for a specific article (article for a client
-     * in a language).
+     * Generates the code for a specific article (article for a client in a language).
      *
      * @param int $idcat
      * @param int $idart
      * @param int $lang
      * @param int $client
-     * @param bool $layout [optional]
-     *                           This params purpose is unclear.
-     * @param bool $save [optional]
-     *                           Flag to persist generated code.
-     * @param bool $contype [optional]
-     *                           Flag to enable/disable replacement of CMS_TAGS[].
+     * @param bool $layout [optional] This params purpose is unclear.
+     * @param bool $save [optional] Flag to persist generated code.
+     * @param bool $contype [optional] Flag to enable/disable replacement of CMS_TAGS[].
      * @param bool $editable [optional]
-     * @param int|NULL $version [optional]
-     *
-     * @return string
-     *         Generated code or error code '0601' if no template
-     *         configuration was found for category or article.
-     *
+     * @param ?int $version [optional]
+     * @return string Generated code or error code '0601' if no template configuration was
+     *      found for category or article.
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function generate(
-        $idcat, $idart, $lang, $client, $layout = false, $save = true,
-        $contype = true, $editable = true, $version = NULL
+        $idcat,
+        $idart,
+        $lang,
+        $client,
+        $layout = false,
+        $save = true,
+        $contype = true,
+        $editable = true,
+        $version = NULL
     )
     {
         $this->_idcat = cSecurity::toInteger($idcat);
@@ -240,15 +240,11 @@ abstract class cCodeGeneratorAbstract
     abstract function _generate($contype = true, $editable = true, $version = NULL): string;
 
     /**
-     * Returns the template configuration id, either by configured
-     * article or by configured category.
+     * Returns the template configuration id, either by configured article or by configured category.
      *
-     * @return int|NULL
-     *
-     * @throws cInvalidArgumentException
-     * @throws cDbException
+     * @throws cDbException|cInvalidArgumentException
      */
-    protected function _getTemplateConfigurationId()
+    protected function _getTemplateConfigurationId(): ?int
     {
         // get configuration for article
         $idtplcfg = conGetTemplateConfigurationIdForArticle($this->_idart, $this->_idcat, $this->_lang, $this->_client);
@@ -264,7 +260,7 @@ abstract class cCodeGeneratorAbstract
             }
         }
 
-        return (is_numeric($idtplcfg)) ? $idtplcfg : NULL;
+        return (is_numeric($idtplcfg)) ? (int) $idtplcfg : NULL;
     }
 
     /**
@@ -285,16 +281,10 @@ abstract class cCodeGeneratorAbstract
      *     'idtpl': int,
      *     'name': string,
      * }
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
-     *
-     * @global array $cfg
+     * @throws cDbException|cInvalidArgumentException
      */
     protected function _getTemplateData(): array
     {
-        $cfg = cRegistry::getConfig();
-
         // get IDLAY and IDMOD array
         $sql = "SELECT
                     a.idlay AS idlay
@@ -308,8 +298,7 @@ abstract class cCodeGeneratorAbstract
                     AND b.idtpl = a.idtpl
                 ;";
 
-        $sql = $this->_db->prepare($sql, $cfg['tab']['tpl'], $cfg['tab']['tpl_conf'], $this->_idtplcfg);
-        $this->_db->query($sql);
+        $this->_db->query($sql, cDb::getTableName('tpl'), cDb::getTableName('tpl_conf'), $this->_idtplcfg);
         $this->_db->nextRecord();
         $data = $this->_db->toArray();
 
@@ -327,14 +316,10 @@ abstract class cCodeGeneratorAbstract
     /**
      * Processes replacements of all existing CMS_* tags within passed code.
      *
-     * @param array $contentList
-     *                            Associative list of CMS variables.
-     * @param bool $saveKeywords [optional]
-     *                            Flag to save collected keywords during replacement process.
+     * @param array $contentList Associative list of CMS variables.
+     * @param bool $saveKeywords [optional] Flag to save collected keywords during replacement process.
      * @param bool $editable [optional]
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     protected function _processCmsTags($contentList, $saveKeywords = true, $editable = true)
     {
@@ -366,7 +351,7 @@ abstract class cCodeGeneratorAbstract
         $_typeList = [];
         $oTypeColl = new cApiTypeCollection();
         $oTypeColl->select();
-        while (false !== ($oType = $oTypeColl->next())) {
+        while ($oType = $oTypeColl->next()) {
             $_typeList[] = $oType->toObject();
         }
 
@@ -426,7 +411,7 @@ abstract class cCodeGeneratorAbstract
     abstract protected function _processCodeTitleTag(): string;
 
     /**
-     * Processes and adds or replaces all meta tags for an article.
+     * Processes and adds or replaces all meta-tags for an article.
      */
     abstract protected function _processCodeMetaTags(): string;
 
@@ -437,7 +422,7 @@ abstract class cCodeGeneratorAbstract
      * @param int $containerNumber
      *         Container number
      * @param string $containerCfg
-     *         A string being formatted like concatenated query
+     *         A string being formatted like a concatenated query
      *         parameter, e.g. param1=value1&param2=value2...
      * @return string
      *         Concatenated PHP code containing CMS_VALUE variables and their values
@@ -530,17 +515,12 @@ abstract class cCodeGeneratorAbstract
      * Returns array of all CMS_* vars being used by current article and language
      *
      * @param bool $editable [optional]
-     * @param int|NULL $version [optional]
-     *
-     * @return array
-     *         like $arr[type][typeid] = value;
-     *
+     * @param ?int $version [optional]
+     * @return array Like $arr[type][typeid] = value;
      * @throws cDbException
      */
     protected function _getUsedCmsTypesData($editable = true, $version = NULL): array
     {
-        $cfg = cRegistry::getConfig();
-
         $return = [];
 
         // find out what kind of CMS_... vars are in use
@@ -549,9 +529,9 @@ abstract class cCodeGeneratorAbstract
                     WHERE A.idtype = C.idtype AND A.idartlang = B.idartlang AND B.idart = %d AND B.idlang = %d";
             $sql = $this->_db->prepare(
                 $sql,
-                $cfg['tab']['content'],
-                $cfg['tab']['art_lang'],
-                $cfg['tab']['type'],
+                cDb::getTableName('content'),
+                cDb::getTableName('art_lang'),
+                cDb::getTableName('type'),
                 $this->_idart,
                 $this->_lang
             );
@@ -570,9 +550,9 @@ abstract class cCodeGeneratorAbstract
                     ORDER BY a.idtype, a.typeid;';
             $sql = $this->_db->prepare(
                 $sql,
-                $cfg['tab']['content_version'],
-                $cfg['tab']['type'],
-                $cfg['tab']['content_version'],
+                cDb::getTableName('content_version'),
+                cDb::getTableName('type'),
+                cDb::getTableName('content_version'),
                 $this->_idartlang,
                 $version,
                 $this->_idartlang
@@ -600,14 +580,11 @@ abstract class cCodeGeneratorAbstract
     /**
      * Returns the classname for a content type.
      *
-     * @param string $type
-     *         Content type, e.g. CMS_HTMLHEAD.
-     * @return string
-     *         The classname e.g. cContentTypeHtmlhead for content type CMS_HTMLHEAD.
+     * @see cTypeGenerator::getContentTypeClassName()
      */
-    protected function _getContentTypeClassName($type): string
+    protected function _getContentTypeClassName(string $type): string
     {
-        return 'cContentType' . ucfirst(cString::toLowerCase(str_replace('CMS_', '', $type)));
+        return cTypeGenerator::getContentTypeClassName($type);
     }
 
     /**

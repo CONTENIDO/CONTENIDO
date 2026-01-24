@@ -38,8 +38,9 @@ global $cfg, $cfgClient, $errsite_idcat, $errsite_idart;
 error_reporting(E_ALL ^ E_NOTICE);
 
 /* Initial PHP session settings.
- * NOTE: When you change these values by custom configuration, the length of the session ID may differ from 32 characters.
- * As this length was a criteria for session ID validity in previous versions of CONTENIDO, changes may affect your scripts.
+ * NOTE: When you change these values by custom configuration, the length of the session ID
+ * may differ from 32 characters. As this length was a criteria for session ID validity in
+ * previous versions of CONTENIDO, changes may affect your scripts.
  */
 
 // Set session hash function to SHA-1
@@ -59,22 +60,26 @@ include_once($backendPath . '/environment.php');
 require_once($backendPath . '/classes/class.filehandler.php');
 
 // (string) Path to folder containing all contenido configuration files. Use environment setting!
-$cfg['path']['contenido_config'] = str_replace('\\', '/', realpath(__DIR__ . '/../..')) . '/data/config/' . CON_ENVIRONMENT . '/';
+$cfg['path']['contenido_config'] = str_replace('\\', '/', realpath(__DIR__ . '/../..'))
+    . '/data/config/' . CON_ENVIRONMENT . '/';
 
 // check if config folder & files exist
-if (false === cFileHandler::exists($cfg['path']['contenido_config'])) {
-    $msg = "<h1>Fatal Error</h1><br>"
-        . "The configured <b>environment</b> is not valid.<br><br>"
-        . "Please make sure that your CON_ENVIRONMENT is valid and has an existing directory in contenido/data/config.";
+if (!cFileHandler::exists($cfg['path']['contenido_config'])) {
+    $msg = '<h1>Fatal Error</h1><br>'
+        . 'The configured <b>environment</b> is not valid.<br><br>'
+        . 'Please make sure that your CON_ENVIRONMENT is valid and has an existing directory in contenido/data/config.';
     die($msg);
 }
 
-if (false === cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')
-    || false === cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
-    $msg = "<h1>Fatal Error</h1><br>"
-        . "Could not open a configuration file <b>config.php</b> or <b>config.clients.php</b>.<br><br>"
-        . "Please make sure that you saved the file in the setup program and that your CON_ENVIRONMENT is valid. "
-        . "If you had to place the file manually on your webserver, make sure that it is placed in your contenido/data/config/{environment}/ directory.";
+if (
+    !cFileHandler::exists($cfg['path']['contenido_config'] . 'config.php')
+    || !cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')
+) {
+    $msg = '<h1>Fatal Error</h1><br>'
+        . 'Could not open a configuration file <b>config.php</b> or <b>config.clients.php</b>.<br><br>'
+        . 'Please make sure that you saved the file in the setup program and that your CON_ENVIRONMENT is valid. '
+        . 'If you had to place the file manually on your webserver, make sure that it is placed in your '
+        . 'contenido/data/config/{environment}/ directory.';
     die($msg);
 }
 
@@ -190,6 +195,7 @@ cInclude('includes', 'functions.i18n.php');
 cInclude('includes', 'functions.lang.php');
 
 // Initialization of CEC
+// NOTE: Keep the name `$_cecRegistry`, some modules/plugins may still use it from global scope!
 $_cecRegistry = cApiCecRegistry::getInstance();
 $_cecRegistry->flushAddedChains();
 

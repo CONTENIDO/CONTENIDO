@@ -11,15 +11,15 @@
     <script type="text/javascript" src="{_ASSET(scripts/jquery/plugins/tipsy.js)_}"></script>
     <script type="text/javascript" src="{_ASSET(scripts/registerTipsy.js)_}"></script>
     <script type="text/javascript">
-	function deleteFile(file) {
-	    var url = Con.UtilUrl.build("main.php", {
-	        area: "{JS_AREA}",
-	        action: "{JS_ACTION_DELETE}",
-	        frame: 4,
-	        delfile: file
-	    });
-	    Con.getFrame('right_bottom').location.href = url;
-	}
+    function deleteFile(file) {
+        var url = Con.UtilUrl.build("main.php", {
+            area: "{JS_AREA}",
+            action: "{JS_ACTION_DELETE}",
+            frame: 4,
+            delfile: file
+        });
+        Con.getFrame('right_bottom').location.href = url;
+    }
 </script>
 </head>
 <body>

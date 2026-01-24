@@ -26,21 +26,14 @@ class cHTMLFormElement extends cHTML
     /**
      * Constructor to create an instance of this class.
      *
-     * This is a generic form element, where specific elements should be
-     * inherited from this class.
+     * This is a generic form element, where specific elements should be inherited from this class.
      *
-     * @param string $name [optional]
-     *         Name of the element
-     * @param string $id [optional]
-     *         ID of the element
-     * @param bool $disabled [optional]
-     *         Item disabled flag (non-empty to set disabled)
-     * @param int|null $tabindex [optional]
-     *         Tab index for form elements
-     * @param string $accessKey [optional]
-     *         Key to access the field
-     * @param string $class [optional]
-     *         CSS class name to set
+     * @param string $name [optional] Name of the element
+     * @param string $id [optional] ID of the element
+     * @param bool $disabled [optional] Item disabled flag (non-empty to set disabled)
+     * @param ?int $tabindex [optional] Tab index for form elements
+     * @param string $accessKey [optional] Key to access the field
+     * @param string $class [optional] CSS class name to set
      */
     public function __construct(
         $name = '',
@@ -67,26 +60,20 @@ class cHTMLFormElement extends cHTML
      * $obj->setDisabled(true);
      * $obj->setDisabled(false);
      *
-     * The first example sets the disabled flag, the second one
-     * removes the disabled flag.
+     * The first example sets the disabled flag, the second one removes the disabled flag.
      *
-     * @param bool $disabled
-     *         Sets the disabled-flag if non-empty
-     * @return cHTMLFormElement
-     *         $this for chaining
+     * @param bool $disabled Sets the disabled-flag if non-empty
      */
-    public function setDisabled($disabled)
+    public function setDisabled($disabled): self
     {
         // NOTE: We use toBoolean() because of downwards compatibility.
         // The variable was of type string before 4.10.2!
         $disabled = cSecurity::toBoolean($disabled);
         if ($disabled) {
-            $this->updateAttribute('disabled', 'disabled');
+            return $this->updateAttribute('disabled', 'disabled');
         } else {
-            $this->removeAttribute('disabled');
+            return $this->removeAttribute('disabled');
         }
-
-        return $this;
     }
 
     /**
@@ -94,12 +81,9 @@ class cHTMLFormElement extends cHTML
      * The tab index needs to be numeric, bigger than 0 and smaller than 32767.
      *
      * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex
-     * @param int|null $tabindex
-     *         Desired tab index
-     * @return cHTMLFormElement
-     *         $this for chaining
+     * @param int|null $tabindex Desired tab index
      */
-    public function setTabindex($tabindex)
+    public function setTabindex($tabindex): self
     {
         if (is_numeric($tabindex)) {
             $tabindex = cSecurity::toInteger($tabindex);
@@ -116,20 +100,15 @@ class cHTMLFormElement extends cHTML
     /**
      * Sets the access key for this element.
      *
-     * @param string $accessKey
-     *         The length of the access key. May be A-Z and 0-9.
-     * @return cHTMLFormElement
-     *         $this for chaining
+     * @param string $accessKey The length of the access key. May be A-Z and 0-9.
      */
-    public function setAccessKey($accessKey)
+    public function setAccessKey($accessKey): self
     {
-        if ((cString::getStringLength($accessKey) == 1) && cString::isAlphanumeric($accessKey)) {
-            $this->updateAttribute('accesskey', $accessKey);
+        if (cString::getStringLength($accessKey) == 1 && cString::isAlphanumeric($accessKey)) {
+            return $this->updateAttribute('accesskey', $accessKey);
         } else {
-            $this->removeAttribute('accesskey');
+            return $this->removeAttribute('accesskey');
         }
-
-        return $this;
     }
 
 }

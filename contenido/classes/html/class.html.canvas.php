@@ -26,12 +26,9 @@ class cHTMLCanvas extends cHTMLContentElement
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $content [optional]
-     *         String or object with the contents
-     * @param string $class [optional]
-     *         the class of this element
-     * @param string $id [optional]
-     *         the ID of this element
+     * @param mixed $content [optional] String or object with the contents
+     * @param string $class [optional] The class of this element
+     * @param string $id [optional] The ID of this element
      */
     public function __construct($content = '', $class = '', $id = '')
     {
@@ -40,21 +37,19 @@ class cHTMLCanvas extends cHTMLContentElement
     }
 
     /**
-     *
      * @param int $height
      */
-    public function setHeight($height)
+    public function setHeight($height): self
     {
-        $this->setAttribute('height', $height);
+        return $this->setAttribute('height', cSecurity::toInteger($height));
     }
 
     /**
-     *
      * @param int $width
      */
-    public function setWidth($width)
+    public function setWidth($width): self
     {
-        $this->setAttribute('width', $width);
+        return $this->setAttribute('width', cSecurity::toInteger($width));
     }
 
 }

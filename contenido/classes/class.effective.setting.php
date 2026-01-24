@@ -47,17 +47,17 @@ class cEffectiveSetting
     protected static $_settings = [];
 
     /**
-     * @var cApiUser|NULL
+     * @var ?cApiUser
      */
     protected static $_user;
 
     /**
-     * @var cApiClient|NULL
+     * @var ?cApiClient
      */
     protected static $_client;
 
     /**
-     * @var cApiClientLanguage|NULL
+     * @var ?cApiClientLanguage
      */
     protected static $_clientLanguage;
 
@@ -67,7 +67,7 @@ class cEffectiveSetting
     protected static $_loaded = [];
 
     /**
-     * @var cApiLanguage
+     * @var ?cApiLanguage
      */
     protected static $_language;
 
@@ -76,8 +76,7 @@ class cEffectiveSetting
      *
      * The order is: System => Client => Client (language)
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     private static function _loadSettings()
     {
@@ -128,18 +127,11 @@ class cEffectiveSetting
      * NOTE: If you provide a default value (other than empty string),
      * then it will be returned in case of not existing or empty setting.
      *
-     * @param string $type
-     *                        The type of the item
-     * @param string $name
-     *                        The name of the item
-     * @param string $default [optional]
-     *                        default value
-     *
-     * @return bool|string
-     *         Setting value or false
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param string $type The type of the item
+     * @param string $name The name of the item
+     * @param mixed $default Default value
+     * @return bool|string Setting value or false
+     * @throws cDbException|cException
      */
     public static function get($type, $name, $default = '')
     {
@@ -157,7 +149,7 @@ class cEffectiveSetting
         if ($value === false || $value === NULL) {
             $value = $default;
         } elseif ($value === '' && $default !== '') {
-            // NOTE: A non empty default value overrides an empty value
+            // NOTE: A non-empty default value overrides an empty value
             $value = $default;
         }
 
@@ -173,16 +165,11 @@ class cEffectiveSetting
      *
      * System properties can be overridden by the group, and group properties can be overridden by the user.
      *
-     * @param string $type
-     *         The type of the item
-     *
-     * @return array
-     *         Associative array like $arr[name] = value
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param string $type The type of the item
+     * @return array Associative array like $arr[name] = value
+     * @throws cDbException|cException
      */
-    public static function getByType($type)
+    public static function getByType($type): array
     {
         self::_loadSettings();
 
@@ -193,11 +180,7 @@ class cEffectiveSetting
             $settings = array_merge($settings, self::_get($key));
         }
 
-        if (isset($settings) && is_array($settings)) {
-            return $settings;
-        } else {
-            return [];
-        }
+        return $settings;
     }
 
     /**
@@ -205,12 +188,9 @@ class cEffectiveSetting
      *
      * Note: The setting will be set only in cache, not in persistence layer.
      *
-     * @param string $type
-     *         The type of the item
-     * @param string $name
-     *         The name of the item
-     * @param string $value
-     *         The value of the setting
+     * @param string $type The type of the item
+     * @param string $name The name of the item
+     * @param string $value The value of the setting
      */
     public static function set($type, $name, $value)
     {
@@ -223,10 +203,8 @@ class cEffectiveSetting
      *
      * Note: The setting will be deleted only from cache, not from persistence layer.
      *
-     * @param string $type
-     *         The type of the item
-     * @param string $name
-     *         The name of the item
+     * @param string $type The type of the item
+     * @param string $name The name of the item
      */
     public static function delete($type, $name)
     {
@@ -252,15 +230,13 @@ class cEffectiveSetting
     /**
      * Returns the user object instance.
      *
-     * @return cApiUser
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    protected static function _getUserInstance()
+    protected static function _getUserInstance(): cApiUser
     {
         if (!isset(self::$_user)) {
             $auth = cRegistry::getAuth();
-            self::$_user = new cApiUser($auth->auth['uid']);
+            self::$_user = new cApiUser($auth->getUserId());
         }
         return self::$_user;
     }
@@ -268,11 +244,9 @@ class cEffectiveSetting
     /**
      * Returns the client language object instance.
      *
-     * @return cApiClientLanguage
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    protected static function _getClientLanguageInstance()
+    protected static function _getClientLanguageInstance(): cApiClientLanguage
     {
         if (!isset(self::$_clientLanguage)) {
             $client = cRegistry::getClientId();
@@ -285,11 +259,9 @@ class cEffectiveSetting
     /**
      * Returns the language object instance.
      *
-     * @return cApiLanguage
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    protected static function _getLanguageInstance()
+    protected static function _getLanguageInstance(): cApiLanguage
     {
         if (!isset(self::$_language)) {
             $lang = cRegistry::getLanguageId();
@@ -301,11 +273,9 @@ class cEffectiveSetting
     /**
      * Returns the client language object instance.
      *
-     * @return cApiClient
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    protected static function _getClientInstance()
+    protected static function _getClientInstance(): cApiClient
     {
         if (!isset(self::$_client)) {
             $client = cRegistry::getClientId();
@@ -317,10 +287,8 @@ class cEffectiveSetting
     /**
      * Setting getter.
      *
-     * @param string $key
-     *         The setting key
-     * @return string|string[]
-     *         bool setting value or false
+     * @param string $key The setting key
+     * @return string|string[]|bool Setting value or false
      */
     protected static function _get($key)
     {
@@ -330,10 +298,8 @@ class cEffectiveSetting
     /**
      * Setting setter.
      *
-     * @param string $key
-     *         The setting key
-     * @param string $value |string[]
-     *         Value to store
+     * @param string $key The setting key
+     * @param string|string[] $value Value(s) to store
      */
     protected static function _set($key, $value)
     {
@@ -343,34 +309,25 @@ class cEffectiveSetting
     /**
      * Setting key getter.
      *
-     * @param string $type
-     *         The type of the item
-     * @param string $name
-     *         Name of the item
-     * @return string
-     *         The setting key
+     * @param string $type The type of the item
+     * @param string $name Name of the item
+     * @return string The setting key
      */
-    protected static function _makeKey($type, $name)
+    protected static function _makeKey($type, $name): string
     {
         return self::_getKeyPrefix() . '_' . $type . '_' . $name;
     }
 
     /**
      * Returns the prefix for the internal key.
-     *
-     * @return string
      */
-    protected static function _getKeyPrefix()
+    protected static function _getKeyPrefix(): string
     {
         $auth = cRegistry::getAuth();
         $prefix = '';
 
         if ($auth instanceof cAuth) {
-            if (!self::_isAuthenticated()) {
-                $prefix = cAuth::AUTH_UID_NOBODY;
-            } else {
-                $prefix = $auth->auth['uid'];
-            }
+            $prefix = self::_isAuthenticated() ? $auth->getUserId() : cAuth::AUTH_UID_NOBODY;
         }
 
         if (cString::getStringLength($prefix) == 0) {
@@ -382,20 +339,15 @@ class cEffectiveSetting
 
     /**
      * Checks global authentication object and if current user is authenticated.
-     *
-     * @return bool
      */
-    protected static function _isAuthenticated()
+    protected static function _isAuthenticated(): bool
     {
         $auth = cRegistry::getAuth();
         return $auth instanceof cAuth && $auth->isAuthenticated() && !$auth->isLoginForm();
     }
 
     /**
-     * Saves the passed settings array structure in the type group array.
-     *
-     * @param array $settings
-     * @param array $typeGroup
+     * Saves the provided settings array structure in the type group array.
      *
      * @return void
      */

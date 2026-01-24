@@ -115,23 +115,23 @@ class cSetupMask
     {
         $link = new cHTMLLink("#");
 
-        $link->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '" . $this->_nextstep . "';");
-        $link->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
-        $link->setClass("nav");
+        $link->attachEventDefinition('pageAttach', 'onclick', "document.setupform.step.value = '" . $this->_nextstep . "';");
+        $link->attachEventDefinition('submitAttach', 'onclick', "document.setupform.submit();");
+        $link->setClass('nav');
         $link->setContent("<span>&raquo;</span>");
 
-        if ($this->_nextstep != "") {
-            $this->_stepTemplateClass->set("s", "NEXT", $link->render());
+        if ($this->_nextstep != '') {
+            $this->_stepTemplateClass->set('s', 'NEXT', $link->render());
         } else {
-            $this->_stepTemplateClass->set("s", "NEXT", '');
+            $this->_stepTemplateClass->set('s', 'NEXT', '');
         }
 
         $backlink = new cHTMLLink("#");
-        $backlink->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '" . $this->_backstep . "';");
-        $backlink->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
+        $backlink->attachEventDefinition('pageAttach', 'onclick', "document.setupform.step.value = '" . $this->_backstep . "';");
+        $backlink->attachEventDefinition('submitAttach', 'onclick', "document.setupform.submit();");
         $backlink->setClass("nav navBack");
         $backlink->setContent("<span>&laquo;</span>");
-        $this->_stepTemplateClass->set("s", "BACK", $backlink->render());
+        $this->_stepTemplateClass->set('s', 'BACK', $backlink->render());
     }
 
     public function render()
@@ -141,15 +141,16 @@ class cSetupMask
         }
 
         if ($this->_step !== false) {
-            $this->_tpl->set("s", "STEPS", cGenerateSetupStepsDisplay($this->_step));
+            $this->_tpl->set('s', 'STEPS', cGenerateSetupStepsDisplay($this->_step));
         } else {
-            $this->_tpl->set("s", "STEPS", "");
+            $this->_tpl->set('s', 'STEPS', '')
+;
         }
 
-        $this->_tpl->set("s", "HEADER", $this->_sHeader);
-        $this->_tpl->set("s", "TITLE", "CONTENIDO Setup - " . $this->_sHeader);
+        $this->_tpl->set('s', 'HEADER', $this->_sHeader);
+        $this->_tpl->set('s', 'TITLE', "CONTENIDO Setup - " . $this->_sHeader);
 
-        $this->_tpl->set("s", "CONTENT", $this->_stepTemplateClass->generate($this->_stepTemplate, true));
+        $this->_tpl->set('s', 'CONTENT', $this->_stepTemplateClass->generate($this->_stepTemplate, true));
 
         $this->_tpl->generate("templates/setup.tpl");
     }
@@ -161,15 +162,15 @@ class cSetupMask
         }
 
         if ($this->_step !== false) {
-            $this->_tpl->set("s", "STEPS", '');
+            $this->_tpl->set('s', 'STEPS', '');
         } else {
-            $this->_tpl->set("s", "STEPS", '');
+            $this->_tpl->set('s', 'STEPS', '');
         }
 
-        $this->_tpl->set("s", "HEADER", '');
-        $this->_tpl->set("s", "TITLE", '');
+        $this->_tpl->set('s', 'HEADER', '');
+        $this->_tpl->set('s', 'TITLE', '');
 
-        $this->_tpl->set("s", "CONTENT", $this->_stepTemplateClass->generate($this->_stepTemplate, true));
+        $this->_tpl->set('s', 'CONTENT', $this->_stepTemplateClass->generate($this->_stepTemplate, true));
 
         $this->_tpl->generate("templates/systemcheck/setup.tpl");
     }

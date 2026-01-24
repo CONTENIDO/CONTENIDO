@@ -28,7 +28,7 @@
  */
 
 // allow execution only through cli mode
-if (cString::getPartOfString(PHP_SAPI, 0, 3) != 'cli') {
+if (substr(PHP_SAPI, 0, 3) !== 'cli') {
     die('Illegal call');
 }
 
@@ -39,7 +39,7 @@ if (cString::getPartOfString(PHP_SAPI, 0, 3) != 'cli') {
 $context = new stdClass();
 
 // CONTENIDO installation path (folder which contains "cms", "contenido", "docs", "setup", etc...)
-$context->contenidoInstallPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../../')) . '/';
+$context->contenidoInstallPath = str_replace('\\', '/', realpath(__DIR__ . '/../../')) . '/';
 
 // /////////////////////////////////////////////////////////////////////
 // Proccess

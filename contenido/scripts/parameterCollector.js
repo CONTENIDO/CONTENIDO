@@ -19,7 +19,7 @@
 
     /**
      * Collected parameters
-     * @property  parameters
+     * @property parameters
      * @type {Object}
      * @private
      */

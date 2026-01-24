@@ -2,8 +2,7 @@
 
 /**
  * @author marcus.gnass
- * @method TFItem createNewItem
- * @method TFItem|bool next
+ * @extends ItemCollection<TFItem>
  */
 class TFCollection extends ItemCollection
 {
@@ -15,7 +14,7 @@ class TFCollection extends ItemCollection
      */
     public function __construct($where = false)
     {
-        parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
+        parent::__construct(cDb::getTableName('con_test'), 'ID');
         // $this->_setItemClass('TFItem');
         if (false !== $where) {
             $this->select($where);
@@ -32,12 +31,11 @@ class TFItem extends Item
      *
      * @param string|bool $id
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
+        parent::__construct(cDb::getTableName('con_test'), 'ID');
         if (false !== $id) {
             $this->loadByPrimaryKey($id);
         }

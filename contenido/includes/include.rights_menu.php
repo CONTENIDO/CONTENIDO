@@ -30,7 +30,7 @@ $sortorder = cSecurity::toString($_REQUEST['sortorder'] ?? 'asc');
 $filter = cSecurity::toString($_REQUEST['filter'] ?? '');
 $userid = cSecurity::toString($_GET['userid'] ?? '');
 
-$oPage = new cGuiPage("rights_menu");
+$oPage = new cGuiPage('rights_menu');
 
 $cApiUserCollection = new cApiUserCollection();
 $cApiUserCollection->query();
@@ -135,10 +135,10 @@ while ($cApiUser = $cApiUserCollection->next()) {
                 $deleteLink = '';
             }
 
-            $userInfo = '<span class="name">' . conHtmlSpecialChars($cApiUser->get("username")) . "</span><br>" . conHtmlSpecialChars($cApiUser->get("realname") ?? '');
-            $isValidFromEmpty = cDate::isEmptyDate($cApiUser->get("valid_from"));
-            $isValidToEmpty = cDate::isEmptyDate($cApiUser->get("valid_to"));
-            if (($sToday < $cApiUser->get("valid_from") && !$isValidFromEmpty) || ($sToday > $cApiUser->get("valid_to") && !$isValidToEmpty && !$isValidFromEmpty)) {
+            $userInfo = '<span class="name">' . conHtmlSpecialChars($cApiUser->get('username')) . "</span><br>" . conHtmlSpecialChars($cApiUser->get('realname') ?? '');
+            $isValidFromEmpty = cDate::isEmptyDate($cApiUser->get('valid_from'));
+            $isValidToEmpty = cDate::isEmptyDate($cApiUser->get('valid_to'));
+            if (($sToday < $cApiUser->get('valid_from') && !$isValidFromEmpty) || ($sToday > $cApiUser->get('valid_to') && !$isValidToEmpty && !$isValidFromEmpty)) {
                 $userInfo = '<span class="is_inactive">' . $userInfo . '</span>';
             }
             $mlist->setTitle($iMenu, $userInfo);
@@ -146,7 +146,7 @@ while ($cApiUser = $cApiUserCollection->next()) {
             $mlist->setLink($iMenu, $link);
             $mlist->setActions($iMenu, "delete", $deleteLink);
 
-            if ($userid == $cApiUser->get("user_id")) {
+            if ($userid == $cApiUser->get('user_id')) {
                 $mlist->setMarked($iMenu);
             }
         }
@@ -154,25 +154,25 @@ while ($cApiUser = $cApiUserCollection->next()) {
 }
 
 $deleteMsg = i18n("Do you really want to delete the user %s?");
-$oPage->set("s", "DELETE_MESSAGE", $deleteMsg);
-$oPage->set("s", "MPAGE", $mPage);
+$oPage->set('s', 'DELETE_MESSAGE', $deleteMsg);
+$oPage->set('s', 'MPAGE', $mPage);
 
 // <script type="text/javascript" src="{_ASSET(scripts/rowMark.js)_}"></script>
 $oPage->addScript('parameterCollector.js');
-$oPage->set("s", "FORM", $mlist->render(false));
+$oPage->set('s', 'FORM', $mlist->render(false));
 
 // generate current content for Object Pager
 $oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
-$oPagerLink->setCustom("elemperpage", $elemPerPage);
-$oPagerLink->setCustom("filter", $filter);
-$oPagerLink->setCustom("sortby", $sortby);
-$oPagerLink->setCustom("sortorder", $sortorder);
-$oPagerLink->setCustom("frame", $frame);
-$oPagerLink->setCustom("area", $area);
+$oPagerLink->setCustom('elemperpage', $elemPerPage);
+$oPagerLink->setCustom('filter', $filter);
+$oPagerLink->setCustom('sortby', $sortby);
+$oPagerLink->setCustom('sortorder', $sortorder);
+$oPagerLink->setCustom('frame', $frame);
+$oPagerLink->setCustom('area', $area);
 $oPagerLink->enableAutomaticParameterAppend();
-$oPagerLink->setCustom("contenido", $sess->id);
+$oPagerLink->setCustom('contenido', $sess->id);
 
 $pagerID = "pager";
 $oPager = new cGuiObjectPager("44b41691-0dd4-443c-a594-66a8164e25fd", $iItemCount, $elemPerPage, $page, $oPagerLink, "page", $pagerID);
@@ -183,6 +183,6 @@ $sPagerContent = str_replace('\\', '\\\\', $sPagerContent);
 $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 
 // send new object pager to left_top
-$oPage->set("s", "PAGER_CONTENT", $sPagerContent);
+$oPage->set('s', 'PAGER_CONTENT', $sPagerContent);
 
 $oPage->render();

@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiAction createNewItem
- * @method cApiAction|bool next
+ * @extends ItemCollection<cApiAction>
  */
 class cApiActionCollection extends ItemCollection
 {
@@ -32,7 +31,7 @@ class cApiActionCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('actions'), 'idaction');
+        parent::__construct(cDb::getTableName('actions'), 'idaction');
         $this->_setItemClass('cApiAction');
 
         // set the join partners so that joins can be used via link() method
@@ -44,18 +43,14 @@ class cApiActionCollection extends ItemCollection
      *
      * @param string|int $area
      * @param string|int $name
-     * @param string|int $alt_name [optional]
+     * @param string|int $altName [optional]
      * @param string $code [optional]
      * @param string $location [optional]
      * @param int $relevant [optional]
-     *
      * @return cApiAction
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($area, $name, $alt_name = '', $code = '', $location = '', $relevant = 1)
+    public function create($area, $name, $altName = '', $code = '', $location = '', $relevant = 1)
     {
         $item = $this->createNewItem();
 
@@ -66,7 +61,11 @@ class cApiActionCollection extends ItemCollection
                 $area = $c->get('idarea');
             } else {
                 $area = 0;
-                cWarning(__FILE__, __LINE__, "Could not resolve area [$area] passed to method [create], assuming 0");
+                cWarning(
+                    __FILE__,
+                    __LINE__,
+                    "Could not resolve area [$area] passed to method [create], assuming 0"
+                );
             }
         }
 
@@ -76,13 +75,13 @@ class cApiActionCollection extends ItemCollection
         if (is_string($name)) {
             $name = $this->escape($name);
         }
-        if (is_string($alt_name)) {
-            $alt_name = $this->escape($alt_name);
+        if (is_string($altName)) {
+            $altName = $this->escape($altName);
         }
 
         $item->set('idarea', $area);
         $item->set('name', $name);
-        $item->set('alt_name', $alt_name);
+        $item->set('alt_name', $altName);
         $item->set('code', $code);
         $item->set('location', $location);
         $item->set('relevant', $relevant);
@@ -95,26 +94,25 @@ class cApiActionCollection extends ItemCollection
     /**
      * Returns all actions available in the system.
      *
-     * @return array
-     *         Array with id and name entries
-     *
+     * @return array Array with id and name entries
      * @throws cDbException
      */
-    public function getAvailableActions()
+    public function getAvailableActions(): array
     {
         $sql = "SELECT action.idaction, action.name, area.name AS areaname
                 FROM `%s` AS action LEFT JOIN `%s` AS area
                 ON area.idarea = action.idarea
                 WHERE action.relevant = 1 ORDER BY action.name;";
 
-        $this->db->query($sql, $this->table, cRegistry::getDbTableName('area'));
+        $this->db->query($sql, $this->table, cDb::getTableName('area'));
 
         $actions = [];
 
         while ($this->db->nextRecord()) {
-            $newentry['name'] = $this->db->f('name');
-            $newentry['areaname'] = $this->db->f('areaname');
-            $actions[$this->db->f('idaction')] = $newentry;
+            $actions[cSecurity::toInteger($this->db->f('idaction'))] = [
+                'name' => $this->db->f('name'),
+                'areaname' => $this->db->f('areaname'),
+            ];
         }
 
         return $actions;
@@ -123,32 +121,24 @@ class cApiActionCollection extends ItemCollection
     /**
      * Return name of passed action.
      *
-     * @param int $action
-     *         Id of action
-     *
-     * @return string|NULL
-     *
+     * @param int $actionId The id of the action,
      * @throws cDbException
      */
-    public function getActionName($action)
+    public function getActionName($actionId): ?string
     {
-        $this->db->query("SELECT name FROM `%s` WHERE idaction = %d", $this->table, $action);
+        $this->db->query("SELECT name FROM `%s` WHERE idaction = %d", $this->table, $actionId);
 
-        return ($this->db->nextRecord()) ? $this->db->f('name') : NULL;
+        return $this->db->nextRecord() ? $this->db->f('name') : null;
     }
 
     /**
      * Returns the area for the given action.
      *
-     * @param string|int
-     *         Name or id of action
-     *
-     * @return int|NULL
-     *         with the area ID for the given action or NULL
-     *
+     * @param string|int $action Name or id of action
+     * @return ?int The area ID for the given action or NULL
      * @throws cDbException
      */
-    function getAreaForAction($action)
+    public function getAreaForAction($action): ?int
     {
         if (!is_numeric($action)) {
             $this->db->query("SELECT idarea FROM `%s` WHERE name = '%s'", $this->table, $action);
@@ -156,7 +146,7 @@ class cApiActionCollection extends ItemCollection
             $this->db->query("SELECT idarea FROM `%s` WHERE idaction = %d", $this->table, $action);
         }
 
-        return ($this->db->nextRecord()) ? $this->db->f('idarea') : NULL;
+        return $this->db->nextRecord() ? cSecurity::toInteger($this->db->f('idarea')) : null;
     }
 }
 
@@ -171,35 +161,25 @@ class cApiAction extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('actions'), 'idaction');
+        parent::__construct(cDb::getTableName('actions'), 'idaction');
         $this->setFilters(['addslashes'], ['stripslashes']);
 
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
-
-        // @todo Where is this used???
-        $this->_wantParameters = [];
     }
 
     /**
      * User-defined setter for action fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'relevant':
@@ -207,7 +187,7 @@ class cApiAction extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

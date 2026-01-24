@@ -38,21 +38,15 @@ class pApiContentAllocationSelectBox extends pApiTree
     /**
      * pApiContentAllocationSelectBox constructor
      *
-     * @param string $uuid
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function __construct($uuid)
+    public function __construct(string $uuid)
     {
         parent::__construct($uuid);
     }
 
     /**
-     * Builds an render tree
-     *
-     * @param array $tree
-     * @return string
+     * Builds a render tree
      */
     protected function _buildRenderTree(array $tree): string
     {
@@ -77,27 +71,24 @@ class pApiContentAllocationSelectBox extends pApiTree
     /**
      * Render tree
      *
-     * @param bool $return
-     * @param mixed $parentId
+     * @param int|false $parentId
      * @param bool $useTreeStatus (if true use expand/collapsed status of the tree, otherwise not)
-     *
-     * @return bool|string|void
      * @throws cDbException
      */
-    public function renderTree(bool $return = true, $parentId = false, bool $useTreeStatus = false)
+    public function renderTree(bool $return = true, $parentId = false, bool $useTreeStatus = false): ?string
     {
         $tree = $this->fetchTree($parentId, 0, $useTreeStatus);
-
-        if ($tree === false) {
-            return false;
+        if (!$tree) {
+            return null;
         }
 
         $tree = $this->_buildRenderTree($tree);
 
-        if ($return === true) {
+        if ($return) {
             return $tree;
         } else {
             echo $tree;
+            return null;
         }
     }
 

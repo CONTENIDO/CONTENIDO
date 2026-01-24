@@ -35,8 +35,8 @@ if (class_exists('NewsletterJobCollection')) {
 
     $sTemplate = 'get.tpl';
     $cmsLinkeditor = "CMS_LINKEDITOR[1]";
-    if ($aSettings["JoinSel"] == "" || ($aSettings["JoinSel"] == "UserSelected" && $aSettings["JoinGroups"] == "")) {
-        $aSettings["JoinSel"] = "Default";
+    if ($aSettings['JoinSel'] == '' || ($aSettings['JoinSel'] == "UserSelected" && $aSettings['JoinGroups'] == '')) {
+        $aSettings['JoinSel'] = "Default";
     }
 
     $tpl = cSmartyFrontend::getInstance();
@@ -44,7 +44,7 @@ if (class_exists('NewsletterJobCollection')) {
     $tpl->assign('FORM_ACTION', 'front_content.php?changelang=' . cRegistry::getLanguageId() . '&idcatart=' . $oClientLang->getProperty('newsletter', 'idcatart'));
     unset($oClientLang);
 
-    if ($aSettings["OptNewWindow"]) {
+    if ($aSettings['OptNewWindow']) {
         $tpl->assign('FORM_TARGET', ' target="_blank"');
     } else {
         $tpl->assign('FORM_TARGET', '');
@@ -54,34 +54,34 @@ if (class_exists('NewsletterJobCollection')) {
 
     $aAdditionalRows = [];
 
-    if ($aSettings["JoinSel"] == "UserSelected") {
+    if ($aSettings['JoinSel'] == "UserSelected") {
         // Late include to increase performance
 
         $oRcpGroups = new NewsletterRecipientGroupCollection();
         $oRcpGroups->setWhere('idclient', cRegistry::getClientId());
         $oRcpGroups->setWhere('idlang', cRegistry::getLanguageId());
         $oRcpGroups->setWhere('defaultgroup', '0');
-        $oRcpGroups->setWhere('idnewsgroup', explode(',', $aSettings["JoinGroups"]), 'IN');
+        $oRcpGroups->setWhere('idnewsgroup', explode(',', $aSettings['JoinGroups']), 'IN');
         $oRcpGroups->setOrder('groupname ASC');
         $oRcpGroups->query();
 
         // oRcpGroups->select("idclient = '$client' AND idlang = '$lang' AND
         // defaultgroup = '0' AND idnewsgroup IN
-        // (".$aSettings["JoinGroups"].")","",
+        // (".$aSettings['JoinGroups'].")","",
         // "groupname ASC");
 
         if ($oRcpGroups->count() > 0) {
-            $oSelGroup = new cHTMLSelectElement("selNewsletterGroup[]", "", "selNewsletterGroup");
+            $oSelGroup = new cHTMLSelectElement('selNewsletterGroup[]', '', 'selNewsletterGroup');
             $oSelGroup->setSize(2);
-            $oSelGroup->setClass("");
+            $oSelGroup->setClass('');
 
-            if ($aSettings["JoinMultiple"] == "enabled") {
+            if ($aSettings['JoinMultiple'] == 'enabled') {
                 $oSelGroup->setMultiselect();
             }
 
-            while (false !== $oRcpGroup = $oRcpGroups->next()) {
-                $iID = $oRcpGroup->get("idnewsgroup");
-                $oOption = new cHTMLOptionElement($oRcpGroup->get("groupname"), $iID);
+            while ($oRcpGroup = $oRcpGroups->next()) {
+                $iID = $oRcpGroup->get('idnewsgroup');
+                $oOption = new cHTMLOptionElement($oRcpGroup->get('groupname'), $iID);
                 $oSelGroup->addOptionElement($iID, $oOption);
             }
 
@@ -98,9 +98,9 @@ if (class_exists('NewsletterJobCollection')) {
     // $aAdditionalRows[] = [...];
 
     if ($aSettings['JoinMessageType'] == 'user') {
-        $oSelType = new cHTMLSelectElement("selNewsletterType", "", "selNewsletterType");
+        $oSelType = new cHTMLSelectElement('selNewsletterType', '', 'selNewsletterType');
         $oSelType->setSize(1);
-        $oSelType->setClass("");
+        $oSelType->setClass('');
 
         $oOption = new cHTMLOptionElement(mi18n("TEXT_ONLY"), 0);
         $oSelType->addOptionElement(0, $oOption);

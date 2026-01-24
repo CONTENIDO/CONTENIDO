@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiKeyword createNewItem
- * @method cApiKeyword|bool next
+ * @extends ItemCollection<cApiKeyword>
  */
 class cApiKeywordCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiKeywordCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('keywords'), 'idkeyword');
+        parent::__construct(cDb::getTableName('keywords'), 'idkeyword');
         $this->_setItemClass('cApiKeyword');
     }
 
@@ -40,16 +39,12 @@ class cApiKeywordCollection extends ItemCollection
      * @param string $exp [optional]
      * @param string $auto
      * @param string $self [optional]
-     * @param int $idlang
-     *
+     * @param int $languageId
      * @return cApiKeyword
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      * @todo params w/ defaults should be relocated
-     *
      */
-    public function create($keyword, $exp = '', $auto, $self = '', $idlang)
+    public function create($keyword, $exp = '', $auto, $self = '', $languageId)
     {
         $item = $this->createNewItem();
 
@@ -57,7 +52,7 @@ class cApiKeywordCollection extends ItemCollection
         $item->set('exp', $exp);
         $item->set('auto', $auto);
         $item->set('self', $self);
-        $item->set('idlang', $idlang);
+        $item->set('idlang', $languageId);
 
         $item->store();
 
@@ -77,31 +72,24 @@ class cApiKeyword extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('keywords'), 'idkeyword');
+        parent::__construct(cDb::getTableName('keywords'), 'idkeyword');
         $this->setFilters(['addslashes'], ['stripslashes']);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * User-defined setter for keyword fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idlang':
@@ -109,7 +97,7 @@ class cApiKeyword extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

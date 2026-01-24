@@ -20,8 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Plugin
  * @subpackage Newsletter
- * @method NewsletterRecipient createNewItem
- * @method NewsletterRecipient|bool next
+ * @extends ItemCollection<NewsletterRecipient>
  */
 class NewsletterRecipientCollection extends ItemCollection
 {
@@ -47,79 +46,82 @@ class NewsletterRecipientCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('news_rcp'), 'idnewsrcp');
+        parent::__construct(cDb::getTableName('news_rcp'), 'idnewsrcp');
         $this->_setItemClass('NewsletterRecipient');
     }
 
     /**
      * Creates a new recipient
      *
-     * @param string $sEMail Specifies the e-mail address
-     * @param string $sName Specifies the recipient name (optional)
-     * @param int $iConfirmed Specifies, if the recipient is confirmed
-     *                             (optional)
-     * @param string $sJoinID Specifies additional recipient group ids to join
-     *                             (optional, e.g. 47,12,...)
-     * @param int $iMessageType Specifies the message type for the recipient (0 = text, 1 = html)
-     *
-     * @return Item
+     * @param string $email Specifies the e-mail address
+     * @param string $name Specifies the recipient name (optional)
+     * @param int $confirmed Specifies if the recipient is confirmed (optional)
+     * @param string $joinId Specifies additional recipient group ids to join (optional, e.g. 47,12,...)
+     * @param int $newsType Specifies the message type for the recipient (0 = text, 1 = html)
+     * @return NewsletterRecipient
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($sEMail, $sName = "", $iConfirmed = 0, $sJoinID = "", $iMessageType = 0)
+    public function create($email, $name = '', $confirmed = 0, $joinId = '', $newsType = 0)
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $clientId = cRegistry::getClientId();
+        $languageId = cRegistry::getLanguageId();
         $auth = cRegistry::getAuth();
 
         // Check if the e-mail address already exists
-        $email = cString::toLowerCase($sEMail); // e-mail always lower case
-        $this->setWhere("idclient", $client);
-        $this->setWhere("idlang", $lang);
-        $this->setWhere("email", $email);
+        $email = cString::toLowerCase($email); // e-mail always lower case
+        $this->setWhere('idclient', $clientId);
+        $this->setWhere('idlang', $languageId);
+        $this->setWhere('email', $email);
         $this->query();
 
         if ($this->next()) {
             // 0: Deactivate 'confirmed'
-            return $this->create($email . "_" . cString::getPartOfString(md5(rand()), 0, 10), $sName, 0, $sJoinID, $iMessageType);
+            return $this->create(
+                $email . '_' . cString::getPartOfString(md5(rand()), 0, 10),
+                $name,
+                0,
+                $joinId,
+                $newsType
+            );
         }
         $oItem = $this->createNewItem();
-        $oItem->set("idclient", $client);
-        $oItem->set("idlang", $lang);
-        $oItem->set("name", $sName);
-        $oItem->set("email", $email);
+        $oItem->set('idclient', $clientId);
+        $oItem->set('idlang', $languageId);
+        $oItem->set('name', $name);
+        $oItem->set('email', $email);
         // Generating UID, 30 characters
-        $oItem->set("hash", cString::getPartOfString(md5(rand()), 0, 17) . uniqid(""));
-        $oItem->set("confirmed", $iConfirmed);
-        $oItem->set("news_type", $iMessageType);
+        $oItem->set('hash', cString::getPartOfString(md5(rand()), 0, 17) . uniqid());
+        $oItem->set('confirmed', $confirmed);
+        $oItem->set('news_type', $newsType);
 
-        if ($iConfirmed) {
-            $oItem->set("confirmeddate", date("Y-m-d H:i:s"), false);
+        if ($confirmed) {
+            $oItem->set('confirmeddate', date('Y-m-d H:i:s'), false);
         }
-        $oItem->set("deactivated", 0);
-        $oItem->set("created", date('Y-m-d H:i:s'), false);
-        $oItem->set("author", $auth->auth["uid"]);
+        $oItem->set('deactivated', 0);
+        $oItem->set('created', date('Y-m-d H:i:s'), false);
+        $oItem->set('author', $auth->getUserId());
         $oItem->store();
 
         // Getting internal id of new recipient
-        $iIDRcp = $oItem->get("idnewsrcp");
+        $iIDRcp = $oItem->get('idnewsrcp');
 
         // Add this recipient to the default recipient group (if available)
         $oGroups = new NewsletterRecipientGroupCollection();
         $oGroupMembers = new NewsletterRecipientGroupMemberCollection();
 
-        $oGroups->setWhere("idclient", $client);
-        $oGroups->setWhere("idlang", $lang);
-        $oGroups->setWhere("defaultgroup", 1);
+        $oGroups->setWhere('idclient', $clientId);
+        $oGroups->setWhere('idlang', $languageId);
+        $oGroups->setWhere('defaultgroup', 1);
         $oGroups->query();
 
         while ($oGroup = $oGroups->next()) {
-            $iIDGroup = $oGroup->get("idnewsgroup");
+            $iIDGroup = $oGroup->get('idnewsgroup');
             $oGroupMembers->create($iIDGroup, $iIDRcp);
         }
 
         // Add to other recipient groups as well? Do so!
-        if ($sJoinID != "") {
-            $aJoinID = explode(",", $sJoinID);
+        if ($joinId != '') {
+            $aJoinID = explode(",", $joinId);
 
             if (count($aJoinID) > 0) {
                 foreach ($aJoinID as $iIDGroup) {
@@ -132,39 +134,37 @@ class NewsletterRecipientCollection extends ItemCollection
     }
 
     /**
-     * Overridden delete method to remove recipient from groupmember table
-     * before deleting recipient
+     * Overridden delete method to remove recipient from group member table before deleting recipient
      *
-     * @param $itemID int specifies the recipient
-     *
+     * @inheritDoc
+     * @param int $id The newsletter recipient id.
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function delete($itemID)
+    public function delete($id)
     {
-        $oAssociations = new NewsletterRecipientGroupMemberCollection();
-        $oAssociations->setWhere("idnewsrcp", $itemID);
-        $oAssociations->query();
+        $id = cSecurity::toInteger($id);
 
+        $oAssociations = new NewsletterRecipientGroupMemberCollection();
+        $oAssociations->setWhere('idnewsrcp', $id);
+        $oAssociations->query();
         while ($oItem = $oAssociations->next()) {
-            $oAssociations->delete($oItem->get("idnewsgroupmember"));
+            $oAssociations->delete($oItem->get('idnewsgroupmember'));
         }
-        parent::delete($itemID);
+
+        return parent::delete($id);
     }
 
     /**
-     * Purge method to delete recipients which hasn't been confirmed since over
-     * a month
+     * Purge method to delete recipients which hasn't been confirmed since over a month
      *
-     * @param $timeframe int Days after creation a not confirmed recipient will
-     *                   be removed
-     *
+     * @param $timeframe int Days after creation a not confirmed recipient will be removed
      * @return int Count of deleted recipients
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function purge($timeframe)
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $clientId = cRegistry::getClientId();
+        $languageId = cRegistry::getLanguageId();
 
         $oRecipientCollection = new NewsletterRecipientCollection();
 
@@ -172,36 +172,34 @@ class NewsletterRecipientCollection extends ItemCollection
         // available in MySQL V4.1.1 and above
         // Note, that, TO_DAYS or NOW may not be available in other database
         // systems than MySQL
-        $oRecipientCollection->setWhere("idclient", $client);
-        $oRecipientCollection->setWhere("idlang", $lang);
-        $oRecipientCollection->setWhere("confirmed", 0);
+        $oRecipientCollection->setWhere('idclient', $clientId);
+        $oRecipientCollection->setWhere('idlang', $languageId);
+        $oRecipientCollection->setWhere('confirmed', 0);
         $oRecipientCollection->setWhere("(TO_DAYS(NOW()) - TO_DAYS(created))", $timeframe, ">");
         $oRecipientCollection->query();
 
         while ($oItem = $oRecipientCollection->next()) {
-            $oRecipientCollection->delete($oItem->get("idnewsrcp"));
+            $oRecipientCollection->delete($oItem->get('idnewsrcp'));
         }
         return $oRecipientCollection->count();
     }
 
     /**
-     * checkEMail returns true, if there is no recipient with the same e-mail
-     * address; otherwise false
+     * checkEMail returns true, if there is no recipient with the same e-mail address; otherwise false
      *
-     * @param $sEmail string e-mail
-     *
+     * @param $email string e-mail
      * @return NewsletterRecipient|false recipient item if item with e-mail exists, false otherwise
      * @throws cException
      */
-    public function emailExists($sEmail)
+    public function emailExists($email)
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $clientId = cRegistry::getClientId();
+        $languageId = cRegistry::getLanguageId();
 
         $oRecipientCollection = new NewsletterRecipientCollection();
-        $oRecipientCollection->setWhere("idclient", $client);
-        $oRecipientCollection->setWhere("idlang", $lang);
-        $oRecipientCollection->setWhere("email", cString::toLowerCase($sEmail));
+        $oRecipientCollection->setWhere('idclient', $clientId);
+        $oRecipientCollection->setWhere('idlang', $languageId);
+        $oRecipientCollection->setWhere('email', cString::toLowerCase($email));
         $oRecipientCollection->query();
 
         if ($oItem = $oRecipientCollection->next()) {
@@ -214,11 +212,10 @@ class NewsletterRecipientCollection extends ItemCollection
     /**
      * Sets a key for all recipients without key or an old key (len(key) <> 30)
      *
-     * @return int
-     * @throws cDbException
-     * @throws cException
+     * @return int Number of updated keys
+     * @throws cDbException|cException
      */
-    public function updateKeys()
+    public function updateKeys(): int
     {
         $this->setWhere("LENGTH(hash)", 30, "<>");
         $this->query();
@@ -226,7 +223,7 @@ class NewsletterRecipientCollection extends ItemCollection
         $iUpdated = $this->count();
         while ($oItem = $this->next()) {
             // Generating UID, 30 characters
-            $oItem->set("hash", cString::getPartOfString(md5(rand()), 0, 17) . uniqid(""));
+            $oItem->set('hash', cString::getPartOfString(md5(rand()), 0, 17) . uniqid());
             $oItem->store();
         }
 
@@ -243,52 +240,49 @@ class NewsletterRecipient extends Item
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('news_rcp'), 'idnewsrcp');
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('news_rcp'), 'idnewsrcp');
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
-     * @return bool
-     * @throws cDbException
+     * @inheritDoc
      * @throws cException
      */
     public function store()
     {
         $auth = cRegistry::getAuth();
 
-        $this->set("lastmodified", date('Y-m-d H:i:s'), false);
-        $this->set("modifiedby", $auth->auth["uid"]);
+        $this->set('lastmodified', date('Y-m-d H:i:s'), false);
+        $this->set('modifiedby', $auth->getUserId());
         $success = parent::store();
 
         // @todo do update below only if code from above was successfully
 
         // Update name, email and newsletter type for recipients in pending
         // newsletter jobs
-        $sName = $this->get("name");
-        $sEmail = $this->get("email");
-        if ($sName == "") {
-            $sName = $sEmail;
+        $name = $this->get('name');
+        $email = $this->get('email');
+        if ($name == '') {
+            $name = $email;
         }
-        $iNewsType = $this->get("news_type");
+        $newsType = $this->get('news_type');
 
         $oLogs = new NewsletterLogCollection();
-        $oLogs->setWhere("idnewsrcp", $this->get($this->getPrimaryKeyName()));
-        $oLogs->setWhere("status", "pending");
+        $oLogs->setWhere('idnewsrcp', $this->get($this->getPrimaryKeyName()));
+        $oLogs->setWhere('status', 'pending');
         $oLogs->query();
 
         while ($oLog = $oLogs->next()) {
-            $oLog->set("rcpname", $sName);
-            $oLog->set("rcpemail", $sEmail);
-            $oLog->set("rcpnewstype", $iNewsType);
+            $oLog->set('rcpname', $name);
+            $oLog->set('rcpemail', $email);
+            $oLog->set('rcpnewstype', $newsType);
             $oLog->store();
         }
 
@@ -298,22 +292,43 @@ class NewsletterRecipient extends Item
     /**
      * User-defined setter for newsletter recipients fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
-            case 'news_type':
+            case 'idnewsrcp':
+            case 'idclient':
+            case 'idlang':
             case 'confirmed':
+            case 'deactivated':
+            case 'news_type':
                 $value = cSecurity::toInteger($value);
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getField($name, $safe = true)
+    {
+        $value = parent::getField($name, $safe);
+
+        switch ($name) {
+            case 'idnewsrcp':
+            case 'idclient':
+            case 'idlang':
+            case 'confirmed':
+            case 'deactivated':
+            case 'news_type':
+                $value = cSecurity::toInteger($value);
+                break;
+        }
+
+        return $value;
     }
 
 }

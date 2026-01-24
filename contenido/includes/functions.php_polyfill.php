@@ -16,7 +16,6 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 if (!function_exists('is_iterable')) {
-
     /**
      * Verify that the contents of a variable is an iterable value.
      * is_iterable polyfill for PHP < 7.1.
@@ -29,17 +28,15 @@ if (!function_exists('is_iterable')) {
     {
         return is_array($var) || ($var instanceof \Traversable);
     }
-
 }
 
 if (!function_exists('is_countable')) {
-
     /**
      * Verify that the content of a variable is an array or an object
      * implementing the Countable interface.
      * is_countable polyfill for PHP < 7.3.
      *
-     * @link https://www.php.net/manual/de/function.is-countable.php
+     * @link https://www.php.net/manual/en/function.is-countable.php
      * @param mixed $var The value to check
      * @return bool Returns TRUE if var is countable, FALSE otherwise
      */
@@ -47,5 +44,4 @@ if (!function_exists('is_countable')) {
     {
         return (is_array($var) || $var instanceof \Countable);
     }
-
 }

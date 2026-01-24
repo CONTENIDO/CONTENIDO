@@ -14,10 +14,17 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cGuiNotification $notification
+ * @var int $idlay
+ */
+
 cInclude('includes', 'functions.lay.php');
 
-if ($perm->have_perm_area_action("lay", "lay_delete")) {
+$perm = cRegistry::getPerm();
+
+if ($perm->have_perm_area_action('lay', 'lay_delete')) {
     $errno = layDeleteLayout($idlay);
 } else {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
 }

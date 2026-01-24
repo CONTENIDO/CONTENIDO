@@ -14,9 +14,18 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cGuiNotification $notification
+ * @var int $targetclient
+ * @var int $idlang
+ */
+
 cInclude('includes', 'functions.lang.php');
 
-if ($perm->have_perm_area_action("lang_edit", "lang_deletelanguage")) {
+$perm = cRegistry::getPerm();
+$client = cRegistry::getClientId();
+
+if ($perm->have_perm_area_action('lang_edit', 'lang_deletelanguage')) {
     if (!is_numeric($targetclient)) {
         $targetclient = $client;
     }
@@ -26,8 +35,8 @@ if ($perm->have_perm_area_action("lang_edit", "lang_deletelanguage")) {
         // Result contains language not deleted error message
         $tmp_notification = $result;
     } else {
-        $tmp_notification = $notification->returnNotification("ok", i18n("Language deleted"));
+        $tmp_notification = $notification->returnNotification('ok', i18n("Language deleted"));
     }
 } else {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
 }

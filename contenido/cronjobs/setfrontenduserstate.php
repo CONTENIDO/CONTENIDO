@@ -19,10 +19,12 @@ if (!defined('CON_FRAMEWORK')) {
 global $cfg;
 
 // CONTENIDO path
-$contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/';
+$contenidoPath = str_replace('\\', '/', realpath(__DIR__ . '/../')) . '/';
 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
+
+$area = cRegistry::getArea();
 
 // @todo Do we really need this include here?
 require_once(cRegistry::getBackendPath() . $cfg['path']['includes'] . 'pseudo-cron.inc.php');
@@ -30,12 +32,10 @@ require_once(cRegistry::getBackendPath() . $cfg['path']['includes'] . 'pseudo-cr
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
     $db = cRegistry::getDb();
 
-    $sSql = "UPDATE " . $cfg['tab']['frontendusers'] . "
+    $sSql = "UPDATE " . cDb::getTableName('frontendusers') . "
             SET active = 0
             WHERE (valid_to < NOW() AND valid_to != '0000-00-00 00:00:00')
             OR (valid_from > NOW() AND valid_from != '0000-00-00 00:00:00')";
     //echo $sSql;
     $db->query($sSql);
 }
-
-?>

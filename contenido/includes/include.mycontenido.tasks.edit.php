@@ -24,64 +24,64 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 
 
-$cpage = new cGuiPage("mycontenido.tasks.edit");
+$cpage = new cGuiPage('mycontenido.tasks.edit');
 
 $todoitem = new TODOItem();
 $todoitem->loadByPrimaryKey($idcommunication);
 
-$ui = new cGuiTableForm("reminder");
+$ui = new cGuiTableForm('reminder');
 $ui->setHeader(i18n("Edit reminder item"));
 
 $ui->setCancelLink($sess->url("main.php?area=mycontenido_tasks&frame=$frame"));
 
-$ui->setVar("area", "mycontenido_tasks");
-$ui->setVar("frame", $frame);
-$ui->setVar("action", "todo_save_item");
-$ui->setVar("idcommunication", $idcommunication);
+$ui->setVar('area', 'mycontenido_tasks');
+$ui->setVar('frame', $frame);
+$ui->setVar('action', 'todo_save_item');
+$ui->setVar('idcommunication', $idcommunication);
 
-$userselect = new cHTMLSelectElement("userassignment");
+$userselect = new cHTMLSelectElement('userassignment');
 
 $userColl = new cApiUserCollection();
 foreach ($userColl->getAccessibleUsers($auth->getPermsArray()) as $key => $value) {
-    $acusers[$key] = $value["username"] . " (" . $value["realname"] . ")";
+    $acusers[$key] = $value['username'] . " (" . $value['realname'] . ")";
 }
 asort($acusers);
 
 $userselect->autoFill($acusers);
-$userselect->setDefault($auth->auth["uid"]);
+$userselect->setDefault($auth->getUserId());
 
 $ui->add(i18n("Assigned to"), $userselect->render());
 
-$subject = new cHTMLTextbox("subject", $todoitem->get("subject"), 60);
+$subject = new cHTMLTextbox('subject', $todoitem->get('subject'), 60);
 $ui->add(i18n("Subject"), $subject->render());
 
-$message = new cHTMLTextarea("message", $todoitem->get("message"));
+$message = new cHTMLTextarea('message', $todoitem->get('message'));
 $ui->add(i18n("Description"), $message->render());
 
-$reminderdue = new cHTMLTextbox("enddate", $todoitem->getProperty("todo", "enddate"), '', '', "enddate");
+$reminderdue = new cHTMLTextbox('enddate', $todoitem->getProperty('todo', 'enddate'), '', '', "enddate");
 
 $ui->add(i18n("End date"), $reminderdue->render());
 
-$notiemail = new cHTMLCheckbox("notiemail", 1);
+$notiemail = new cHTMLCheckbox('notiemail', 1);
 $notiemail->setLabelText(i18n("E-Mail notification"));
-$notiemail->setChecked($todoitem->getProperty("todo", "emailnoti"));
+$notiemail->setChecked($todoitem->getProperty('todo', 'emailnoti'));
 $notiemail->setEvent("click", "if (this.checked) { document.forms['reminder'].reminderdate.disabled = false; } else { document.forms['reminder'].reminderdate.disabled = true; }");
 
 $ui->add(i18n("Reminder options"), $notiemail->toHtml());
 
-$remindertimestamp = $todoitem->getProperty("todo", "reminderdate");
+$remindertimestamp = $todoitem->getProperty('todo', 'reminderdate');
 
 if (!empty($remindertimestamp) && is_numeric($remindertimestamp)) {
-    $mydate = date("Y-m-d H:i:s", cSecurity::toInteger($remindertimestamp));
+    $mydate = date('Y-m-d H:i:s', cSecurity::toInteger($remindertimestamp));
 } else {
     $mydate = "";
 }
 
 $path_to_calender_pic = cRegistry::getBackendUrl() . $cfg['path']['images'] . 'calendar.gif';
 
-$reminderdate = new cHTMLTextbox("reminderdate", $mydate, '', '', "reminderdate");
+$reminderdate = new cHTMLTextbox('reminderdate', $mydate, '', '', "reminderdate");
 
-if (!$todoitem->getProperty("todo", "emailnoti")) {
+if (!$todoitem->getProperty('todo', 'emailnoti')) {
     $reminderdate->setDisabled(true);
 }
 
@@ -89,20 +89,20 @@ $ui->add(i18n("Reminder date"), $reminderdate->render());
 
 $todos = new TODOCollection();
 
-$priorityselect = new cHTMLSelectElement("priority");
+$priorityselect = new cHTMLSelectElement('priority');
 $priorityselect->autoFill($todos->getPriorityTypes());
-$priorityselect->setDefault($todoitem->getProperty("todo", "priority"));
+$priorityselect->setDefault($todoitem->getProperty('todo', 'priority'));
 $ui->add(i18n("Priority"), $priorityselect->render());
 
-$statusselect = new cHTMLSelectElement("status");
+$statusselect = new cHTMLSelectElement('status');
 $statusselect->autoFill($todos->getStatusTypes());
-$statusselect->setDefault($todoitem->getProperty("todo", "status"));
+$statusselect->setDefault($todoitem->getProperty('todo', 'status'));
 $ui->add(i18n("Status"), $statusselect->render());
 
-$progress = new cHTMLTextbox("progress", (int)$todoitem->getProperty("todo", "progress"), 5);
+$progress = new cHTMLTextbox('progress', (int)$todoitem->getProperty('todo', 'progress'), 5);
 $ui->add(i18n("Progress"), $progress->render() . "%");
 
-$calscript = '
+$calScript = '
 <script type="text/javascript">
 (function(Con, $) {
     $(function() {
@@ -154,7 +154,7 @@ $calscript = '
 })(Con, Con.$);
 </script>';
 
-$cpage->addScript($calscript);
+$cpage->addScript($calScript);
 $cpage->setContent([$ui]);
 $cpage->addStyle("jquery/plugins/timepicker.css");
 // $cpage->addStyle("jquery/jquery-ui.css");

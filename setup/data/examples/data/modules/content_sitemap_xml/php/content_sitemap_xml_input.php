@@ -26,7 +26,7 @@ $selectName = "CMS_VAR[1]";
 
 // if nothing is selected, select the root category
 if ($selected == '') {
-    $query = 'SELECT * FROM ' . $cfg['tab']['cat_tree'] . ' AS a, ' . $cfg['tab']['cat'] . ' AS b WHERE (a.idcat) AND (b.idcat) AND (b.idclient = ' . $client . ') ORDER BY a.idtree';
+    $query = 'SELECT * FROM ' . cDb::getTableName('cat_tree') . ' AS a, ' . cDb::getTableName('cat') . ' AS b WHERE (a.idcat) AND (b.idcat) AND (b.idclient = ' . $client . ') ORDER BY a.idtree';
     $db->query($query);
     $db->nextRecord();
     $selected = $db->f('idcat');

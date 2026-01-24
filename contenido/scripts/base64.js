@@ -5,7 +5,7 @@
  * Description:
  * Base64 encode / decode.
  * Functionality is taken over from contenido/scripts/content_types/cmsDate.js.
- * 
+ *
  * Source:
  * http://www.webtoolkit.info/
  *
@@ -28,8 +28,7 @@
 
     var KEY_STR = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
-
-        // private method for UTF-8 encoding
+    // private method for UTF-8 encoding
     function _utf8_encode(string) {
         string = string.replace(/\r\n/g,"\n");
         var utftext = "";
@@ -118,7 +117,7 @@
                     enc4 = 64;
                 }
 
-                output = output 
+                output = output
                     + KEY_STR.charAt(enc1) + KEY_STR.charAt(enc2)
                     + KEY_STR.charAt(enc3) + KEY_STR.charAt(enc4);
             }

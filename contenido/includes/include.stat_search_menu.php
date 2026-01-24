@@ -14,10 +14,10 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$page = new cGuiPage("stat_search_menu");
+$page = new cGuiPage('stat_search_menu');
 
 // don't display anything if the feature is turned off
-if (getEffectiveSetting("search", "term_tracking", "on") != "on") {
+if (getEffectiveSetting('search', 'term_tracking', 'on') != 'on') {
     die();
 }
 
@@ -25,8 +25,8 @@ if (getEffectiveSetting("search", "term_tracking", "on") != "on") {
 $searchTerms = new cApiSearchTrackingCollection();
 $db = $searchTerms->queryPopularSearchTerms();
 while ($db->nextRecord()) {
-    $page->set("d", "SEARCHTERM_URL", urlencode($db->f("searchterm")));
-    $page->set("d", "SEARCHTERM", conHtmlSpecialChars($db->f("searchterm")));
+    $page->set('d', 'SEARCHTERM_URL', urlencode($db->f('searchterm')));
+    $page->set('d', 'SEARCHTERM', conHtmlSpecialChars($db->f('searchterm')));
     $page->next();
 }
 

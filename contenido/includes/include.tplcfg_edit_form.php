@@ -26,10 +26,10 @@ $perm = cRegistry::getPerm();
 $area = cRegistry::getArea();
 $frame = cRegistry::getFrame();
 $cfg = cRegistry::getConfig();
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
-$idart = cSecurity::toInteger(cRegistry::getArticleId());
-$idcat = cSecurity::toInteger(cRegistry::getCategoryId());
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
+$idart = cRegistry::getArticleId();
+$idcat = cRegistry::getCategoryId();
 
 $message = '';
 $description = '';
@@ -46,8 +46,8 @@ if ($idart > 0) {
     $col = new cApiInUseCollection();
     $col->removeSessionMarks($sess->id);
 
-    if (($obj = $col->checkMark('article', $idartlang)) === false || $obj->get("userid") == $auth->auth['uid']) {
-        $col->markInUse('article', $idartlang, $sess->id, $auth->auth['uid']);
+    if (($obj = $col->checkMark('article', $idartlang)) === false || $obj->get('userid') == $auth->getUserId()) {
+        $col->markInUse('article', $idartlang, $sess->id, $auth->getUserId());
         $inUse = false;
         $disabled = '';
     } else {
@@ -64,8 +64,8 @@ if ($idart > 0) {
     // Remove all own marks
     $col = new cApiInUseCollection();
     $col->removeSessionMarks($sess->id);
-    if (($obj = $col->checkMark('categorytpl', $idcat)) === false || $obj->get("userid") == $auth->auth['uid']) {
-        $col->markInUse('categorytpl', $idcat, $sess->id, $auth->auth['uid']);
+    if (($obj = $col->checkMark('categorytpl', $idcat)) === false || $obj->get('userid') == $auth->getUserId()) {
+        $col->markInUse('categorytpl', $idcat, $sess->id, $auth->getUserId());
         $inUse = false;
         $disabled = '';
     } else {
@@ -95,8 +95,10 @@ $tpl->reset();
 $isAdmin = false;
 
 if ($idart) {
-    if ($perm->have_perm_area_action('con', 'con_tplcfg_edit') || $perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat)) {
-
+    if (
+        $perm->have_perm_area_action('con', 'con_tplcfg_edit')
+        || $perm->have_perm_area_action_item('con', 'con_tplcfg_edit', $idcat)
+    ) {
         $artlang = new cApiArticleLanguage($idartlang);
 
         // check admin rights
@@ -122,9 +124,9 @@ if ($idart) {
                     b.idtplcfg AS idtplcfg,
                     b.locked AS locked
                 FROM
-                    " . $cfg['tab']['tpl_conf'] . " AS a,
-                    " . $cfg['tab']['art_lang'] . " AS b,
-                    " . $cfg['tab']['tpl'] . " AS c
+                    " . cDb::getTableName('tpl_conf') . " AS a,
+                    " . cDb::getTableName('art_lang') . " AS b,
+                    " . cDb::getTableName('tpl') . " AS c
                 WHERE
                     b.idart     = " . cSecurity::toInteger($idart) . " AND
                     b.idlang    = " . cSecurity::toInteger($lang) . " AND
@@ -150,14 +152,14 @@ if ($idart) {
         } else {
             if ($idtpl) {
                 // create new configuration entry
-                // $nextid = $db3->nextid($cfg['tab']['tpl_conf']);
+                // $nextid = $db3->nextid(cDb::getTableName('tpl_conf'));
 
-                $sql = "INSERT INTO " . $cfg['tab']['tpl_conf'] . " (idtpl) VALUES (" . cSecurity::toInteger($idtpl) . ")";
+                $sql = "INSERT INTO " . cDb::getTableName('tpl_conf') . " (idtpl) VALUES (" . cSecurity::toInteger($idtpl) . ")";
                 $db->query($sql);
                 $idtplcfg = $db->getLastInsertedId();
 
                 // update art_lang
-                $sql = "UPDATE " . $cfg['tab']['art_lang'] . " SET idtplcfg=" . cSecurity::toInteger($idtplcfg) . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idlang=" . cSecurity::toInteger($lang);
+                $sql = "UPDATE " . cDb::getTableName('art_lang') . " SET idtplcfg=" . cSecurity::toInteger($idtplcfg) . " WHERE idart=" . cSecurity::toInteger($idart) . " AND idlang=" . cSecurity::toInteger($lang);
                 $db->query($sql);
             }
         }
@@ -166,16 +168,15 @@ if ($idart) {
         exit();
     }
 } elseif ($idcat) {
-
     // Category is configured
     $sql = "SELECT
                 c.idtpl AS idtpl,
                 c.description,
                 b.idtplcfg AS idtplcfg
             FROM
-                " . $cfg['tab']['tpl_conf'] . " AS a,
-                " . $cfg['tab']['cat_lang'] . " AS b,
-                " . $cfg['tab']['tpl'] . " AS c
+                " . cDb::getTableName('tpl_conf') . " AS a,
+                " . cDb::getTableName('cat_lang') . " AS b,
+                " . cDb::getTableName('tpl') . " AS c
             WHERE
                 b.idcat     = " . cSecurity::toInteger($idcat) . " AND
                 b.idlang    = " . cSecurity::toInteger($lang) . " AND
@@ -192,14 +193,14 @@ if ($idart) {
     } else {
         if ($idtpl) {
             // create new configuration entry
-            // $nextid = $db3->nextid($cfg['tab']['tpl_conf']);
+            // $nextid = $db3->nextid(cDb::getTableName('tpl_conf'));
 
-            $sql = "INSERT INTO " . $cfg['tab']['tpl_conf'] . " (idtpl) VALUES (" . cSecurity::toInteger($idtpl) . ")";
+            $sql = "INSERT INTO " . cDb::getTableName('tpl_conf') . " (idtpl) VALUES (" . cSecurity::toInteger($idtpl) . ")";
             $db->query($sql);
             $idtplcfg = $db->getLastInsertedId();
 
             // update cat_lang
-            $sql = "UPDATE " . $cfg['tab']['cat_lang'] . " SET idtplcfg=" . cSecurity::toInteger($idtplcfg) . " WHERE idcat=" . cSecurity::toInteger($idcat) . " AND idlang=" . cSecurity::toInteger($lang);
+            $sql = "UPDATE " . cDb::getTableName('cat_lang') . " SET idtplcfg=" . cSecurity::toInteger($idtplcfg) . " WHERE idcat=" . cSecurity::toInteger($idcat) . " AND idlang=" . cSecurity::toInteger($lang);
             $db->query($sql);
         }
     }
@@ -211,13 +212,13 @@ if ($idtpl == 0) {
 }
 
 // Check if a configuration for this $idtplcfg exists
-$sql = "SELECT idcontainerc FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg=" . cSecurity::toInteger($idtplcfg);
+$sql = "SELECT idcontainerc FROM " . cDb::getTableName('container_conf') . " WHERE idtplcfg=" . cSecurity::toInteger($idtplcfg);
 $db->query($sql);
 
 if (!$db->nextRecord()) {
     // There is no configuration for this $idtplcfg, check if template has a
     // pre-configuration
-    $sql = "SELECT idtplcfg, description FROM " . $cfg['tab']['tpl'] . " WHERE idtpl=" . cSecurity::toInteger($idtpl);
+    $sql = "SELECT idtplcfg, description FROM " . cDb::getTableName('tpl') . " WHERE idtpl=" . cSecurity::toInteger($idtpl);
 
     $db->query($sql);
     $db->nextRecord();
@@ -225,17 +226,17 @@ if (!$db->nextRecord()) {
     if (0 != $db->f('idtplcfg')) {
         // Template has a pre-configuration, copy pre-configuration data to
         // category configuration with the $idtplcfg from the category
-        $sql = "SELECT * FROM " . $cfg['tab']['container_conf'] . " WHERE idtplcfg=" . cSecurity::toInteger($db->f('idtplcfg')) . " ORDER BY number DESC";
+        $sql = "SELECT * FROM " . cDb::getTableName('container_conf') . " WHERE idtplcfg=" . cSecurity::toInteger($db->f('idtplcfg')) . " ORDER BY number DESC";
         $db->query($sql);
 
         while ($db->nextRecord()) {
             // get data
-            // $nextid = $db3->nextid($cfg['tab']['container_conf']);
+            // $nextid = $db3->nextid(cDb::getTableName('container_conf'));
             $number = $db->f('number');
             $container = $db->f('container');
             // write new entry
             $sql = "INSERT INTO
-                        " . $cfg['tab']['container_conf'] . "
+                        " . cDb::getTableName('container_conf') . "
                         (idtplcfg, number, container)
                     VALUES
                         (" . cSecurity::toInteger($idtplcfg) . ", " . cSecurity::toInteger($number) . ", '" . $db2->escape($container) . "')";
@@ -286,7 +287,7 @@ if (!$perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat) || i
 
 $tpl2->set('s', 'OPTIONS', $disabled . ' ' . $disabled2 . ' onchange="tplcfgform.changetemplate.value=1;tplcfgform.send.value=0;tplcfgform.submit();"');
 
-$sql = "SELECT idtpl, name, description FROM " . $cfg['tab']['tpl'] . " WHERE idclient=" . cSecurity::toInteger($client) . " ORDER BY name";
+$sql = "SELECT idtpl, name, description FROM " . cDb::getTableName('tpl') . " WHERE idclient=" . cSecurity::toInteger($client) . " ORDER BY name";
 $db->query($sql);
 
 $tpl2->set('d', 'VALUE', 0);
@@ -390,7 +391,7 @@ $script = <<<JS
             6 -> has right for: public
             7 -> idstring not splitted */
 
-        tmpIdtpl = ("{$idtpl}" == "") ? 0 : "{$idtpl}";
+        tmpIdtpl = ("{$idtpl}" == '') ? 0 : "{$idtpl}";
         changed = (obj.tplId != tmpIdtpl);
         sData = "{$idcat}-{$idtpl}-" + obj.isOnline + "-" + obj.isPublic + "-" + obj.hasRight["template"] + "-" + obj.hasRight["online"] + "-" + obj.hasRight["public"];
 
@@ -490,9 +491,9 @@ if (!$idtpl && $idcat && $idart) {
                 c.description,
                 b.idtplcfg AS idtplcfg
             FROM
-                " . $cfg['tab']['tpl_conf'] . " AS a,
-                " . $cfg['tab']['cat_lang'] . " AS b,
-                " . $cfg['tab']['tpl'] . " AS c
+                " . cDb::getTableName('tpl_conf') . " AS a,
+                " . cDb::getTableName('cat_lang') . " AS b,
+                " . cDb::getTableName('tpl') . " AS c
             WHERE
                 b.idcat     = " . cSecurity::toInteger($idcat) . " AND
                 b.idlang    = " . cSecurity::toInteger($lang) . " AND

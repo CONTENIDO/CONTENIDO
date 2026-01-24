@@ -55,7 +55,7 @@ echo "CMS_TEASER[5]";
 
 if (cRegistry::getBackendSessionId() === NULL) {
     $art = new cApiArticleLanguage(cRegistry::getArticleLanguageId());
-    $contentValue = $art->getContent("TEASER", $teaserIndex);
+    $contentValue = $art->getContent('TEASER', $teaserIndex);
 
     $teaser = new cContentTypeTeaser($contentValue, $teaserIndex, []);
     $articles = $teaser->getConfiguredArticles();
@@ -65,11 +65,11 @@ if (cRegistry::getBackendSessionId() === NULL) {
 
     $rssFeed = new SimpleXMLElement($xmlString);
     $rssChannel = $rssFeed->addChild('channel');
-    $rssChannel->title = $art->getContent("CMS_TEXT", 1);
-    $rssChannel->link = $art->getContent("CMS_TEXT", 2);
-    $rssChannel->description = conHtmlEntityDecode(strip_tags($art->getContent("CMS_HTML", 1)));
+    $rssChannel->title = $art->getContent('CMS_TEXT', 1);
+    $rssChannel->link = $art->getContent('CMS_TEXT', 2);
+    $rssChannel->description = conHtmlEntityDecode(strip_tags($art->getContent('CMS_HTML', 1)));
 
-    $imgId = $art->getContent("CMS_IMG", 1);
+    $imgId = $art->getContent('CMS_IMG', 1);
 
     if ((int)$imgId > 0) {
         $upload = new cApiUpload($imgId);
@@ -77,8 +77,8 @@ if (cRegistry::getBackendSessionId() === NULL) {
 
         $rssImage = $rssChannel->addChild('image');
         $rssImage->url = $rssLogo;
-        $rssImage->title = $art->getContent("CMS_TEXT", 1);
-        $rssImage->link = $art->getContent("CMS_TEXT", 2);
+        $rssImage->title = $art->getContent('CMS_TEXT', 1);
+        $rssImage->link = $art->getContent('CMS_TEXT', 2);
     }
 
     foreach ($articles as $article) {
@@ -99,7 +99,7 @@ if (cRegistry::getBackendSessionId() === NULL) {
 
     $result = mi18n("LABEL_RSS_CREATION_FAILED");
     if (isset($cfgClient[$client]['xml']['frontendpath'])) {
-        if (false === cFileHandler::exists($cfgClient[$client]['xml']['frontendpath'])) {
+        if (!cFileHandler::exists($cfgClient[$client]['xml']['frontendpath'])) {
             cDirHandler::create($cfgClient[$client]['xml']['frontendpath'], true);
         }
         // try to write xml to disk

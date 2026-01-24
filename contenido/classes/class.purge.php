@@ -24,9 +24,7 @@ class cSystemPurge
 {
 
     /**
-     * These directories should not be deleted.
-     *
-     * @var array
+     * @var array These directories should not be deleted.
      */
     private $_dirsExcluded = [
         'code',
@@ -34,9 +32,7 @@ class cSystemPurge
     ];
 
     /**
-     * These directories and the included files should not be cleared.
-     *
-     * @var array
+     * @var array These directories and the included files should not be cleared.
      */
     private $_dirsExcludedWithFiles = [
         '.',
@@ -50,7 +46,6 @@ class cSystemPurge
     ];
 
     /**
-     *
      * @var array
      */
     private $_logFileTypes = [
@@ -58,7 +53,6 @@ class cSystemPurge
     ];
 
     /**
-     *
      * @var array
      */
     private $_cronjobFileTypes = [
@@ -84,13 +78,9 @@ class cSystemPurge
     /**
      * Deletes the PHP files in cms/cache/code.
      *
-     * @param int $clientId
-     *
-     * @return bool
-     *
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function resetClientConCode($clientId)
+    public function resetClientConCode(int $clientId): bool
     {
         global $currentuser;
 
@@ -108,12 +98,8 @@ class cSystemPurge
 
         /* @var $file SplFileInfo */
         foreach (new DirectoryIterator($codePath) as $file) {
-            if ($file->isFile() === false) {
-                continue;
-            }
-
-            if ($file->getExtension() === 'php') {
-                if (cFileHandler::remove($file->getPathname()) === false) {
+            if ($file->isFile() && $file->getExtension() === 'php') {
+                if (!cFileHandler::remove($file->getPathname())) {
                     return false;
                 }
             }
@@ -126,32 +112,31 @@ class cSystemPurge
      * Reset the table con_cat_art for a client.
      *
      * @param int $clientId
-     *
      * @return bool
-     *
-     * @throws cDbException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function resetClientConCatArt($clientId)
+    public function resetClientConCatArt(int $clientId): bool
     {
-        global $perm, $currentuser;
+        global $currentuser;
+
+        $perm = cRegistry::getPerm();
         $db = cRegistry::getDb();
-        $cfg = cRegistry::getConfig();
 
         if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
             $db->query('
                 UPDATE
-                    ' . $cfg['tab']['cat_art'] . ' cca,
-                    ' . $cfg['tab']['cat'] . ' cc,
-                    ' . $cfg['tab']['art'] . ' ca
+                    ' . cDb::getTableName('cat_art') . ' cca,
+                    ' . cDb::getTableName('cat') . ' cc,
+                    ' . cDb::getTableName('art') . ' ca
                 SET
                     cca.createcode=1
                 WHERE
                     cc.idcat = cca.idcat
                     AND ca.idart = cca.idart
-                    AND cc.idclient = ' . (int)$clientId . '
-                    AND ca.idclient = ' . (int)$clientId);
+                    AND cc.idclient = ' . $clientId . '
+                    AND ca.idclient = ' . $clientId);
 
-            return ($db->getErrorMessage() == '') ? true : false;
+            return $db->getErrorMessage() == '';
         } else {
             return false;
         }
@@ -160,21 +145,17 @@ class cSystemPurge
     /**
      * Reset the table con_inuse.
      *
-     * @return bool
-     *
-     * @throws cDbException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function resetConInuse()
+    public function resetConInuse(): bool
     {
         global $currentuser;
 
         $perm = cRegistry::getPerm();
         $db = cRegistry::getDb();
-        $cfg = cRegistry::getConfig();
 
         if ($perm->isSysadmin($currentuser)) {
-            $sql = 'DELETE FROM ' . $cfg['tab']['inuse'];
-            $db->query($sql);
+            $db->query('DELETE FROM `%s`', cDb::getTableName('inuse'));
 
             return $db->getErrorMessage() == '';
         } else {
@@ -185,13 +166,9 @@ class cSystemPurge
     /**
      * Clear the cache directory for a client.
      *
-     * @param int $clientId
-     *
-     * @return bool
-     *
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function clearClientCache($clientId)
+    public function clearClientCache(int $clientId): bool
     {
         global $currentuser;
 
@@ -212,15 +189,9 @@ class cSystemPurge
     /**
      * Clear the cache directory for a client.
      *
-     * @param int $clientId
-     * @param bool $keep
-     * @param int $fileNumber
-     *
-     * @return bool
-     *
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function clearClientHistory($clientId, $keep, $fileNumber)
+    public function clearClientHistory(int $clientId, bool $keep, int $fileNumber): bool
     {
         global $currentuser;
 
@@ -242,7 +213,7 @@ class cSystemPurge
                         $countDelete = ($count <= $fileNumber) ? 0 : ($count - $fileNumber);
                         // delete the files
                         for ($i = 0; $i < $countDelete; $i++) {
-                            if (cFileHandler::exists($tmpFile[$sKey][$i]) && is_writable($tmpFile[$sKey][$i])) {
+                            if (cFileHandler::exists($tmpFile[$sKey][$i]) && cFileHandler::writeable($tmpFile[$sKey][$i])) {
                                 unlink($tmpFile[$sKey][$i]);
                             }
                         }
@@ -260,20 +231,15 @@ class cSystemPurge
     /**
      * Clear the clients content versioning.
      *
-     * @param int $idclient
-     *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function clearClientContentVersioning($idclient)
+    public function clearClientContentVersioning(int $clientId): bool
     {
         global $currentuser;
 
         $perm = cRegistry::getPerm();
 
-        if ($perm->isClientAdmin($idclient, $currentuser) || $perm->isSysadmin($currentuser)) {
+        if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
             $artLangVersionColl = new cApiArticleLanguageVersionCollection();
             $artLangVersionColl->deleteByWhereClause('idartlangversion != 0');
 
@@ -292,21 +258,17 @@ class cSystemPurge
     /**
      * Clear client log file.
      *
-     * @param int $idclient
-     *
-     * @return bool
-     *
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function clearClientLog($idclient)
+    public function clearClientLog(int $clientId): bool
     {
         global $currentuser;
 
         $perm = cRegistry::getPerm();
         $cfgClient = cRegistry::getClientConfig();
 
-        if ($perm->isClientAdmin($idclient, $currentuser) || $perm->isSysadmin($currentuser)) {
-            $logDir = $cfgClient[$idclient]['log']['path'];
+        if ($perm->isClientAdmin($clientId, $currentuser) || $perm->isSysadmin($currentuser)) {
+            $logDir = $cfgClient[$clientId]['log']['path'];
             if (cDirHandler::exists($logDir)) {
                 return $this->emptyFile($logDir, $this->_logFileTypes);
             }
@@ -319,11 +281,9 @@ class cSystemPurge
     /**
      * Clear CONTENIDO log files.
      *
-     * @return bool
-     *
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function clearConLog()
+    public function clearConLog(): bool
     {
         global $currentuser;
 
@@ -344,11 +304,9 @@ class cSystemPurge
     /**
      * Clear the cronjob directory.
      *
-     * @return bool
-     *
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function clearConCronjob()
+    public function clearConCronjob(): bool
     {
         global $currentuser;
 
@@ -369,11 +327,9 @@ class cSystemPurge
     /**
      * Clear the cache directory for a client.
      *
-     * @return bool
-     *
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function clearConCache()
+    public function clearConCache(): bool
     {
         global $currentuser;
 
@@ -392,31 +348,27 @@ class cSystemPurge
     }
 
     /**
-     * Clears the article cache of the article which is defined by the given
-     * parameters.
+     * Clears the article cache of the article which is defined by the given parameters.
      *
-     * @param int $idartlang
-     *         the idartlang of the article
+     * @param int $articleLanguageId The idartlang of the article
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function clearArticleCache($idartlang)
+    public function clearArticleCache(int $articleLanguageId)
     {
         $cfgClient = cRegistry::getClientConfig();
         $client = cRegistry::getClientId();
 
-        $artLang = new cApiArticleLanguage($idartlang);
+        $artLang = new cApiArticleLanguage($articleLanguageId);
         $idlang = $artLang->get('idlang');
         $idart = $artLang->get('idart');
         $art = new cApiArticle($idart);
-        $idclient = $art->get('idclient');
+        $clientId = $art->get('idclient');
 
         $catArtColl = new cApiCategoryArticleCollection();
         $catArtColl->select('idart=' . $idart);
-        while (($item = $catArtColl->next()) !== false) {
-            $filename = $cfgClient[$client]['code']['path'] . $idclient . '.' . $idlang . '.' . $item->get('idcatart') . '.php';
+        while ($item = $catArtColl->next()) {
+            $filename = $cfgClient[$client]['code']['path'] . $clientId . '.' . $idlang . '.' . $item->get('idcatart') . '.php';
             if (cFileHandler::exists($filename)) {
                 cFileHandler::remove($filename);
             }
@@ -424,27 +376,19 @@ class cSystemPurge
     }
 
     /**
-     * Delete all files and sub directories in a directory.
+     * Delete all files and subdirectories in a directory.
      *
-     * @param string $dirPath
-     * @param string $tmpDirPath
-     *                            root directory not deleted
+     * @param string $tmpDirPath Root directory not deleted
      * @param bool $keep [optional]
-     * @param array $tmpFileList [optional]
-     *                            files are temporarily saved
-     *
+     * @param array $tmpFileList [optional] Files are temporarily saved
      * @return bool
-     *
      * @throws cInvalidArgumentException
      */
-    public function clearDir($dirPath, $tmpDirPath, $keep = false, &$tmpFileList = [])
+    public function clearDir(string $dirPath, string $tmpDirPath, bool $keep = false, array &$tmpFileList = []): bool
     {
         if (cDirHandler::exists($dirPath) && false !== ($handle = cDirHandler::read($dirPath))) {
             $bCanDelete = false;
-            $tmp = str_replace([
-                '/',
-                '..'
-            ], '', $dirPath);
+            $tmp = str_replace(['/', '..'], '', $dirPath);
             foreach ($handle as $file) {
                 if (!in_array($file, $this->_dirsExcludedWithFiles)) {
                     $filePath = $dirPath . '/' . $file;
@@ -467,14 +411,10 @@ class cSystemPurge
             }
             $dirName = end($dirs);
 
-            if (str_replace([
-                    '/',
-                    '..'
-                ], '', $dirPath) != str_replace([
-                    '/',
-                    '..'
-                ], '', $tmpDirPath)
-                && $keep === false) {
+            if (
+                str_replace(['/', '..'], '', $dirPath) != str_replace(['/', '..'], '', $tmpDirPath)
+                && $keep === false
+            ) {
                 // check if directory contains reserved files folders
                 $bCanDelete = true;
                 $dirContent = cDirHandler::read($dirPath);
@@ -504,14 +444,9 @@ class cSystemPurge
     /**
      * Empty a file content.
      *
-     * @param string $dirPath
-     * @param array $types
-     *
-     * @return bool
-     *
      * @throws cInvalidArgumentException
      */
-    public function emptyFile($dirPath, $types)
+    public function emptyFile(string $dirPath, array $types): bool
     {
         $count = 0;
         $countCleared = 0;
@@ -543,11 +478,8 @@ class cSystemPurge
 
     /**
      * Get frontend directory name for a client.
-     *
-     * @param int $clientId
-     * @return string
      */
-    public function getClientDir($clientId)
+    public function getClientDir(int $clientId): string
     {
         $cfgClient = cRegistry::getClientConfig();
 
@@ -556,29 +488,21 @@ class cSystemPurge
 
     /**
      * Set log file types.
-     *
-     * @param array $types
      */
-    public function setLogFileTypes($types)
+    public function setLogFileTypes(array $types)
     {
-        if (count($types) > 0) {
-            foreach ($types as $type) {
-                $this->_logFileTypes[] = $type;
-            }
+        foreach ($types as $type) {
+            $this->_logFileTypes[] = $type;
         }
     }
 
     /**
      * Set cronjob file types.
-     *
-     * @param array $types
      */
-    public function setCronjobFileTypes($types)
+    public function setCronjobFileTypes(array $types)
     {
-        if (count($types) > 0) {
-            foreach ($types as $type) {
-                $this->_cronjobFileTypes[] = $type;
-            }
+        foreach ($types as $type) {
+            $this->_cronjobFileTypes[] = $type;
         }
     }
 

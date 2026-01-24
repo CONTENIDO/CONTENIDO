@@ -75,9 +75,9 @@ function setupInitializeCfgClient($reset = false)
         } else {
             $db = getSetupMySQLDBConnection();
 
-            $db->query("SELECT * FROM `%s`", $cfg['tab']['clients']);
+            $db->query("SELECT * FROM `%s`", cDb::getTableName('clients'));
             while ($db->nextRecord()) {
-                updateClientCache($db->f("idclient"), $db->f("htmlpath"), $db->f("frontendpath"));
+                updateClientCache($db->f('idclient'), $db->f('htmlpath'), $db->f('frontendpath'));
             }
         }
     }
@@ -87,8 +87,7 @@ function setupInitializeCfgClient($reset = false)
  * Check configuration path for the environment
  * If no configuration for environment found, copy from production
  * @param string $installationPath
- * @throws cException
- * @throws cInvalidArgumentException
+ * @throws cException|cInvalidArgumentException
  */
 function setupCheckConfiguration(string $installationPath)
 {

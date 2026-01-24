@@ -33,9 +33,7 @@ class cFrontendListUploadSearchResult extends cFrontendList
 
     /**
      * @inheritDoc
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function convert(int $field, $value)
     {
@@ -45,21 +43,15 @@ class cFrontendListUploadSearchResult extends cFrontendList
         $cfg = cRegistry::getConfig();
         $sess = cRegistry::getSession();
 
-        if ($field == 5) {
-            if ($value == '') {
-                return i18n("None");
-            }
+        if ($field == 5 && $value == '') {
+            return i18n("None");
         }
         if ($field == 4) {
             return humanReadableSize($value);
         }
 
         if ($field == 3) {
-            if ($value == '') {
-                return '&nbsp;';
-            } else {
-                return $value;
-            }
+            return ($value == '') ? '&nbsp;' : $value;
         }
 
         if ($field == 2) {
@@ -79,14 +71,18 @@ class cFrontendListUploadSearchResult extends cFrontendList
             if ($appendparameters == 'imagebrowser' || $appendparameters == 'filebrowser') {
                 $fileUrlToAdd = $this->_getFileBrowserUrl($subPath);
                 $title = i18n("Use file");
-                $icon = '<img class="mgr5" src="' . $cfg['path']['images'] . '/but_ok.gif" alt="' . $title . '" title="' . $title . '" />';
-                $mstr = '<a href="javascript:void(0)" data-action="add_file_from_browser" data-file="' . $fileUrlToAdd . '" title="' . $title . '">' . $icon . $value . '</a>';
+                $icon = cHTMLImage::img($cfg['path']['images'] . 'but_ok.gif', $title, ['class' => 'mgr5', 'title' => $title]);
+                $link = (new cHTMLLink('javascript:void(0)', $icon . $value))
+                    ->setAttribute('data-file', $fileUrlToAdd)
+                    ->setAttribute('data-action', 'add_file_from_browser')
+                    ->setAttribute('title', $title)
+                    ->toHtml();
             } elseif ('' !== $this->_fileType) {
                 $markLeftPane = "Con.getFrame('left_bottom').upl.click(Con.getFrame('left_bottom').document.getElementById('$path'));";
                 $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\');' . $markLeftPane . '">%s</a>';
 
                 // Link to right_top first, so we can use history.back() in right_bottom!
-                $mstr = sprintf(
+                $link = sprintf(
                     $tmp_mstr,
                     'right_top',
                     $sess->url("main.php?area=upl&frame=3&path=$path&file=$file"),
@@ -96,19 +92,19 @@ class cFrontendListUploadSearchResult extends cFrontendList
                 );
             } else {
                 $markLeftPane = "Con.getFrame('left_bottom').upl.click(Con.getFrame('left_bottom').document.getElementById('$path'));";
-                $tmp_mstr = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\');' . $markLeftPane . '">%s</a>';
+                $link = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\');' . $markLeftPane . '">%s</a>';
 
                 // Link to right_top first, so we can use history.back() in right_bottom!
-                $mstr = sprintf(
-                    $tmp_mstr,
+                $link = sprintf(
+                    $link,
                     'right_top',
-                    $sess->url("main.php?area=upl&frame=3&path=$path&file=$file"),
+                    $sess->url(sprintf('main.php?area=upl&frame=3&path=%s&file=%s', $path, $file)),
                     'right_bottom',
-                    $sess->url("main.php?area=upl&frame=4&path=$path$file/&file="),
+                    $sess->url(sprintf("main.php?area=upl&frame=4&path=%s/&file=%s", $path, $file)),
                     $value
                 );
             }
-            return $mstr;
+            return $link;
         }
 
         if ($field == 1) {
@@ -121,11 +117,18 @@ class cFrontendListUploadSearchResult extends cFrontendList
                 return cFrontendListUpload::getUploadImageLink((string)$value);
             } elseif ($this->_fileType == '') {
                 // Folder has empty filetype column value
-                return '<img class="hover_none" alt="" src="' . cRegistry::getBackendUrl() . 'images/grid_folder.gif' . '">';
+                return cHTMLImage::img(
+                    cRegistry::getBackendUrl() . 'images/grid_folder.gif',
+                    '',
+                    ['class' => 'hover_none']
+                );
             } else {
                 // Thumbnail for other file types
-                $sCacheThumbnail = uplGetThumbnail($value, 150);
-                return '<img class="hover_none" alt="" src="' . $sCacheThumbnail . '">';
+                return cHTMLImage::img(
+                    uplGetThumbnail($value, 150),
+                    '',
+                    ['class' => 'hover_none']
+                );
             }
         }
 
@@ -134,6 +137,8 @@ class cFrontendListUploadSearchResult extends cFrontendList
 
     /**
      * See {@see cFrontendListUpload::_getFileBrowserUrl()}
+     *
+     * @throws cDbException|cException
      */
     protected function _getFileBrowserUrl(string $subPath): string
     {
@@ -143,7 +148,7 @@ class cFrontendListUploadSearchResult extends cFrontendList
 }
 
 /**
- * @deprecated [2024-02-04] Since 4.10.2, use {@see cFrontendListUploadSearchResult} instead!
+ * @deprecated [2024-02-04] Since CONTENIDO 4.10.2, use {@see cFrontendListUploadSearchResult} instead!
  */
 class UploadSearchResultList extends cFrontendListUploadSearchResult
 {

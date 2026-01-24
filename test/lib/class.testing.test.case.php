@@ -37,12 +37,12 @@ abstract class cTestingTestCase extends TestCase
     protected static $_testDirectories = array();
 
     /**
-     * @deprecated [2019-11-25] Since 4.10.2, unit tests will run under "test" environment, see constant CON_TEST_SQL_PREFIX
+     * @deprecated [2019-11-25] Since CONTENIDO 4.10.2, unit tests will run under "test" environment, see constant CON_TEST_SQL_PREFIX
      */
     protected static $_originalSqlPrefix;
 
     /**
-     * @deprecated [2019-11-25] Since 4.10.2, unit tests will run under "test" environment, see constant CON_TEST_SQL_PREFIX
+     * @deprecated [2019-11-25] Since CONTENIDO 4.10.2, unit tests will run under "test" environment, see constant CON_TEST_SQL_PREFIX
      */
     public static function setOriginalSqlPrefix($sqlPrefix)
     {
@@ -50,7 +50,7 @@ abstract class cTestingTestCase extends TestCase
     }
 
     /**
-     * @deprecated [2019-11-25] Since 4.10.2, test suites are defined in the phpunit.xml
+     * @deprecated [2019-11-25] Since CONTENIDO 4.10.2, test suites are defined in the phpunit.xml
      */
     protected static function _createSuite()
     {
@@ -62,7 +62,7 @@ abstract class cTestingTestCase extends TestCase
     }
 
     /**
-     * @deprecated [2019-11-25] Since 4.10.2, test files for test suites are defined in the phpunit.xml
+     * @deprecated [2019-11-25] Since CONTENIDO 4.10.2, test files for test suites are defined in the phpunit.xml
      */
     protected static function _addTestFiles(TestSuite $suite)
     {

@@ -16,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $cfg;
 
-require_once dirname(__DIR__, 1) . '/classes/class.pi.newsletter.php';
+require_once dirname(__DIR__) . '/classes/class.pi.newsletter.php';
 $piNewsletter = new PiNewsletter();
 cRegistry::setAppVar('pluginNewsletter', $piNewsletter);
 

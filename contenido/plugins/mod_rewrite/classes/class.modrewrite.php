@@ -30,69 +30,71 @@ class ModRewrite extends ModRewriteBase
     /**
      * Database instance
      *
-     * @var  cDb
+     * @var cDb
      */
-    private static $_db;
+    private static $db;
 
     /**
      * Lookup table to cache some internal data such as db query results
      *
-     * @var  array
+     * @var array
      */
-    protected static $_lookupTable;
+    protected static $lookupTable;
 
     /**
-     * Initialization, is to call at least once, also possible to call multible
-     * times, if different client configuration is to load.
-     *
+     * Initialization, is to call at least once, also possible to call multiple times,
+     * if different client configuration is to load.
      * Loads configuration of passed client and sets some properties.
      *
      * @param int $clientId Client id
-     *
      * @throws cInvalidArgumentException
      */
-    public static function initialize($clientId)
+    public static function initialize(int $clientId)
     {
         mr_loadConfiguration($clientId, true);
-        self::$_db = cRegistry::getDb();
-        self::$_lookupTable = [];
+        self::$db = cRegistry::getDb();
+        self::$lookupTable = [];
     }
 
     /**
-     * Check categories on websafe name
+     * Check categories on websafe name.
+     * Check all categories in the main parent category on existing same websafe name.
      *
-     * Check all categories in the main parent category on existing same websafe name
-     *
-     * @param string $sName Websafe name to check
-     * @param int $iCatId Current category id
-     * @param int $iLangId Current language id
-     *
-     * @return  bool    True if websafename already exists, false if not
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param string $urlName Websafe name to check
+     * @param int $categoryId Current category id
+     * @param int $languageId Current language id
+     * @throws cDbException|cInvalidArgumentException
      */
-    public static function isInCategories($sName = '', $iCatId = 0, $iLangId = 0)
+    public static function isInCategories(string $urlName = '', int $categoryId = 0, int $languageId = 0): bool
     {
-        $cfg = cRegistry::getConfig();
-        $iCatId = cSecurity::toInteger($iCatId);
-        $iLangId = cSecurity::toInteger($iLangId);
-
         // get parentid
-        $iParentId = 0;
-        $sql = "SELECT parentid FROM " . cRegistry::getDbTableName('cat') . " WHERE idcat = " . $iCatId;
-        if ($aData = mr_queryAndNextRecord($sql)) {
-            $iParentId = ($aData['parentid'] > 0) ? cSecurity::toInteger($aData['parentid']) : 0;
+        $parentId = 0;
+        $sql = self::$db->prepare(
+            "SELECT `parentid` FROM `%s` WHERE `idcat` = %d",
+            cDb::getTableName('cat'),
+            $categoryId
+        );
+        if ($record = mr_queryAndNextRecord($sql)) {
+            $parentId = $record['parentid'] > 0 ? cSecurity::toInteger($record['parentid']) : 0;
         }
 
         // check if websafe name is in this category
-        $sql = "SELECT count(cl.idcat) as numcats FROM " . cRegistry::getDbTableName('cat_lang') . " cl "
-            . "LEFT JOIN " . cRegistry::getDbTableName('cat') . " c ON cl.idcat = c.idcat WHERE "
-            . "c.parentid = '$iParentId' AND cl.idlang = " . $iLangId . " AND "
-            . "LOWER(cl.urlname) = LOWER('" . self::$_db->escape($sName) . "') AND cl.idcat <> " . $iCatId;
+        $sql = self::$db->prepare(
+            "SELECT COUNT(cl.idcat) AS `numcats` "
+            . "FROM `%s` cl "
+            . "LEFT JOIN `%s` c ON cl.idcat = c.idcat "
+            . "WHERE c.parentid = %d AND cl.idlang = %d AND LOWER(cl.urlname) = LOWER('%s') AND cl.idcat <> %d",
+            cDb::getTableName('cat_lang'),
+            cDb::getTableName('cat'),
+            $parentId,
+            $languageId,
+            $urlName,
+            $categoryId
+        );
         ModRewriteDebugger::log($sql, 'ModRewrite::isInCategories $sql');
 
-        if ($aData = mr_queryAndNextRecord($sql)) {
-            return $aData['numcats'] > 0;
+        if ($record = mr_queryAndNextRecord($sql)) {
+            return $record['numcats'] > 0;
         }
 
         return false;
@@ -100,43 +102,50 @@ class ModRewrite extends ModRewriteBase
 
     /**
      * Check articles on websafe name.
-     *
      * Check all articles in the current category on existing same websafe name.
      *
-     * @param string $sName Websafe name to check
-     * @param int $iArtId Current article id
-     * @param int $iLangId Current language id
-     * @param int $iCatId Category id
-     *
-     * @return   bool    True if websafename already exists, false if not
+     * @param string $urlName Websafe name to check
+     * @param int $articleId Current article id
+     * @param int $languageId Current language id
+     * @param int $categoryId Category id
      * @throws cDbException
      * @internal This method only considers the case that articles are related to a single category.
-     *           The function conIsArticleUrlnameUnique also considers multiple categories.
-     *
+     *           The function [@see conIsArticleUrlnameUnique()} also considers multiple categories.
      */
-    public static function isInCatArticles($sName = '', $iArtId = 0, $iLangId = 0, $iCatId = 0)
-    {
-        $cfg = cRegistry::getConfig();
-        $iArtId = cSecurity::toInteger($iArtId);
-        $iLangId = cSecurity::toInteger($iLangId);
-        $iCatId = cSecurity::toInteger($iCatId);
-
+    public static function isInCatArticles(
+        string $urlName = '',
+        int $articleId = 0,
+        int $languageId = 0,
+        int $categoryId = 0
+    ): bool {
         // handle multipages
-        if ($iCatId == 0) {
+        if ($categoryId == 0) {
             // get category id if not set
-            $sql = "SELECT idcat FROM " . cRegistry::getDbTableName('cat_art') . " WHERE idart = " . $iArtId;
-            if ($aData = mr_queryAndNextRecord($sql)) {
-                $iCatId = ($aData['idcat'] > 0) ? cSecurity::toInteger($aData['idcat']) : 0;
+            $sql = self::$db->prepare(
+                "SELECT `idcat` FROM `%s` WHERE `idart` = %d",
+                cDb::getTableName('cat_art'),
+                $articleId
+            );
+            if ($record = mr_queryAndNextRecord($sql)) {
+                $categoryId = ($record['idcat'] > 0) ? cSecurity::toInteger($record['idcat']) : 0;
             }
         }
 
         // check if websafe name is in this category
-        $sql = "SELECT count(al.idart) as numcats FROM " . cRegistry::getDbTableName('art_lang') . " al "
-            . "LEFT JOIN " . cRegistry::getDbTableName('cat_art') . " ca ON al.idart = ca.idart WHERE "
-            . " ca.idcat='$iCatId' AND al.idlang=" . $iLangId . " AND "
-            . "LOWER(al.urlname) = LOWER('" . self::$_db->escape($sName) . "') AND al.idart <> " . $iArtId;
-        if ($aData = mr_queryAndNextRecord($sql)) {
-            return $aData['numcats'] > 0;
+        $sql = self::$db->prepare(
+            "SELECT COUNT(al.idart) AS `numcats` "
+            . "FROM `%s` al "
+            . "LEFT JOIN `%s` ca ON al.idart = ca.idart "
+            . "WHERE ca.idcat = %d AND al.idlang = %d AND  LOWER(al.urlname) = LOWER('%s') AND al.idart <> %d",
+            cDb::getTableName('art_lang'),
+            cDb::getTableName('cat_art'),
+            $categoryId,
+            $languageId,
+            $urlName,
+            $articleId
+        );
+        if ($record = mr_queryAndNextRecord($sql)) {
+            return $record['numcats'] > 0;
         }
 
         return false;
@@ -144,42 +153,44 @@ class ModRewrite extends ModRewriteBase
 
     /**
      * Set websafe name in article list.
-     *
      * Insert new websafe name in article list
      *
-     * @param string $sName Original name (will be converted)
-     * @param int $iArtId Current article id
-     * @param int $iLangId Current language id
-     * @param int $iCatId Category id
-     * @return  bool    True if insert was successfully
-     * @throws  cInvalidArgumentException
-     * @throws  cDbException
+     * @param string $urlName Original name (will be converted)
+     * @param int $articleId Current article id
+     * @param int $languageId Current language id
+     * @param int $categoryId Category id
+     * @return bool True if insert was successfully
+     * @throws cDbException
      */
-    public static function setArtWebsafeName($sName = '', $iArtId = 0, $iLangId = 0, $iCatId = 0)
-    {
-        $cfg = cRegistry::getConfig();
-        $iArtId = cSecurity::toInteger($iArtId);
-        $iLangId = cSecurity::toInteger($iLangId);
-        $iCatId = cSecurity::toInteger($iCatId);
-
+    public static function setArtWebsafeName(
+        string $urlName = '',
+        int $articleId = 0,
+        int $languageId = 0,
+        int $categoryId = 0
+    ): bool {
         // get websafe name
-        $sNewName = cString::cleanURLCharacters(conHtmlEntityDecode($sName));
+        $newName = cString::cleanURLCharacters(conHtmlEntityDecode($urlName));
 
         // remove double or more separators
-        $sNewName = mr_removeMultipleChars('-', $sNewName);
+        $newName = mr_removeMultipleChars('-', $newName);
 
         // check if websafe name already exists
-        if (self::isInCatArticles($sNewName, $iArtId, $iLangId, $iCatId)) {
+        if (self::isInCatArticles($newName, $articleId, $languageId, $categoryId)) {
             // create new websafe name if exists
-            $sNewName = $sNewName . $iArtId;
+            $newName = $newName . $articleId;
         }
 
         // check again - and set name
-        if (!self::isInCatArticles($sNewName, $iArtId, $iLangId, $iCatId)) {
+        if (!self::isInCatArticles($newName, $articleId, $languageId, $categoryId)) {
             // insert websafe name in article list
-            $sql = "UPDATE " . cRegistry::getDbTableName('art_lang') . " SET urlname = '" . self::$_db->escape($sNewName) . "' "
-                . "WHERE idart = " . $iArtId . " AND idlang = " . $iLangId;
-            return self::$_db->query($sql);
+            $sql = self::$db->prepare(
+                "UPDATE `%s` SET `urlname` = '%s' WHERE `idart` = %d AND `idlang` = %d",
+                cDb::getTableName('art_lang'),
+                $newName,
+                $articleId,
+                $languageId
+            );
+            return cSecurity::toBoolean(self::$db->query($sql));
         } else {
             return false;
         }
@@ -187,48 +198,47 @@ class ModRewrite extends ModRewriteBase
 
     /**
      * Set websafe name in category list.
-     *
      * Insert new websafe name in category list.
      *
-     * @param string $sName Original name (will be converted) or alias
-     * @param int $iCatId Category id
-     * @param int $iLangId Language id
-     *
-     * @return  bool    True if insert was successfully
-     * @throws  cInvalidArgumentException
-     * @throws  cDbException
+     * @param string $urlName Original name (will be converted) or alias
+     * @param int $categoryId Category id
+     * @param int $languageId Language id
+     * @return bool True if insert was successfully
+     * @throws cInvalidArgumentException|cDbException
      */
-    public static function setCatWebsafeName($sName = '', $iCatId = 0, $iLangId = 0)
+    public static function setCatWebsafeName(string $urlName = '', int $categoryId = 0, int $languageId = 0): bool
     {
-        $iCatId = cSecurity::toInteger($iCatId);
-        $iLangId = cSecurity::toInteger($iLangId);
-
         // create websafe name
-        $sNewName = cString::cleanURLCharacters(conHtmlEntityDecode($sName));
+        $newName = cString::cleanURLCharacters(conHtmlEntityDecode($urlName));
 
         // remove double or more separators
-        $sNewName = mr_removeMultipleChars('-', $sNewName);
+        $newName = mr_removeMultipleChars('-', $newName);
 
         // check if websafe name already exists
-        if (self::isInCategories($sNewName, $iCatId, $iLangId)) {
+        if (self::isInCategories($newName, $categoryId, $languageId)) {
             // create new websafe name if exists
-            $sNewName = $sNewName . $iCatId;
+            $newName = $newName . $categoryId;
         }
 
         // check again - and set name
-        if (!self::isInCategories($sNewName, $iCatId, $iLangId)) {
+        if (!self::isInCategories($newName, $categoryId, $languageId)) {
             // update urlname
-            $sql = "UPDATE " . cRegistry::getDbTableName('cat_lang') . " SET urlname = '" . self::$_db->escape($sNewName) . "' "
-                . "WHERE idcat = " . $iCatId . " AND idlang = " . $iLangId;
+            $sql = self::$db->prepare(
+                "UPDATE `%s` SET `urlname` = '%s' WHERE `idcat` = %d AND `idlang` = %d",
+                cDb::getTableName('cat_lang'),
+                $newName,
+                $categoryId,
+                $languageId
+            );
 
             ModRewriteDebugger::log([
-                'sName' => $sName,
-                'iCatId' => $iCatId,
-                'iLangId' => $iLangId,
-                'sNewName' => $sNewName
+                'sName' => $urlName,
+                'iCatId' => $categoryId,
+                'iLangId' => $languageId,
+                'sNewName' => $newName
             ], 'ModRewrite::setCatWebsafeName $data');
 
-            return self::$_db->query($sql);
+            return cSecurity::toBoolean(self::$db->query($sql));
         } else {
             return false;
         }
@@ -237,46 +247,49 @@ class ModRewrite extends ModRewriteBase
     /**
      * Set urlpath of category
      *
-     * @param int $iCatId Category id
-     * @param int $iLangId Language id
-     *
-     * @return  bool    True if insert was successfully
-     * @throws  cDbException
-     * @throws cInvalidArgumentException
+     * @param int $categoryId Category id
+     * @param int $languageId Language id
+     * @return bool True if insert was successfully
+     * @throws cDbException|cInvalidArgumentException
      */
-    public static function setCatUrlPath($iCatId = 0, $iLangId = 0)
+    public static function setCatUrlPath(int $categoryId = 0, int $languageId = 0): bool
     {
-        $sPath = self::buildRecursivPath($iCatId, $iLangId);
-        $iCatId = cSecurity::toInteger($iCatId);
-        $iLangId = cSecurity::toInteger($iLangId);
+        $path = self::buildRecursivPath($categoryId, $languageId);
 
         // update urlpath
-        $sql = "UPDATE " . cRegistry::getDbTableName('cat_lang') . " SET urlpath = '" . self::$_db->escape($sPath) . "' "
-            . "WHERE idcat = " . $iCatId . " AND idlang = " . $iLangId;
+        $sql = self::$db->prepare(
+            "UPDATE `%s` SET `urlpath` = '%s' WHERE `idcat` = %d AND `idlang` = %d",
+            cDb::getTableName('cat_lang'),
+            $path,
+            $categoryId,
+            $languageId
+        );
 
         ModRewriteDebugger::log([
-            'iCatId' => $iCatId,
-            'iLangId' => $iLangId,
-            'sPath' => $sPath
+            'categoryId' => $categoryId,
+            'languageId' => $languageId,
+            'path' => $path
         ], 'ModRewrite::setCatUrlPath $data');
 
-        return self::$_db->query($sql);
+        return cSecurity::toBoolean(self::$db->query($sql));
     }
 
     /**
      * Get article id and language id from article language id
      *
-     * @param int $iArtlangId Current article id
-     *
-     * @return array  Array with idart and idlang of current article
+     * @param int $articleLanguageId Current article id
+     * @return array Array with idart and idlang of current article
      * @throws cDbException
      */
-    public static function getArtIdByArtlangId($iArtlangId = 0)
+    public static function getArtIdByArtlangId(int $articleLanguageId = 0): array
     {
-        $iArtlangId = cSecurity::toInteger($iArtlangId);
-        $sql = "SELECT idart, idlang FROM " . cRegistry::getDbTableName('art_lang') . " WHERE idartlang = " . $iArtlangId;
-        if ($aData = mr_queryAndNextRecord($sql)) {
-            return $aData;
+        $sql = self::$db->prepare(
+            "SELECT `idart`, `idlang` FROM `%s` WHERE `idartlang` = %d",
+            cDb::getTableName('art_lang'),
+            $articleLanguageId
+        );
+        if ($record = mr_queryAndNextRecord($sql)) {
+            return $record;
         }
         return [];
     }
@@ -284,48 +297,45 @@ class ModRewrite extends ModRewriteBase
     /**
      * Get article id by article websafe name
      *
-     * @param string $sArtName Websafe name
-     * @param int $iCatId Category id
-     * @param int $iLangId Language id
-     *
-     * @return  int|NULL  Recent article id or NULL
-     * @throws  cDbException
+     * @param string $articleName Websafe name
+     * @param int $categoryId Category id
+     * @param int $languageId Language id
+     * @return ?int Recent article id or NULL
+     * @throws cDbException
      */
-    public static function getArtIdByWebsafeName($sArtName = '', $iCatId = 0, $iLangId = 0)
+    public static function getArtIdByWebsafeName(string $articleName = '', int $categoryId = 0, int $languageId = 0): ?int
     {
-        $lang = cRegistry::getLanguageId();
-        $iCatId = cSecurity::toInteger($iCatId);
-        $iLangId = cSecurity::toInteger($iLangId);
-        if (0 === $iLangId && is_int($lang)) {
-            $iLangId = $lang;
-        }
-
-        $sWhere = '';
-        if ($iLangId !== 0) {
-            $sWhere = ' AND al.idlang = ' . $iLangId;
+        $where = '';
+        if ($languageId > 0) {
+            $where = ' AND al.idlang = ' . $languageId;
         }
         // only article name were given
-        if ($iCatId == 0) {
+        if ($categoryId == 0) {
             // get all basic category ids with parentid=0
-            $aCatIds = [];
-            $sql = "SELECT idcat FROM " . cRegistry::getDbTableName('cat') . " WHERE parentid = 0";
-            self::$_db->query($sql);
-            while (self::$_db->nextRecord()) {
-                $aCatIds[] = "idcat = " . cSecurity::toInteger(self::$_db->f('idcat'));
+            $categoryIds = [];
+            self::$db->query(
+                "SELECT `idcat` FROM `%s` WHERE `parentid` = 0",
+                cDb::getTableName('cat')
+            );
+            while (self::$db->nextRecord()) {
+                $categoryIds[] = cSecurity::toInteger(self::$db->f('idcat'));
             }
-            $sWhere .= " AND (" . join(" OR ", $aCatIds) . ")";
+            $where .= " AND ca.idcat IN (" . join(',', $categoryIds) . ")";
         } else {
-            $sWhere .= " AND ca.idcat = " . $iCatId;
+            $where .= " AND ca.idcat = " . $categoryId;
         }
 
-        $sql = "
-            SELECT al.idart
-            FROM " . cRegistry::getDbTableName('art_lang') . " al
-            LEFT JOIN " . cRegistry::getDbTableName('cat_art') . " ca ON al.idart = ca.idart
-            WHERE LOWER(al.urlname) = LOWER('" . self::$_db->escape($sArtName) . "') $sWhere";
-
-        if ($aData = mr_queryAndNextRecord($sql)) {
-            return $aData['idart'];
+        $sql = self::$db->prepare(
+            "SELECT al.idart
+            FROM `%s` al
+            LEFT JOIN `%s` ca ON al.idart = ca.idart
+            WHERE LOWER(al.urlname) = LOWER('%s') $where",
+            cDb::getTableName('art_lang'),
+            cDb::getTableName('cat_art'),
+            $articleName
+        );
+        if ($record = mr_queryAndNextRecord($sql)) {
+            return cSecurity::toInteger($record['idart']);
         } else {
             return NULL;
         }
@@ -334,31 +344,33 @@ class ModRewrite extends ModRewriteBase
     /**
      * Get category name from category id and language id.
      *
-     * @param int $iCatId Category id
-     * @param int $iLangId Language id
-     *
-     * @return  string  Category name
+     * @param int $categoryId Category id
+     * @param int $languageId Language id
+     * @return string Category name
      * @throws cDbException
      */
-    public static function getCatName($iCatId = 0, $iLangId = 0)
+    public static function getCatName(int $categoryId = 0, int $languageId = 0): string
     {
-        $iCatId = cSecurity::toInteger($iCatId);
-        $iLangId = cSecurity::toInteger($iLangId);
-        $key = 'catname_by_catid_idlang_' . $iCatId . '_' . $iLangId;
+        $key = 'catname_by_catid_idlang_' . $categoryId . '_' . $languageId;
 
-        if (isset(self::$_lookupTable[$key])) {
-            return self::$_lookupTable[$key];
+        if (isset(self::$lookupTable[$key])) {
+            return self::$lookupTable[$key];
         }
 
-        $sql = "SELECT name FROM " . cRegistry::getDbTableName('cat_lang')
-            . " WHERE idcat = " . $iCatId . " AND idlang = " . $iLangId;
-        if ($aData = mr_queryAndNextRecord($sql)) {
-            $catName = $aData['name'];
+        $sql = self::$db->prepare(
+            "SELECT `name` FROM `%s` WHERE `idcat` = %d AND `idlang` = %d",
+            cDb::getTableName('cat_lang'),
+            $categoryId,
+            $languageId
+        );
+        if ($record = mr_queryAndNextRecord($sql)) {
+            $catName = $record['name'];
         } else {
             $catName = '';
         }
 
-        self::$_lookupTable[$key] = $catName;
+        self::$lookupTable[$key] = $catName;
+
         return $catName;
     }
 
@@ -368,15 +380,13 @@ class ModRewrite extends ModRewriteBase
      * Caches the paths at first call to provide faster processing at further calls.
      *
      * @param string $path Category path
-     *
-     * @return  int  Category id
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @return int Category id
+     * @throws cDbException|cInvalidArgumentException
      */
-    public static function getCatIdByUrlPath($path)
+    public static function getCatIdByUrlPath(string $path): int
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $clientId = cRegistry::getClientId();
+        $languageId = cRegistry::getLanguageId();
 
         if (cString::findFirstPos($path, '/') === 0) {
             $path = cString::getPartOfString($path, 1);
@@ -385,38 +395,45 @@ class ModRewrite extends ModRewriteBase
             $path = cString::getPartOfString($path, 0, -1);
         }
 
-        $catSeperator = '/';
+        $catSeparator = '/';
         $startFromRoot = parent::getConfig('startfromroot');
         $urls2lowercase = parent::getConfig('use_lowercase_uri');
 
         $path = str_replace('/', parent::getConfig('category_seperator'), $path);
 
-        $key = 'cat_ids_and_urlpath_' . $client . '_' . $lang;
+        $key = 'cat_ids_and_urlpath_' . $clientId . '_' . $languageId;
 
-        $aPathsCache = self::$_lookupTable[$key] ?? [];
+        $aPathsCache = self::$lookupTable[$key] ?? [];
 
         if (count($aPathsCache) == 0) {
-            $sql = "SELECT cl.idcat, cl.urlpath FROM " . cRegistry::getDbTableName('cat_lang')
-                . " AS cl, " . cRegistry::getDbTableName('cat') . " AS c WHERE c.idclient = " . cSecurity::toInteger($client)
-                . " AND c.idcat = cl.idcat AND cl.idlang = " . cSecurity::toInteger($lang);
-
-            self::$_db->query($sql);
-            while (self::$_db->nextRecord()) {
-                $urlPath = self::$_db->f('urlpath');
-                if ($startFromRoot == 0 && cString::findFirstPos($urlPath, $catSeperator) > 0) {
+            self::$db->query(
+                "SELECT cl.idcat, cl.urlpath "
+                . "FROM `%s` AS cl, `%s` AS c "
+                . "WHERE c.idclient = %d AND c.idcat = cl.idcat AND cl.idlang = %d",
+                cDb::getTableName('cat_lang'),
+                cDb::getTableName('cat'),
+                $clientId,
+                $languageId
+            );
+            while (self::$db->nextRecord()) {
+                $urlPath = self::$db->f('urlpath');
+                if ($startFromRoot == 0 && cString::findFirstPos($urlPath, $catSeparator) > 0) {
                     // paths are stored with prefixed main category, but created
                     // urls doesn't contain the main cat, remove it...
-                    $urlPath = cString::getPartOfString($urlPath, cString::findFirstPos($urlPath, $catSeperator) + 1);
+                    $urlPath = cString::getPartOfString(
+                        $urlPath,
+                        cString::findFirstPos($urlPath, $catSeparator) + 1
+                    );
                 }
                 if ($urls2lowercase) {
                     $urlPath = cString::toLowerCase($urlPath);
                 }
 
                 // store path
-                $aPathsCache[cSecurity::toInteger(self::$_db->f('idcat'))] = $urlPath;
+                $aPathsCache[cSecurity::toInteger(self::$db->f('idcat'))] = $urlPath;
             }
         }
-        self::$_lookupTable[$key] = $aPathsCache;
+        self::$lookupTable[$key] = $aPathsCache;
 
         // compare paths using the similar_text algorithm
         $fPercent = 0;
@@ -437,7 +454,7 @@ class ModRewrite extends ModRewriteBase
         if ($iMinPercentage > 0 && $aResults[$catId] < $iMinPercentage) {
             return 0;
         } else {
-            return $catId;
+            return cSecurity::toInteger($catId);
         }
     }
 
@@ -446,105 +463,111 @@ class ModRewrite extends ModRewriteBase
      *
      * @NOTE: seems to be not used???
      *
-     * @param int $iArtId Article id
-     * @param int $iLangId Language id
-     *
-     * @return  string  Article name
+     * @param int $articleId Article id
+     * @param int $languageId Language id
+     * @return string Article name
      * @throws cDbException
      */
-    public static function getArtTitle($iArtId = 0, $iLangId = 0)
+    public static function getArtTitle(int $articleId = 0, int $languageId = 0): string
     {
-        $iArtId = cSecurity::toInteger($iArtId);
-        $iLangId = cSecurity::toInteger($iLangId);
+        $record = mr_queryAndNextRecord(self::$db->prepare(
+            "SELECT `title` FROM `%s` WHERE `idart` = %s AND `idlang` = %d",
+            cDb::getTableName('art_lang'),
+            $articleId,
+            $languageId
+        ));
 
-        $sql = "SELECT title FROM " . cRegistry::getDbTableName('art_lang')
-            . " WHERE idart = " . $iArtId . " AND idlang = " . $iLangId;
-        if ($aData = mr_queryAndNextRecord($sql)) {
-            return $aData['title'];
-        }
-        return '';
+        return $record ? $record['title'] : '';
     }
 
     /**
      * Get language ids from category id
      *
-     * @param int $iCatId Category id
-     *
-     * @return  array  Used language ids
-     * @throws  cDbException
+     * @param int $categoryId Category id
+     * @return array Used language ids
+     * @throws cDbException
      */
-    public static function getCatLanguages($iCatId = 0)
+    public static function getCatLanguages(int $categoryId = 0): array
     {
-        $iCatId = cSecurity::toInteger($iCatId);
-        $key = 'cat_idlang_by_catid_' . $iCatId;
+        $key = 'cat_idlang_by_catid_' . $categoryId;
 
-        if (isset(self::$_lookupTable[$key])) {
-            return self::$_lookupTable[$key];
+        if (isset(self::$lookupTable[$key])) {
+            return self::$lookupTable[$key];
         }
 
-        $aLanguages = [];
+        $languageIds = [];
 
-        $sql = "SELECT idlang FROM " . cRegistry::getDbTableName('cat_lang') . " WHERE idcat = " . $iCatId;
-        self::$_db->query($sql);
-        while (self::$_db->nextRecord()) {
-            $aLanguages[] = self::$_db->f('idlang');
+        self::$db->query(
+            "SELECT `idlang` FROM `%s` WHERE `idcat` = %s",
+            cDb::getTableName('cat_lang'),
+            $categoryId
+        );
+        while (self::$db->nextRecord()) {
+            $languageIds[] = cSecurity::toInteger(self::$db->f('idlang'));
         }
 
-        self::$_lookupTable[$key] = $aLanguages;
-        return $aLanguages;
+        self::$lookupTable[$key] = $languageIds;
+
+        return self::$lookupTable[$key];
     }
 
     /**
      * Get article urlname and language id
      *
-     * @param int $iArtlangId idartlang
-     *
-     * @return  array  Urlname, idlang of empty array
+     * @param int $articleLanguageId idartlang
+     * @return array{urlname: string, idlang: int} Urlname, idlang or empty array
      * @throws cDbException
      */
-    public static function getArtIds($iArtlangId = 0)
+    public static function getArtIds(int $articleLanguageId = 0): array
     {
-        $iArtlangId = cSecurity::toInteger($iArtlangId);
-        $sql = "SELECT urlname, idlang FROM " . cRegistry::getDbTableName('art_lang')
-            . " WHERE idartlang = " . $iArtlangId;
-        if ($aData = mr_queryAndNextRecord($sql)) {
-            return $aData;
+        $record = mr_queryAndNextRecord(self::$db->prepare(
+            "SELECT `urlname`, `idlang` FROM `%s` WHERE `idartlang` = %d",
+            cDb::getTableName('art_lang'),
+            $articleLanguageId
+        ));
+
+        if ($record) {
+            $record['idlang'] = cSecurity::toInteger($record['idlang']);
         }
-        return [];
+
+        return $record ?: [];
     }
 
     /**
-     * Build a recursiv path for mod_rewrite rule like server directories
-     * (dir1/dir2/dir3)
+     * Build a recursive path for mod_rewrite rule like server directories (dir1/dir2/dir3)
      *
-     * @param int $iCatId Latest category id
-     * @param int $iLangId Language id
-     * @param int $iLastId Last category id
-     *
-     * @return  string  linkpath with correct uri
+     * @param int $categoryId Latest category id
+     * @param int $languageId Language id
+     * @param int $lastCategoryId Last category id
+     * @return string Link path with correct uri
      * @throws cDbException
      */
-    public static function buildRecursivPath($iCatId = 0, $iLangId = 0, $iLastId = 0)
+    public static function buildRecursivPath(int $categoryId = 0, int $languageId = 0, int $lastCategoryId = 0): string
     {
         $aDirectories = [];
-        $bFinish = false;
-        $iTmpCatId = cSecurity::toInteger($iCatId);
-        $iLangId = cSecurity::toInteger($iLangId);
-        $iLastId = cSecurity::toInteger($iLastId);
+        $isFinished = false;
+        $actCategoryId = $categoryId;
 
-        while ($bFinish == false) {
-            $sql = "SELECT cl.urlname, c.parentid FROM " . cRegistry::getDbTableName('cat_lang') . " cl "
-                . "LEFT JOIN " . cRegistry::getDbTableName('cat') . " c ON cl.idcat = c.idcat "
-                . "WHERE cl.idcat = " . $iTmpCatId . " AND cl.idlang = " . $iLangId;
-            if ($aData = mr_queryAndNextRecord($sql)) {
-                $aDirectories[] = $aData['urlname'];
-                $iTmpCatId = cSecurity::toInteger($aData['parentid']);
+        while ($isFinished == false) {
+            $sql = self::$db->prepare(
+                "SELECT cl.urlname, c.parentid "
+                . "FROM `%s` cl "
+                . "LEFT JOIN `%s` c ON cl.idcat = c.idcat "
+                . "WHERE cl.idcat = %d AND cl.idlang = %d",
+                cDb::getTableName('cat_lang'),
+                cDb::getTableName('cat'),
+                $actCategoryId,
+                $languageId
+            );
+            if ($record = mr_queryAndNextRecord($sql)) {
+                $aDirectories[] = $record['urlname'];
+                $actCategoryId = cSecurity::toInteger($record['parentid']);
 
-                if ($aData['parentid'] == 0 || $aData['parentid'] == $iLastId) {
-                    $bFinish = true;
+                if ($record['parentid'] == 0 || $record['parentid'] == $lastCategoryId) {
+                    $isFinished = true;
                 }
             } else {
-                $bFinish = true;
+                $isFinished = true;
             }
         }
 
@@ -555,282 +578,272 @@ class ModRewrite extends ModRewriteBase
     /**
      * Return full CONTENIDO url from single anchor
      *
-     * @param array $aMatches [0] = complete anchor, [1] = pre arguments, [2] = anchor name, [3] = post arguments
-     * @return  string  New anchor
+     * @param array $matches [0] = complete anchor, [1] = pre arguments, [2] = anchor name, [3] = post arguments
+     * @return string New anchor
      */
-    public static function rewriteHtmlAnchor(array $aMatches = [])
+    public static function rewriteHtmlAnchor(array $matches = []): string
     {
         global $artname;
 
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
-        $idcat = cRegistry::getCategoryId();
-        $idart = cRegistry::getArticleId();
-        $sess = cRegistry::getSession();
-
-        // set article name
-        $sArtParam = '';
+        // Set base parameter
+        $params = [];
         if (isset($artname) && cString::getStringLength($artname) > 0) {
-            $sArtParam = '&idart=' . cSecurity::toInteger($idart);
+            $params['idart'] = cRegistry::getArticleId();
         }
+        $params['idcat'] = cRegistry::getCategoryId();
+        $params['client'] = cRegistry::getClientId();
+        $params['changelang'] = cRegistry::getLanguageId();
 
-        // check for additional parameter in url
-        $aParamsToIgnore = [
-            'idcat', 'idart', 'lang', 'client', 'idcatart', 'changelang', 'changeclient', 'idartlang', 'parts', 'artname'
+        // Add additional parameter in url
+        $paramsToIgnore = [
+            'idcat',
+            'idart',
+            'lang',
+            'client',
+            'idcatart',
+            'changelang',
+            'changeclient',
+            'idartlang',
+            'parts',
+            'artname'
         ];
-        $sOtherParams = '';
-
         if (!empty($_GET)) {
             foreach ($_GET as $key => $value) {
-                if (!in_array($key, $aParamsToIgnore) && cString::getStringLength(trim($value)) > 0) {
-                    #$aNoAnchor = explode('#', $value);
-                    $sOtherParams .= '&' . urlencode(urldecode($key)) . '=' . urlencode(urldecode($value));
+                if (!in_array($key, $paramsToIgnore) && cString::getStringLength(trim($value)) > 0) {
+                    $params[urldecode($key)] = urldecode($value);
                 }
             }
         }
 
-        $url = $sess->url(
-            'front_content.php?' . 'idcat=' . cSecurity::toInteger($idcat) . '&client=' . cSecurity::toInteger($client)
-            . '&changelang=' . cSecurity::toInteger($lang) . $sArtParam . $sOtherParams . '#' . $aMatches[2]
-        );
+        $url = cRegistry::getSession()->url(sprintf(
+            'front_content.php?%s#%s', http_build_query($params), $matches[2]
+        ));
 
-        return '<a' . $aMatches[1] . 'href="' . $url . '"' . $aMatches[3] . '>';
+        return '<a' . $matches[1] . 'href="' . $url . '"' . $matches[3] . '>';
     }
 
     /**
      * Return full CONTENIDO url from single anchor
      *
-     * @param array $aMatches [0] = complete anchor, [1] = pre arguments, [2] = anchor name, [3] = post arguments
-     * @param bool $bXHTML Flag to return XHTML valid url
-     * @return  string  New anchor
+     * @param array $matches [0] = complete anchor, [1] = pre arguments, [2] = anchor name, [3] = post arguments
+     * @param bool $isXHTML Flag to return XHTML valid url
+     * @return string New anchor
      */
-    public static function contenidoHtmlAnchor(array $aMatches = [], $bXHTML = true)
+    public static function contenidoHtmlAnchor(array $matches = [], bool $isXHTML = true): string
     {
-        $sess = cRegistry::getSession();
-        $aParams = [];
-        $sAmpersand = $bXHTML ? '&amp;' : '&';
+        $params = [];
+        $argSeparator = $isXHTML ? '&amp;' : '&';
 
         foreach ($_GET as $key => $value) {
             $aNoAnchor = explode('#', $value);
-            $aParams[] = urlencode(urldecode($key)) . '=' . urlencode(urldecode($aNoAnchor[0]));
+            $params[urldecode($key)] = urldecode($aNoAnchor[0]);
         }
 
-        $url = $sess->url('front_content.php?' . implode($sAmpersand, $aParams) . '#' . $aMatches[2]);
-        return '<a' . $aMatches[1] . 'href="' . $url . '"' . $aMatches[3] . '>';
+        $url = cRegistry::getSession()->url(sprintf(
+            'front_content.php?%s#%s', http_build_query($params, $argSeparator), $matches[2]
+        ));
+
+        return '<a' . $matches[1] . 'href="' . $url . '"' . $matches[3] . '>';
     }
 
     /**
      * Get article websafe name from article id and language id.
      *
-     * @param int $iArtId Article id
-     * @param int $iLangId Language id
-     *
-     * @return   string    Article websafe name
+     * @param int $articleId Article id
+     * @param int $languageId Language id
+     * @return ?string Article websafe name
      * @throws cDbException
      */
-    public static function getArtWebsafeName($iArtId = 0, $iLangId = 0)
+    public static function getArtWebsafeName(int $articleId = 0, int $languageId = 0): ?string
     {
-        $iArtId = cSecurity::toInteger($iArtId);
-        $iLangId = cSecurity::toInteger($iLangId);
-        $sql = "SELECT urlname FROM " . cRegistry::getDbTableName('art_lang')
-            . " WHERE idart = " . $iArtId . " AND idlang = " . $iLangId;
-        if ($aData = mr_queryAndNextRecord($sql)) {
-            return $aData['urlname'];
-        }
-        return NULL;
+        $record = mr_queryAndNextRecord(self::$db->prepare(
+            "SELECT `urlname` FROM `%s` WHERE `idart` = %s AND `idlang` = %d",
+            cDb::getTableName('art_lang'),
+            $articleId,
+            $languageId
+        ));
+
+        return $record ? $record['urlname'] : null;
     }
 
     /**
      * Get article websafe name from idartlang.
      *
-     * @param int $iArtLangId idartlang
-     *
-     * @return     string    Article websafe name
+     * @param int $articleLanguageId idartlang
+     * @return ?string Article websafe name
      * @throws cDbException
      */
-    public static function getArtLangWebsafeName($iArtLangId = 0)
+    public static function getArtLangWebsafeName(int $articleLanguageId = 0): ?string
     {
-        $iArtLangId = cSecurity::toInteger($iArtLangId);
-        $sql = "SELECT urlname FROM " . cRegistry::getDbTableName('art_lang') . " WHERE idartlang = " . $iArtLangId;
-        if ($aData = mr_queryAndNextRecord($sql)) {
-            return $aData['urlname'];
-        }
-        return NULL;
+        $record = mr_queryAndNextRecord(self::$db->prepare(
+            "SELECT `urlname` FROM `%s` WHERE `idartlang` = %d",
+            cDb::getTableName('art_lang'),
+            $articleLanguageId
+        ));
+
+        return $record ? $record['urlname'] : null;
     }
 
     /**
      * Get name of client by id.
      *
      * @param int $clientId Client id
-     *
-     * @return  string  Client name
+     * @return string Client name
      * @throws cDbException
      */
-    public static function getClientName($clientId = 0)
+    public static function getClientName(int $clientId = 0): string
     {
-        $clientId = cSecurity::toInteger($clientId);
         $key = 'clientname_by_clientid_' . $clientId;
 
-        if (isset(self::$_lookupTable[$key])) {
-            return self::$_lookupTable[$key];
+        if (isset(self::$lookupTable[$key])) {
+            return self::$lookupTable[$key];
         }
 
-        $sql = "SELECT name FROM " . cRegistry::getDbTableName('clients') . " WHERE idclient = " . $clientId;
-        if ($aData = mr_queryAndNextRecord($sql)) {
-            $clientName = $aData['name'];
-        } else {
-            $clientName = '';
-        }
+        $record = mr_queryAndNextRecord(self::$db->prepare(
+            "SELECT `name` FROM `%s` WHERE `idclient` = %d",
+            cDb::getTableName('clients'),
+            $clientId
+        ));
 
-        self::$_lookupTable[$key] = $clientName;
-        return $clientName;
+        self::$lookupTable[$key] = $record ? $record['name'] : '';
+
+        return self::$lookupTable[$key];
     }
 
     /**
      * Get client id from client name
      *
-     * @param string $sClientName Client name
-     *
-     * @return  int  Client id
+     * @param string $clientName Client name
+     * @return int Client id
      * @throws cDbException
      */
-    public static function getClientId($sClientName = '')
+    public static function getClientId(string $clientName = ''): int
     {
-        $sClientName = cString::toLowerCase($sClientName);
-        $key = 'clientid_by_name_' . $sClientName;
+        $clientName = cString::toLowerCase($clientName);
+        $key = 'clientid_by_name_' . $clientName;
 
-        if (isset(self::$_lookupTable[$key])) {
-            return self::$_lookupTable[$key];
+        if (isset(self::$lookupTable[$key])) {
+            return self::$lookupTable[$key];
         }
 
-        $sql = "SELECT idclient FROM " . cRegistry::getDbTableName('clients')
-            . " WHERE LOWER(name) = '" . self::$_db->escape($sClientName) . "'"
-            . " OR LOWER(name) = '" . self::$_db->escape(urldecode($sClientName)) . "'";
-        if ($aData = mr_queryAndNextRecord($sql)) {
-            $clientId = $aData['idclient'];
-        } else {
-            $clientId = false;
-        }
+        $record = mr_queryAndNextRecord(self::$db->prepare(
+            "SELECT `idclient` FROM `%s` WHERE LOWER(`name`) = '%s' OR LOWER(`name`) = '%s'",
+            cDb::getTableName('clients'),
+            $clientName,
+            urldecode($clientName)
+        ));
 
-        self::$_lookupTable[$key] = $clientId;
-        return $clientId;
+        self::$lookupTable[$key] = $record ? cSecurity::toInteger($record['idclient']) : 0;
+
+        return self::$lookupTable[$key];
     }
 
     /**
      * Checks if client id exists
      *
-     * @param int $clientId
-     *
-     * @return  bool
      * @throws cDbException
      */
-    public static function clientIdExists($clientId)
+    public static function clientIdExists(int $clientId): bool
     {
-        $clientId = cSecurity::toInteger($clientId);
         $key = 'clientid_exists_' . $clientId;
 
-        if (isset(self::$_lookupTable[$key])) {
-            return self::$_lookupTable[$key];
+        if (isset(self::$lookupTable[$key])) {
+            return self::$lookupTable[$key];
         }
 
-        $sql = "SELECT idclient FROM " . cRegistry::getDbTableName('clients') . " WHERE idclient = " . $clientId;
-        if ($aData = mr_queryAndNextRecord($sql)) {
-            $exists = true;
-        } else {
-            $exists = false;
-        }
+        self::$lookupTable[$key] = cSecurity::toBoolean(mr_queryAndNextRecord(self::$db->prepare(
+            "SELECT `idclient` FROM `%s` WHERE `idclient` = %d",
+            cDb::getTableName('clients'),
+            $clientId
+        )));
 
-        self::$_lookupTable[$key] = $exists;
-        return $exists;
+        return self::$lookupTable[$key];
     }
 
     /**
      * Returns name of language by id.
      *
      * @param int $languageId Language id
-     *
-     * @return  string  Lanuage name
+     * @return string Language name
      * @throws cDbException
      */
-    public static function getLanguageName($languageId = 0)
+    public static function getLanguageName(int $languageId = 0): string
     {
-        $languageId = cSecurity::toInteger($languageId);
         $key = 'languagename_by_id_' . $languageId;
 
-        if (isset(self::$_lookupTable[$key])) {
-            return self::$_lookupTable[$key];
+        if (isset(self::$lookupTable[$key])) {
+            return self::$lookupTable[$key];
         }
 
-        $sql = "SELECT name FROM " . cRegistry::getDbTableName('lang') . " WHERE idlang = " . $languageId;
-        if ($aData = mr_queryAndNextRecord($sql)) {
-            $languageName = $aData['name'];
-        } else {
-            $languageName = '';
-        }
+        $record = mr_queryAndNextRecord(self::$db->prepare(
+            "SELECT `name` FROM `%s` WHERE `idlang` = %d",
+            cDb::getTableName('lang'),
+            $languageId
+        ));
 
-        self::$_lookupTable[$key] = $languageName;
-        return $languageName;
+        self::$lookupTable[$key] = $record ? $record['name'] : '';
+
+        return self::$lookupTable[$key];
     }
 
     /**
      * Checks if language id exists
      *
      * @param int $languageId Language id
-     *
-     * @return  bool
      * @throws cDbException
      */
-    public static function languageIdExists($languageId)
+    public static function languageIdExists(int $languageId): bool
     {
-        $languageId = cSecurity::toInteger($languageId);
         $key = 'languageid_exists_' . $languageId;
 
-        if (isset(self::$_lookupTable[$key])) {
-            return self::$_lookupTable[$key];
+        if (isset(self::$lookupTable[$key])) {
+            return self::$lookupTable[$key];
         }
 
-        $sql = "SELECT idlang FROM " . cRegistry::getDbTableName('lang') . " WHERE idlang = " . $languageId;
-        if ($aData = mr_queryAndNextRecord($sql)) {
-            $exists = true;
-        } else {
-            $exists = false;
-        }
+        self::$lookupTable[$key] = cSecurity::toBoolean(mr_queryAndNextRecord(self::$db->prepare(
+            "SELECT `idlang` FROM `%s` WHERE `idlang` = %d",
+            cDb::getTableName('lang'),
+            $languageId
+        )));
 
-        self::$_lookupTable[$key] = $exists;
-        return $exists;
+        return self::$lookupTable[$key];
     }
 
     /**
-     * Get language id from language name thanks to Nicolas Dickinson for multi
-     * Client/Language BugFix
+     * Get language id from language name thanks to Nicolas Dickinson for multi Client/Language BugFix
      *
      * @param string $sLanguageName Language name
-     * @param int $iClientId Client id
-     *
-     * @return int  Language id
+     * @param int $clientId Client id
      * @throws cDbException
      */
-    public static function getLanguageId($sLanguageName = '', $iClientId = 1)
+    public static function getLanguageId(string $sLanguageName = '', int $clientId = 1): int
     {
         $sLanguageName = cString::toLowerCase($sLanguageName);
-        $iClientId = cSecurity::toInteger($iClientId);
-        $key = 'langid_by_langname_clientid_' . $sLanguageName . '_' . $iClientId;
+        $clientId = cSecurity::toInteger($clientId);
+        $key = 'langid_by_langname_clientid_' . $sLanguageName . '_' . $clientId;
 
-        if (isset(self::$_lookupTable[$key])) {
-            return self::$_lookupTable[$key];
+        if (isset(self::$lookupTable[$key])) {
+            return self::$lookupTable[$key];
         }
 
-        $sql = "SELECT l.idlang FROM " . cRegistry::getDbTableName('lang') . " as l "
-            . "LEFT JOIN " . cRegistry::getDbTableName('clients_lang') . " AS cl ON l.idlang = cl.idlang "
-            . "WHERE cl.idclient = " . $iClientId . " AND (LOWER(l.name) = '" . self::$_db->escape($sLanguageName) . "' "
-            . "OR LOWER(l.name) = '" . self::$_db->escape(urldecode($sLanguageName)) . "')";
-        if ($aData = mr_queryAndNextRecord($sql)) {
-            $languageId = cSecurity::toInteger($aData['idlang']);
+        $sql = self::$db->prepare(
+            "SELECT l.idlang FROM `%s` AS l "
+            . "LEFT JOIN `%s` AS cl ON l.idlang = cl.idlang "
+            . "WHERE cl.idclient = %d AND (LOWER(l.name) = '%s' OR LOWER(l.name) = '%s')",
+            cDb::getTableName('lang'),
+            cDb::getTableName('clients_lang'),
+            $clientId,
+            $sLanguageName,
+            urldecode($sLanguageName)
+        );
+        if ($record = mr_queryAndNextRecord($sql)) {
+            $languageId = cSecurity::toInteger($record['idlang']);
         } else {
             $languageId = 0;
         }
 
-        self::$_lookupTable[$key] = $languageId;
+        self::$lookupTable[$key] = $languageId;
+
         return $languageId;
     }
 
@@ -838,14 +851,14 @@ class ModRewrite extends ModRewriteBase
      * Splits passed argument into scheme://host and path/query.
      *
      * Example:
-     * input  = https://host/front_content.php?idcat=123
+     * input = https://host/front_content.php?idcat=123
      * return = ['htmlpath' => 'https://host', 'url' => 'front_content.php?idcat=123']
      *
      * @param string $url URL to split
-     * @return array   Associative array including the two parts:
-     *                 - ['htmlpath' => $path, 'url' => $url]
+     * @return array{htmlpath: string, url: string} Associative array including the two parts:
+     *      - ['htmlpath' => $path, 'url' => $url]
      */
-    public static function getClientFullUrlParts($url)
+    public static function getClientFullUrlParts(string $url): array
     {
         $clientPath = cRegistry::getFrontendUrl();
 
@@ -855,13 +868,13 @@ class ModRewrite extends ModRewriteBase
             $htmlPath = $clientPath;
             $aComp = parse_url($htmlPath);
 
-            // check if path matches to defined rootdir from mod_rewrite conf
+            // check if the path matches to defined rootdir from mod_rewrite conf
             if (isset($aComp['path']) && $aComp['path'] !== parent::getConfig('rootdir')) {
-                // replace not matching path against configured one
+                // replace the not matching path against the configured one
                 // this will replace e.g. "http://host/cms/" against "http://host/"
                 $htmlPath = str_replace($aComp['path'], parent::getConfig('rootdir'), $htmlPath);
                 if (cString::getPartOfString($htmlPath, cString::getStringLength($htmlPath) - 1) == '/') {
-                    // remove last slash
+                    // remove the last slash
                     $htmlPath = cString::getPartOfString($htmlPath, 0, cString::getStringLength($htmlPath) - 1);
                 }
             }
@@ -874,14 +887,14 @@ class ModRewrite extends ModRewriteBase
     /**
      * Function to preclean an url.
      *
-     * Removes absolute path declaration '/front_content.php' or relative path
-     * definition to actual dir './front_content.php', ampersand entities '&amp;'
-     * and returns an url like 'front_content.php?idart=12&idlang=1'
+     * Removes absolute path declaration '/front_content.php' or relative path definition to actual
+     * dir './front_content.php', ampersand entities '&amp;'
+     * and returns a url like 'front_content.php?idart=12&idlang=1'
      *
      * @param string $url Url to clean
-     * @return  string  Cleaned Url
+     * @return string Cleaned Url
      */
-    public static function urlPreClean($url)
+    public static function urlPreClean(string $url): string
     {
         // some preparation of different front_content.php occurrence
         if (cString::findFirstPos($url, './front_content.php') === 0) {
@@ -889,36 +902,42 @@ class ModRewrite extends ModRewriteBase
         } elseif (cString::findFirstPos($url, '/front_content.php') === 0) {
             $url = str_replace('/front_content.php', 'front_content.php', $url);
         }
+
         return str_replace('&amp;', '&', $url);
     }
 
     /**
      * Recreates all or only empty aliases in categories table.
      *
-     * @param bool $bOnlyEmpty Flag to reset only empty items
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param bool $onlyEmpty Flag to reset only empty items
+     * @throws cDbException|cInvalidArgumentException
      */
-    public static function recreateCategoriesAliases($bOnlyEmpty = false)
+    public static function recreateCategoriesAliases(bool $onlyEmpty = false)
     {
         $db = cRegistry::getDb();
         $aCats = [];
 
         // get all or only empty categories
-        $sql = "SELECT name, idcat, idlang FROM " . cRegistry::getDbTableName('cat_lang');
-        if ($bOnlyEmpty === true) {
+        $sql = "SELECT name, idcat, idlang FROM " . cDb::getTableName('cat_lang');
+        if ($onlyEmpty) {
             $sql .= " WHERE urlname IS NULL OR urlname = '' OR urlpath IS NULL OR urlpath = ''";
         }
 
         $db->query($sql);
         while ($db->nextRecord()) {
             //set new alias
-            self::setCatWebsafeName($db->f('name'), $db->f('idcat'), $db->f('idlang'));
-            $aCats[] = ['idcat' => $db->f('idcat'), 'idlang' => $db->f('idlang')];
+            self::setCatWebsafeName(
+                cSecurity::toString($db->f('name')),
+                cSecurity::toInteger($db->f('idcat')),
+                cSecurity::toInteger($db->f('idlang'))
+            );
+            $aCats[] = [
+                'idcat' => cSecurity::toInteger($db->f('idcat')),
+                'idlang' => cSecurity::toInteger($db->f('idlang'))
+            ];
         }
 
-        foreach ($aCats as $p => $item) {
+        foreach ($aCats as $item) {
             self::setCatUrlPath($item['idcat'], $item['idlang']);
         }
     }
@@ -927,17 +946,16 @@ class ModRewrite extends ModRewriteBase
      * Returns list of all empty category aliases
      *
      * @param bool $bOnlyNumber
-     *
      * @return array|int
      * @throws cDbException
      */
-    public static function getEmptyCategoriesAliases($bOnlyNumber = true)
+    public static function getEmptyCategoriesAliases(bool $bOnlyNumber = true)
     {
         $db = cRegistry::getDb();
         $return = ($bOnlyNumber) ? 0 : [];
 
         // get all empty categories
-        $sql = "SELECT name, idcat, idlang FROM " . cRegistry::getDbTableName('cat_lang')
+        $sql = "SELECT name, idcat, idlang FROM " . cDb::getTableName('cat_lang')
             . " WHERE urlname IS NULL OR urlname = '' OR urlpath IS NULL OR urlpath = ''";
 
         $db->query($sql);
@@ -956,51 +974,58 @@ class ModRewrite extends ModRewriteBase
     /**
      * Recreates all or only empty urlname entries in art_lang table.
      *
-     * @param bool $bOnlyEmpty Flag to reset only empty items
-     *
+     * @param bool $onlyEmpty Flag to reset only empty items
      * @throws cDbException
-     * @throws cInvalidArgumentException
      */
-    public static function recreateArticlesAliases($bOnlyEmpty = false)
+    public static function recreateArticlesAliases(bool $onlyEmpty = false)
     {
         $db = cRegistry::getDb();
 
         // get all or only empty articles
-        $sql = "SELECT title, idart, idlang FROM " . cRegistry::getDbTableName('art_lang');
-        if ($bOnlyEmpty === true) {
-            $sql .= " WHERE urlname IS NULL OR urlname = ''";
+        $sql = "SELECT `title`, `idart`, `idlang` FROM " . cDb::getTableName('art_lang');
+        if ($onlyEmpty) {
+            $sql .= " WHERE `urlname` IS NULL OR `urlname` = ''";
         }
         $db->query($sql);
 
         while ($db->nextRecord()) {
             //set new alias
-            self::setArtWebsafeName($db->f('title'), $db->f('idart'), $db->f('idlang'));
+            self::setArtWebsafeName(
+                cSecurity::toString($db->f('title')),
+                cSecurity::toInteger($db->f('idart')),
+                cSecurity::toInteger($db->f('idlang'))
+            );
         }
     }
 
     /**
-     * Returns list of all empty article aliases
+     * Returns a list of all empty article aliases, either the number of found
      *
-     * @param bool $bOnlyNumber
-     * @return  array|int
-     * @throws  cDbException
+     * @param bool $onlyNumber Flag to return number of rows instead the array
+     * @return array<int, array{0: string, 1: int, 2: int}>|int List of articles (array of [title, idart, idlang]),
+     *      or number of rows.
+     * @throws cDbException
      */
-    public static function getEmptyArticlesAliases($bOnlyNumber = true)
+    public static function getEmptyArticlesAliases(bool $onlyNumber = true)
     {
         $db = cRegistry::getDb();
-        $return = ($bOnlyNumber) ? 0 : [];
 
         // get all empty articles
-        $sql = "SELECT title, idart, idlang FROM " . cRegistry::getDbTableName('art_lang')
-            . " WHERE urlname IS NULL OR urlname = ''";
+        $db->query(
+            "SELECT `title`, `idart`, `idlang` FROM `%s` WHERE `urlname` IS NULL OR `urlname` = ''",
+            cDb::getTableName('art_lang')
+        );
+        if ($onlyNumber) {
+            return $db->numRows();
+        }
 
-        $db->query($sql);
-        if ($bOnlyNumber) {
-            $return = cSecurity::toInteger($db->numRows());
-        } else {
-            while ($db->nextRecord()) {
-                $return[] = [$db->f('title'), $db->f('idart'), $db->f('idlang')];
-            }
+        $return = [];
+        while ($db->nextRecord()) {
+            $return[] = [
+                $db->f('title'),
+                cSecurity::toInteger($db->f('idart')),
+                cSecurity::toInteger($db->f('idlang'))
+            ];
         }
 
         return $return;
@@ -1010,8 +1035,7 @@ class ModRewrite extends ModRewriteBase
      * Method to reset all aliases (categories and articles).
      * Shortcut to recreateCategoriesAliases() and recreateArticlesAliases()
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public static function resetAliases()
     {
@@ -1024,26 +1048,25 @@ class ModRewrite extends ModRewriteBase
      *
      * Shortcut to recreateCategoriesAliases() and recreateArticlesAliases()
      *
-     * @param bool $bOnlyEmpty Flag to reset only empty items
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param bool $onlyEmpty Flag to reset only empty items
+     * @throws cDbException|cInvalidArgumentException
      */
-    public static function recreateAliases($bOnlyEmpty = false)
+    public static function recreateAliases(bool $onlyEmpty = false)
     {
-        self::recreateCategoriesAliases($bOnlyEmpty);
-        self::recreateArticlesAliases($bOnlyEmpty);
+        self::recreateCategoriesAliases($onlyEmpty);
+        self::recreateArticlesAliases($onlyEmpty);
     }
 
     /**
      * Returns .htaccess related associative info array
-     *
-     * @return  array
      */
-    public static function getHtaccessInfo()
+    public static function getHtaccessInfo(): array
     {
         $arr = [
-            'contenido_full_path' => str_replace('\\', '/', realpath(cRegistry::getBackendPath() . '../') . '/'),
+            'contenido_full_path' => str_replace(
+                '\\',
+                '/',realpath(cRegistry::getBackendPath() . '../') . '/'
+            ),
             'client_full_path' => cRegistry::getFrontendPath(),
         ];
         $arr['in_contenido_path'] = is_file($arr['contenido_full_path'] . '.htaccess');

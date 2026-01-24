@@ -17,8 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * cHTMLScript class represents a script.
  *
- * @todo Should set attribute type="text/javascript" by default or depending on
- *       doctype!
+ * @todo Should set attribute type="text/javascript" by default or depending on doctype!
  * @package    Core
  * @subpackage GUI_HTML
  */
@@ -40,8 +39,7 @@ class cHTMLScript extends cHTMLContentElement
      * Renders a script tag to reference an external script.
      *
      * @param string $src The src (path) value for the script
-     * @param array $attributes Attributes to set, `type="text/javascript"`
-     *      will be set by default.
+     * @param array $attributes Attributes to set, `type="text/javascript"` will be set by default.
      * @return string
      * @since CONTENIDO 4.10.2
      */

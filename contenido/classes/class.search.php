@@ -14,8 +14,7 @@
  * @license    https://www.contenido.org/license/LIZENZ.txt
  * @link       https://www.4fb.de
  * @link       https://www.contenido.org
- * @deprecated [2014-07-30]
- *         This file is empty as of 2014-07-30.
+ * @deprecated [2014-07-30] This file is empty as of 2014-07-30.
  *         You can find the classes that used to be here in the search/ folder.
  */
 

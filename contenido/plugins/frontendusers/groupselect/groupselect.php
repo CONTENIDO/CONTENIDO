@@ -16,22 +16,17 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $db;
 
-/**
- * @return string
- */
-function frontendusers_groupselect_getTitle()
+function frontendusers_groupselect_getTitle(): string
 {
     return i18n('Groupname');
 }
 
 /**
- * @return string
- * @throws cDbException
- * @throws cException
+ * @throws cDbException|cException
  */
-function frontendusers_groupselect_display()
+function frontendusers_groupselect_display(): string
 {
-    $client = cSecurity::toInteger(cRegistry::getClientId());
+    $client = cRegistry::getClientId();
 
     $iIdFrontendUser = cSecurity::toInteger($_REQUEST['idfrontenduser'] ?? '0');
 
@@ -69,24 +64,21 @@ function frontendusers_groupselect_display()
 }
 
 /**
- * @return array
+ * @return string[]
  */
-function frontendusers_groupselect_wantedVariables()
+function frontendusers_groupselect_wantedVariables(): array
 {
     return (['groupselect']);
 }
 
 /**
  * @param $variables
- *
- * @return bool
- * @throws cDbException
- * @throws cException
- * @throws cInvalidArgumentException
+ * @return true
+ * @throws cDbException|cException|cInvalidArgumentException
  */
-function frontendusers_groupselect_store($variables)
+function frontendusers_groupselect_store($variables): bool
 {
-    $client = cSecurity::toInteger(cRegistry::getClientId());
+    $client = cRegistry::getClientId();
 
     $groups = $_REQUEST['groupselect'] ?? null;
     $iIdFrontendUser = cSecurity::toInteger($_REQUEST['idfrontenduser'] ?? '0');
@@ -100,7 +92,7 @@ function frontendusers_groupselect_store($variables)
     $feGroups->setWhere('idclient', $client);
     $feGroups->query();
 
-    while (($feGroup = $feGroups->next()) !== false) {
+    while ($feGroup = $feGroups->next()) {
         $idFrontendGroup = $feGroup->get('idfrontendgroup');
         $groupmembers->remove($idFrontendGroup, $iIdFrontendUser);
         if (in_array($idFrontendGroup, $groups)) {
@@ -111,10 +103,7 @@ function frontendusers_groupselect_store($variables)
     return true;
 }
 
-/**
- * @return array
- */
-function frontendusers_groupselect_canonicalVariables()
+function frontendusers_groupselect_canonicalVariables(): array
 {
     //FFBCON-812
     return [];
@@ -122,10 +111,8 @@ function frontendusers_groupselect_canonicalVariables()
 
 /**
  * @param $key
- *
- * @return string
  */
-function frontendusers_groupselect_getvalue($key)
+function frontendusers_groupselect_getvalue($key): string
 {
     return '';
 }

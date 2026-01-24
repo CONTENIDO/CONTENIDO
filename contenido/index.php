@@ -27,7 +27,7 @@ if (!defined('CON_FRAMEWORK')) {
  */
 
 // CONTENIDO startup process
-include_once('./includes/startup.php');
+include_once(__DIR__ . '/includes/startup.php');
 
 cRegistry::bootstrap([
     'sess' => 'cSession',
@@ -89,7 +89,7 @@ if (!cSecurity::isPositiveInteger($client ?? 0)) {
     if ($oClient == NULL) {
         $client = 0;
     } else {
-        $client = $oClient->get('idclient');
+        $client = cSecurity::toInteger($oClient->get('idclient'));
     }
 } else {
     $sess->register('client');

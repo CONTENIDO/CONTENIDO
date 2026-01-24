@@ -24,13 +24,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cUpgradeJob_0017 extends cUpgradeJobAbstract
 {
 
-    public $maxVersion = "4.9.8";
+    public $maxVersion = '4.9.8';
 
     public function _execute()
     {
-
-        if ($_SESSION['setuptype'] == 'upgrade') {
-
+        if ($this->_setupType == 'upgrade') {
             // Initializing cApiNavMain
             $navm = new cApiNavMain();
 

@@ -25,14 +25,14 @@ $imageDescription = "CMS_IMGDESCR[1]";
 if (cRegistry::isBackendEditMode()) {
     $imageEditor = "CMS_IMGEDITOR[1]";
 } else {
-    $imageEditor = "";
+    $imageEditor = '';
 }
 
 // build class containing all data necessary to display image
 // therefor the image dimensions have to be determined
 if (0 < cString::getStringLength($imageSource)) {
     $clientConfig = cRegistry::getClientConfig(cRegistry::getClientId());
-    $filename = str_replace($clientConfig["upl"]["htmlpath"], $clientConfig["upl"]["path"], $imageSource);
+    $filename = str_replace($clientConfig['upl']['htmlpath'], $clientConfig['upl']['path'], $imageSource);
     list($imageWidth, $imageHeight) = getimagesize($filename);
     $image = new stdClass();
     $image->src = $imageSource;

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file contains the backend page for editing meta tags.
+ * This file contains the backend page for editing meta-tags.
  *
  * @package    Core
  * @subpackage Backend
@@ -28,15 +28,15 @@ $auth = cRegistry::getAuth();
 $belang = cRegistry::getBackendLanguage();
 $frame = cRegistry::getFrame();
 $action = cRegistry::getAction();
-$idart = cSecurity::toInteger(cRegistry::getArticleId());
+$idart = cRegistry::getArticleId();
 $cfg = cRegistry::getConfig();
 $client = cRegistry::getClientId();
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$lang = cRegistry::getLanguageId();
 $sess = cRegistry::getSession();
 $area = cRegistry::getArea();
 $idcat = cRegistry::getCategoryId();
 $idcatlang = cRegistry::getCategoryLanguageId();
-$idartlang = cSecurity::toInteger(cRegistry::getArticleLanguageId());
+$idartlang = cRegistry::getArticleLanguageId();
 
 // Reset template
 $tpl->reset();
@@ -151,8 +151,8 @@ if ($art->getField('created')) {
     $col->removeSessionMarks($sess->id);
     $obj = $col->checkMark('article', $art->getField('idartlang'));
 
-    if ($obj === false || $obj->get('userid') == $auth->auth['uid']) {
-        $col->markInUse('article', $art->getField('idartlang'), $sess->id, $auth->auth['uid']);
+    if ($obj === false || $obj->get('userid') == $auth->getUserId()) {
+        $col->markInUse('article', $art->getField('idartlang'), $sess->id, $auth->getUserId());
         $disabled = '';
     } else {
         $vuser = new cApiUser($obj->get('userid'));
@@ -162,19 +162,20 @@ if ($art->getField('created')) {
 
         $message = sprintf(i18n('Article is in use by %s (%s)'), $inUseUser, $inUseUserRealName);
         $notifications[] = $notification->returnNotification('warning', $message);
-        $tpl->set("s", "REASON", sprintf(i18n('Article is in use by %s (%s)'), $inUseUser, $inUseUserRealName));
+        $tpl->set('s', 'REASON', sprintf(i18n('Article is in use by %s (%s)'), $inUseUser, $inUseUserRealName));
     }
 
     if ($art->getField('locked') == 1 && false === $isAdmin) {
         $disabled = 'disabled="disabled"';
         $tpl->set('s', 'DISABLED', ' ' . $disabled);
         $notifications[] = $notification->returnNotification('warning', i18n('This article is currently frozen and can not be edited!'));
-        $tpl->set("s", "REASON", i18n('This article is currently frozen and can not be edited!'));
+        $tpl->set('s', 'REASON', i18n('This article is currently frozen and can not be edited!'));
     } elseif ($versioning->getState() == $versioning::STATE_ADVANCED && $articleType == 'editable'
         || $versioning->getState() == $versioning::STATE_SIMPLE && $articleType != 'version'
         || $versioning->getState() == $versioning::STATE_DISABLED) {
         $tpl->set('s', 'DISABLED', '');
-        $tpl->set("s", "REASON", "");
+        $tpl->set('s', 'REASON', '')
+;
     } else {
         $disabled = 'disabled="disabled"';
         $tpl->set('s', 'DISABLED', ' ' . $disabled);
@@ -184,12 +185,14 @@ if ($art->getField('created')) {
         $tpl->set('s', 'IS_DATETIMEPICKER_DISABLED', 0);
         $tpl->set('s', 'BUTTONIMAGE', 'but_ok.gif');
         $tpl->set('s', 'BUTTONDISABLE', $disabled);
-        $tpl->set("s", "REASON", "");
+        $tpl->set('s', 'REASON', '')
+;
     } else {
         $tpl->set('s', 'IS_DATETIMEPICKER_DISABLED', 1);
         $tpl->set('s', 'BUTTONIMAGE', 'but_ok_off.gif');
         $tpl->set('s', 'BUTTONDISABLE', $disabled);
-        $tpl->set("s", "REASON", "");
+        $tpl->set('s', 'REASON', '')
+;
     }
 }
 
@@ -257,7 +260,7 @@ $managedTypes = [
 
 $metaPreview = [];
 
-// Set meta tags values
+// Set meta-tags values
 foreach ($availableTags as $key => $value) {
     $contentMetaValue = conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'));
     $contentMetaValue = str_replace('"', '', $contentMetaValue);
@@ -355,7 +358,6 @@ foreach ($availableTags as $key => $value) {
     } else {
         $tpl->set('d', 'CURSOR', 'default');
         $tpl->set('d', 'DELETE_META', '');
-
     }
     $tpl->next();
 }
@@ -550,25 +552,25 @@ switch ($versioning->getState()) {
 $tpl->set('s', 'ARTICLE_VERSIONING_BOX', $versioningElement);
 
 $infoButton = new cGuiBackendHelpbox(i18n('The title-tag is one of the most important on-page factors for SEO and is not longer than 60 characters. It includes top keywords and the branding.'));
-$tpl->set("s", "INFO_BUTTON_PAGE_TITLE", $infoButton->render());
+$tpl->set('s', 'INFO_BUTTON_PAGE_TITLE', $infoButton->render());
 
 $infoButton->setHelpText(i18n('The description-tag describes the article in a short way (not more than 150 characters). The content should be related to the title-tag and the H1-tag.'));
-$tpl->set("s", "INFO_BUTTON_DESCRIPTION", $infoButton->render());
+$tpl->set('s', 'INFO_BUTTON_DESCRIPTION', $infoButton->render());
 
 $infoButton->setHelpText(i18n('No more than 6 Keywords should be used.'));
-$tpl->set("s", "INFO_BUTTON_KEYWORDS", $infoButton->render());
+$tpl->set('s', 'INFO_BUTTON_KEYWORDS', $infoButton->render());
 
 $infoButton->setHelpText(i18n('The frequency of the revisit after tag depends on new publications of the content. Nevertheless the robots decide on their own when to visit.'));
-$tpl->set("s", "INFO_BUTTON_REVISIT", $infoButton->render());
+$tpl->set('s', 'INFO_BUTTON_REVISIT', $infoButton->render());
 
 $infoButton->setHelpText(i18n('The robot-tag sets certain rules for search engines. You can tell it to not index certain articles or to keep pictures in this article out of its index. It has a high relevance for SEO. Only relevant and most visited articles should be indexed.'));
-$tpl->set("s", "INFO_BUTTON_ROBOTS", $infoButton->render());
+$tpl->set('s', 'INFO_BUTTON_ROBOTS', $infoButton->render());
 
 $infoButton->setHelpText(i18n('The average value for the sitemap priority is 0.5. Only important articles should have a value no more than 0.8.'));
-$tpl->set("s", "INFO_BUTTON_SITEMAP_PRIORITY", $infoButton->render());
+$tpl->set('s', 'INFO_BUTTON_SITEMAP_PRIORITY', $infoButton->render());
 
 $infoButton->setHelpText(i18n('The refresh rate is focused on the content.'));
-$tpl->set("s", "INFO_BUTTON_SITEMAP_FREQUENCY", $infoButton->render());
+$tpl->set('s', 'INFO_BUTTON_SITEMAP_FREQUENCY', $infoButton->render());
 
 $tpl->set('s', 'SELECTED_' . $art->getField('changefreq'), 'selected');
 $sitemapChangeFrequencies = [
@@ -587,9 +589,9 @@ foreach ($sitemapChangeFrequencies as $value) {
 
 // Assign additional rows
 $additionalRows = ''; // call the chain to add additional rows
-$cecRegistry = cApiCecRegistry::getInstance();
-$cecIterator = $cecRegistry->getIterator('Contenido.Backend.ConMetaEditFormAdditionalRows');
-while (false !== $chainEntry = $cecIterator->next()) {
+$cecIterator = cApiCecRegistry::getInstance()
+    ->getIterator('Contenido.Backend.ConMetaEditFormAdditionalRows');
+while ($chainEntry = $cecIterator->next()) {
     $additionalRows .= $chainEntry->execute($idart, $lang, $client, $art->getField('locked'));
 }
 $tpl->set('s', 'ADDITIONAL_ROWS', $additionalRows);
@@ -609,7 +611,7 @@ $tpl2 = new cTemplate();
 $infoButton->setHelpText(i18n('Attribute content has to begin with a letter and can be followed by letters, digits or the following chars: . : _ - '));
 $tpl2->set('s', 'METATITLE', i18n('New meta tag') . ' ' . $infoButton->render());
 
-$db->query("SHOW FIELDS FROM `%s`", cRegistry::getDbTableName('meta_type'));
+$db->query("SHOW FIELDS FROM `%s`", cDb::getTableName('meta_type'));
 
 while ($db->nextRecord()) {
     if ($db->f('Field') == 'idmetatype') {
@@ -673,13 +675,10 @@ if (cPermission::checkSysadminPermission($auth->getPerms())) {
     $tpl->set('s', 'ADDNEWMETA', '&nbsp;');
 }
 
-// call the chain to create meta tags to display any additional tags in the
-// preview
-$_cecIterator = cRegistry::getCecRegistry()->getIterator('Contenido.Content.CreateMetatags');
-if ($_cecIterator->count() > 0) {
-    while (false !== $chainEntry = $_cecIterator->next()) {
-        $metaPreview = $chainEntry->execute($metaPreview);
-    }
+// call the chain to create meta-tags to display any additional tags in the preview
+$cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.Content.CreateMetatags');
+while ($chainEntry = $cecIterator->next()) {
+    $metaPreview = $chainEntry->execute($metaPreview);
 }
 
 $tpl2 = new cTemplate();
@@ -695,7 +694,7 @@ foreach ($metaPreview as $metaRow) {
     $tpl2->next();
 }
 
-// render metatags preview
+// render meta-tags preview
 $tpl->set('s', 'META_TAGS', $tpl2->generate($cfg['path']['templates'] . 'template.con_meta_edit_form_preview.html', true));
 
 // Assign bottom js values

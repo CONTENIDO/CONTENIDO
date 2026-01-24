@@ -39,16 +39,16 @@ if (isset($_POST['categoryselect_' . $curContainerId]) && (isset($_POST['article
     $catArtId = $_POST['articleselect_' . $curContainerId];
     $artId = $_POST['articleselect_ajax_' . $curContainerId];
 
-    // Check if idart is send which loaded through ajax
+    // Check if idart is sent which loaded through ajax
     if (isset($artId)) {
         $cApiCatArt = new cApiCategoryArticle();
         $cApiCatArt->loadByMany([
-            "idart" => $artId,
-            "idcat" => $catId
+            'idart' => $artId,
+            'idcat' => $catId
         ]);
 
         if ($cApiCatArt->isLoaded()) {
-            $catArtId = $cApiCatArt->get("idcatart");
+            $catArtId = $cApiCatArt->get('idcatart');
         }
     }
 
@@ -60,13 +60,13 @@ if (isset($_POST['categoryselect_' . $curContainerId]) && (isset($_POST['article
         ]
     ];
 
-    $tplCfgId = $artLang->get("idtplcfg");
+    $tplCfgId = $artLang->get('idtplcfg');
 
     // If no specific category is for this article selected, use standard category layout
     if (!$tplCfgId) {
         $catLang = new cApiCategoryLanguage();
         $catLang->loadByCategoryIdAndLanguageId(cRegistry::getCategoryId(), $languageId);
-        $tplCfgId = $catLang->get("idtplcfg");
+        $tplCfgId = $catLang->get('idtplcfg');
     }
 
     // Check values and create container value
@@ -84,12 +84,12 @@ if (isset($_POST['categoryselect_' . $curContainerId]) && (isset($_POST['article
         foreach ($containerData as $col => $val) {
             // Check config already exists in db if yes update otherwise create
             $containerConf->loadByMany([
-                "idtplcfg" => $tplCfgId,
-                "number" => $col
+                'idtplcfg' => $tplCfgId,
+                'number' => $col
             ]);
 
             if ($containerConf->isLoaded()) {
-                $containerConf->set("container", $val);
+                $containerConf->set('container', $val);
                 $containerConf->store();
             } else {
                 $containerConfColl->create($tplCfgId, $col, $val);
@@ -114,11 +114,11 @@ $cms_idcat = cSecurity::toInteger($cms_idcat);
 $cms_idcatart = cSecurity::toInteger($cms_idcatart);
 
 // Create article select
-$selectElement = new cHTMLSelectElement("articleselect_" . $curContainerId, "", "articleselect_" . $curContainerId);
+$selectElement = new cHTMLSelectElement('articleselect_' . $curContainerId, '', 'articleselect_' . $curContainerId);
 $defOptionElement = new cHTMLOptionElement(mi18n("PLEASE_CHOOSE_LABEL"), 0);
 $selectElement->addOptionElement(0, $defOptionElement);
 
-if ($cms_idcat != "0" && cString::getStringLength($cms_idcat) > 0) {
+if ($cms_idcat != '0' && cString::getStringLength($cms_idcat) > 0) {
     $sql = "
         SELECT
             a.title AS title, b.idcatart AS idcatart
@@ -128,7 +128,13 @@ if ($cms_idcat != "0" && cString::getStringLength($cms_idcat) > 0) {
             b.idcat = %d AND a.idart = b.idart AND a.idlang = %d
     ";
 
-    $db->query($sql, $cfg['tab']['art_lang'], $cfg['tab']['cat_art'], $cms_idcat, $languageId);
+    $db->query(
+        $sql,
+        cDb::getTableName('art_lang'),
+        cDb::getTableName('cat_art'),
+        $cms_idcat,
+        $languageId
+    );
     $i = 1;
     while ($db->nextRecord()) {
         $selectedCatArtId = $db->f('idcatart');
@@ -146,35 +152,34 @@ if ($cms_idcat != "0" && cString::getStringLength($cms_idcat) > 0) {
 }
 
 // Set template data for backend configuration
-$tpl->assign("id", $curContainerId);
-$tpl->assign("backendUrl", cRegistry::getBackendUrl());
-$tpl->assign("categorySelect", buildCategorySelect("categoryselect_" . $curContainerId, $cms_idcat));
-$tpl->assign("articleSelect", $selectElement->toHtml());
-$tpl->assign("ajaxUrl", cRegistry::getBackendUrl() . "ajaxmain.php");
-$tpl->assign("articleIncludeSettingsLabel", mi18n("ARTICLE_INCLUDE_SETTINGS_LABEL"));
-$tpl->assign("articleIncludeChooseCategoryLabel", mi18n("ARTICLE_INCLUDE_CHOOSE_CATEGORY_LABEL"));
-$tpl->assign("articleIncludeChooseArticleLabel", mi18n("ARTICLE_INCLUDE_CHOOSE_ARTICLE_LABEL"));
+$tpl->assign('id', $curContainerId);
+$tpl->assign('backendUrl', cRegistry::getBackendUrl());
+$tpl->assign('categorySelect', buildCategorySelect('categoryselect_' . $curContainerId, $cms_idcat));
+$tpl->assign('articleSelect', $selectElement->toHtml());
+$tpl->assign('ajaxUrl', cRegistry::getBackendUrl() . 'ajaxmain.php');
+$tpl->assign('articleIncludeSettingsLabel', mi18n("ARTICLE_INCLUDE_SETTINGS_LABEL"));
+$tpl->assign('articleIncludeChooseCategoryLabel', mi18n("ARTICLE_INCLUDE_CHOOSE_CATEGORY_LABEL"));
+$tpl->assign('articleIncludeChooseArticleLabel', mi18n("ARTICLE_INCLUDE_CHOOSE_ARTICLE_LABEL"));
 $tpl->assign('label', mi18n("ARTICLE_INCLUDE_LABEL"));
 
 // Display config only in backend mode
 if (cRegistry::isBackendEditMode()) {
-    $tpl->display("edit.tpl");
+    $tpl->display('edit.tpl');
 }
 
 // Generate article include code
 if ($cms_idcat >= 0 && $cms_idcatart >= 0) {
-
     $isArticleAvailable = false;
     $db = cRegistry::getDb();
 
     // Get idcat, idcatart, idart and lastmodified from the database
     $sql = "
-        SELECT 
+        SELECT
             A.idart, A.idcat, A.createcode, A.idcatart, B.lastmodified
         FROM
             `%s` AS A, `%s` AS B
         WHERE
-            A.idart = B.idart AND B.idlang = %d AND B.online = 1 AND 
+            A.idart = B.idart AND B.idlang = %d AND B.online = 1 AND
     ";
 
     if ($cms_idcatart == 0) {
@@ -185,18 +190,24 @@ if ($cms_idcat >= 0 && $cms_idcatart >= 0) {
         $cmsFieldId = $cms_idcatart;
     }
 
-    $db->query($sql, $cfg['tab']['cat_art'], $cfg['tab']['art_lang'], $languageId, $cmsFieldId);
+    $db->query(
+        $sql,
+        cDb::getTableName('cat_art'),
+        cDb::getTableName('art_lang'),
+        $languageId,
+        $cmsFieldId
+    );
 
     $includeCatId = 0;
     $includeArtId = 0;
 
     if ($db->nextRecord()) {
         $isArticleAvailable = true;
-        $includeCatArtId = $db->f("idcatart");
-        $includeCatId = $db->f("idcat");
-        $includeArtId = $db->f("idart");
-        $createcode = $db->f("createcode");
-        $lastmodified = $db->f("lastmodified");
+        $includeCatArtId = $db->f('idcatart');
+        $includeCatId = $db->f('idcat');
+        $includeArtId = $db->f('idart');
+        $createcode = $db->f('createcode');
+        $lastmodified = $db->f('lastmodified');
     }
 
     // Backup common article & category related global variables,
@@ -222,11 +233,11 @@ if ($cms_idcat >= 0 && $cms_idcatart >= 0) {
             idcat = %d AND idlang = %d
     ";
 
-    $db->query($sql, $cfg['tab']['cat_lang'], $includeCatId, $languageId);
+    $db->query($sql, cDb::getTableName('cat_lang'), $includeCatId, $languageId);
     $db->nextRecord();
 
-    $public = $db->f("public");
-    $visible = $db->f("visible");
+    $public = $db->f('public');
+    $visible = $db->f('visible');
 
     $db->free();
 
@@ -259,8 +270,8 @@ if ($cms_idcat >= 0 && $cms_idcatart >= 0) {
         $edit = $tmpView;
         $GLOBALS['edit'] = $tmpView;
 
-        $posStart = cString::findFirstPos($code, "<!--start:content-->");
-        $posEnd = cString::findFirstPos($code, "<!--end:content-->");
+        $posStart = cString::findFirstPos($code, '<!--start:content-->');
+        $posEnd = cString::findFirstPos($code, '<!--end:content-->');
         $diffLen = $posEnd - $posStart;
 
         $code = cString::getPartOfString($code, $posStart, $diffLen);

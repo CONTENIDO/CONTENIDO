@@ -20,10 +20,10 @@
 // Simulate get_magic_quotes_gpc on if turned off
 if (CON_STRIPSLASHES) {
     // classes cStringMultiByteWrapper and cString are not loaded here as autoloader wasn't called yet
-    if (false === class_exists('cStringMultiByteWrapper')) {
+    if (!class_exists('cStringMultiByteWrapper')) {
         include_once dirname(__DIR__) . '/classes/class.string.multi.byte.wrapper.php';
     }
-    if (false === class_exists('cString')) {
+    if (!class_exists('cString')) {
         include_once dirname(__DIR__) . '/classes/class.string.php';
     }
 
@@ -52,8 +52,7 @@ $types_to_register = [
 foreach ($types_to_register as $global_type) {
     $arr = ${'_' . $global_type} ?? [];
     if (is_array($arr) && count($arr) > 0) {
-        // Second loop to prevent overwriting of globals by other globals'
-        // values
+        // Second loop to prevent overwriting of globals by other globals values
         foreach ($types_to_register as $global_type) {
             $key = '_' . $global_type;
             if (isset($arr[$key])) {

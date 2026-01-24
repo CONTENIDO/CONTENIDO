@@ -42,30 +42,30 @@
     Con.UplFilesOverview = function(options) {
 
         /**
-         * @property  {Object}  _options
+         * @property {Object} _options
          * @private
          */
         var _options = $.extend(DEFAULT_OPTIONS, options),
             /**
-             * @property  {jQuery}  $_root  Root node (form) of this component
+             * @property {jQuery} $_root  Root node (form) of this component
              * @private
              */
             $_root = $(_options.rootSelector),
 
             /**
-             * @property  {jQuery}  $_filesPerPage  Files per page select box selector
+             * @property {jQuery} $_filesPerPage  Files per page select box selector
              * @private
              */
             $_filesPerPage = $_root.find(_options.filesPerPageSelector),
 
             /**
-             * @property  {jQuery}  $_filesCheckBox  Selector for the files checkboxes
+             * @property {jQuery} $_filesCheckBox  Selector for the files checkboxes
              * @private
              */
             $_filesCheckBox = $_root.find(_options.filesCheckBoxSelector),
 
             /**
-             * @property  {jQuery}  $_filesCheckBox  Selector for the delete selected files link
+             * @property {jQuery} $_filesCheckBox  Selector for the delete selected files link
              * @private
              */
             $_deleteSelectedLink = $_root.find(_options.deleteSelectedSelector);

@@ -24,16 +24,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cUpgradeJob_0004 extends cUpgradeJobAbstract
 {
 
-    public $maxVersion = "4.9.0-beta1";
+    public $maxVersion = '4.9.0-beta1';
 
     public function _execute()
     {
         if ($this->_setupType != 'setup') {
             $done = false;
-            $sSql = "SHOW COLUMNS FROM " . cRegistry::getDbTableName('upl');
+            $sSql = "SHOW COLUMNS FROM " . cDb::getTableName('upl');
             $this->_oDb->query($sSql);
             while ($this->_oDb->nextRecord()) {
-                if ($this->_oDb->f("Field") == 'description') {
+                if ($this->_oDb->f('Field') == 'description') {
                     $done = true;
                 }
             }
@@ -46,7 +46,7 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract
     //update description from con_upl to con_upl_meta
     protected function _updateUpl2Meta()
     {
-        $uploadTable = cRegistry::getDbTableName('upl');
+        $uploadTable = cDb::getTableName('upl');
 
         $db = $this->_oDb;
         $sSql = "SELECT * FROM `:tab_upl` WHERE `description` != '' ORDER BY `idupl` ASC";
@@ -64,7 +64,7 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract
         }
 
         $sSql = "SELECT `idclient`, `idlang` FROM `:tab_clients_lang` ORDER BY `idclient` ASC";
-        $db->query($sSql, ['tab_clients_lang' => cRegistry::getDbTableName('clients_lang')]);
+        $db->query($sSql, ['tab_clients_lang' => cDb::getTableName('clients_lang')]);
         $aClientLanguages = [];
         while ($db->nextRecord()) {
             $clientId = $db->f('idclient');
@@ -74,7 +74,7 @@ class cUpgradeJob_0004 extends cUpgradeJobAbstract
         $bError = false;
         $j = 0;
 
-        $uploadMetaTable = cRegistry::getDbTableName('upl_meta');
+        $uploadMetaTable = cDb::getTableName('upl_meta');
 
         foreach ($aUploads as $idupl => $elem) {
             if ($elem['description'] == '') {

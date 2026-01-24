@@ -14,10 +14,22 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cGuiNotification $notification
+ * @var int $public
+ */
+
 cInclude('includes', 'functions.str.php');
 
-if ($perm->have_perm_area_action("str", "str_makepublic") || $perm->have_perm_area_action_item("str", "str_makepublic", $idcat)) {
+$idcat = cRegistry::getCategoryId();
+$lang = cRegistry::getLanguageId();
+$perm = cRegistry::getPerm();
+
+if (
+    $perm->have_perm_area_action('str', 'str_makepublic')
+    || $perm->have_perm_area_action_item('str', 'str_makepublic', $idcat)
+) {
     strMakePublic($idcat, $lang, !$public);
 } else {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
 }

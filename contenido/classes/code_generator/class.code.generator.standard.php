@@ -93,7 +93,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
                 $containerModuleId = $containerModules[$containerNr];
                 $oModule = new cApiModule($containerModuleId);
                 $module = $oModule->toArray();
-                if (false === $module) {
+                if ($module === false) {
                     $module = [];
                 }
 
@@ -165,56 +165,79 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
         // add/replace title tag
         $this->_processCodeTitleTag();
 
-        // add/replace meta tags
+        // add/replace meta-tags
         $this->_processCodeMetaTags();
 
         // save the collected css/js data and save it under the template name
-        // ([templatename].css , [templatename].js in cache dir
+        // ([templateName].css, [templateName].js in cache dir
         $cssFile = '';
-        if (cString::getStringLength($this->_cssData) > 0) {
-            if (($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, 'css', $this->_cssData)) !== false) {
-                $cssFile = cHTMLLinkTag::stylesheet($myFileCss);
-            }
+        if (
+            cString::getStringLength($this->_cssData) > 0
+            && ($myFileCss = $moduleHandler->saveContentToFile($this->_tplName, 'css', $this->_cssData)) !== false
+        ) {
+            $cssFile = cHTMLLinkTag::stylesheet($myFileCss);
         }
 
         $jsFile = '';
-        if (cString::getStringLength($this->_jsData) > 0) {
-            if (($myFileJs = $moduleHandler->saveContentToFile($this->_tplName, 'js', $this->_jsData)) !== false) {
-                $jsFile = cHTMLScript::external($myFileJs);
-            }
+        if (
+            cString::getStringLength($this->_jsData) > 0
+            && ($myFileJs = $moduleHandler->saveContentToFile($this->_tplName, 'js', $this->_jsData)) !== false
+        ) {
+            $jsFile = cHTMLScript::external($myFileJs);
         }
 
-        // add module CSS at {CSS} position, after title
-        // or after opening head tag
+        // add module CSS at {CSS} position, after title or after opening head tag
         if (cString::findFirstPos($this->_layoutCode, '{CSS}') !== false) {
             $this->_layoutCode = cString::iReplaceOnce('{CSS}', $cssFile, $this->_layoutCode);
         } elseif (!empty($cssFile)) {
             if (cString::findFirstPos($this->_layoutCode, '</title>') !== false) {
                 $matches = [];
                 if (preg_match_all("#(<head>.*?</title>)(.*?</head>)#si", $this->_layoutCode, $matches)) {
-                    $this->_layoutCode = cString::iReplaceOnce($matches[1][0], $matches[1][0] . $cssFile, $this->_layoutCode);
+                    $this->_layoutCode = cString::iReplaceOnce(
+                        $matches[1][0],
+                        $matches[1][0] . $cssFile,
+                        $this->_layoutCode
+                    );
                 }
             } else {
-                $this->_layoutCode = cString::iReplaceOnce('<head>', '<head>' . $cssFile, $this->_layoutCode);
+                $this->_layoutCode = cString::iReplaceOnce('<head>',
+                    '<head>' . $cssFile,
+                    $this->_layoutCode
+                );
             }
         }
 
         if (cString::findFirstPos($this->_layoutCode, '{REV}') !== false) {
-            $this->_layoutCode = cString::iReplaceOnce('{REV}', ((int)getEffectiveSetting("ressource", "revision", 0)), $this->_layoutCode);
+            $this->_layoutCode = cString::iReplaceOnce(
+                '{REV}',
+                cSecurity::toInteger(getEffectiveSetting('ressource', 'revision', 0)),
+                $this->_layoutCode
+            );
         }
 
-        // add module JS at {JS} position
-        // or before closing body tag if there is no {JS}
+        // add module JS at {JS} position or before closing body tag if there is no {JS}
         if (cString::findFirstPos($this->_layoutCode, '{JS}') !== false) {
             $this->_layoutCode = cString::iReplaceOnce('{JS}', $jsFile, $this->_layoutCode);
         } elseif (!empty($jsFile)) {
-            $this->_layoutCode = cString::iReplaceOnce('</body>', $jsFile . '</body>', $this->_layoutCode);
+            $this->_layoutCode = cString::iReplaceOnce(
+                '</body>',
+                $jsFile . '</body>',
+                $this->_layoutCode
+            );
         }
 
         if (cString::findFirstPos($this->_layoutCode, '{META}') !== false) {
-            $this->_layoutCode = cString::iReplaceOnce('{META}', $this->_processCodeMetaTags(), $this->_layoutCode);
+            $this->_layoutCode = cString::iReplaceOnce(
+                '{META}',
+                $this->_processCodeMetaTags(),
+                $this->_layoutCode
+            );
         } else {
-            $this->_layoutCode = cString::iReplaceOnce('</head>', $this->_processCodeMetaTags() . '</head>', $this->_layoutCode);
+            $this->_layoutCode = cString::iReplaceOnce(
+                '</head>',
+                $this->_processCodeMetaTags() . '</head>',
+                $this->_layoutCode
+            );
         }
 
         if ($this->_getFeDebugOption('general_information')) {
@@ -251,31 +274,26 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
             $this->_layoutCode = $debugPrefix . $this->_layoutCode;
         }
 
-        // save the generated code even if there are faulty modules
-        // if one does not do so, a not existing cache file
-        // will be tried to be loaded in frontend
+        // save the generated code even if there are faulty modules if one does not do so,
+        // a not existing cache file  will be tried to be loaded in frontend
         $this->_saveGeneratedCode($idcatart);
 
         return $this->_layoutCode;
     }
 
     /**
-     * Will be invoked, if code generation wasn't able to find a
-     * configured article or category.
+     * Will be invoked, if code generation wasn't able to find a configured article or category.
      *
      * Creates an error message and writes this into the code cache.
      *
-     * @param int $idcatart
-     *         category article id
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param int $idcatart Category article id
+     * @throws cDbException|cInvalidArgumentException
      */
     protected function _processNoConfigurationError($idcatart)
     {
         cDebug::out('Neither CAT or ART are configured!');
 
-        $code = '<html><body>No code was created for this article in this category.</body><html>';
+        $code = '<html><body>No code was created for this article in this category.</body></html>';
         $this->_saveGeneratedCode($idcatart, $code, false);
     }
 
@@ -283,7 +301,6 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
      * Processes and adds or replaces title tag for an article.
      * Also calls the CEC 'Contenido.Content.CreateTitletag' for user defined title creation if none is given.
      *
-     * @return string
      * @see cCodeGeneratorAbstract::_processCodeTitleTag()
      */
     protected function _processCodeTitleTag(): string
@@ -330,29 +347,24 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
     }
 
     /**
-     * Processes and adds or replaces all meta tags for an article.
-     * Also calls the CEC 'Contenido.Content.CreateMetatags' for user defined
-     * meta tags creation.
-     *
-     * @return string
+     * Processes and adds or replaces all meta-tags for an article.
+     * Also calls the CEC 'Contenido.Content.CreateMetatags' for user defined meta-tags creation.
      */
     protected function _processCodeMetaTags(): string
     {
-        // get basic meta tags (from article & system)
+        // get basic meta-tags (from article & system)
         $metaTags = $this->_getBasicMetaTags();
 
-        // process chain Contenido.Content.CreateMetatags to update meta tags
-        $_cecIterator = cRegistry::getCecRegistry()->getIterator('Contenido.Content.CreateMetatags');
-        if ($_cecIterator->count() > 0) {
-            while (false !== $chainEntry = $_cecIterator->next()) {
-                $metaTags = $chainEntry->execute($metaTags);
-            }
+        // process chain Contenido.Content.CreateMetatags to update meta-tags
+        $cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.Content.CreateMetatags');
+        while ($chainEntry = $cecIterator->next()) {
+            $metaTags = $chainEntry->execute($metaTags);
         }
 
         $sMetaTags = '';
 
         foreach ($metaTags as $value) {
-            // get meta tag keys
+            // get meta-tag keys
             $valueKeys = array_keys($value);
             $nameKey = 'name';
             foreach ($valueKeys as $key) {
@@ -372,13 +384,13 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
             $oMetaTagGen->setTag('meta');
             $oMetaTagGen->updateAttributes($value);
 
-            // HTML does not allow ID for meta tags
+            // HTML does not allow ID for meta-tags
             $oMetaTagGen->removeAttribute('id');
 
             // check if metatag already exists
             $sPattern = '/(<meta(?:\s+)' . $nameKey . '(?:\s*)=(?:\s*)(?:\\"|\\\')(?:\s*)' . $value[$nameKey] . '(?:\s*)(?:\\"|\\\')(?:[^>]+)>\n?)/i';
             if (preg_match($sPattern, $this->_layoutCode, $aMatch)) {
-                // the meta tag is already specified in the layout
+                // the meta-tag is already specified in the layout
                 // replace it only if its attributes are not empty
                 $replace = true;
                 foreach ($value as $test) {
@@ -401,12 +413,9 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
     /**
      * Saves the generated code if layout flag is false and save flag is true.
      *
-     * @param int $idcatart
-     *                               Category article id
-     * @param string $code [optional]
-     *                               parameter for setting code manually instead of using the generated layout code
-     * @param bool $flagCreateCode [optional]
-     *                               whether the "create code" flag in cat_art should be set or not (optional)
+     * @param int $idcatart Category article id
+     * @param string $code [optional] Parameter for setting code manually instead of using the generated layout code
+     * @param bool $flagCreateCode [optional] Whether the "create code" flag in cat_art should be set or not (optional)
      * @throws cDbException|cInvalidArgumentException
      */
     protected function _saveGeneratedCode($idcatart, $code = '', $flagCreateCode = true)
@@ -441,10 +450,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
             }
 
             if (is_dir($codePath)) {
-                $fileCode = ($code == '') ? $this->_layoutCode : $code;
-
-                $code = "<?php\ndefined('CON_FRAMEWORK') or die('Illegal call');\n\n?>\n" . $fileCode;
-                cFileHandler::write($codePath . $this->_client . '.' . $this->_lang . '.' . $idcatart . '.php', $code, false);
+                $fileCode = $code == '' ? $this->_layoutCode : $code;
+                $code = "<?php defined('CON_FRAMEWORK') or die('Illegal call'); ?>" . $fileCode;
+                $filename = sprintf('%s.%s.%s.php', $codePath . $this->_client, $this->_lang, $idcatart);
+                cFileHandler::write($filename, $code, false);
 
                 // Update create code flag
                 if ($flagCreateCode) {
@@ -456,16 +465,14 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
     }
 
     /**
-     * Collects and return basic meta tags/elements.
+     * Collects and return basic meta-tags/elements.
      *
-     * @return array
-     *         List of associative meta tag values
-     * @throws cDbException
-     * @throws cException
+     * @return array List of associative meta-tag values
+     * @throws cDbException|cException
      */
     protected function _getBasicMetaTags(): array
     {
-        // collect all available meta tag entries with non-empty values
+        // collect all available meta-tag entries with non-empty values
         $metaTags = [];
         foreach (conGetAvailableMetaTagTypes() as $key => $value) {
             $metaValue = conGetMetaValue($this->_idartlang, $key);
@@ -477,7 +484,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
             }
         }
 
-        // add generator meta tag
+        // add generator meta-tag
         $generator = 'CMS CONTENIDO';
         if ((getEffectiveSetting('generator', 'add_version', 'true') === 'true')) {
             $aVersion = explode('.', CON_VERSION);
@@ -493,7 +500,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
             $encoding = 'utf-8';
         }
 
-        // add charset or content type meta tag
+        // add charset or content type meta-tag
         if (getEffectiveSetting('generator', 'html5', 'false') === 'true') {
             $metaTags[] = [
                 'charset' => $encoding
@@ -510,7 +517,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
             ];
         }
 
-        // update (!) index setting of robots meta tag
+        // update (!) index setting of robots meta-tag
         // the following value will not be changed
         // $index = (bool) $this->getArtLangObject()->get('searchable');
         // $metaTags = $this->_updateMetaRobots($metaTags, $index, NULL);
@@ -520,17 +527,12 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
 
     /**
      * This method allows to set new values for the robots meta element.
-     * If NULL is given for $index or $follow, existing settings are *not*
-     * overwritten. If article should be indexed and followed, 'all' will be
-     * set.
+     * If NULL is given for $index or $follow, existing settings are *not* overwritten.
+     * If article should be indexed and followed, 'all' will be set.
      *
-     * @param array $metaTags
-     *         array of meta elements to amend
-     * @param bool|NULL $index
-     *         if article should be indexed
-     * @param bool|NULL $follow
-     *         if links in article should be followed
-     * @return array
+     * @param array $metaTags Array of meta elements to amend
+     * @param bool|NULL $index If article should be indexed
+     * @param bool|NULL $follow If links in article should be followed
      */
     protected function _updateMetaRobots(array $metaTags, $index, $follow): array
     {
@@ -590,18 +592,12 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
     }
 
     /**
-     * Extracts a meta element of type $type (either 'name' or 'http-equiv') and
-     * name or HTTP header equivalent $nameOrEquiv from the given array of meta
-     * elements.
-     * Both, the reduced array of meta elements and the meta element to be
-     * extracted are returned as an array. If the meta element to be extracted
-     * could not be found, NULL will be returned in its place.
+     * Extracts a meta element of type $type (either 'name' or 'http-equiv') and name or HTTP
+     * header equivalent $nameOrEquiv from the given array of meta elements.
+     * Both, the reduced array of meta elements and the meta element to be extracted are returned as an
+     * array. If the meta element to be extracted could not be found, NULL will be returned in its place.
      *
-     * @param array $metaTags
-     * @param string $type
-     *         either 'name' or 'http-equiv'
-     * @param string $nameOrEquiv
-     * @return array
+     * @param string $type Either 'name' or 'http-equiv'
      */
     protected function _extractMetaElement(array $metaTags, $type, $nameOrEquiv): array
     {

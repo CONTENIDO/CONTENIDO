@@ -23,9 +23,7 @@ class cFrontendListUpload extends cFrontendList
 
     /**
      * @inheritDoc
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function convert(int $field, $value)
     {
@@ -46,22 +44,35 @@ class cFrontendListUpload extends cFrontendList
             if ($appendparameters == 'imagebrowser' || $appendparameters == 'filebrowser') {
                 $fileUrlToAdd = $this->_getFileBrowserUrl($subPath);
                 $title = i18n("Use file");
-                $icon = '<img class="mgr5" src="' . $cfg['path']['images'] . '/but_ok.gif" alt="' . $title . '" title="' . $title . '" />';
-                $multiLink = '<a href="javascript:void(0)" data-action="add_file_from_browser" data-file="' . $fileUrlToAdd . '" title="' . $title . '">' . $icon . $value . '</a>';
+                $icon = cHTMLImage::img($cfg['path']['images'] . 'but_ok.gif', $title, ['class' => 'mgr5', 'title' => $title]);
+                $link = (new cHTMLLink('javascript:void(0)', $icon . $value))
+                    ->setAttribute('data-file', $fileUrlToAdd)
+                    ->setAttribute('data-action', 'add_file_from_browser')
+                    ->setAttribute('title', $title)
+                    ->toHtml();
             } else {
-                $multiLink = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
+                $link = '<a href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
 
                 // Link to right_top first, so we can use history.back() in right_bottom!
-                $multiLink = sprintf(
-                    $multiLink,
+                $link = sprintf(
+                    $link,
                     'right_top',
-                    $sess->url("main.php?area=upl&frame=3&path=$path&file=$value"),
+                    $sess->url(sprintf('main.php?area=upl&frame=3&path=%s&file=%s', $path, $value)),
                     'right_bottom',
-                    $sess->url("main.php?area=upl_edit&frame=4&path=$path&file=$value&appendparameters=$appendparameters&startpage=" . $startpage . "&sortby=" . $sortby . "&sortmode=" . $sortmode . "&thumbnailmode=" . $thumbnailmode),
+                    $sess->url(sprintf(
+                        'main.php?area=upl_edit&frame=4&path=%s&file=%s&appendparameters=%s&startpage=%d&sortby=%s&sortmode=%s&thumbnailmode=%s',
+                        $path,
+                        $value,
+                        $appendparameters,
+                        $startpage,
+                        $sortby,
+                        $sortmode,
+                        $thumbnailmode
+                    )),
                     $value
                 );
             }
-            return $multiLink;
+            return $link;
         }
 
         if ($field == 5) {
@@ -75,8 +86,11 @@ class cFrontendListUpload extends cFrontendList
                 return self::getUploadImageLink((string)$value);
             } else {
                 // Thumbnail for other file types
-                $sCacheThumbnail = uplGetThumbnail($value, 150);
-                return '<img class="hover_none" alt="" src="' . $sCacheThumbnail . '">';
+                return cHTMLImage::img(
+                    uplGetThumbnail($value, 150),
+                    '',
+                    ['class' => 'hover_none']
+                );
             }
         }
 
@@ -95,12 +109,11 @@ class cFrontendListUpload extends cFrontendList
     /**
      * Returns the number of pages.
      * If the data count variable is set it will be used instead counting the data array.
-     * @return float|int
      */
     public function getNumPages(): int
     {
         if ($this->_dataCount > 0) {
-            return (int)ceil($this->_dataCount / $this->_resultsPerPage);
+            return cSecurity::toInteger(ceil($this->_dataCount / $this->_resultsPerPage));
         }
 
         return parent::getNumPages();
@@ -108,11 +121,9 @@ class cFrontendListUpload extends cFrontendList
 
     /**
      * @inheritDoc
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function output(bool $return = false)
+    public function output(bool $return = false): ?string
     {
         // if the data count variable is not set, proceed with the previous logic
         if ($this->_dataCount === 0) {
@@ -133,6 +144,7 @@ class cFrontendListUpload extends cFrontendList
                     $items .= ", '" . addslashes($this->convert($key, $value)) . "'";
                 }
 
+                // NOTE: $itemWrap will be evaluated below!
                 $itemWrap = str_replace('{LIST_ITEM_POS}', $currentPos, $this->_itemWrap);
                 $execute = '$output .= sprintf($itemWrap ' . $items . ');';
                 eval($execute);
@@ -147,6 +159,7 @@ class cFrontendListUpload extends cFrontendList
             return $output;
         } else {
             echo $output;
+            return null;
         }
     }
 
@@ -154,10 +167,7 @@ class cFrontendListUpload extends cFrontendList
      * Returns the url to the image/file to add to the wysiwyg editor.
      * Behaviour is configurable, see used effective setting.
      *
-     * @param string $subPath
-     * @return string
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     protected function _getFileBrowserUrl(string $subPath): string
     {
@@ -166,6 +176,7 @@ class cFrontendListUpload extends cFrontendList
 
     /**
      * See {@see cFrontendListUpload::_getFileBrowserUrl()}
+     * @throws cDbException|cException
      */
     public static function getFileBrowserUrl(string $subPath): string
     {
@@ -191,9 +202,6 @@ class cFrontendListUpload extends cFrontendList
 
     /**
      * Checks if given file type is one of supported images file types.
-     *
-     * @param string $fileType
-     * @return bool
      */
     public static function isImageFileType(string $fileType): bool
     {
@@ -205,11 +213,7 @@ class cFrontendListUpload extends cFrontendList
     /**
      * Builds the link to the upload image file.
      *
-     * @param string $value
-     * @return string
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public static function getUploadImageLink(string $value): string
     {
@@ -242,7 +246,7 @@ class cFrontendListUpload extends cFrontendList
 }
 
 /**
- * @deprecated [2024-02-04] Since 4.10.2, use {@see cFrontendListUpload} instead!
+ * @deprecated [2024-02-04] Since CONTENIDO 4.10.2, use {@see cFrontendListUpload} instead!
  */
 class UploadList extends cFrontendListUpload
 {

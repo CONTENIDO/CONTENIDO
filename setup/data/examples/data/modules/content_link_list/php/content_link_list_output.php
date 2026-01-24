@@ -16,7 +16,7 @@
 // include class
 cInclude('classes', 'class.typegenerator.php');
 
-$type = "CMS_TEXT";
+$type = 'CMS_TEXT';
 $typeid = 500;
 
 $idartlang = cRegistry::getArticleLanguageId(true);
@@ -33,7 +33,7 @@ $linkCount = cSecurity::toInteger($art->getContent($type, $typeid));
 if (cRegistry::isBackendEditMode()) {
     if (isset($_POST['linkCount'])) {
         $linkCount = cSecurity::toInteger($_POST['linkCount']);
-        conSaveContentEntry($idartlang, $type, $typeid, $linkCount);
+        conSaveContentEntry($idartlang, $type, $typeid, cSecurity::toString($linkCount));
     }
 
     $backend = true;

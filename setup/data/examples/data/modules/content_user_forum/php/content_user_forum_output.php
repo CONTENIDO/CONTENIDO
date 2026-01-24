@@ -27,9 +27,9 @@ if (cRegistry::isBackendEditMode()) {
 // Generate instance
 $userForumArticle = new ContentUserForumModule([
     'tpl' => cSmartyFrontend::getInstance(),
-    'idart' => cSecurity::toInteger(cRegistry::getArticleId()),
-    'idcat' => cSecurity::toInteger(cRegistry::getCategoryId()),
-    'idlang' => cSecurity::toInteger(cRegistry::getLanguageId()),
+    'idart' => cRegistry::getArticleId(),
+    'idcat' => cRegistry::getCategoryId(),
+    'idlang' => cRegistry::getLanguageId(),
     'collection' => new ArticleForumCollection(),
     'request' => $_REQUEST,
     'mi18n' => [

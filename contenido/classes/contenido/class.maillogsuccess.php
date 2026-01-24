@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiMailLogSuccess createNewItem
- * @method cApiMailLogSuccess|bool next
+ * @extends ItemCollection<cApiMailLogSuccess>
  */
 class cApiMailLogSuccessCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiMailLogSuccessCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('mail_log_success'), 'idmailsuccess');
+        parent::__construct(cDb::getTableName('mail_log_success'), 'idmailsuccess');
         $this->_setItemClass('cApiMailLogSuccess');
 
         // set the join partners so that joins can be used via link() method
@@ -41,21 +40,18 @@ class cApiMailLogSuccessCollection extends ItemCollection
     /**
      * Creates a new mail log success entry with the given data.
      *
-     * @param int $idmail
+     * @param int $mailId
      * @param array $recipient
      * @param bool $success
      * @param string $exception
-     *
      * @return cApiMailLogSuccess
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idmail, $recipient, $success, $exception)
+    public function create($mailId, $recipient, $success, $exception)
     {
         $item = $this->createNewItem();
 
-        $item->set('idmail', $idmail);
+        $item->set('idmail', $mailId);
         $item->set('recipient', json_encode($recipient));
         $item->set('success', $success);
         $item->set('exception', $exception);
@@ -77,17 +73,15 @@ class cApiMailLogSuccess extends Item
     /**
      * Constructor
      *
-     * @param mixed $mId
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('mail_log_success'), 'idmailsuccess');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('mail_log_success'), 'idmailsuccess');
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 }

@@ -31,7 +31,7 @@ class cLinkcheckerSearchLinks
     /**
      * cLinkcheckerSearchLinks constructor.
      */
-    public function __construct($mode = 'text', $linkTypeMode = 3)
+    public function __construct(string $mode = 'text', int $linkTypeMode = 3)
     {
         $this->setMode($mode);
         $this->setLinkTypeMode($linkTypeMode);
@@ -39,18 +39,13 @@ class cLinkcheckerSearchLinks
 
     /**
      * Setter method for mode
-     *
      * mode:
      * - text (standard)
      * - redirect
-     *
-     * @param $mode
-     *
-     * @return string
      */
-    public function setMode($mode)
+    public function setMode(string $mode)
     {
-        return $this->mode = cSecurity::toString($mode);
+        $this->mode = $mode;
     }
 
     /**
@@ -60,14 +55,10 @@ class cLinkcheckerSearchLinks
      * - 1 = intern
      * - 2 = extern
      * - 3 = intern/extern
-     *
-     * @param int $linkTypeMode
-     *
-     * @return int
      */
-    public function setLinkTypeMode($linkTypeMode)
+    public function setLinkTypeMode(int $linkTypeMode)
     {
-        return $this->linkTypeMode = cSecurity::toInteger($linkTypeMode);
+        $this->linkTypeMode = $linkTypeMode;
     }
 
     /**
@@ -81,60 +72,68 @@ class cLinkcheckerSearchLinks
      * @param int $idlang
      * @param int $idartlang
      * @param int $idcontent
-     *
      * @return array
      * @todo Optimize this function!
      * @todo Do not use global!
-     *
      */
-    public function search($value, $idart, $nameart, $idcat, $namecat, $idlang, $idartlang, $idcontent = 0)
+    public function search($value, $idart, $nameart, $idcat, $namecat, $idlang, $idartlang, $idcontent = 0): array
     {
-        global $aUrl, $aSearchIDInfosNonID, $aWhitelist;
+        global $aUrl, $aSearchIDInfosNonID;
+
+        $whitelist = cRegistry::getAppVar('pluginLinkcheckerWhitelist', []);
 
         // Extern URL
-        if (preg_match_all('~(?:(?:action|data|href|src)=["\']((?:file|ftp|http|ww)[^\s]*)["\'])~i', $value, $aMatches)
+        if (
+            preg_match_all('~(?:(?:action|data|href|src)=["\']((?:file|ftp|http|ww)[^\s]*)["\'])~i', $value, $aMatches)
             && $this->linkTypeMode != 1
         ) {
             for ($i = 0; $i < count($aMatches[1]); $i++) {
-                if (!in_array($aMatches[1][$i], $aWhitelist)) {
+                if (!in_array($aMatches[1][$i], $whitelist)) {
                     $aSearchIDInfosNonID[] = [
-                        "url" => $aMatches[1][$i],
-                        "idart" => $idart,
-                        "nameart" => $nameart,
-                        "idcat" => $idcat,
-                        "namecat" => $namecat,
-                        "idcontent" => $idcontent,
-                        "idartlang" => $idartlang,
-                        "lang" => $idlang,
-                        "urltype" => "extern",
+                        'url' => $aMatches[1][$i],
+                        'idart' => $idart,
+                        'nameart' => $nameart,
+                        'idcat' => $idcat,
+                        'namecat' => $namecat,
+                        'idcontent' => $idcontent,
+                        'idartlang' => $idartlang,
+                        'lang' => $idlang,
+                        'urltype' => 'extern',
                     ];
                 }
             }
         }
 
         // Redirect
-        if ($this->mode == "redirect"
-            && (preg_match('!(' . preg_quote($aUrl['cms']) . '[^\s]*)!i', $value, $aMatches)
-                || (preg_match('~(?:file|ftp|http|ww)[^\s]*~i', $value, $aMatches) && $this->linkTypeMode != 1))
-            && (cString::findFirstPosCI($value, 'front_content.php') === false)
-            && !in_array($aMatches[0], $aWhitelist)
+        if (
+            $this->mode === 'redirect'
+            && (
+                preg_match('!(' . preg_quote($aUrl['cms']) . '[^\s]*)!i', $value, $aMatches)
+                || (
+                    preg_match('~(?:file|ftp|http|ww)[^\s]*~i', $value, $aMatches)
+                    && $this->linkTypeMode != 1
+                )
+            )
+            && cString::findFirstPosCI($value, 'front_content.php') === false
+            && !in_array($aMatches[0], $whitelist)
         ) {
             $aSearchIDInfosNonID[] = [
-                "url" => $aMatches[0],
-                "idart" => $idart,
-                "nameart" => $nameart,
-                "idcat" => $idcat,
-                "namecat" => $namecat,
-                "idcontent" => 0,
-                "idartlang" => $idartlang,
-                "lang" => $idlang,
-                "urltype" => "unknown",
-                "redirect" => true,
+                'url' => $aMatches[0],
+                'idart' => $idart,
+                'nameart' => $nameart,
+                'idcat' => $idcat,
+                'namecat' => $namecat,
+                'idcontent' => 0,
+                'idartlang' => $idartlang,
+                'lang' => $idlang,
+                'urltype' => 'unknown',
+                'redirect' => true,
             ];
         }
 
-        // Intern URL
-        if (preg_match_all(
+        // Internal URL
+        if (
+            preg_match_all(
                 '~(?:(?:action|data|href|src)=["\'])(?!file://)(?!ftp://)(?!http://)(?!https://)(?!ww)(?!mailto)(?!\#)(?!/\#)([^"\']+)(?:["\'])~i',
                 $value,
                 $aMatches
@@ -142,22 +141,22 @@ class cLinkcheckerSearchLinks
             && $this->linkTypeMode != 2
         ) {
             for ($i = 0; $i < count($aMatches[1]); $i++) {
-                if (cString::findFirstPos($aMatches[1][$i], "front_content.php") === false
+                if (cString::findFirstPos($aMatches[1][$i], 'front_content.php') === false
                     && !in_array(
                         $aMatches[1][$i],
-                        $aWhitelist
+                        $whitelist
                     )
                 ) {
                     $aSearchIDInfosNonID[] = [
-                        "url" => $aMatches[1][$i],
-                        "idart" => $idart,
-                        "nameart" => $nameart,
-                        "idcat" => $idcat,
-                        "namecat" => $namecat,
-                        "idcontent" => $idcontent,
-                        "idartlang" => $idartlang,
-                        "lang" => $idlang,
-                        "urltype" => "intern",
+                        'url' => $aMatches[1][$i],
+                        'idart' => $idart,
+                        'nameart' => $nameart,
+                        'idcat' => $idcat,
+                        'namecat' => $namecat,
+                        'idcontent' => $idcontent,
+                        'idartlang' => $idartlang,
+                        'lang' => $idlang,
+                        'urltype' => 'intern',
                     ];
                 }
             }

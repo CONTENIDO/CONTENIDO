@@ -51,38 +51,28 @@ class cLayoutSynchronizer
     /**
      * Constructor to create an instance of this class.
      *
-     * @param array $cfg
-     * @param array $cfgClient
-     * @param int $lang
-     * @param int $client
+     * @param array $cfg The CONTENIDO configuration array
      */
-    public function __construct($cfg, $cfgClient, $lang, $client)
+    public function __construct(array $cfg, array $cfgClient, int $languageId, int $clientId)
     {
         $this->_cfg = $cfg;
         $this->_cfgClient = $cfgClient;
-        $this->_lang = $lang;
-        $this->_client = $client;
+        $this->_lang = $languageId;
+        $this->_client = $clientId;
     }
 
     /**
      * Add a Layout to table or update a layout
      *
-     * @param string $dir
-     * @param string $oldLayoutName
-     * @param string $newLayoutName
-     * @param string $idclient
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    private function _addOrUpdateLayout($dir, $oldLayoutName, $newLayoutName, $idclient)
+    private function _addOrUpdateLayout(string $dir, string $oldLayoutName, string $newLayoutName)
     {
-        // if layout dont exist in the $cfg['tab']['lay'] table.
-        if ($this->_isExistInTable($oldLayoutName, $idclient) == false) {
+        // if layout don't exist in the $cfg['tab']['lay'] table.
+        if (!$this->_isExistInTable($oldLayoutName)) {
             // add new Layout in db-table
             $layoutCollection = new cApiLayoutCollection();
-            $layoutCollection->create($newLayoutName, $idclient, $newLayoutName);
+            $layoutCollection->create($newLayoutName, $this->_client, $newLayoutName);
 
             // make a layout file if not exist
             if (!cFileHandler::exists($dir . $newLayoutName . '/' . $newLayoutName . '.html')) {
@@ -91,32 +81,24 @@ class cLayoutSynchronizer
 
             // set output message
             $this->_outputMessage['info'][] = sprintf(i18n("Layout synchronization successful: %s"), $newLayoutName);
-        } else {
+        } elseif ($oldLayoutName != $newLayoutName) {
             // update the name of the layout
-            if ($oldLayoutName != $newLayoutName) {
-                $this->_updateModulnameInDb($oldLayoutName, $newLayoutName, $idclient);
-            }
+            $this->_updateModulnameInDb($oldLayoutName, $newLayoutName);
         }
     }
 
     /**
-     * Update the name of layout (if the name not allowes)
+     * Update the name of layout (if the name not allows)
      *
-     * @param string $oldName
-     *         old name
-     * @param string $newName
-     *         new module name
-     * @param int $idclient
-     *         id of client
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param string $oldName Old name
+     * @param string $newName New module name
+     * @throws cDbException|cException
      */
-    private function _updateModulnameInDb($oldName, $newName, $idclient)
+    private function _updateModulnameInDb(string $oldName, string $newName)
     {
         $oLayColl = new cApiLayoutCollection();
-        $oLayColl->select("alias='" . $oLayColl->escape($oldName) . "' AND idclient=" . (int)$idclient);
-        if (false !== $oLay = $oLayColl->next()) {
+        $oLayColl->select("`alias` = '" . $oLayColl->escape($oldName) . "' AND `idclient` = " . cSecurity::toInteger($this->_client));
+        if (($oLay = $oLayColl->next()) !== false) {
             $oLay->set('alias', $newName);
             $oLay->store();
         }
@@ -124,17 +106,10 @@ class cLayoutSynchronizer
 
     /**
      * Rename the directory and files
-     *
-     * @param string $dir
-     * @param string $dirNameOld
-     * @param string $dirNameNew
-     * @param int $client
-     *         unused
-     * @return bool
      */
-    private function _renameFileAndDir($dir, $dirNameOld, $dirNameNew, $client)
+    private function _renameFileAndDir(string $dir, string $dirNameOld, string $dirNameNew): bool
     {
-        if (rename($dir . $dirNameOld, $dir . $dirNameNew) == false) {
+        if (!rename($dir . $dirNameOld, $dir . $dirNameNew)) {
             return false;
         }
 
@@ -146,34 +121,27 @@ class cLayoutSynchronizer
     /**
      * Exist the layout in db-table
      *
-     * @param string $alias
-     *         layout name
-     * @param int $idclient
-     *         client id
-     * @return bool
+     * @param string $alias layout name
      * @throws cDbException
      */
-    private function _isExistInTable($alias, $idclient)
+    private function _isExistInTable(string $alias): bool
     {
-        // Select depending from idclient all moduls wiht the name $name
+        // Select depending from idclient all moduls with the name $name
         $oLayColl = new cApiLayoutCollection();
-        $ids = $oLayColl->getIdsByWhereClause("alias='" . $oLayColl->escape($alias) . "' AND idclient=" . (int)$idclient);
-        return (count($ids) > 0) ? true : false;
+        $ids = $oLayColl->getIdsByWhereClause("alias='" . $oLayColl->escape($alias) . "' AND idclient=" . (int)$this->_client);
+        return count($ids) > 0;
     }
 
     /**
      * Rename the Layout
      *
-     * @param string $dir
-     *         path to client layout-direcotry $dir
-     * @param string $oldLayoutName
-     *         layout name in file directory
-     * @param string $newLayoutName
-     *         clear layout name
+     * @param string $dir Path to client layout-directory $dir
+     * @param string $oldLayoutName Layout name in file directory
+     * @param string $newLayoutName Clear layout name
      */
-    private function _renameFiles($dir, $oldLayoutName, $newLayoutName)
+    private function _renameFiles(string $dir, string $oldLayoutName, string $newLayoutName)
     {
-        if (cFileHandler::exists($dir . $newLayoutName . '/' . $oldLayoutName . '.html') == true) {
+        if (cFileHandler::exists($dir . $newLayoutName . '/' . $oldLayoutName . '.html')) {
             rename($dir . $newLayoutName . '/' . $oldLayoutName . '.html', $dir . $newLayoutName . '/' . $newLayoutName . '.html');
         }
     }
@@ -181,46 +149,42 @@ class cLayoutSynchronizer
     /**
      * Update the con_mod, the field lastmodified
      *
-     * @param int $timestamp
-     *         timestamp of last modification
-     * @param int $idlay
-     *         Id of layout
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param int|false $timestamp Timestamp of last modification
+     * @param int $layoutId Id of layout
+     * @throws cDbException|cInvalidArgumentException|cException
      */
-    public function setLastModified($timestamp, $idlay)
+    public function setLastModified($timestamp, $layoutId)
     {
-        $oLay = new cApiLayout((int)$idlay);
+        $oLay = new cApiLayout(cSecurity::toInteger($layoutId));
         if ($oLay->isLoaded()) {
-            $oLay->set('lastmodified', date('Y-m-d H:i:s', $timestamp));
+            $oLay->set('lastmodified', date('Y-m-d H:i:s', cSecurity::toInteger($timestamp)));
             $oLay->store();
         }
     }
 
     /**
-     * Compare file change timestamp and the timestamp in ["tab"]["lay"].
+     * Compare file change timestamp and the timestamp in ['tab']['lay'].
      * If file had changed make new code :conGenerateCodeForAllArtsUsingMod
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
-     * @throws cException
+     * @throws cDbException|cInvalidArgumentException|cException
      */
     private function _compareFileAndLayoutTimestamp()
     {
         // get all layouts from client
-        $sql = sprintf("SELECT UNIX_TIMESTAMP(lastmodified) AS lastmodified, alias, name, description, idlay FROM %s WHERE idclient=%s", $this->_cfg['tab']['lay'], $this->_client);
-        $notification = new cGuiNotification();
+        $sql = sprintf(
+            "SELECT UNIX_TIMESTAMP(lastmodified) AS lastmodified, alias, name, description, idlay FROM `%s` WHERE idclient = %d",
+            cDb::getTableName('lay'),
+            $this->_client
+        );
         $dir = $this->_cfgClient[$this->_client]['layout']['path'];
 
         $db = cRegistry::getDb();
         $db->query($sql);
-        $retIdMod = 0;
         while ($db->nextRecord()) {
             $lastmodified = $db->f('lastmodified');
 
             // exist layout directory
-            if (is_dir($dir . $db->f('alias') . '/')) {
+            if (cDirHandler::exists($dir . $db->f('alias') . '/')) {
                 if (cFileHandler::exists($dir . $db->f('alias') . '/' . $db->f('alias') . '.html')) {
                     $lastmodifiedLayout = filemtime($dir . $db->f('alias') . '/' . $db->f('alias') . '.html');
 
@@ -228,7 +192,7 @@ class cLayoutSynchronizer
                     if ($lastmodified < $lastmodifiedLayout) {
                         // update field lastmodified in table lay
                         $this->setLastModified($lastmodifiedLayout, $db->f('idlay'));
-                        $layout = new cLayoutHandler($db->f('idlay'), ' ', $this->_cfg, $this->_lang);
+                        $layoutHandler = new cLayoutHandler($db->f('idlay'), ' ', $this->_cfg, $this->_lang);
                         // Update CODE table
                         conGenerateCodeForAllartsUsingLayout($db->f('idlay'));
                         $this->_outputMessage['info'][] = i18n("Layout synchronization successful: ") . $db->f('name');
@@ -237,20 +201,18 @@ class cLayoutSynchronizer
             } else {
                 $oLayout = new cApiLayout($db->f('idlay'));
 
-                $layout = new cLayoutHandler($db->f('idlay'), '', $this->_cfg, $this->_lang);
                 // is layout in use
+                $layoutHandler = new cLayoutHandler($db->f('idlay'), '', $this->_cfg, $this->_lang);
                 if ($oLayout->isInUse()) {
                     // make layout file
-                    $layout->saveLayout('');
+                    $layoutHandler->saveLayout('');
                     $this->_outputMessage['info'][] = i18n("Layout synchronization successful, created: ") . $db->f('name');
-                } else {
+                } elseif ($layoutHandler->eraseLayout()) {
                     // if not in use delete layout
-                    if ($layout->eraseLayout()) {
-                        layDeleteLayout($db->f('idlay'));
-                        $this->_outputMessage['info'][] = i18n("Layout synchronization successful, deleted: ") . $db->f('name');
-                    } else {
-                        $this->_outputMessage['error'][] = i18n("Synchronization failed could not delete layout: ") . $db->f('name');
-                    }
+                    layDeleteLayout($db->f('idlay'));
+                    $this->_outputMessage['info'][] = i18n("Layout synchronization successful, deleted: ") . $db->f('name');
+                } else {
+                    $this->_outputMessage['error'][] = i18n("Synchronization failed could not delete layout: ") . $db->f('name');
                 }
             }
         }
@@ -275,16 +237,11 @@ class cLayoutSynchronizer
     }
 
     /**
-     * Synchronize the Layout directory with the lay-table und the lay-table
-     * with directory.
+     * Synchronize the Layout directory with the lay-table und the lay-table with directory.
      *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function synchronize()
+    public function synchronize(): bool
     {
         // update file and layout
         $this->_compareFileAndLayoutTimestamp();
@@ -293,49 +250,57 @@ class cLayoutSynchronizer
         $dir = $this->_cfgClient[$this->_client]['layout']['path'];
 
         // is/exist directory
-        if (!is_dir($dir)) {
+        if (!cDirHandler::exists($dir)) {
             return false;
         }
 
-        if (false !== ($handle = cDirHandler::read($dir))) {
-            foreach ($handle as $file) {
-                // skip dirs to exclude
-                // @todo should use setting for dirs to exclude
-                if (cFileHandler::fileNameBeginsWithDot($file)) {
-                    continue;
+        $files = cDirHandler::read($dir);
+        if ($files === false) {
+            return false;
+        }
+
+        foreach ($files as $file) {
+            // skip dirs to exclude
+            // @todo should use setting for dirs to exclude
+            if (cFileHandler::fileNameBeginsWithDot($file)) {
+                continue;
+            }
+
+            // skip entries that are no directories
+            if (!cDirHandler::exists($dir . $file . '/')) {
+                continue;
+            }
+
+            $newFile = cString::toLowerCase(cString::cleanURLCharacters($file));
+
+            if ($newFile == $file) {
+                // dir is ok
+                $this->_addOrUpdateLayout($dir, $file, $newFile);
+                continue;
+            }
+
+            // dir not ok (with not allowed characters)
+            if (cDirHandler::exists($dir . $newFile) && cString::toLowerCase($file) != $newFile) {
+                // exist the new dir name after clean?
+                // make new dirname
+                $newDirName = $newFile . cString::getPartOfString(md5(time() . rand(0, time())), 0, 4);
+                // rename
+                if ($this->_renameFileAndDir($dir, $file, $newDirName)) {
+                    $this->_addOrUpdateLayout($dir, $file, $newDirName);
                 }
 
-                // skip entries that are no directories
-                if (false === is_dir($dir . $file . '/')) {
-                    continue;
-                }
+                continue;
+            }
 
-                $newFile = cString::toLowerCase(cString::cleanURLCharacters($file));
-
-                if ($newFile == $file) {
-                    // dir is ok
-                    $this->_addOrUpdateLayout($dir, $file, $newFile, $this->_client);
-                } else {
-                    // dir not ok (with not allowed characters)
-                    if (is_dir($dir . $newFile) && cString::toLowerCase($file) != $newFile) {
-                        // exist the new dir name after clean?
-                        // make new dirname
-                        $newDirName = $newFile . cString::getPartOfString(md5(time() . rand(0, time())), 0, 4);
-                        // rename
-                        if ($this->_renameFileAndDir($dir, $file, $newDirName, $this->_client) != false) {
-                            $this->_addOrUpdateLayout($dir, $file, $newDirName, $this->_client);
-                        }
-                    } else {
-                        // $newFile (dir) not exist
-                        // rename dir old
-                        if ($this->_renameFileAndDir($dir, $file, $newFile, $this->_client) != false) {
-                            $this->_addOrUpdateLayout($dir, $file, $newFile, $this->_client);
-                        }
-                    }
-                }
+            // $newFile (dir) not exist
+            // rename dir old
+            if ($this->_renameFileAndDir($dir, $file, $newFile)) {
+                $this->_addOrUpdateLayout($dir, $file, $newFile);
             }
         }
 
         $this->_showOutputMessage();
+
+        return true;
     }
 }

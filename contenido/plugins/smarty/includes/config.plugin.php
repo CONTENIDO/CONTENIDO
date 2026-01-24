@@ -16,11 +16,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $cfg;
 
-$pluginName = basename(dirname(__DIR__, 1));
+$pluginName = basename(dirname(__DIR__));
 
 $cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
 
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getClientId();
 $cfgClient = cRegistry::getClientConfig();
 
 

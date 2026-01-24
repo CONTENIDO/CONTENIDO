@@ -21,8 +21,7 @@ cInclude('includes', 'functions.file.php');
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiDbfs createNewItem
- * @method cApiDbfs|bool next
+ * @extends ItemCollection<cApiDbfs>
  */
 class cApiDbfsCollection extends ItemCollection
 {
@@ -42,7 +41,7 @@ class cApiDbfsCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('dbfs'), 'iddbfs');
+        parent::__construct(cDb::getTableName('dbfs'), 'iddbfs');
         $this->_setItemClass('cApiDbfs');
 
         // set the join partners so that joins can be used via link() method
@@ -52,42 +51,30 @@ class cApiDbfsCollection extends ItemCollection
     /**
      * Outputs dbfs file related by its path property
      *
-     * @param string $path
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function outputFile($path)
+    public function outputFile(string $path)
     {
-        $path = $this->escape($path);
-        $client = cSecurity::toInteger(cRegistry::getClientId());
         $path = cApiDbfs::stripPath($path);
-        $dir = dirname($path);
-        $file = basename($path);
+        $dirname = $this->getSanitizedDirname($path);
+        $filename = basename($path);
 
-        if ($dir == '.') {
-            $dir = '';
-        }
-
-        $this->select("dirname = '" . $dir . "' AND filename = '" . $file . "' AND idclient = " . $client . " LIMIT 1");
-
-        if (($item = $this->next()) !== false) {
+        $dbfs = $this->fetchOneByDirnameFilenameAndClientId($dirname, $filename, cRegistry::getClientId());
+        if ($dbfs) {
             $properties = new cApiPropertyCollection();
             // Check if we're allowed to access it
-            $protocol = cApiDbfs::PROTOCOL_DBFS;
-
-            if ($properties->getValue('upload', $protocol . $dir . '/' . $file, 'file', 'protected') == '1') {
-                $auth = cRegistry::getAuth();
-                if ($auth->auth['uid'] == 'nobody') {
+            $itemId = cApiDbfs::PROTOCOL_DBFS . $dirname . '/' . $filename;
+            if ($properties->getValue('upload', $itemId, 'file', 'protected') == '1') {
+                if (cRegistry::getAuth()->getUserId() === cAuth::AUTH_UID_NOBODY) {
                     header('HTTP/1.0 403 Forbidden');
                     return;
                 }
             }
-            $mimetype = $item->get('mimetype');
+            $mimeType = $dbfs->get('mimetype');
 
             header('Cache-Control: '); // leave blank to avoid IE errors
             header('Pragma: '); // leave blank to avoid IE errors
-            header("Content-Type: $mimetype");
+            header("Content-Type: $mimeType");
             header('Etag: ' . md5(mt_rand()));
 
             // Check, if output of Content-Disposition header should be skipped
@@ -95,93 +82,80 @@ class cApiDbfsCollection extends ItemCollection
             $contentDispositionHeader = true;
             $cfg = cRegistry::getConfig();
             foreach ($cfg['dbfs']['skip_content_disposition_header_for_mimetypes'] as $mt) {
-                if (cString::toLowerCase($mt) == cString::toLowerCase($mimetype)) {
+                if (cString::toLowerCase($mt) == cString::toLowerCase($mimeType)) {
                     $contentDispositionHeader = false;
                     break;
                 }
             }
             if ($contentDispositionHeader) {
-                header('Content-Disposition: attachment; filename=' . $file);
+                header('Content-Disposition: attachment; filename=' . $filename);
             }
 
-            echo $item->get('content');
+            echo $dbfs->get('content');
         }
     }
 
     /**
      * Writes physical existing file into dbfs
      *
-     * @param string $localfile
-     * @param string $targetfile
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function writeFromFile($localfile, $targetfile)
+    public function writeFromFile(string $localFile, string $targetFile)
     {
-        $targetfile = cApiDbfs::stripPath($targetfile);
-        $stat = cFileHandler::info($localfile);
-        $mimetype = $stat['mime'];
+        $targetFile = cApiDbfs::stripPath($targetFile);
+        $stat = cFileHandler::info($localFile);
+        $mimeType = $stat['mime'];
 
-        $this->write($targetfile, cFileHandler::read($localfile), $mimetype);
+        $this->write($targetFile, cFileHandler::read($localFile), $mimeType);
     }
 
     /**
-     * Writes dbfs file into phsical file system
+     * Writes dbfs file into physical file system
      *
-     * @param string $sourcefile
-     * @param string $localfile
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function writeToFile($sourcefile, $localfile)
+    public function writeToFile(string $sourceFile, string $localFile)
     {
-        $sourcefile = cApiDbfs::stripPath($sourcefile);
+        $sourceFile = cApiDbfs::stripPath($sourceFile);
 
-        cFileHandler::write($localfile, $this->read($sourcefile));
+        cFileHandler::write($localFile, $this->read($sourceFile));
     }
 
     /**
      * Writes dbfs file, creates if if not exists.
      *
-     * @param string $file
      * @param string $content [optional]
-     * @param string $mimetype [optional]
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param string $mimeType [optional]
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function write($file, $content = '', $mimetype = '')
+    public function write(string $filename, $content = '', $mimeType = '')
     {
-        $file = cApiDbfs::stripPath($file);
+        $filename = cApiDbfs::stripPath($filename);
 
-        if (!$this->fileExists($file)) {
-            $this->create($file, $mimetype);
+        if (!$this->fileExists($filename)) {
+            $this->create($filename, $mimeType);
         }
-        $this->setContent($file, $content);
+        $this->setContent($filename, $content);
     }
 
     /**
      * Checks if passed dbfs path has any files.
      *
-     * @param string $path
-     * @return bool
      * @throws cDbException
      */
-    public function hasFiles($path)
+    public function hasFiles(string $path): bool
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $client = cRegistry::getClientId();
         $path = cApiDbfs::stripPath($path);
 
         // Are there any subdirectories or any files?
-        $this->select(
-            "(`dirname` LIKE '" . $path . "/%' AND `idclient` = " . $client . ") OR " .
-            "(`dirname` = '" . $path . "' AND `idclient` = " . $client . " AND `filename` != '' AND `filename` != '.') " .
-            " LIMIT 1"
+        $where = $this->db->prepare(
+            "(`dirname` LIKE ':dir_name/%' AND `idclient` = :client_id) OR "
+            . "(`dirname` = ':dir_name' AND `idclient` = :client_id AND `filename` != '' AND `filename` != '.') "
+            . " LIMIT 1",
+            ['dir_name' => $path, 'client_id' => $client]
         );
+        $this->select($where);
 
         return $this->count() > 0;
     }
@@ -189,74 +163,51 @@ class cApiDbfsCollection extends ItemCollection
     /**
      * Reads content from dbfs file.
      *
-     * @param string $file
-     * @return string
-     * @throws cDbException
-     * @throws cException
+     * @return string|mixed|false
+     * @throws cDbException|cException
      */
-    public function read($file)
+    public function read(string $filename)
     {
-        return $this->getContent($file);
+        return $this->getContent($filename);
     }
 
     /**
-     * Checks, if a dbfs file exists.
+     * Checks if a dbfs file exists.
      *
-     * @param string $path
-     * @return bool
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function fileExists($path)
+    public function fileExists(string $path): bool
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
         $path = cApiDbfs::stripPath($path);
-        $dir = dirname($path);
-        $file = basename($path);
+        $dirname = $this->getSanitizedDirname($path);
+        $filename = basename($path);
 
-        if ($dir == '.') {
-            $dir = '';
-        }
+        $dbfs = $this->fetchOneByDirnameFilenameAndClientId($dirname, $filename, cRegistry::getClientId());
 
-        $this->select("dirname = '" . $dir . "' AND filename = '" . $file . "' AND idclient = " . $client . " LIMIT 1");
-        if ($this->next()) {
-            return true;
-        } else {
-            return false;
-        }
+        return $dbfs instanceof cApiDbfs;
     }
 
     /**
-     * Checks, if a dbfs directory exists.
+     * Checks if a dbfs directory exists.
      *
-     * @param string $path
-     * @return bool
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function dirExists($path)
+    public function dirExists(string $path): bool
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $path = cApiDbfs::stripPath($path);
-
-        if ($path == '') {
+        $dirname = cApiDbfs::stripPath($path);
+        if ($dirname == '') {
             return true;
         }
 
-        $this->select("dirname = '" . $path . "' AND filename = '.' AND idclient = " . $client . " LIMIT 1");
-        if ($this->next()) {
-            return true;
-        } else {
-            return false;
-        }
+        $dbfs = $this->fetchOneByDirnameFilenameAndClientId($dirname, '.', cRegistry::getClientId());
+
+        return $dbfs instanceof cApiDbfs;
     }
 
     /**
-     *
-     * @param string $path
-     * @return string
+     * Returns parent directory name.
      */
-    public function parentDir($path)
+    public function parentDir(string $path): string
     {
         return dirname($path);
     }
@@ -264,43 +215,36 @@ class cApiDbfsCollection extends ItemCollection
     /**
      * Creates a dbfs item entry
      * @param string $path
-     * @param string $mimetype [optional]
+     * @param string $mimeType [optional]
      * @param string $content [optional]
      * @return cApiDbfs|false
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($path, $mimetype = '', $content = '')
+    public function create($path, $mimeType = '', $content = '')
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $item = false;
+        $client = cRegistry::getClientId();
 
         if (cString::getPartOfString($path, 0, 1) == '/') {
             $path = cString::getPartOfString($path, 1);
         }
 
-        $dir = dirname($path);
-        $file = basename($path);
+        $dirname = $this->getSanitizedDirname($path);
 
-        if ($dir == '.') {
-            $dir = '';
+        $filename = basename($path);
+        if ($filename == '') {
+            return false;
         }
 
-        if ($file == '') {
-            return $item;
-        }
-
-        if ($file != '.') {
-            if ($dir != '') {
+        if ($filename != '.') {
+            if ($dirname != '') {
                 // Check if the directory exists. If not, create it.
-                $this->select("dirname = '" . $dir . "' AND filename = '.' AND idclient = " . $client . " LIMIT 1");
-                if (!$this->next()) {
-                    $this->create($dir . '/.');
+                $dbfs = $this->fetchOneByDirnameFilenameAndClientId($dirname, '.', $client);
+                if (!$dbfs instanceof cApiDbfs) {
+                    $this->create($dirname . '/.');
                 }
             }
         } else {
-            $parent = $this->parentDir($dir);
+            $parent = $this->parentDir($dirname);
 
             if ($parent != '.') {
                 if (!$this->dirExists($parent)) {
@@ -309,21 +253,22 @@ class cApiDbfsCollection extends ItemCollection
             }
         }
 
-        if ($dir && !$this->dirExists($dir) || $file != '.') {
+        $item = false;
+        if ($dirname && !$this->dirExists($dirname) || $filename != '.') {
             $item = $this->createNewItem();
             $item->set('idclient', $client);
-            $item->set('dirname', $dir);
-            $item->set('filename', $file);
+            $item->set('dirname', $dirname);
+            $item->set('filename', $filename);
             $item->set('size', cString::getStringLength($content));
 
-            if ($mimetype != '') {
-                $item->set('mimetype', $mimetype);
+            if ($mimeType != '') {
+                $item->set('mimetype', $mimeType);
             }
 
             $auth = cRegistry::getAuth();
             $item->set('content', $content);
             $item->set('created', date('Y-m-d H:i:s'), false);
-            $item->set('author', $auth->auth['uid']);
+            $item->set('author', $auth->getUserId());
             $item->store();
         }
 
@@ -331,82 +276,52 @@ class cApiDbfsCollection extends ItemCollection
     }
 
     /**
-     *
      * @param string $path
      * @param string $content
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function setContent($path, $content)
+    public function setContent(string $path, $content)
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
         $path = cApiDbfs::stripPath($path);
-        $dirname = dirname($path);
+        $dirname = $this->getSanitizedDirname($path);
         $filename = basename($path);
 
-        if ($dirname == '.') {
-            $dirname = '';
-        }
-
-        $this->select("dirname = '" . $dirname . "' AND filename = '" . $filename . "' AND idclient = " . $client . " LIMIT 1");
-        if (($item = $this->next()) !== false) {
-            $item->set('content', $content);
-            $item->set('size', cString::getStringLength($content));
-            $item->store();
+        $dbfs = $this->fetchOneByDirnameFilenameAndClientId($dirname, $filename, cRegistry::getClientId());
+        if ($dbfs instanceof cApiDbfs) {
+            $dbfs->set('content', $content);
+            $dbfs->set('size', cString::getStringLength($content));
+            $dbfs->store();
         }
     }
 
     /**
-     *
-     * @param string $path
-     * @return int
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function getSize($path)
+    public function getSize(string $path): int
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
         $path = cApiDbfs::stripPath($path);
-        $dirname = dirname($path);
+        $dirname = $this->getSanitizedDirname($path);
         $filename = basename($path);
 
-        if ($dirname == '.') {
-            $dirname = '';
-        }
+        $dbfs = $this->fetchOneByDirnameFilenameAndClientId($dirname, $filename, cRegistry::getClientId());
 
-        $this->select("dirname = '" . $dirname . "' AND filename = '" . $filename . "' AND idclient = " . $client . " LIMIT 1");
-        if (($item = $this->next()) !== false) {
-            return $item->get('size');
-        }
-
-        return 0;
+        return $dbfs ? cSecurity::toInteger($dbfs->get('size')) : 0;
     }
 
     /**
      * Get content of path for current client.
      *
-     * @param string $path
-     * @return mixed|bool
-     * @throws cDbException
-     * @throws cException
+     * @return string|mixed|false
+     * @throws cDbException|cException
      */
-    public function getContent($path)
+    public function getContent(string $path)
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $dirname = dirname($path);
+        $dirname = $this->getSanitizedDirname($path);
         $filename = basename($path);
 
-        if ($dirname == '.') {
-            $dirname = '';
-        }
+        $dbfs = $this->fetchOneByDirnameFilenameAndClientId($dirname, $filename, cRegistry::getClientId());
 
-        $this->select("dirname = '" . $dirname . "' AND filename = '" . $filename . "' AND idclient = " . $client . " LIMIT 1");
-        if (($item = $this->next()) !== false) {
-            return $item->get("content");
-        }
-
-        return false;
+        return $dbfs ? $dbfs->get('content') : false;
     }
 
     /**
@@ -414,56 +329,43 @@ class cApiDbfsCollection extends ItemCollection
      *
      * @param string $path
      * @return bool Success state
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function remove($path)
+    public function remove(string $path): bool
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
         $path = cApiDbfs::stripPath($path);
-        $dirname = dirname($path);
+        $dirname = $this->getSanitizedDirname($path);
         $filename = basename($path);
 
-        if ($dirname == '.') {
-            $dirname = '';
-        }
+        $dbfs = $this->fetchOneByDirnameFilenameAndClientId($dirname, $filename, cRegistry::getClientId());
 
-        $this->select("dirname = '" . $dirname . "' AND filename = '" . $filename . "' AND idclient = " . $client . " LIMIT 1");
-        if (($item = $this->next()) !== false) {
-            return $this->delete($item->get('iddbfs'));
-        }
-        return false;
+        return $dbfs && $this->delete($dbfs->get('iddbfs'));
     }
 
     /**
-     * Checks if time management is activated and if yes then check if file is
-     * in period
+     * Checks if time management is activated and if yes then check if file is in period
      *
-     * @param string $sPath
-     * @param cApiPropertyCollection $oProperties
-     *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function checkTimeManagement($sPath, $oProperties)
+    public function checkTimeManagement(string $path, cApiPropertyCollection $properties): bool
     {
         if (cRegistry::getBackendSessionId()) {
             return true;
         }
 
-        $sPath = cSecurity::toString($sPath);
-        $iTimeMng = cSecurity::toInteger($oProperties->getValue('upload', $sPath, 'file', 'timemgmt'));
-        if ($iTimeMng == 0) {
+        $path = cSecurity::toString($path);
+        $timeManagement = cSecurity::toInteger($properties->getValue('upload', $path, 'file', 'timemgmt'));
+        if ($timeManagement == 0) {
             return true;
         }
 
-        $sStartDate = $oProperties->getValue('upload', $sPath, 'file', 'datestart');
-        $sEndDate = $oProperties->getValue('upload', $sPath, 'file', 'dateend');
+        $startDate = $properties->getValue('upload', $path, 'file', 'datestart');
+        $endDate = $properties->getValue('upload', $path, 'file', 'dateend');
         $iNow = time();
-        if ($iNow < $this->dateToTimestamp($sStartDate) || ($iNow > $this->dateToTimestamp($sEndDate) && (int)$this->dateToTimestamp($sEndDate) > 0)) {
+        if (
+            $iNow < $this->dateToTimestamp($startDate)
+            || ($iNow > $this->dateToTimestamp($endDate) && (int)$this->dateToTimestamp($endDate) > 0)
+        ) {
             return false;
         }
 
@@ -473,12 +375,43 @@ class cApiDbfsCollection extends ItemCollection
     /**
      * Converts date to timestamp:
      *
-     * @param string $sDate
-     * @return int|bool $iTimestamp
+     * @return int|false Timestamp
      */
-    public function dateToTimestamp($sDate)
+    public function dateToTimestamp(string $date)
     {
-        return strtotime($sDate);
+        return strtotime($date);
+    }
+
+    /**
+     * @since CONTENIDO 4.10.2
+     */
+    private function getSanitizedDirname(string $path): string
+    {
+        $dirname = dirname($path);
+        if ($dirname === '.') {
+            $dirname = '';
+        }
+
+        return $dirname;
+    }
+
+    /**
+     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
+     */
+    private function fetchOneByDirnameFilenameAndClientId(string $dirname, string $filename, int $clientId): ?cApiDbfs
+    {
+        $this->select(sprintf(
+            "`dirname` = '%s' AND `filename` = '%s' AND `idclient` = %d LIMIT 1",
+            $this->db->escape($dirname),
+            $this->db->escape($filename),
+            $clientId
+        ));
+
+        if (($item = $this->next()) !== false) {
+            return $item;
+        }
+        return null;
     }
 }
 
@@ -496,22 +429,19 @@ class cApiDbfs extends Item
      *
      * @var string
      */
-    const PROTOCOL_DBFS = 'dbfs:';
+    public const PROTOCOL_DBFS = 'dbfs:';
 
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('dbfs'), 'iddbfs');
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('dbfs'), 'iddbfs');
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
@@ -519,15 +449,14 @@ class cApiDbfs extends Item
      * Stores the loaded and modified item to the database.
      * The properties "modified" & "modifiedby" are set automatically.
      *
-     * @return bool
-     * @see Item::store()
+     * @inheritDoc
      */
     public function store()
     {
         $auth = cRegistry::getAuth();
 
         $this->set('modified', date('Y-m-d H:i:s'), false);
-        $this->set('modifiedby', $auth->auth['uid']);
+        $this->set('modifiedby', $auth->getUserId());
 
         return parent::store();
     }
@@ -536,21 +465,15 @@ class cApiDbfs extends Item
      * Sets the value of a specific field.
      * Ensures to bypass any set inFilter for 'content' field which is a blob.
      *
-     * @param string $sField
-     *         Field name
-     * @param string $mValue
-     *         Value to set
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($sField, $mValue, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
-        if ('content' === $sField) {
+        if ('content' === $name) {
             // Disable always filter for field 'content'
-            return parent::setField($sField, $mValue, false);
+            return parent::setField($name, $value, false);
         } else {
-            return parent::setField($sField, $mValue, $bSafe);
+            return parent::setField($name, $value, $safe);
         }
     }
 
@@ -558,30 +481,22 @@ class cApiDbfs extends Item
      * User defined value getter for cApiDbfs.
      * Ensures to bypass any set outFilter for 'content' field which is a blob.
      *
-     * @param string $sField
-     *         Specifies the field to retrieve
-     * @param bool $bSafe [optional]
-     *         Flag to run defined outFilter on passed value
-     * @return mixed
-     *         Value of the field
+     * @inheritDoc
      */
-    public function getField($sField, $bSafe = true)
+    public function getField($name, $safe = true)
     {
-        if ('content' === $sField) {
+        if ('content' === $name) {
             // Disable always filter for field 'content'
-            return parent::getField($sField, false);
+            return parent::getField($name, false);
         } else {
-            return parent::getField($sField, $bSafe);
+            return parent::getField($name, $safe);
         }
     }
 
     /**
      * Removes the DBFS protocol and leading '/' from received path.
-     *
-     * @param string $path
-     * @return string
      */
-    public static function stripPath($path)
+    public static function stripPath(string $path): string
     {
         $path = self::stripProtocol($path);
         if (cString::getPartOfString($path, 0, 1) == '/') {
@@ -592,11 +507,8 @@ class cApiDbfs extends Item
 
     /**
      * Removes the DBFS protocol received path.
-     *
-     * @param string $path
-     * @return string
      */
-    public static function stripProtocol($path)
+    public static function stripProtocol(string $path): string
     {
         if (self::isDbfs($path)) {
             $path = cString::getPartOfString($path, cString::getStringLength(cApiDbfs::PROTOCOL_DBFS));
@@ -606,12 +518,9 @@ class cApiDbfs extends Item
 
     /**
      * Checks if passed file id a DBFS
-     *
-     * @param string $file
-     * @return bool
      */
-    public static function isDbfs($file)
+    public static function isDbfs(string $filename): bool
     {
-        return cString::getPartOfString($file, 0, 5) == self::PROTOCOL_DBFS;
+        return cString::getPartOfString($filename, 0, 5) == self::PROTOCOL_DBFS;
     }
 }

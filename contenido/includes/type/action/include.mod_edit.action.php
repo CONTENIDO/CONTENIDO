@@ -31,12 +31,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.mod.php');
 
-if ($perm->have_perm_area_action($area, "mod_edit")) {
+if ($perm->have_perm_area_action($area, 'mod_edit')) {
     if (empty($type)) {
         $type = $customtype;
     }
 
-    $readOonly = (getEffectiveSetting("client", "readonly", "false") == "true");
+    $readOonly = (getEffectiveSetting('client', 'readonly', 'false') == 'true');
     if ($readOonly) {
         cRegistry::addWarningMessage(i18n("This area is read only! The administrator disabled edits!"));
     } else {
@@ -48,5 +48,5 @@ if ($perm->have_perm_area_action($area, "mod_edit")) {
     }
 
 } else {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
 }

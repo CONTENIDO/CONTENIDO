@@ -89,10 +89,10 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataConstruct()
      *
-     * @param array|null $input data to be used as input
-     * @param array|null $output data to be expected as output
+     * @param ?array $input data to be used as input
+     * @param ?array $output data to be expected as output
      */
-    public function testConstruct(array $input = null, array $output = null)
+    public function testConstruct(?array $input = null, ?array $output = null)
     {
         $cHtml = new cHTML($input);
         $this->assertEquals($output, $cHtml->getAttributes());
@@ -123,10 +123,10 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataGetIDAndSetID()
      *
-     * @param string|null $input data to be used as input
-     * @param string|null $output data to be expected as output
+     * @param ?string $input data to be used as input
+     * @param ?string $output data to be expected as output
      */
-    public function testGetIDAndSetID(string $input = null, string $output = null)
+    public function testGetIDAndSetID(?string $input = null, ?string $output = null)
     {
         // via constructor
         $html = new cHTML(['id' => $input]);
@@ -153,10 +153,10 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataSetTag()
      *
-     * @param string|null $input data to be used as input
-     * @param string|null $output data to be expected as output
+     * @param ?string $input data to be used as input
+     * @param ?string $output data to be expected as output
      */
-    public function testSetTag(string $input = null, string $output = null)
+    public function testSetTag(?string $input = null, ?string $output = null)
     {
         $html = new cHTML();
         $html->setTag($input);
@@ -178,16 +178,16 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataSetAlt()
      *
-     * @param string|null $input data to be used as input
-     * @param string|null $inputSec data to be used as secondary input
-     * @param string|null $output data to be expected as output
-     * @param string|null $outputSec data to be expected as secondary output
+     * @param ?string $input data to be used as input
+     * @param ?string $inputSec data to be used as secondary input
+     * @param ?string $output data to be expected as output
+     * @param ?string $outputSec data to be expected as secondary output
      */
     public function testSetAlt(
-        string $input = null,
-        string $inputSec = null,
-        string $output = null,
-        string $outputSec = null
+        ?string $input = null,
+        ?string $inputSec = null,
+        ?string $output = null,
+        ?string $outputSec = null
     )
     {
         // set alt w/ title (by default)
@@ -231,10 +231,10 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataSetClass()
      *
-     * @param string|null $input data to be used as input
-     * @param string|null $output data to be expected as output
+     * @param ?string $input data to be used as input
+     * @param ?string $output data to be expected as output
      */
-    public function testSetClass(string $input = null, string $output = null)
+    public function testSetClass(?string $input = null, ?string $output = null)
     {
         $html = new cHTML();
         $html->setClass($input);
@@ -277,10 +277,10 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataSetStyle()
      *
-     * @param string|null $input data to be used as input
-     * @param string|null $output data to be expected as output
+     * @param ?string $input data to be used as input
+     * @param ?string $output data to be expected as output
      */
-    public function testSetStyle(string $input = null, string $output = null)
+    public function testSetStyle(?string $input = null, ?string $output = null)
     {
         $html = new cHTML();
         $html->setStyle($input);
@@ -310,10 +310,10 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataGetAttribute()
      *
-     * @param array|null $input data to be used as input
-     * @param array|null $output data to be expected as output
+     * @param ?array $input data to be used as input
+     * @param ?array $output data to be expected as output
      */
-    public function testGetAttribute(array $input = null, array $output = null)
+    public function testGetAttribute(?array $input = null, ?array $output = null)
     {
         $html = new cHTML();
         $this->assertNull($html->getAttribute('id'));
@@ -345,10 +345,10 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataSetAttribute()
      *
-     * @param array|null $input data to be used as input
-     * @param array|null $output data to be expected as output
+     * @param ?array $input data to be used as input
+     * @param ?array $output data to be expected as output
      */
-    public function testSetAttribute(array $input = null, array $output = null)
+    public function testSetAttribute(?array $input = null, ?array $output = null)
     {
         $html = new cHTML();
 
@@ -383,10 +383,10 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataGetAttributes()
      *
-     * @param array|null $input data to be used as input
-     * @param array|null $output data to be expected as output
+     * @param ?array $input data to be used as input
+     * @param ?array $output data to be expected as output
      */
-    public function testGetAttributes(array $input = null, array $output = null)
+    public function testGetAttributes(?array $input = null, ?array $output = null)
     {
         $attr = ['id' => 'my-id', 'class' => 'my-class'];
         $html = new cHTML();
@@ -413,10 +413,10 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataSetAttributes()
      *
-     * @param array|null $input data to be used as input
-     * @param array|null $output data to be expected as output
+     * @param ?array $input data to be used as input
+     * @param ?array $output data to be expected as output
      */
-    public function testSetAttributes(array $input = null, array $output = null)
+    public function testSetAttributes(?array $input = null, ?array $output = null)
     {
         $html = new cHTML();
 
@@ -446,10 +446,10 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataUpdateAttribute()
      *
-     * @param array|null $input data to be used as input
-     * @param array|null $output data to be expected as output
+     * @param ?array $input data to be used as input
+     * @param ?array $output data to be expected as output
      */
-    public function testUpdateAttribute(array $input = null, array $output = null)
+    public function testUpdateAttribute(?array $input = null, ?array $output = null)
     {
         $html = new cHTML();
 
@@ -480,10 +480,10 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataUpdateAttributes()
      *
-     * @param array|null $input data to be used as input
-     * @param array|null $output data to be expected as output
+     * @param ?array $input data to be used as input
+     * @param ?array $output data to be expected as output
      */
-    public function testUpdateAttributes(array $input = null, array $output = null)
+    public function testUpdateAttributes(?array $input = null, ?array $output = null)
     {
         $html = new cHTML();
 
@@ -507,10 +507,10 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataRemoveAttribute()
      *
-     * @param array|null $input data to be used as input
-     * @param array|null $output data to be expected as output
+     * @param ?array $input data to be used as input
+     * @param ?array $output data to be expected as output
      */
-    public function testRemoveAttribute(array $input = null, array $output = null)
+    public function testRemoveAttribute(?array $input = null, ?array $output = null)
     {
         $html = new cHTML();
 
@@ -581,10 +581,10 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataAppendStyleDefinition()
      *
-     * @param array|null $input data to be used as input
-     * @param array|null $output data to be expected as output
+     * @param ?array $input data to be used as input
+     * @param ?array $output data to be expected as output
      */
-    public function testAppendStyleDefinition(array $input = null, array $output = null)
+    public function testAppendStyleDefinition(?array $input = null, ?array $output = null)
     {
         $html = new cHTML();
         foreach ($input as $property => $value) {
@@ -606,10 +606,10 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataAppendStyleDefinitions()
      *
-     * @param array|null $input data to be used as input
-     * @param array|null $output data to be expected as output
+     * @param ?array $input data to be used as input
+     * @param ?array $output data to be expected as output
      */
-    public function testAppendStyleDefinitions(array $input = null, array $output = null)
+    public function testAppendStyleDefinitions(?array $input = null, ?array $output = null)
     {
         // $html = new cHTML();
         // $html->();
@@ -634,10 +634,10 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataAddRequiredScript()
      *
-     * @param array|null $input data to be used as input
-     * @param array|null $output data to be expected as output
+     * @param ?array $input data to be used as input
+     * @param ?array $output data to be expected as output
      */
-    public function testAddRequiredScript(array $input = null, array $output = null)
+    public function testAddRequiredScript(?array $input = null, ?array $output = null)
     {
         // $html = new cHTML();
         // $html->addRequiredScript();
@@ -674,10 +674,10 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataToHtml()
      *
-     * @param array|null $input data to be used as input
-     * @param array|null $output data to be expected as output
+     * @param ?array $input data to be used as input
+     * @param ?array $output data to be expected as output
      */
-    public function testToHtml(array $input = null, array $output = null)
+    public function testToHtml(?array $input = null, ?array $output = null)
     {
         // $html = new cHTML();
         // $html->toHtml();
@@ -708,10 +708,10 @@ class cHTMLTest extends cTestingTestCase
     /**
      * @dataProvider dataRender()
      *
-     * @param array|null $input data to be used as input
-     * @param array|null $output data to be expected as output
+     * @param ?array $input data to be used as input
+     * @param ?array $output data to be expected as output
      */
-    public function testRender(array $input = null, array $output = null)
+    public function testRender(?array $input = null, ?array $output = null)
     {
         $cHtml = new cHTML(['id' => 'm20']);
         $this->assertSame('< id="m20" />', $cHtml->render());

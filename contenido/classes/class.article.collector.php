@@ -15,8 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * The article collector returns you a list of articles, which destination you
- * can choose.
+ * The article collector returns you a list of articles, which destination you can choose.
  * You have the ability to limit, sort and filter the article list.
  *
  * You can configure the article collector with an options array, which can
@@ -31,38 +30,28 @@ class cArticleCollector implements SeekableIterator, Countable
 {
 
     /**
-     * Options for the collector.
-     *
-     * @var array
+     * @var array Options for the collector.
      */
     protected $_options = [];
 
     /**
-     * Loaded articles.
-     *
-     * @var cApiArticleLanguage[]
+     * @var cApiArticleLanguage[] Loaded articles.
      */
     protected $_articles = [];
 
     /**
-     * Total paging data.
-     *
-     * @var cApiArticleLanguage[]|array
+     * @var cApiArticleLanguage[]|array Total paging data.
      */
     protected $_pages = [];
 
     /**
-     * Array of start articles of the requested categories, where the key is the
-     * category id and the value the id of the start article.
-     *
-     * @var array
+     * @var array Array of start articles of the requested categories, where the key is the
+     *      category id and the value the id of the start article.
      */
     protected $_startArticles = [];
 
     /**
-     * Current position for the iterator.
-     *
-     * @var int
+     * @var int Current position for the iterator.
      */
     protected $_currentPosition = 0;
 
@@ -100,11 +89,9 @@ class cArticleCollector implements SeekableIterator, Countable
     }
 
     /**
-     * Setter for the collector options. Validates incoming options and sets the
-     * default of the missing options.
+     * Setter for the collector options. Validates incoming options and sets the default of the missing options.
      *
-     * @param array $options
-     *         array with option
+     * @param array $options Array with option
      */
     public function setOptions(array $options)
     {
@@ -194,22 +181,21 @@ class cArticleCollector implements SeekableIterator, Countable
      * Compatibility method for old ArticleCollection class. Returns the start
      * article of a category. Does work only if one category was requested.
      *
-     * @return cApiArticleLanguage
-     *
      * @throws cBadMethodCallException|cDbException|cException
      */
-    public function startArticle()
+    public function startArticle(): cApiArticleLanguage
     {
         if (count($this->_startArticles) != 1) {
-            throw new cBadMethodCallException("Can not load start article due to multiple loaded start articles.");
+            throw new cBadMethodCallException(
+                'Can not load start article due to multiple loaded start articles.'
+            );
         }
 
         return new cApiArticleLanguage(current($this->_startArticles));
     }
 
     /**
-     * Compatibility method for old ArticleCollection class. Returns the next
-     * article.
+     * Compatibility method for old ArticleCollection class. Returns the next article.
      *
      * @return bool|cApiArticleLanguage
      */
@@ -226,14 +212,13 @@ class cArticleCollector implements SeekableIterator, Countable
     }
 
     /**
-     * Compatibility method for old ArticleCollection. Split the article results
-     * into pages of a given size.
-     * Example: Article Collection with 5 articles
+     * Compatibility method for old ArticleCollection. Split the article results into pages of a given size.
+     * Example:
+     * Article Collection with 5 articles
      * [0] => 250 [1] => 251 [2] => 253 [3] => 254 [4] => 255
      * $collection->setResultPerPage(2)
      * Would split the results into 3 pages
-     * [0] => [0] => 250 [1] => 251 [1] => [0] => 253 [1] => 254 [2] => [0] =>
-     * 255
+     * [0] => [0] => 250 [1] => 251 [1] => [0] => 253 [1] => 254 [2] => [0] => 255
      * A page can be selected with $collection->setPage(int page)
      *
      * @param int $resPerPage
@@ -241,23 +226,17 @@ class cArticleCollector implements SeekableIterator, Countable
     public function setResultPerPage($resPerPage)
     {
         if ($resPerPage > 0) {
-            if (is_array($this->_articles)) {
-                $this->_pages = array_chunk($this->_articles, $resPerPage);
-            } else {
-                $this->_pages = [];
-            }
+            $this->_pages = is_array($this->_articles) ? array_chunk($this->_articles, $resPerPage) : [];
         }
     }
 
     /**
-     * Compatibility method for old ArticleCollection. Select a page if the
-     * results was divided before.
+     * Compatibility method for old ArticleCollection. Select a page if the results was divided before.
      * $collection->setResultPerPage(2); $collection->setPage(1);
      * // Iterate through all articles of page two while ($art =
      * $collection->nextArticle()) { ... }
      *
-     * @param int $page
-     *         The page of the article collection
+     * @param int $page The page of the article collection
      */
     public function setPage($page)
     {
@@ -269,8 +248,7 @@ class cArticleCollector implements SeekableIterator, Countable
     /**
      * Seeks a specific position in the loaded articles.
      *
-     * @param int $position
-     *         position to load
+     * @param int $position Position to load
      * @throws cOutOfBoundsException
      */
     #[\ReturnTypeWillChange]
@@ -294,22 +272,18 @@ class cArticleCollector implements SeekableIterator, Countable
 
     /**
      * Method "current" of the implemented iterator.
-     *
-     * @return cApiArticleLanguage|null
      */
     #[\ReturnTypeWillChange]
-    public function current()
+    public function current(): ?cApiArticleLanguage
     {
         return $this->_articles[$this->_currentPosition] ?? null;
     }
 
     /**
      * Method "key" of the implemented iterator.
-     *
-     * @return int
      */
     #[\ReturnTypeWillChange]
-    public function key()
+    public function key(): int
     {
         return $this->_currentPosition;
     }
@@ -325,11 +299,9 @@ class cArticleCollector implements SeekableIterator, Countable
 
     /**
      * Method "valid" of the implemented iterator.
-     *
-     * @return bool
      */
     #[\ReturnTypeWillChange]
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->_articles[$this->_currentPosition]);
     }
@@ -337,21 +309,17 @@ class cArticleCollector implements SeekableIterator, Countable
     /**
      * Method "count" of the implemented Countable interface. Returns the amount
      * of all loaded articles.
-     *
-     * @return int
      */
     #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return count($this->_articles);
     }
 
     /**
      * Returns the array of start articles.
-     *
-     * @return array
      */
-    public function getStartArticles()
+    public function getStartArticles(): array
     {
         return $this->_startArticles;
     }
@@ -359,11 +327,10 @@ class cArticleCollector implements SeekableIterator, Countable
     /**
      * Fetches all start articles for defined categories from the database.
      *
-     * @return array  Array where the key is the category id and the value
-     *                the id of the start article.
+     * @return array Array where the key is the category id and the value the id of the start article.
      * @throws cDbException|cException
      */
-    protected function _fetchStartArticles()
+    protected function _fetchStartArticles(): array
     {
         $catLangColl = new cApiCategoryLanguageCollection();
         $catLangColl->addResultFields(['startidartlang', 'idcat']);
@@ -387,16 +354,14 @@ class cArticleCollector implements SeekableIterator, Countable
     /**
      * Builds the articles query to retrieve distinct articles from the
      * article-language table by using the defined options.
-     *
-     * @return string
      */
-    protected function _buildArticlesQuery()
+    protected function _buildArticlesQuery(): string
     {
         $options = $this->_options;
 
         // This sql-line uses cat_art table with alias c. If no categories found, it writes only "WHERE" into sql-query
         if ((count($options['categories']) > 0)) {
-            $tabCatArt = cRegistry::getDbTableName('cat_art');
+            $tabCatArt = cDb::getTableName('cat_art');
             $in = implode(",", $options['categories']);
             $sqlCat = ", " . $tabCatArt . " AS c WHERE c.idcat IN (" . $in . ") AND b.idart = c.idart AND ";
         } else {
@@ -419,8 +384,8 @@ class cArticleCollector implements SeekableIterator, Countable
             }
         }
 
-        $tabArt = cRegistry::getDbTableName('art');
-        $tabArtLang = cRegistry::getDbTableName('art_lang');
+        $tabArt = cDb::getTableName('art');
+        $tabArtLang = cDb::getTableName('art_lang');
 
         $sql = "SELECT DISTINCT a.idartlang FROM " . $tabArtLang . " AS a, ";
         $sql .= $tabArt . " AS b";

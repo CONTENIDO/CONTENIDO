@@ -41,15 +41,10 @@ class cContentTypeDate extends cContentTypeAbstract
      *
      * Initialises class attributes and handles store events.
      *
-     * @param string $rawSettings
-     *         the raw settings in an XML structure or as plaintext
-     * @param int $id
-     *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array $contentTypes
-     *         array containing the values of all content types
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param string $rawSettings The raw settings in an XML structure or as plaintext
+     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is used
+     * @param array $contentTypes Array containing the values of all content types
+     * @throws cDbException|cException
      */
     public function __construct($rawSettings, $id, array $contentTypes)
     {
@@ -67,7 +62,7 @@ class cContentTypeDate extends cContentTypeAbstract
 
         // set the locale
         $locale = cRegistry::getBackendLanguage();
-        if (empty($locale) || false === setlocale(LC_TIME, $locale)) {
+        if (empty($locale) || setlocale(LC_TIME, $locale) === false) {
             $oApiLang = new cApiLanguage(cRegistry::getLanguageId());
             $locale = $oApiLang->getProperty('dateformat', 'locale');
             if (empty($locale)) {
@@ -76,7 +71,7 @@ class cContentTypeDate extends cContentTypeAbstract
 
                 $locale = $language . '_' . cString::toUpperCase($country);
             }
-            if (false === empty($locale)) {
+            if (empty($locale)) {
                 setlocale(LC_TIME, $locale);
             }
         }
@@ -197,15 +192,11 @@ class cContentTypeDate extends cContentTypeAbstract
     }
 
     /**
-     * Formats the given timestamp according to the given format.
-     * Localises the output.
+     * Formats the given timestamp according to the given format. Localises the output.
      *
-     * @param string $format
-     *         the format string in the PHP date format
-     * @param int $timestamp [optional]
-     *         the timestamp representing the date which should be formatted
-     * @return string
-     *         the formatted, localised date
+     * @param string $format The format string in the PHP date format
+     * @param int $timestamp [optional] The timestamp representing the date which should be formatted
+     * @return string The formatted, localised date
      */
     private function _formatDate($format, $timestamp = NULL)
     {
@@ -283,7 +274,7 @@ class cContentTypeDate extends cContentTypeAbstract
 
         // strftime returns a string in an encoding that is specified by the locale
         // use iconv extension to get the content encoding of string
-        // use mbstring extension to convert encoding to contenido's target encoding
+        // use mbstring extension to convert encoding to CONTENIDO's target encoding
         if (extension_loaded('iconv') && extension_loaded('mbstring') && cRegistry::getEncoding()) {
             $result = mb_convert_encoding($result, cRegistry::getEncoding(), iconv_get_encoding('output_encoding'));
             $result = conHtmlentities($result);
@@ -335,7 +326,7 @@ class cContentTypeDate extends cContentTypeAbstract
         $value = !empty($this->getSetting('date_timestamp'))
             ? date($format, $this->getSetting('date_timestamp')) : '';
         $code = new cHTMLTextbox(
-            'date_timestamp_' . $this->_id, $value, '', '',
+            'date_timestamp_' . $this->_id, $value, 0, 0,
             '', true, '', '', 'date_timestamp'
         );
 
@@ -350,8 +341,7 @@ class cContentTypeDate extends cContentTypeAbstract
     /**
      * Generates the JavaScript needed for CMS_DATE.
      *
-     * @return string
-     *         HTML code which includes the needed JavaScript
+     * @return string HTML code which includes the needed JavaScript
      * @throws cInvalidArgumentException
      */
     private function _generateJavaScript()
@@ -379,8 +369,7 @@ class cContentTypeDate extends cContentTypeAbstract
     /**
      * Generates the save button.
      *
-     * @return string
-     *         HTML code for the save button
+     * @return string HTML code for the save button
      */
     private function _generateStoreButton()
     {
@@ -395,8 +384,7 @@ class cContentTypeDate extends cContentTypeAbstract
     /**
      * Generates a select box for defining the format of the date.
      *
-     * @return string
-     *         the HTML code of the format select box
+     * @return string The HTML code of the format select box
      */
     private function _generateFormatSelect()
     {

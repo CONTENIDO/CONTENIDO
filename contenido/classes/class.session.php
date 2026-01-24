@@ -143,7 +143,6 @@ class cSession
      * Checks if a variable is registered
      *
      * @param string $name The name of the variable (e.g. "idclient")
-     * @return  bool
      */
     public function isRegistered(string $name): bool
     {

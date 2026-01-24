@@ -1,4 +1,4 @@
-﻿<!-- script_cookie_directive/template/get.tpl -->
+<!-- script_cookie_directive/template/get.tpl -->
 
 <div id="cookie_note">
 

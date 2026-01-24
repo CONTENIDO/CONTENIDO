@@ -26,7 +26,7 @@ class pApiContentAllocationArticle extends pApiTree
 {
 
     /**
-     * @var object cTemplate
+     * @var cTemplate
      */
     protected $_tpl = null;
 
@@ -43,12 +43,9 @@ class pApiContentAllocationArticle extends pApiTree
     /**
      * pApiContentAllocationArticle constructor
      *
-     * @param string $uuid
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function __construct($uuid)
+    public function __construct(string $uuid)
     {
         $cfg = cRegistry::getConfig();
 
@@ -58,10 +55,7 @@ class pApiContentAllocationArticle extends pApiTree
     }
 
     /**
-     * Builds an render tree
-     *
-     * @param array $tree
-     * @return array
+     * Builds a render tree
      */
     protected function _buildRenderTree(array $tree): array
     {
@@ -107,18 +101,15 @@ class pApiContentAllocationArticle extends pApiTree
     /**
      * Render tree
      *
-     * @param bool $return
-     *
-     * @return bool|object|void
      * @throws cInvalidArgumentException|cException
      */
-    public function renderTree(bool $return = true)
+    public function renderTree(bool $return = true): ?string
     {
         $this->_tpl->reset();
 
         $tree = $this->fetchTree();
-        if ($tree === false) {
-            return false;
+        if (!$tree) {
+            return null;
         }
 
         $tree = $this->_buildRenderTree($tree);
@@ -126,7 +117,7 @@ class pApiContentAllocationArticle extends pApiTree
         $even = true;
         foreach ($tree as $item) {
             $even = !$even;
-            $bgColor = ($even) ? '#FFFFFF' : '#F1F1F1';
+            $bgColor = $even ? '#FFFFFF' : '#F1F1F1';
             $this->_tpl->set('d', 'BACKGROUND_COLOR', $bgColor);
             foreach ($item as $key => $value) {
                 $this->_tpl->set('d', $key, $value);
@@ -134,12 +125,13 @@ class pApiContentAllocationArticle extends pApiTree
             $this->_tpl->next();
         }
 
-        $this->_tpl->set('s', "CATEGORY", i18n("Category", 'content_allocation'));
+        $this->_tpl->set('s', 'CATEGORY', i18n("Category", 'content_allocation'));
 
-        if ($return === true) {
+        if ($return) {
             return $this->_tpl->generate($this->_template, true);
         } else {
             $this->_tpl->generate($this->_template);
+            return null;
         }
     }
 

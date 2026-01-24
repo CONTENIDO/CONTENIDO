@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiContent createNewItem
- * @method cApiContent|bool next
+ * @extends ItemCollection<cApiContent>
  */
 class cApiContentCollection extends ItemCollection
 {
@@ -32,7 +31,7 @@ class cApiContentCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('content'), 'idcontent');
+        parent::__construct(cDb::getTableName('content'), 'idcontent');
         $this->_setItemClass('cApiContent');
 
         // set the join partners so that joins can be used via link() method
@@ -43,51 +42,53 @@ class cApiContentCollection extends ItemCollection
     /**
      * Creates a content entry.
      *
-     * @param int $idArtLang
+     * @param int $articleLanguageId
      * @param int $idType
      * @param int $typeId
-     * @param string $value
-     * @param int $version
+     * @param string|mixed $value
+     * @param int|mixed $version
      * @param string $author [optional]
      * @param string $created [optional]
-     * @param string $lastmodified [optional]
-     *
+     * @param string $lastModified [optional]
      * @return cApiContent
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create(
-        $idArtLang, $idType, $typeId, $value, $version, $author = '', $created = '', $lastmodified = ''
+        $articleLanguageId,
+        $idType,
+        $typeId,
+        $value,
+        $version,
+        $author = '',
+        $created = '',
+        $lastModified = ''
     )
     {
         if (empty($author)) {
-            $auth = cRegistry::getAuth();
-            $author = $auth->auth['uname'];
+            $author = cRegistry::getAuth()->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
         }
-        if (empty($lastmodified)) {
-            $lastmodified = date('Y-m-d H:i:s');
+        if (empty($lastModified)) {
+            $lastModified = date('Y-m-d H:i:s');
         }
 
         $oItem = $this->createNewItem();
 
-        $oItem->set('idartlang', $idArtLang);
+        $oItem->set('idartlang', $articleLanguageId);
         $oItem->set('idtype', $idType);
         $oItem->set('typeid', $typeId);
         $oItem->set('value', $value);
         $oItem->set('version', $version);
         $oItem->set('author', $author);
         $oItem->set('created', $created);
-        $oItem->set('lastmodified', $lastmodified);
+        $oItem->set('lastmodified', $lastModified);
 
         $oItem->store();
 
         return $oItem;
     }
-
 }
 
 /**
@@ -102,32 +103,24 @@ class cApiContent extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('content'), 'idcontent');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('content'), 'idcontent');
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * User-defined setter for item fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idartlang':
@@ -138,7 +131,7 @@ class cApiContent extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
     /**
@@ -146,9 +139,7 @@ class cApiContent extends Item
      *
      * @param string $version
      * @param mixed $deleted
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function markAsEditable($version, $deleted)
     {
@@ -165,29 +156,29 @@ class cApiContent extends Item
     /**
      * Loads a content entry by its article language id, idtype and type id.
      *
-     * @param int $idartlang Article language id
-     * @param int $idtype Content type id (e.g. id of `CONTENT_TYPE`)
-     * @param int $typeid Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
-     *
-     * @return bool
-     *
+     * @param int $articleLanguageId Article language id
+     * @param int $idType Content type id (e.g. id of `CONTENT_TYPE`)
+     * @param int $typeId Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
      * @throws cException
      */
-    public function loadByArticleLanguageIdTypeAndTypeId($idartlang, $idtype, $typeid)
+    public function loadByArticleLanguageIdTypeAndTypeId($articleLanguageId, $idType, $typeId): bool
     {
-        $aProps = [
-            'idartlang' => $idartlang,
-            'idtype' => $idtype,
-            'typeid' => $typeid,
-        ];
-        $aRecordSet = $this->_oCache->getItemByProperties($aProps);
-        if ($aRecordSet) {
+        $recordSet = $this->_oCache->getItemByProperties([
+            'idartlang' => $articleLanguageId,
+            'idtype' => $idType,
+            'typeid' => $typeId,
+        ]);
+        if ($recordSet) {
             // entry in cache found, load entry from cache
-            $this->loadByRecordSet($aRecordSet);
+            $this->loadByRecordSet($recordSet);
             return true;
         } else {
-            $where = "`idartlang` = %d AND `idtype` = %d AND `typeid` = %d";
-            $where = $this->db->prepare($where, $idartlang, $idtype, $typeid);
+            $where = $this->db->prepare(
+                "`idartlang` = %d AND `idtype` = %d AND `typeid` = %d",
+                $articleLanguageId,
+                $idType,
+                $typeId
+            );
             return $this->_loadByWhereClause($where);
         }
     }

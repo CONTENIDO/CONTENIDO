@@ -22,100 +22,94 @@ class SolrSearchModule
 {
 
     /**
-     *
      * @var string
      */
-    private $_searchTerm;
+    private $searchTerm;
 
     /**
-     *
      * @var int
      */
-    private $_page;
+    private $page;
 
     /**
-     *
      * @var int
      */
-    private $_itemsPerPage;
+    private $itemsPerPage;
 
     /**
-     *
      * @var string
      */
-    private $_templateName;
+    private $templateName;
 
     /**
      * @var array
      */
-    private $_label;
+    private $label;
 
     /**
-     *
      * @var SolrObject
      */
-    private $_response = NULL;
+    private $response = NULL;
 
     /**
-     *
-     * @param array $options
-     *
      * @throws cException
      */
-    public function __construct(array $options = NULL)
+    public function __construct(?array $options = NULL)
     {
         if (NULL !== $options) {
             foreach ($options as $name => $value) {
-                $name = '_' . $name;
                 $this->$name = $value;
             }
+
+            $this->searchTerm = cSecurity::toString($this->searchTerm);
+            $this->page = cSecurity::toInteger($this->page);
+            $this->itemsPerPage = cSecurity::toInteger($this->itemsPerPage);
         }
-        $this->_response = $this->_getSearchResults();
+        $this->response = $this->getSearchResults();
     }
 
     /**
-     * @return SolrObject
      * @throws cException
      */
-    private function _getSearchResults()
+    private function getSearchResults(): SolrObject
     {
         $searcher = new SolrSearcherSimple();
-        $searcher->setSearchTerm($this->_searchTerm);
-        $searcher->setPage($this->_page);
-        $searcher->setItemsPerPage($this->_itemsPerPage);
+        $searcher->setSearchTerm($this->searchTerm);
+        $searcher->setPage($this->page);
+        $searcher->setItemsPerPage($this->itemsPerPage);
         return $searcher->getSearchResults();
     }
 
     /**
-     * @throws cException|cInvalidArgumentException
+     * @throws cException|cInvalidArgumentException|SmartyException
      */
     public function render()
     {
         $tpl = cSmartyFrontend::getInstance();
-        $tpl->assign('label', $this->_label);
+        $tpl->assign('label', $this->label);
         $tpl->assign('href', cUri::getInstance()->build([
             'idart' => cRegistry::getArticleId(),
             'lang' => cRegistry::getLanguageId()
         ]));
-        $tpl->assign('searchTerm', $this->_searchTerm);
-        $tpl->assign('page', $this->_page);
-        $tpl->assign('itemsPerPage', $this->_itemsPerPage);
+        $tpl->assign('searchTerm', $this->searchTerm);
+        $tpl->assign('page', $this->page);
+        $tpl->assign('itemsPerPage', $this->itemsPerPage);
 
         // calculate number of pages
-        $numPages = $this->_response->numFound / $this->_itemsPerPage;
+        $numPages = $this->response->numFound / $this->itemsPerPage;
         if (is_float($numPages)) {
             $numPages = ceil($numPages);
         }
 
         $tpl->assign('numPages', $numPages);
-        $tpl->assign('numFound', $this->_response->numFound);
-        $tpl->assign('start', $this->_response->start);
-        if (false === $this->_response->docs) {
+        $tpl->assign('numFound', $this->response->numFound);
+        $tpl->assign('start', $this->response->start);
+        if (false === $this->response->docs) {
             $tpl->assign('results', []);
         } else {
-            $tpl->assign('results', $this->_response->docs);
+            $tpl->assign('results', $this->response->docs);
         }
-        $tpl->display($this->_templateName);
+        $tpl->display($this->templateName);
     }
 
 }

@@ -31,37 +31,38 @@ class cApiPathresolveCacheHelper
     protected static $_tableCreated = false;
 
     /**
-     * Checks configuration of heap table creation, its existence and creates
-     * it if needed.
+     * Checks configuration of heap table creation, its existence and creates it if needed.
      *
-     * @param array $cfg
-     *         Global CONTENIDO config array
-     *
+     * @param array $cfg The CONTENIDO configuration array
      * @throws cDbException
      */
-    public static function setup($cfg)
+    public static function setup(array $cfg)
     {
-        if (isset($cfg['pathresolve_heapcache']) && true === $cfg['pathresolve_heapcache'] && false === self::$_tableCreated) {
+        if (
+            isset($cfg['pathresolve_heapcache'])
+            && $cfg['pathresolve_heapcache'] === true
+            && self::$_tableCreated === false
+        ) {
             $db = cRegistry::getDb();
             $tableName = $cfg['sql']['sqlprefix'] . '_pathresolve_cache';
 
-            $sql = "SHOW TABLES LIKE '" . $db->escape($tableName) . "'";
-            $db->query($sql);
+            $db->query("SHOW TABLES LIKE '%s'", $tableName);
 
             if (!$db->nextRecord()) {
                 // Important: This is really a hack! Don't use
                 // pathresolve_heapcache if you are
                 // not sure what it does.
                 // @TODO: pls insert to this create table statetment MAX_ROWS.
-                $sql = 'CREATE TABLE `' . $db->escape($tableName) . '` (
+                $db->query('CREATE TABLE `%s` (
                            `idpathresolvecache` INT(10) NOT NULL AUTO_INCREMENT,
                            `path` VARCHAR(255) NOT NULL,
                            `idcat` INT(10) NOT NULL,
                            `idlang` INT(10) NOT NULL,
                            `lastcached` INT(10) NOT NULL,
                             PRIMARY KEY (`idpathresolvecache`)
-                        ) ENGINE = HEAP;';
-                $db->query($sql);
+                        ) ENGINE = HEAP;',
+                    $tableName
+                );
             }
             self::$_tableCreated = true;
         }
@@ -74,16 +75,14 @@ class cApiPathresolveCacheHelper
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiPathresolveCache createNewItem
- * @method cApiPathresolveCache|bool next
+ * @extends ItemCollection<cApiPathresolveCache>
  */
 class cApiPathresolveCacheCollection extends ItemCollection
 {
     /**
      * Constructor to create an instance of this class.
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct()
     {
@@ -97,26 +96,24 @@ class cApiPathresolveCacheCollection extends ItemCollection
      * Creates a pathresolve cache entry.
      *
      * @param string $path
-     * @param int $idcat
-     * @param int $idlang
-     * @param string $lastcached [optional]
+     * @param int $categoryId
+     * @param int $languageId
+     * @param string $lastCached [optional]
      * @return cApiPathresolveCache
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($path, $idcat, $idlang, $lastcached = '')
+    public function create($path, $categoryId, $languageId, $lastCached = '')
     {
         $oItem = $this->createNewItem();
 
-        if (empty($lastcached)) {
-            $lastcached = time();
+        if (empty($lastCached)) {
+            $lastCached = time();
         }
 
         $oItem->set('path', $path, false);
-        $oItem->set('idcat', $idcat, false);
-        $oItem->set('idlang', $idlang, false);
-        $oItem->set('lastcached', $lastcached, false);
+        $oItem->set('idcat', $categoryId, false);
+        $oItem->set('idlang', $languageId, false);
+        $oItem->set('lastcached', $lastCached, false);
         $oItem->store();
 
         return $oItem;
@@ -126,14 +123,12 @@ class cApiPathresolveCacheCollection extends ItemCollection
      * Returns a last cached entry by path and language.
      *
      * @param string $path
-     * @param int $idlang
-     * @return cApiPathresolveCache|NULL
-     * @throws cDbException
-     * @throws cException
+     * @param int $languageId
+     * @throws cDbException|cException
      */
-    public function fetchLatestByPathAndLanguage($path, $idlang)
+    public function fetchLatestByPathAndLanguage($path, $languageId): ?cApiPathresolveCache
     {
-        $where = $this->db->prepare("path LIKE '%s' AND idlang = %d", $path, $idlang);
+        $where = $this->db->prepare("path LIKE '%s' AND idlang = %d", $path, $languageId);
         $this->select($where, '', 'lastcached DESC', '1');
         return $this->next();
     }
@@ -141,18 +136,15 @@ class cApiPathresolveCacheCollection extends ItemCollection
     /**
      * Deletes entry by category and language.
      *
-     * @param int $idcat
-     * @param int $idlang
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param int $categoryId
+     * @param int $languageId
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function deleteByCategoryAndLanguage($idcat, $idlang)
+    public function deleteByCategoryAndLanguage($categoryId, $languageId)
     {
-        $where = $this->db->prepare('idcat = %d AND idlang = %d', $idcat, $idlang);
+        $where = $this->db->prepare('idcat = %d AND idlang = %d', $categoryId, $languageId);
         $this->select($where);
-        while (($oCode = $this->next()) !== false) {
+        while ($oCode = $this->next()) {
             $this->delete($oCode->get('idpathresolvecache'));
         }
     }
@@ -170,50 +162,41 @@ class cApiPathresolveCache extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
         $cfg = cRegistry::getConfig();
         cApiPathresolveCacheHelper::setup($cfg);
         parent::__construct($cfg['sql']['sqlprefix'] . '_pathresolve_cache', 'idpathresolvecache');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * Checks if item's cache time has expired.
      *
-     * @return bool
      * @throws cException If item has not been loaded before
      */
-    public function isCacheTimeExpired()
+    public function isCacheTimeExpired(): bool
     {
         if (!$this->isLoaded()) {
             throw new cException('Item not loaded!');
         }
         $cfg = cRegistry::getConfig();
-        $cacheTime = (isset($cfg['pathresolve_heapcache_time'])) ? $cfg['pathresolve_heapcache_time'] : 60 * 60 * 24;
+        $cacheTime = $cfg['pathresolve_heapcache_time'] ?? 60 * 60 * 24;
         return $this->get('lastcached') + $cacheTime < time();
     }
 
     /**
      * User-defined setter for pathresolve cache fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idcat':
@@ -222,7 +205,7 @@ class cApiPathresolveCache extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

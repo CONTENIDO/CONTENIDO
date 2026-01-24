@@ -21,7 +21,7 @@
 function smarty_modifier_con_asset_frontend(string $path, int $clientId = 0): string
 {
     if (!$clientId) {
-        $clientId = cSecurity::toInteger(cRegistry::getClientId());
+        $clientId = cRegistry::getClientId();
     }
     return cAsset::frontend($path, $clientId);
 }

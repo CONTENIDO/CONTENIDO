@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Contains class type token finder.
+ * Contains the type token finder class.
  *
  * @category   Development
  * @package    mpAutoloaderClassMap
@@ -27,7 +27,7 @@ class mpClassTypeFinder
     protected $_excludeDirs = ['.svn', '.cvs'];
 
     /**
-     * List of files to ignore, regex pattern is also accepted (note: is case insensitive)
+     * List of files to ignore, a regex pattern is also accepted (note: is case-insensitive)
      * @var  array
      */
     protected $_excludeFiles = ['/^~*.\.php$/', '/^~*.\.inc$/'];
@@ -39,14 +39,14 @@ class mpClassTypeFinder
     protected $_extensionsToParse = ['.php', '.inc'];
 
     /**
-     * Flag to enable debugging, all messages will be collected in property _debugMessages,
+     * Flag, to enable debugging, all messages will be collected in property _debugMessages,
      * if enabled
      * @var  bool
      */
     protected $_enableDebug = false;
 
     /**
-     * List of debugging messages, will e filled, if debugging is active
+     * List of debugging messages, will be filled if debugging is active
      * @var  array
      */
     protected $_debugMessages = [];
@@ -55,17 +55,17 @@ class mpClassTypeFinder
     /**
      * Initializes class with passed options
      *
-     * @param   array  $options  Associative options array as follows:
-     *                           - excludeDirs: (array)  List of directories to exclude, optional.
-     *                               Default values are '.svn' and '.cvs'.
-     *                           - excludeFiles: (array)  List of files to exclude, optional.
-     *                               Default values are '/^~*.\.php$/' and '/^~*.\.inc$/'.
-     *                           - extensionsToParse: (array)  List of file extensions to parse, optional.
-     *                               Default values are '.php' and '.inc'.
-     *                           - enableDebug: (bool)  Flag to enable debugging, optional.
-     *                               Default value is false.
+     * @param array$options Associative options array as follows:
+     *      - excludeDirs: (array) List of directories to exclude, optional.
+     *        Default values are '.svn' and '.cvs'.
+     *      - excludeFiles: (array) List of files to exclude, optional.
+     *        Default values are '/^~*.\.php$/' and '/^~*.\.inc$/'.
+     *      - extensionsToParse: (array) List of file extensions to parse, optional.
+     *        Default values are '.php' and '.inc'.
+     *      - enableDebug: (bool) Flag to enable debugging, optional.
+     *        The default value is false.
      */
-    public function __construct(array $options= [])
+    public function __construct(array $options = [])
     {
         if (isset($options['excludeDirs']) && is_array($options['excludeDirs'])) {
             $this->setExcludeDirs($options['excludeDirs']);
@@ -85,8 +85,7 @@ class mpClassTypeFinder
     /**
      * Sets directories to exclude
      *
-     * @param   array  $excludeDirs
-     * @return  void
+     * @return void
      */
     public function setExcludeDirs(array $excludeDirs)
     {
@@ -95,9 +94,7 @@ class mpClassTypeFinder
 
 
     /**
-     * Returns list of directories to exclude
-     *
-     * @return  array
+     * Returns a list of directories to exclude
      */
     public function getExcludeDirs(): array
     {
@@ -108,10 +105,10 @@ class mpClassTypeFinder
     /**
      * Sets files to exclude
      *
-     * @param   array  $excludeFiles  Feasible values are
-     *                                - temp.php (single file name)
-     *                                - ~*.php (with * wildcard)
-     *                                  Will be replaced against regex '/^~.*\.php$/'
+     * @param array $excludeFiles Feasible values are
+     *      - temp.php (single file name)
+     *      - ~*.php (with * wildcard)
+     *        Will be replaced against regex '/^~.*\.php$/'
      */
     public function setExcludeFiles(array $excludeFiles)
     {
@@ -126,9 +123,7 @@ class mpClassTypeFinder
 
 
     /**
-     * Returns list of files to exclude
-     *
-     * @return  array
+     * Returns the list of files to exclude
      */
     public function getExcludeFiles(): array
     {
@@ -138,8 +133,6 @@ class mpClassTypeFinder
 
     /**
      * Sets file extensions to parse
-     *
-     * @param   array  $extensionsToParse
      */
     public function setExtensionsToParse(array $extensionsToParse)
     {
@@ -149,8 +142,6 @@ class mpClassTypeFinder
 
     /**
      * Returns list of file extension to parse
-     *
-     * @return  array
      */
     public function getExtensionsToParse(): array
     {
@@ -161,16 +152,15 @@ class mpClassTypeFinder
     /**
      * Detects all available class type tokens in found files inside passed directory.
      *
-     * @param SplFileInfo  $fileInfo
      * @param bool $recursive Flag to parse directory recursive
-     * @return array|NULL Either an associative array where the key is the class
-     *                    type token and the value is the path or NULL.
+     * @return ?array Either an associative array where the key is the class type token
+     *      and the value is the path or null.
      */
-    public function findInDir(SplFileInfo $fileInfo, bool $recursive = true)
+    public function findInDir(SplFileInfo $fileInfo, bool $recursive = true): ?array
     {
         if (!$fileInfo->isDir() || !$fileInfo->isReadable()) {
             $this->_debug('findInDir: Invalid/Not readable directory ' . $fileInfo->getPathname());
-            return NULL;
+            return null;
         }
         $this->_debug('findInDir: Processing dir ' . $fileInfo->getPathname() . ' (realpath: ' . $fileInfo->getRealPath() . ')');
 
@@ -186,22 +176,21 @@ class mpClassTypeFinder
             }
         }
 
-        return (count($classTypeTokens) > 0) ? $classTypeTokens : NULL;
+        return count($classTypeTokens) > 0 ? $classTypeTokens : null;
     }
 
 
     /**
      * Detects all available class type tokens in passed file
      *
-     * @param SplFileInfo $fileInfo
-     * @return array|NULL Either an associative array where the key is the class
-     *                    type token and the value is the path or NULL.
+     * @return ?array Either an associative array where the key is the class type token
+     *      and the value is the path or null.
      */
-    public function findInFile(SplFileInfo $fileInfo)
+    public function findInFile(SplFileInfo $fileInfo): ?array
     {
         if (!$fileInfo->isFile() || !$fileInfo->isReadable()) {
             $this->_debug('findInFile: Invalid/Not readable file ' . $fileInfo->getPathname());
-            return NULL;
+            return null;
         }
         $this->_debug('findInFile: Processing file ' . $fileInfo->getPathname() . ' (realpath: ' . $fileInfo->getRealPath() . ')');
 
@@ -231,14 +220,12 @@ class mpClassTypeFinder
             }
         }
 
-        return (count($classTypeTokens) > 0) ? $classTypeTokens : NULL;
+        return (count($classTypeTokens) > 0) ? $classTypeTokens : null;
     }
 
 
     /**
      * Returns list of debug messages
-     *
-     * @return  array
      */
     public function getDebugMessages(): array
     {
@@ -250,25 +237,22 @@ class mpClassTypeFinder
      * Returns debug messages in a formatted way.
      *
      * @param string $delimiter Delimiter between each message
-     * @param string $wrap String with %s type specifier used to wrap all
-     *                     messages
-     * @return  string  Formatted string
+     * @param string $wrap String with %s type specifier used to wrap all messages
+     * @return string Formatted string
      * @throws cInvalidArgumentException if the given wrap does not contain %s
      */
-    public function getFormattedDebugMessages(string $delimiter="\n", string $wrap='%s'): string
+    public function getFormattedDebugMessages(string $delimiter = "\n", string $wrap = '%s'): string
     {
         if (strpos($wrap, '%s') === false) {
             throw new cInvalidArgumentException('Missing type specifier %s in parameter wrap!');
         }
-        $messages = implode($delimiter, $this->_debugMessages);
-        return sprintf($wrap, $messages);
+
+        return sprintf($wrap, implode($delimiter, $this->_debugMessages));
     }
 
 
     /**
-     * Adds passed message to debug list, if debugging is enabled
-     *
-     * @param   string  $msg
+     * Adds passed a message to the debug list if debugging is enabled
      */
     protected function _debug(string $msg)
     {
@@ -281,9 +265,7 @@ class mpClassTypeFinder
     /**
      * Returns directory iterator depending on $recursive parameter value
      *
-     * @param   SplFileInfo  $fileInfo
-     * @param   bool         $recursive
-     * @return  RecursiveIteratorIterator|DirectoryIterator
+     * @return RecursiveIteratorIterator|DirectoryIterator
      */
     protected function _getDirIterator(SplFileInfo $fileInfo, bool $recursive)
     {
@@ -299,10 +281,7 @@ class mpClassTypeFinder
 
 
     /**
-     * Checks if file is to process
-     *
-     * @param   SplFileInfo  $file
-     * @return  bool
+     * Checks if a file is to process
      */
     protected function _isFileToProcess(SplFileInfo $file): bool
     {
@@ -323,10 +302,7 @@ class mpClassTypeFinder
 
 
     /**
-     * Checks if directory is to exclude
-     *
-     * @param   SplFileInfo  $file
-     * @return  bool
+     * Checks if a directory is to exclude
      */
     protected function _isDirToExclude(SplFileInfo $file): bool
     {
@@ -342,10 +318,7 @@ class mpClassTypeFinder
 
 
     /**
-     * Checks if file is to exclude
-     *
-     * @param   SplFileInfo  $file
-     * @return  bool
+     * Checks if a file is to exclude
      */
     protected function _isFileToExclude(SplFileInfo $file): bool
     {
@@ -365,10 +338,7 @@ class mpClassTypeFinder
 
 
     /**
-     * Checks if file is to parse (if file extension matches)
-     *
-     * @param   SplFileInfo  $file
-     * @return  bool
+     * Checks if a file is to parse (if the file extension matches)
      */
     protected function _isFileToParse(SplFileInfo $file): bool
     {
@@ -385,9 +355,6 @@ class mpClassTypeFinder
 
     /**
      * Replaces windows style directory separator (backslash against slash)
-     *
-     * @param   string  $path
-     * @return  string
      */
     protected function _normalizePathSeparator(string $path): string
     {

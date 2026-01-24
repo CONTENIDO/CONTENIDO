@@ -25,16 +25,12 @@ abstract class cDbDriverAbstract
 {
 
     /**
-     * Local database configuration, see `$cfg['db']` configuration.
-     *
-     * @var array
+     * @var array Local database configuration, see `$cfg['db']` configuration.
      */
     protected $_dbCfg = [];
 
     /**
-     * Driver handler instance.
-     *
-     * @var cDbDriverHandler
+     * @var ?cDbDriverHandler Driver handler instance.
      */
     protected $_handler = NULL;
 
@@ -43,8 +39,7 @@ abstract class cDbDriverAbstract
      *
      * The given configuration will be aggregated.
      *
-     * @param array $dbCfg
-     *         database configuration
+     * @param array $dbCfg Database configuration
      */
     public function __construct(array $dbCfg)
     {
@@ -54,8 +49,7 @@ abstract class cDbDriverAbstract
     /**
      * Sets the database driver handler.
      *
-     * @param cDbDriverHandler $handler
-     *         database driver handler instance
+     * @param cDbDriverHandler $handler Database driver handler instance
      */
     public function setHandler(cDbDriverHandler $handler)
     {
@@ -64,10 +58,8 @@ abstract class cDbDriverAbstract
 
     /**
      * Returns the database driver handler instance.
-     *
-     * @return cDbDriverHandler|NULL
      */
-    public function getHandler()
+    public function getHandler(): ?cDbDriverHandler
     {
         return $this->_handler;
     }
@@ -75,16 +67,13 @@ abstract class cDbDriverAbstract
     /**
      * Abstract method for checking database driver base functions.
      * If this check fails, the database connection will not be established.
-     *
-     * @return bool
      */
-    abstract public function check();
+    abstract public function check(): bool;
 
     /**
      * Connects to the database.
      *
-     * @return object|resource|int|NULL
-     *         value depends on used driver and is NULL in case of an error
+     * @return object|resource|int|NULL Value depends on used driver and is NULL in case of an error
      */
     abstract public function connect();
 
@@ -92,83 +81,68 @@ abstract class cDbDriverAbstract
      * Builds an insert query.
      * String values in passed fields parameter will be escaped automatically.
      *
-     * @param string $tableName
-     *         The table name
-     * @param array $fields
-     *         Associative array of fields to insert
-     * @return string
-     *         The INSERT SQL query
+     * @param string $tableName The table name
+     * @param array $fields Associative array of fields to insert
+     * @return string The INSERT SQL query
      */
-    abstract public function buildInsert($tableName, array $fields);
+    abstract public function buildInsert(string $tableName, array $fields): string;
 
     /**
      * Builds an update query. String values in passed fields and whereClauses
      * parameter will be escaped automatically.
      *
-     * @param string $tableName
-     *         The table name
-     * @param array $fields
-     *         Associative array of fields to update
-     * @param array $whereClauses
-     *         Associative array of field in where clause.
-     *         Multiple entries will be concatenated with AND.
-     * @return string
-     *         The UPDATE query
+     * @param string $tableName The table name
+     * @param array $fields Associative array of fields to update
+     * @param array $whereClauses Associative array of field in where clause.
+     *      Multiple entries will be concatenated with AND.
+     * @return string The UPDATE query
      */
-    abstract public function buildUpdate($tableName, array $fields, array $whereClauses);
+    abstract public function buildUpdate(string $tableName, array $fields, array $whereClauses): string;
 
     /**
-     * Executes the query.
+     * Executes the statement.
      *
-     * @param string $statement
-     *         The query to execute
-     * @return bool
-     *         The query success status
+     * @param string $statement The statement to execute
+     * @return bool The query success status
      */
-    abstract public function query($statement);
+    abstract public function query(string $statement): bool;
 
     /**
-     * Moves the result to the next record, if exists and returns the status of
-     * the movement
+     * Moves the result to the next record, if exists and returns the status of the movement
      *
-     * @return bool
-     *         Flag about move status true on success or false
+     * @return bool Flag about move status true on success or false
      */
-    abstract public function nextRecord();
+    abstract public function nextRecord(): bool;
 
     /**
      * This method returns the current result set as object or NULL if no result
      * set is left. If optional param $className is set, the result object is an
      * instance of class $className.
      *
-     * @param string $className [optional]
      * @return object
      */
-    abstract public function getResultObject($className = NULL);
+    abstract public function getResultObject(?string $className = NULL);
 
     /**
      * Returns number of affected rows from last executed query (update, delete)
      *
-     * @return int
-     *         Number of affected rows
+     * @return int Number of affected rows
      */
-    abstract public function affectedRows();
+    abstract public function affectedRows(): int;
 
     /**
      * Returns the number of rows from last executed select query.
      *
-     * @return int
-     *         The number of rows from last select query result
+     * @return int The number of rows from last select query result
      */
-    abstract public function numRows();
+    abstract public function numRows(): int;
 
     /**
      * Returns the number of fields (columns) from current record set
      *
-     * @return int
-     *         Number of fields
+     * @return int Number of fields
      */
-    abstract public function numFields();
+    abstract public function numFields(): int;
 
     /**
      * Discard the query result
@@ -178,21 +152,17 @@ abstract class cDbDriverAbstract
     /**
      * Escape string for using in SQL-Statement.
      *
-     * @param string $string
-     *         The string to escape
-     * @return string
-     *         Escaped string
+     * @param string|mixed $string The string to escape
+     * @return string|mixed Escaped string
      */
     abstract public function escape($string);
 
     /**
      * Moves the cursor (position inside current result sets).
      *
-     * @param int $iPos [optional]
-     *         The position to move to inside the current result set
-     * @return int
+     * @param int $pos The position to move to inside the current result set
      */
-    abstract public function seek($iPos = 0);
+    abstract public function seek(int $pos = 0): int;
 
     /**
      * Parses the table structure and generates metadata from it.
@@ -202,72 +172,60 @@ abstract class cDbDriverAbstract
      *
      * - full is false (default):
      * $result[]:
-     * [0]["table"] table name
-     * [0]["name"] field name
-     * [0]["type"] field type
-     * [0]["len"] field length
-     * [0]["flags"] field flags
+     * [0]['table'] table name
+     * [0]['name'] field name
+     * [0]['type'] field type
+     * [0]['len'] field length
+     * [0]['flags'] field flags
      *
      * - full is true
      * $result[]:
-     * ["num_fields"] number of metadata records
-     * [0]["table"] table name
-     * [0]["name"] field name
-     * [0]["type"] field type
-     * [0]["len"] field length
-     * [0]["flags"] field flags
-     * ["meta"][field name] index of field named "field name"
+     * ['num_fields'] number of metadata records
+     * [0]['table'] table name
+     * [0]['name'] field name
+     * [0]['type'] field type
+     * [0]['len'] field length
+     * [0]['flags'] field flags
+     * ['meta'][field name] index of field named "field name"
      * This last one could be used if you have a field name, but no index.
      * Test: if (isset($result['meta']['myfield'])) { ...
      *
-     * @param string $tableName
-     *         The table to get metadata or empty string to retrieve metadata
-     *         of all tables.
-     * @param bool $full [optional]
-     *         Flag to load full metadata.
-     * @return array
-     *         Depends on used database and on parameter $full
+     * @param string $tableName The table to get metadata or empty string to retrieve metadata of all tables.
+     * @param bool $full Flag to load full metadata.
+     * @return array Depends on used database and on parameter $full
      */
-    abstract public function getMetaData($tableName, $full = false);
+    abstract public function getMetaData(string $tableName, bool $full = false): array;
 
     /**
      * Fetches all table names.
-     *
-     * @return array
      */
-    abstract public function getTableNames();
+    abstract public function getTableNames(): array;
 
     /**
      * Returns the data-type of a specific table field.
      *
-     * @return string|null
      * @since CONTENIDO 4.10.2
      */
-    abstract public function getTableFieldDataType(string $table, string $field);
+    abstract public function getTableFieldDataType(string $table, string $field): ?string;
 
     /**
      * Fetches server information.
      *
-     * @return array|NULL
-     *         array as follows or NULL:
-     *         - $arr['description'] (string) Optional, server description
-     *         - $arr['version'] (string) Optional, server version
+     * @return ?array Array as follows or NULL:
+     *      - $arr['description'] (string) Optional, server description
+     *      - $arr['version'] (string) Optional, server version
      */
-    abstract public function getServerInfo();
+    abstract public function getServerInfo(): ?array;
 
     /**
      * Returns error code of last occurred error by using databases interface.
-     *
-     * @return int
      */
-    abstract public function getErrorNumber();
+    abstract public function getErrorNumber(): int;
 
     /**
      * Returns error message of last occurred error by using databases interface.
-     *
-     * @return string
      */
-    abstract public function getErrorMessage();
+    abstract public function getErrorMessage(): string;
 
     /**
      * Closes the connection and frees the query id.

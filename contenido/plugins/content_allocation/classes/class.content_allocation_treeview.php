@@ -26,7 +26,7 @@ class pApiContentAllocationTreeView extends pApiTree
 {
 
     /**
-     * @var object cTemplate
+     * @var cTemplate
      */
     protected $_tpl = null;
 
@@ -38,12 +38,9 @@ class pApiContentAllocationTreeView extends pApiTree
     /**
      * pApiContentAllocationTreeView constructor
      *
-     * @param string $uuid
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function __construct($uuid)
+    public function __construct(string $uuid)
     {
         $cfg = cRegistry::getConfig();
 
@@ -55,8 +52,6 @@ class pApiContentAllocationTreeView extends pApiTree
     /**
      * Build and render tree
      *
-     * @param array $tree
-     * @return array $result html code
      * @throws cException
      */
     protected function _buildRenderTree(array $tree): array
@@ -163,20 +158,16 @@ class pApiContentAllocationTreeView extends pApiTree
     /**
      * Rendering tree
      *
-     * @param bool $return
-     *
-     * @return string|bool|void
      * @throws cDbException
      * @throws cInvalidArgumentException|cException
      */
-    public function renderTree(bool $return = true)
+    public function renderTree(bool $return = true): ?string
     {
         $this->_tpl->reset();
 
-        $tree = $this->fetchTree(false, 0, true); // modified 27.10.2005
-
-        if ($tree === false) {
-            return false;
+        $tree = $this->fetchTree(); // modified 27.10.2005
+        if (!$tree) {
+            return null;
         }
 
         $tree = $this->_buildRenderTree($tree);
@@ -195,10 +186,11 @@ class pApiContentAllocationTreeView extends pApiTree
         $this->_tpl->set('s', 'CATEGORY', i18n("Category", 'content_allocation'));
         $this->_tpl->set('s', 'ACTIONS', i18n("Actions", 'content_allocation'));
 
-        if ($return === true) {
+        if ($return) {
             return $this->_tpl->generate($this->_template, true);
         } else {
             $this->_tpl->generate($this->_template);
+            return null;
         }
     }
 

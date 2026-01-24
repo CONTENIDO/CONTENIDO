@@ -23,10 +23,11 @@ if (!defined('CON_FRAMEWORK')) {
  * @var cSession $sess
  * @var int $changelang
  * @var int $client
+ * @var int $lang
  */
 
 // CONTENIDO startup process
-include_once('./includes/startup.php');
+include_once(__DIR__ . '/includes/startup.php');
 
 cRegistry::bootstrap([
     'sess' => 'cSession',
@@ -62,14 +63,16 @@ if (isset($changelang) && is_numeric($changelang)) {
     $lang = $changelang;
 }
 
-if (!cSecurity::isPositiveInteger($client ?? 0)
-    || !cApiClientCollection::isClientAccessible(cSecurity::toInteger($client))) {
+if (
+    !cSecurity::isPositiveInteger($client ?? 0)
+    || !cApiClientCollection::isClientAccessible(cSecurity::toInteger($client))
+) {
     // use first client which is accessible
     $sess->register('client');
     $oClientColl = new cApiClientCollection();
     if ($oClient = $oClientColl->getFirstAccessibleClient()) {
         unset($lang);
-        $client = $oClient->get('idclient');
+        $client = cSecurity::toInteger($oClient->get('idclient'));
     }
 } else {
     $sess->register('client');

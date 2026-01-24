@@ -39,31 +39,31 @@ class HtmlParser
      *
      * @var int
      */
-    const NODE_TYPE_ELEMENT = 1;
+    public const NODE_TYPE_ELEMENT = 1;
     /**
      * Node type ID for endelements.
      *
      * @var int
      */
-    const NODE_TYPE_ENDELEMENT = 2;
+    public const NODE_TYPE_ENDELEMENT = 2;
     /**
      * Node type ID for texts.
      *
      * @var int
      */
-    const NODE_TYPE_TEXT = 3;
+    public const NODE_TYPE_TEXT = 3;
     /**
      * Node type ID for comments.
      *
      * @var int
      */
-    const NODE_TYPE_COMMENT = 4;
+    public const NODE_TYPE_COMMENT = 4;
     /**
      * Node type ID when done.
      *
      * @var int
      */
-    const NODE_TYPE_DONE = 5;
+    public const NODE_TYPE_DONE = 5;
 
     /**
      * Field iNodeType.
@@ -131,7 +131,6 @@ class HtmlParser
      * Set method for HtmlText variable.
      *
      * @param string $htmlText
-     * @return string
      */
     public function setHtmlText($htmlText): string
     {
@@ -150,7 +149,6 @@ class HtmlParser
      * Set method for HtmlTextLength variable.
      *
      * @param int $htmlTextLength
-     * @return int
      */
     public function setHtmlTextLength($htmlTextLength): int
     {
@@ -174,7 +172,6 @@ class HtmlParser
      * Set method for HtmlTextIndex variable.
      *
      * @param int $htmlTextIndex
-     * @return int
      */
     public function setHtmlTextIndex($htmlTextIndex): int
     {
@@ -191,7 +188,7 @@ class HtmlParser
      * Set method for NodeAttributes.
      * To clear this array please use _clearAttributes function.
      *
-     * @param array $NodeAttributes
+     * @param array|mixed $NodeAttributes
      * @return bool|array
      */
     public function _setNodeAttributes($NodeAttributes)
@@ -206,8 +203,6 @@ class HtmlParser
 
     /**
      * Get method for _HtmlText.
-     *
-     * @return string
      */
     public function getHtmlText(): string
     {
@@ -217,7 +212,6 @@ class HtmlParser
     /**
      * Get method for _HtmlTextLength.
      *
-     * @return int
      */
     public function getHtmlTextLength(): int
     {
@@ -226,8 +220,6 @@ class HtmlParser
 
     /**
      * Get method for _NodeType.
-     *
-     * @return int
      */
     public function getNodeType(): int
     {
@@ -236,8 +228,6 @@ class HtmlParser
 
     /**
      * Get method for _NodeName.
-     *
-     * @return string
      */
     public function getNodeName(): string
     {
@@ -246,8 +236,6 @@ class HtmlParser
 
     /**
      * Get method for _NodeAttributes.
-     *
-     * @return array
      */
     public function getNodeAttributesArray(): array
     {
@@ -258,8 +246,6 @@ class HtmlParser
      * Get method for _NodeAttributes with specific attribute.
      *
      * @param string $attribute
-     *
-     * @return string
      */
     public function getNodeAttributes($attribute): string
     {
@@ -268,8 +254,6 @@ class HtmlParser
 
     /**
      * Get method for _HtmlTextIndex.
-     *
-     * @return int
      */
     public function getHtmlTextIndex(): int
     {
@@ -278,8 +262,6 @@ class HtmlParser
 
     /**
      * Increase HtmlTextIndex.
-     *
-     * @return int
      */
     protected function increaseHtmlTextIndex(): int
     {
@@ -292,13 +274,11 @@ class HtmlParser
      *
      * Parses the next node. Returns false only if the end of the HTML
      * text has been reached. Updates values of iNode* fields.
-     *
-     * @return bool
      */
     public function parse(): bool
     {
         $text = $this->_skipToElement();
-        if ($text != "") {
+        if ($text != '') {
             $this->_NodeType = self::NODE_TYPE_TEXT;
             $this->_NodeName = "Text";
             $this->_NodeValue = $text;
@@ -311,8 +291,6 @@ class HtmlParser
 
     /**
      * Clear (reset) _NodeAttributes array.
-     *
-     * @return array
      */
     protected function _clearAttributes(): array
     {
@@ -320,9 +298,6 @@ class HtmlParser
         return $this->_NodeAttributes;
     }
 
-    /**
-     * @return bool
-     */
     protected function _readTag(): bool
     {
         if ($this->_currentChar() != "<") {
@@ -344,7 +319,7 @@ class HtmlParser
                 $comment = false;
                 if ($name == "!--") {
                     $rest = $this->_skipToStringInTag("-->");
-                    if ($rest != "") {
+                    if ($rest != '') {
                         $this->_NodeType = self::NODE_TYPE_COMMENT;
                         $this->_NodeName = "Comment";
                         $this->_NodeValue = "<" . $name . $rest;
@@ -374,7 +349,7 @@ class HtmlParser
             $attrName = $this->_skipToBlanksOrEqualsInTag();
             $NodeAttributes = $this->getNodeAttributesArray();
 
-            if ($attrName != "") {
+            if ($attrName != '') {
                 $this->_skipBlanksInTag();
 
                 if ($this->_currentChar() == "=") {
@@ -399,48 +374,32 @@ class HtmlParser
 
     /**
      * @param string $name
-     * @return int
      */
     protected function _isValidTagIdentifier($name): int
     {
         return (int) preg_match('/[A-Za-z0-9]+/', $name);
     }
 
-    /**
-     * @return bool
-     */
     protected function _skipBlanksInTag(): bool
     {
         return "" != ($this->_skipInTag([" ", "\t", "\r", "\n"]));
     }
 
-    /**
-     * @return string
-     */
     protected function _skipToBlanksOrEqualsInTag(): string
     {
         return $this->_skipToInTag([" ", "\t", "\r", "\n", "="]);
     }
 
-    /**
-     * @return string
-     */
     protected function _skipToBlanksInTag(): string
     {
         return $this->_skipToInTag([" ", "\t", "\r", "\n"]);
     }
 
-    /**
-     * @return string
-     */
     protected function _skipEqualsInTag(): string
     {
         return $this->_skipInTag(["="]);
     }
 
-    /**
-     * @return string
-     */
     protected function _readValueInTag(): string
     {
         $ch = $this->_currentChar();
@@ -473,9 +432,6 @@ class HtmlParser
         return cString::getPartOfString($htmlText, $this->getHtmlTextIndex(), 1);
     }
 
-    /**
-     * @return bool
-     */
     protected function _moveNext(): bool
     {
         if ($this->getHtmlTextIndex() < $this->getHtmlTextLength()) {
@@ -486,9 +442,6 @@ class HtmlParser
         }
     }
 
-    /**
-     * @return string
-     */
     protected function _skipEndOfTag(): string
     {
         $sb = "";
@@ -506,8 +459,6 @@ class HtmlParser
 
     /**
      * @param array $chars
-     *
-     * @return string
      */
     protected function _skipInTag($chars): string
     {
@@ -536,8 +487,6 @@ class HtmlParser
 
     /**
      * @param array $chars
-     *
-     * @return string
      */
     protected function _skipToInTag($chars): string
     {
@@ -562,9 +511,6 @@ class HtmlParser
         return $sb;
     }
 
-    /**
-     * @return string
-     */
     protected function _skipToElement(): string
     {
         $sb = "";
@@ -585,8 +531,6 @@ class HtmlParser
      * The current index is moved to a point after the location of $needle, or not moved at all if nothing is found.
      *
      * @param string $needle
-     *
-     * @return string
      */
     protected function _skipToStringInTag($needle): string
     {

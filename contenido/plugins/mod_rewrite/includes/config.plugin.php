@@ -17,7 +17,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $_cecRegistry, $cfg, $lngAct, $load_client;
+global $cfg, $lngAct;
 
 ####################################################################################################
 /**
@@ -29,28 +29,28 @@ global $_cecRegistry, $cfg, $lngAct, $load_client;
  * @deprecated
  *
  * Parameters & order:
- * string   URL including parameter value pairs
+ * string URL including parameter value pairs
  *
  * Returns:
- * string     Returns modified URL
+ * string Returns modified URL
  */
 
 ####################################################################################################
 
 $contenido = cRegistry::getBackendSessionId();
 $area = cRegistry::getArea();
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getClientId();
 
 // Initialize client id
-if (isset($client) && (int)$client > 0) {
-    $clientId = (int)$client;
-} elseif (isset($load_client) && (int)$load_client > 0) {
-    $clientId = (int)$load_client;
+if ($client > 0) {
+    $clientId = $client;
+} elseif (cRegistry::getLoadClientId() > 0) {
+    $clientId = cRegistry::getLoadClientId();
 } else {
     $clientId = '';
 }
 
-$pluginName = basename(dirname(__DIR__, 1));
+$pluginName = basename(dirname(__DIR__));
 
 $cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
 
@@ -86,48 +86,48 @@ plugin_include($pluginName, 'includes/functions.mod_rewrite.php');
 ModRewriteDebugger::setEnabled(!empty(cRegistry::getBackendSessionId()));
 
 // Initialize mr plugin
-ModRewrite::initialize($clientId);
+ModRewrite::initialize(cSecurity::toInteger($clientId));
 
 if (ModRewrite::isEnabled()) {
     $aMrCfg = ModRewrite::getConfig();
 
-    $_cecRegistry = cApiCecRegistry::getInstance();
+    $cecRegistry = cApiCecRegistry::getInstance();
 
     // Add new tree function to CONTENIDO Extension Chainer
-    $_cecRegistry->addChainFunction('Contenido.Action.str_newtree.AfterCall', 'mr_strNewTree');
+    $cecRegistry->addChainFunction('Contenido.Action.str_newtree.AfterCall', 'mr_strNewTree');
 
     // Add move subtree function to CONTENIDO Extension Chainer
-    $_cecRegistry->addChainFunction('Contenido.Action.str_movesubtree.AfterCall', 'mr_strMoveSubtree');
+    $cecRegistry->addChainFunction('Contenido.Action.str_movesubtree.AfterCall', 'mr_strMoveSubtree');
 
     // Add new category function to CONTENIDO Extension Chainer
-    $_cecRegistry->addChainFunction('Contenido.Action.str_newcat.AfterCall', 'mr_strNewCategory');
+    $cecRegistry->addChainFunction('Contenido.Action.str_newcat.AfterCall', 'mr_strNewCategory');
 
     // Add rename category function to CONTENIDO Extension Chainer
-    $_cecRegistry->addChainFunction('Contenido.Action.str_renamecat.AfterCall', 'mr_strRenameCategory');
+    $cecRegistry->addChainFunction('Contenido.Action.str_renamecat.AfterCall', 'mr_strRenameCategory');
 
     // Add move up category function to CONTENIDO Extension Chainer
-    $_cecRegistry->addChainFunction('Contenido.Action.str_moveupcat.AfterCall', 'mr_strMoveUpCategory');
+    $cecRegistry->addChainFunction('Contenido.Action.str_moveupcat.AfterCall', 'mr_strMoveUpCategory');
 
     // Add move down category function to CONTENIDO Extension Chainer
-    $_cecRegistry->addChainFunction('Contenido.Action.str_movedowncat.AfterCall', 'mr_strMovedownCategory');
+    $cecRegistry->addChainFunction('Contenido.Action.str_movedowncat.AfterCall', 'mr_strMovedownCategory');
 
     // Add copy category function to CONTENIDO Extension Chainer
-    $_cecRegistry->addChainFunction('Contenido.Category.strCopyCategory', 'mr_strCopyCategory');
+    $cecRegistry->addChainFunction('Contenido.Category.strCopyCategory', 'mr_strCopyCategory');
 
     // Add category sync function to CONTENIDO Extension Chainer
-    $_cecRegistry->addChainFunction('Contenido.Category.strSyncCategory_Loop', 'mr_strSyncCategory');
+    $cecRegistry->addChainFunction('Contenido.Category.strSyncCategory_Loop', 'mr_strSyncCategory');
 
     // Add save article (new and existing category) function to CONTENIDO Extension Chainer
-    $_cecRegistry->addChainFunction('Contenido.Action.con_saveart.AfterCall', 'mr_conSaveArticle');
+    $cecRegistry->addChainFunction('Contenido.Action.con_saveart.AfterCall', 'mr_conSaveArticle');
 
     // Add move article function to CONTENIDO Extension Chainer
-    $_cecRegistry->addChainFunction('Contenido.Article.conMoveArticles_Loop', 'mr_conMoveArticles');
+    $cecRegistry->addChainFunction('Contenido.Article.conMoveArticles_Loop', 'mr_conMoveArticles');
 
     // Add duplicate article function to CONTENIDO Extension Chainer
-    $_cecRegistry->addChainFunction('Contenido.Article.conCopyArtLang_AfterInsert', 'mr_conCopyArtLang');
+    $cecRegistry->addChainFunction('Contenido.Article.conCopyArtLang_AfterInsert', 'mr_conCopyArtLang');
 
     // Add sync article function to CONTENIDO Extension Chainer
-    $_cecRegistry->addChainFunction('Contenido.Article.conSyncArticle_AfterInsert', 'mr_conSyncArticle');
+    $cecRegistry->addChainFunction('Contenido.Article.conSyncArticle_AfterInsert', 'mr_conSyncArticle');
 
     if (!cRegistry::getBackendSessionId()) {
         // We are not in backend, add cec functions for rewriting
@@ -138,7 +138,7 @@ if (ModRewrite::isEnabled()) {
         if ($requestIdArt <= 0 && $requestIdCat <= 0) {
             // Submitted idart and idcat vars have a higher priority than submitted seo url
             // Add mr related function for hook "after plugins loaded" to CONTENIDO Extension Chainer
-            $_cecRegistry->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'mr_runFrontendController');
+            $cecRegistry->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'mr_runFrontendController');
         }
 
         // Overwrite url builder configuration with own url builder
@@ -148,13 +148,13 @@ if (ModRewrite::isEnabled()) {
 
         if ($aMrCfg['rewrite_urls_at_congeneratecode'] == 1) {
             // Add url rewriting at code generation to CONTENIDO Extension Chainer
-            $_cecRegistry->addChainFunction('Contenido.Content.conGenerateCode', 'mr_buildGeneratedCode');
+            $cecRegistry->addChainFunction('Contenido.Content.conGenerateCode', 'mr_buildGeneratedCode');
         } elseif ($aMrCfg['rewrite_urls_at_front_content_output'] == 1) {
             // Add url rewriting at html output to CONTENIDO Extension Chainer
-            $_cecRegistry->addChainFunction('Contenido.Frontend.HTMLCodeOutput', 'mr_buildGeneratedCode');
+            $cecRegistry->addChainFunction('Contenido.Frontend.HTMLCodeOutput', 'mr_buildGeneratedCode');
         } else {
             // Fallback solution: Add url rewriting at code generation to CONTENIDO Extension Chainer
-            $_cecRegistry->addChainFunction('Contenido.Content.conGenerateCode', 'mr_buildGeneratedCode');
+            $cecRegistry->addChainFunction('Contenido.Content.conGenerateCode', 'mr_buildGeneratedCode');
         }
     }
 }

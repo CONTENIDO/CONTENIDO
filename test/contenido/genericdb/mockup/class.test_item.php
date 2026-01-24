@@ -2,8 +2,7 @@
 
 /**
  * @author marcus.gnass
- * @method TestItem createNewItem
- * @method TestItem|bool next
+ * @extends ItemCollection<TestItem>
  */
 class TestCollection extends ItemCollection
 {
@@ -11,12 +10,11 @@ class TestCollection extends ItemCollection
      *
      * @param string|bool $where
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($where = false)
     {
-        parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
+        parent::__construct(cDb::getTableName('con_test'), 'ID');
         $this->_setItemClass('TestItem');
         if (false !== $where) {
             $this->select($where);
@@ -33,12 +31,11 @@ class TestItem extends Item
      *
      * @param string|bool $id
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('con_test'), 'ID');
+        parent::__construct(cDb::getTableName('con_test'), 'ID');
         if (false !== $id) {
             $this->loadByPrimaryKey($id);
         }
@@ -47,11 +44,10 @@ class TestItem extends Item
     /**
      * Mapper function to expose ability to set loaded variable for unit tests
      *
-     * @param bool $value
-     *         Whether an item has been loaded
+     * @param bool $loaded Whether an item has been loaded
      */
-    public function setLoaded($value)
+    public function setLoaded(bool $loaded)
     {
-        static::_setLoaded($value);
+        static::_setLoaded($loaded);
     }
 }

@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Plugin
  * @subpackage Workflow
- * @method WorkflowAction createNewItem
- * @method WorkflowAction|bool next
+ * @extends ItemCollection<WorkflowAction>
  */
 class WorkflowActions extends ItemCollection
 {
@@ -31,92 +30,84 @@ class WorkflowActions extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('workflow_actions'), "idworkflowaction");
-        $this->_setItemClass("WorkflowAction");
+        parent::__construct(cDb::getTableName('workflow_actions'), 'idworkflowaction');
+        $this->_setItemClass('WorkflowAction');
     }
 
     /**
-     * @param $idworkflowitem
-     * @param $action
-     *
-     * @return bool
+     * @param int $workflowItemId
+     * @param string $action
      */
-    public function get($idworkflowitem, $action)
+    public function get($workflowItemId, $action): bool
     {
-        $this->select("idworkflowitem = " . (int)$idworkflowitem . " AND action = '" . $this->escape($action) . "'");
-        if ($this->next()) {
-            return true;
-        } else {
-            return false;
-        }
+        $this->select($this->db->prepare(
+            "`idworkflowitem` = %d AND `action` = '%s'",
+            $workflowItemId,
+            $action
+        ));
+
+        return cSecurity::toBoolean($this->next());
     }
 
-    /**
-     * @return array
-     */
-    public function getAvailableWorkflowActions()
+    public function getAvailableWorkflowActions(): array
     {
-        $availableWorkflowActions = [
-            "publish" => i18n("Publish article", "workflow"),
-            "lock" => i18n("Lock article", "workflow"),
-            "last" => i18n("Move back to last editor", "workflow"),
-            "reject" => i18n("Reject article", "workflow"),
-            "articleedit" => i18n("Edit article content", "workflow"),
-            "propertyedit" => i18n("Edit article properties", "workflow"),
-            "templateedit" => i18n("Edit template", "workflow"),
-            "revise" => i18n("Revise article", "workflow")
+        return [
+            'publish' => i18n("Publish article", "workflow"),
+            'lock' => i18n("Lock article", "workflow"),
+            'last' => i18n("Move back to last editor", "workflow"),
+            'reject' => i18n("Reject article", "workflow"),
+            'articleedit' => i18n("Edit article content", "workflow"),
+            'propertyedit' => i18n("Edit article properties", "workflow"),
+            'templateedit' => i18n("Edit template", "workflow"),
+            'revise' => i18n("Revise article", "workflow")
         ];
-
-        return ($availableWorkflowActions);
     }
 
     /**
-     * @param $idworkflowitem
-     * @param $action
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param int $workflowItemId
+     * @param string $action
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function set($idworkflowitem, $action)
+    public function set($workflowItemId, $action)
     {
-        $this->select("idworkflowitem = " . (int)$idworkflowitem . " AND action = '" . $this->escape($action) . "'");
+        $this->select($this->db->prepare(
+            "`idworkflowitem` = %d AND `action` = '%s'",
+            $workflowItemId,
+            $action
+        ));
         if (!$this->next()) {
             $newItem = $this->createNewItem();
-            $newItem->setField("idworkflowitem", $idworkflowitem);
-            $newItem->setField("action", $action);
+            $newItem->setField('idworkflowitem', $workflowItemId);
+            $newItem->setField('action', $action);
             $newItem->store();
         }
     }
 
     /**
-     * @param $idworkflowitem
-     * @param $action
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param int $workflowItemId
+     * @param string $action
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function remove($idworkflowitem, $action)
+    public function remove($workflowItemId, $action)
     {
-        $this->select("idworkflowitem = " . (int)$idworkflowitem . " AND action = '" . $this->escape($action) . "'");
+        $this->select($this->db->prepare(
+            "`idworkflowitem` = %d AND `action` = '%s'",
+            $workflowItemId,
+            $action
+        ));
         if (($item = $this->next()) !== false) {
-            $this->delete($item->getField("idworkflowaction"));
+            $this->delete($item->getField('idworkflowaction'));
         }
     }
 
     /**
-     * @param string $where
-     * @param string $group_by
-     * @param string $order_by
-     * @param string $limit
+     * Extends the where statement. See the original function for the parameters.
      *
-     * @return bool
-     * @throws cDbException
+     * @inheritDoc
      */
-    public function select($where = "", $group_by = "", $order_by = "", $limit = "")
+    public function select($where = '', $groupBy = '', $orderBy = '', $limit = '')
     {
-        return parent::select($where, $group_by, $order_by, $limit);
+        return parent::select($where, $groupBy, $orderBy, $limit);
     }
 
 }
@@ -140,7 +131,7 @@ class WorkflowAction extends Item
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('workflow_actions'), "idworkflowaction");
+        parent::__construct(cDb::getTableName('workflow_actions'), 'idworkflowaction');
     }
 
 }

@@ -63,17 +63,17 @@ class ContenidoContentCreateTitletagTest extends TestCase
     public function testOneChain()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentCreateTitletag_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoContentCreateTitletag_Test');
 
         // set n' execute chain
         cApiCecHook::setDefaultReturnValue($this->_title);
         $newTitle = cApiCecHook::executeAndReturn($this->_chain);
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoContentCreateTitletag_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoContentCreateTitletag_Test');
 
         $this->assertEquals($this->_titleOneChain, $newTitle);
     }
@@ -85,19 +85,19 @@ class ContenidoContentCreateTitletagTest extends TestCase
     public function testTwoChains()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentCreateTitletag_Test');
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentCreateTitletag_Test2');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoContentCreateTitletag_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoContentCreateTitletag_Test2');
 
         // set n' execute chain
         cApiCecHook::setDefaultReturnValue($this->_title);
         $newTitle = cApiCecHook::executeAndReturn($this->_chain);
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoContentCreateTitletag_Test');
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoContentCreateTitletag_Test2');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoContentCreateTitletag_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoContentCreateTitletag_Test2');
 
         $this->assertEquals($this->_titleTwoChains, $newTitle);
     }

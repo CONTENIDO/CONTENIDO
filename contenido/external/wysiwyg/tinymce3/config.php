@@ -20,5 +20,3 @@ cInclude('includes', 'functions.i18n.php');
 cInclude('includes', 'functions.api.php');
 
 $db = cRegistry::getDb();
-
-?>

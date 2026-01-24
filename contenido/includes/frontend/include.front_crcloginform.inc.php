@@ -17,13 +17,17 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cAuthHandlerFrontend|cAuth $this
+ */
+
 global $cfg, $cfgClient, $idcat, $idart, $idcatart, $lang, $client, $username, $encoding;
 
 $sess = cRegistry::getSession();
 
-$err_catart = trim(getEffectiveSetting('login_error_page', 'idcatart', ''));
-$err_cat = trim(getEffectiveSetting('login_error_page', 'idcat', ''));
-$err_art = trim(getEffectiveSetting('login_error_page', 'idart', ''));
+$err_catart = trim(getEffectiveSetting('login_error_page', 'idcatart'));
+$err_cat = trim(getEffectiveSetting('login_error_page', 'idcat'));
+$err_art = trim(getEffectiveSetting('login_error_page', 'idart'));
 
 $oUrl = cUri::getInstance();
 
@@ -103,7 +107,7 @@ $tpl->set('s', 'CHARSET', $encoding[$lang]);
 $tpl->set('s', 'FORM_ACTION', $sFormAction);
 $tpl->set('s', 'FORM_TIMESTAMP', time());
 $tpl->set('s', 'IDCAT', $idcat);
-$tpl->set("s", "USERNAME", (isset($this->auth['uname'])) ? $this->auth['uname'] : '');
-$tpl->set("s", "LOGINBUTTON", $sLoginButton);
+$tpl->set('s', 'USERNAME', conHtmlentities(strip_tags($this->getUsername())));
+$tpl->set('s', 'LOGINBUTTON', $sLoginButton);
 
 $tpl->generate(cRegistry::getBackendPath() . $cfg['path']['templates'] . $cfg['templates']['front_loginform']);

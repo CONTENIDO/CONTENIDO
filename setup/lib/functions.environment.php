@@ -70,9 +70,9 @@ function getServerGID()
 
 function getUsernameByUID($iUid)
 {
-    if (function_exists("posix_getpwuid")) {
+    if (function_exists('posix_getpwuid')) {
         $aInfo = posix_getpwuid($iUid);
-        return ($aInfo["name"]);
+        return $aInfo['name'];
     } else {
         return false;
     }
@@ -80,9 +80,9 @@ function getUsernameByUID($iUid)
 
 function getGroupnameByGID($iGid)
 {
-    if (function_exists("posix_getgrgid")) {
+    if (function_exists('posix_getgrgid')) {
         $aInfo = posix_getgrgid($iGid);
-        return ($aInfo["name"]);
+        return $aInfo['name'];
     } else {
         return false;
     }

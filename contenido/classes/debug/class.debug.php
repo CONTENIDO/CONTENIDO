@@ -28,37 +28,37 @@ class cDebug
      *
      * @var string
      */
-    const DEBUGGER_VISIBLE = 'visible';
+    public const DEBUGGER_VISIBLE = 'visible';
 
     /**
      *
      * @var string
      */
-    const DEBUGGER_VISIBLE_ADV = 'visible_adv';
+    public const DEBUGGER_VISIBLE_ADV = 'visible_adv';
 
     /**
      *
      * @var string
      */
-    const DEBUGGER_HIDDEN = 'hidden';
+    public const DEBUGGER_HIDDEN = 'hidden';
 
     /**
      *
      * @var string
      */
-    const DEBUGGER_FILE = 'file';
+    public const DEBUGGER_FILE = 'file';
 
     /**
      *
      * @var string
      */
-    const DEBUGGER_VISIBLE_AND_FILE = 'vis_and_file';
+    public const DEBUGGER_VISIBLE_AND_FILE = 'vis_and_file';
 
     /**
      *
      * @var string
      */
-    const DEBUGGER_DEVNULL = 'devnull';
+    public const DEBUGGER_DEVNULL = 'devnull';
 
     /**
      * Default debugger, defined in system settings
@@ -132,10 +132,8 @@ class cDebug
      * Adds a variable to the debugger.
      * This variable will be watched.
      *
-     * @param mixed $var
-     *                      A variable or an object
-     * @param string $label [optional]
-     *                      An optional description for the variable
+     * @param mixed $var A variable or an object
+     * @param string $label [optional] An optional description for the variable
      * @throws cInvalidArgumentException
      */
     public static function add($var, string $label = '')

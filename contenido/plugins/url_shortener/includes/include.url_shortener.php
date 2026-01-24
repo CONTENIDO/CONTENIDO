@@ -32,7 +32,11 @@ if (!$perm->have_perm_area_action('url_shortener')) {
 $action = $action ?? '';
 
 // process the actions
-if ($action === 'url_shortener_delete' && !empty($_POST['idshorturl']) && $perm->have_perm_area_action('url_shortener', 'url_shortener_delete')) {
+if (
+    $action === 'url_shortener_delete'
+    && !empty($_POST['idshorturl'])
+    && $perm->have_perm_area_action('url_shortener', 'url_shortener_delete')
+) {
     $shortUrlColl = new cApiShortUrlCollection();
 
     $shortUrlItem = new cApiShortUrl($_POST['idshorturl']);
@@ -46,7 +50,11 @@ if ($action === 'url_shortener_delete' && !empty($_POST['idshorturl']) && $perm-
             $page->displayOk(i18n('The short URL has successfully been deleted!', 'url_shortener'));
         }
     }
-} elseif ($action === 'url_shortener_edit' && !empty($_POST['idshorturl']) && $perm->have_perm_area_action('url_shortener', 'url_shortener_edit')) {
+} elseif (
+    $action === 'url_shortener_edit'
+    && !empty($_POST['idshorturl'])
+    && $perm->have_perm_area_action('url_shortener', 'url_shortener_edit')
+) {
     // only do something if shorturl has been changed
     $shortUrlItem = new cApiShortUrl($_POST['idshorturl']);
     if ($shortUrlItem->isLoaded() && $shortUrlItem->get('shorturl') !== $_POST['newshorturl']) {
@@ -55,7 +63,7 @@ if ($action === 'url_shortener_delete' && !empty($_POST['idshorturl']) && $perm-
         $newShortUrlItem = new cApiShortUrl();
         $newShortUrlItem->loadBy('shorturl', $_POST['newshorturl']);
         if ($newShortUrlItem->isLoaded()) {
-            $message = piUsGetErrorMessage(cApiShortUrlCollection::ERR_ALREADY_EXISTS, $newShortUrlItem);
+            $message = pius_getErrorMessage(cApiShortUrlCollection::ERR_ALREADY_EXISTS, $newShortUrlItem);
             $notification = new cGuiNotification();
             $page->displayError($message);
             $valid = false;
@@ -64,7 +72,7 @@ if ($action === 'url_shortener_delete' && !empty($_POST['idshorturl']) && $perm-
         $shortUrlColl = new cApiShortUrlCollection();
         $errorCode = $shortUrlColl->isValidShortUrl($_POST['newshorturl']);
         if ($errorCode !== true) {
-            $message = piUsGetErrorMessage($errorCode);
+            $message = pius_getErrorMessage($errorCode);
             $page->displayError($message);
             $valid = false;
         }
@@ -167,7 +175,7 @@ $table->appendContent($theader);
 $tbody = new cHTMLTableBody();
 
 // TODO add paging functionality via $shortUrlColl->setLimit();
-while (($shortUrl = $shortUrlColl->next()) !== false) {
+while ($shortUrl = $shortUrlColl->next()) {
     $tr = new cHTMLTableRow();
     $tr->setID('shorturl-' . $shortUrl->get('idshorturl'));
     $contents = [];

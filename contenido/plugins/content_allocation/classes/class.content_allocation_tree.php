@@ -26,74 +26,57 @@ class pApiTree
 {
 
     /**
-     *
      * CONTENIDO Database
-     * @var object cDb
+     * @var cDb
      */
     protected $_db = null;
 
-    /*
-     *
+    /**
      * @var bool
      */
     protected $_debug = false;
 
     /**
-     *
-     * @var array
-     */
-    protected $_table = [];
-
-    /**
-     *
      * @var int
      */
     protected $_lang = 1;
 
     /**
-     *
      * @var int
      */
     protected $_client = 1;
 
     /**
-     *
      * @var int
      */
     protected $_defaultLang = 1;
 
     /**
-     *
      * @var bool
      */
     protected $_logger = null;
 
     /**
-     *
      * @var string
      */
     protected $_user = '';
 
     /**
-     *
      * @var array
      */
     protected $_treeStatus = [];
 
     /**
-     *
      * @var string
      */
     protected $_uuid = '';
 
     /**
-     *
      * @var array
      */
     protected $_arrInFilters = ['htmlspecialchars', 'addslashes'];
 
     /**
-     *
      * @var array
      */
     protected $_arrOutFilters = ['stripslashes', 'htmldecode'];
@@ -101,23 +84,17 @@ class pApiTree
     /**
      * pApiTree constructor
      *
-     * @param string $uuid
-     *
      * @throws cDbException|cException
      */
-    public function __construct($uuid)
+    public function __construct(string $uuid)
     {
-        $cfg = cRegistry::getConfig();
         $auth = cRegistry::getAuth();
 
         $this->_db = cRegistry::getDb();
-        $this->_table = $cfg['tab'];
         $this->_lang = cRegistry::getLanguageId();
         $this->_client = cRegistry::getClientId();
-
         $this->_uuid = $uuid;
-
-        $this->_user = new cApiUser($auth->auth['uid']);
+        $this->_user = new cApiUser($auth->getUserId());
         $this->loadTreeStatus();
     }
 
@@ -127,7 +104,6 @@ class pApiTree
      * @param mixed $parentId
      * @param int $level
      * @param bool $useTreeStatus (if true use expand/collapsed status of the tree, otherwise not)
-     *
      * @return array|bool
      * @throws cDbException
      */
@@ -137,7 +113,7 @@ class pApiTree
 
         // fetch current lang category
         $sql = "SELECT * FROM `%s` WHERE `parentid` = %d ORDER BY `sortorder` ASC";
-        $this->_db->query($sql, $this->_table['pica_alloc'], $parentId);
+        $this->_db->query($sql, cDb::getTableName('pica_alloc'), $parentId);
 
         $result_tmp = []; // tmp result array
         while ($this->_db->nextRecord()) { // walk resultset
@@ -175,7 +151,7 @@ class pApiTree
             $result = []; // result array
 
             foreach ($result_tmp as $rs) { // run results
-                $children = $this->fetchTree($rs['idpica_alloc'], ($level + 1), $useTreeStatus);
+                $children = $this->fetchTree(cSecurity::toInteger($rs['idpica_alloc']), ($level + 1), $useTreeStatus);
                 if ($children !== false && $rs['status'] == 'expanded') {
                     $rs['children'] = $children;
                 }
@@ -193,36 +169,32 @@ class pApiTree
      *
      * @created 21.11.2005 Willi Man
      *
-     * @param mixed $parentId
-     * @param int $level
-     * @param bool $showOffline
-     *
-     * @return bool|array with ContentAllocation id's
+     * @param int|false $parentId
+     * @return array with ContentAllocation id's
      * @throws cDbException
      */
-    public function fetchTreeIds($parentId = false, $level = 0, bool $showOffline = false)
+    public function fetchTreeIds($parentId = false, int $level = 0, bool $showOffline = false): array
     {
         $parentIdSql = $parentId === false ? 'IS NULL' : '= ' . cSecurity::toInteger($parentId);
 
         // fetch current lang category
         $sql = "SELECT * FROM `%s` WHERE `parentid` %s ORDER BY `sortorder` ASC";
-        $this->_db->query($sql, $this->_table['pica_alloc'], $parentIdSql);
+        $this->_db->query($sql, cDb::getTableName('pica_alloc'), $parentIdSql);
 
         if ($this->_debug) {
-            print "<!-- ";
-            print $sql;
-            print " -->";
+            print "<!-- $sql -->";
         }
 
         $this->_db->query($sql);
 
         $result_tmp = []; // tmp result array
         while ($this->_db->nextRecord()) { // walk resultset
-            $item = $this->fetchItemNameLang($this->_db->f('idpica_alloc'));
+            $idPicaAlloc = cSecurity::toInteger($this->_db->f('idpica_alloc'));
+            $item = $this->fetchItemNameLang($idPicaAlloc);
 
             if ($showOffline || $item['online'] == 1) {
                 $result_tmp[] = [
-                    'idpica_alloc' => $this->_db->f('idpica_alloc')
+                    'idpica_alloc' => $idPicaAlloc
                 ];
             }
         }
@@ -231,14 +203,14 @@ class pApiTree
             $result = []; // result array
             foreach ($result_tmp as $rs) { // run results
                 $children = $this->fetchTreeIds($rs['idpica_alloc'], $level + 1, $showOffline);
-                if ($children !== false) {
+                if (count($children)) {
                     $rs['children'] = $children;
                 }
                 $result[] = $rs;
             }
             return $result;
         } else {
-            return false;
+            return [];
         }
     }
 
@@ -284,7 +256,7 @@ class pApiTree
     public function fetchParent($idpica_alloc)
     {
         $sql = "SELECT `idpica_alloc` FROM `%s` WHERE `parentId` = %d";
-        $this->_db->query($sql, $this->_table['pica_alloc'], $idpica_alloc);
+        $this->_db->query($sql, cDb::getTableName('pica_alloc'), $idpica_alloc);
 
         if ($this->_db->nextRecord()) {
             return $this->fetchItem($this->_db->f('idpica_alloc'));
@@ -315,8 +287,8 @@ class pApiTree
         $sql = "SELECT
                     tree.idpica_alloc, tree.parentid, tree.sortorder
                 FROM
-                    " . $this->_table['pica_alloc'] . " AS tree
-                LEFT JOIN " . $this->_table['pica_lang'] . " AS treelang USING (idpica_alloc)";
+                    " . cDb::getTableName('pica_alloc') . " AS tree
+                LEFT JOIN " . cDb::getTableName('pica_lang') . " AS treelang USING (idpica_alloc)";
 
         if ($parentId === false) { // fetch from root node
             $sql .= " WHERE tree.parentid IS NULL";
@@ -380,14 +352,14 @@ class pApiTree
 
             $treeItem['name'] = $this->_inFilter($treeItem['name']);
 
-            $sql = $this->_db->buildInsert($this->_table['pica_alloc'], [
+            $sql = $this->_db->buildInsert(cDb::getTableName('pica_alloc'), [
                 'parentid' => $treeItem['parentid'],
                 'sortorder' => $treeItem['sortorder'],
             ]);
             $this->_db->query($sql);
 
             $treeItem['idpica_alloc'] = cSecurity::toInteger($this->_db->getLastInsertedId());
-            $sql = $this->_db->buildInsert($this->_table['pica_lang'], [
+            $sql = $this->_db->buildInsert(cDb::getTableName('pica_lang'), [
                 'idpica_alloc' => $treeItem['idpica_alloc'],
                 'idlang' => $this->_lang,
                 'name' => $treeItem['name'],
@@ -398,16 +370,16 @@ class pApiTree
             $treeItem['name'] = $this->_inFilter($treeItem['name']);
 
             $sql = "SELECT `idpica_alloc` FROM `%s` WHERE `idpica_alloc` = %d AND `idlang` = %d";
-            $this->_db->query($sql, $this->_table['pica_lang'], $treeItem['idpica_alloc'], $this->_lang);
+            $this->_db->query($sql, cDb::getTableName('pica_lang'), $treeItem['idpica_alloc'], $this->_lang);
 
             if ($this->_db->numRows() > 0) {
                 // Update existing translation
                 $sql = "UPDATE `%s` SET `name` = '%s' WHERE `idpica_alloc` = %d AND `idlang` = %d";
-                $this->_db->query($sql, $this->_table['pica_lang'], $treeItem['name'], $treeItem['idpica_alloc'], $this->_lang);
+                $this->_db->query($sql, cDb::getTableName('pica_lang'), $treeItem['name'], $treeItem['idpica_alloc'], $this->_lang);
             } else {
                 // Get current online status for item
                 $sql = "SELECT `online` FROM `%s` WHERE `idpica_alloc` = %d ORDER BY `idlang`";
-                $this->_db->query($sql, $this->_table['pica_lang'], $treeItem['idpica_alloc']);
+                $this->_db->query($sql, cDb::getTableName('pica_lang'), $treeItem['idpica_alloc']);
 
                 if ($this->_db->nextRecord()) {
                     $online_status = cSecurity::toInteger($this->_db->f('online'));
@@ -416,7 +388,7 @@ class pApiTree
                 }
 
                 // Insert new translation
-                $sql = $this->_db->buildInsert($this->_table['pica_lang'], [
+                $sql = $this->_db->buildInsert(cDb::getTableName('pica_lang'), [
                     'idpica_alloc' => $treeItem['idpica_alloc'],
                     'idlang' => $this->_lang,
                     'name' => $treeItem['name'],
@@ -464,7 +436,7 @@ class pApiTree
     protected function _switchOnOffline($idpica_alloc, $status)
     {
         $sql = "UPDATE `%s` SET `online` = %d WHERE `idpica_alloc` = %d AND `idlang` = %d";
-        $this->_db->query($sql, $this->_table['pica_lang'], $status, $idpica_alloc, $this->_lang);
+        $this->_db->query($sql, cDb::getTableName('pica_lang'), $status, $idpica_alloc, $this->_lang);
     }
 
     /**
@@ -490,7 +462,7 @@ class pApiTree
         }
 
         $sql = "UPDATE `%s` SET `sortorder` = %d WHERE `idpica_alloc` = %d";
-        $this->_db->query($sql, $this->_table['pica_alloc'], $treeItem['sortorder'], $idpica_alloc);
+        $this->_db->query($sql, cDb::getTableName('pica_alloc'), $treeItem['sortorder'], $idpica_alloc);
     }
 
     /**
@@ -512,9 +484,9 @@ class pApiTree
     {
         $sql = "DELETE FROM `%s` WHERE `idpica_alloc` = %d";
 
-        $this->_db->query($sql, $this->_table['pica_alloc'], $idpica_alloc);
-        $this->_db->query($sql, $this->_table['pica_lang'], $idpica_alloc);
-        $this->_db->query($sql, $this->_table['pica_alloc_con'], $idpica_alloc);
+        $this->_db->query($sql, cDb::getTableName('pica_alloc'), $idpica_alloc);
+        $this->_db->query($sql, cDb::getTableName('pica_lang'), $idpica_alloc);
+        $this->_db->query($sql, cDb::getTableName('pica_alloc_con'), $idpica_alloc);
 
         return true;
     }
@@ -530,7 +502,7 @@ class pApiTree
     function fetchItem($idpica_alloc)
     {
         $sql = "SELECT `parentid`, `sortorder` FROM `%s` WHERE `idpica_alloc` = %d";
-        $this->_db->query($sql, $this->_table['pica_alloc'], $idpica_alloc);
+        $this->_db->query($sql, cDb::getTableName('pica_alloc'), $idpica_alloc);
 
         $item = $this->fetchItemNameLang($idpica_alloc);
 
@@ -562,7 +534,7 @@ class pApiTree
         $db = cRegistry::getDb();
 
         $sql = "SELECT `name`, `idlang`, `online` FROM `%s` WHERE `idpica_alloc` = %d AND `idlang` = %d";
-        $db->query($sql, $this->_table['pica_lang'], $idpica_alloc, $this->_lang);
+        $db->query($sql, cDb::getTableName('pica_lang'), $idpica_alloc, $this->_lang);
 
         $result = [];
         if ($db->nextRecord()) {
@@ -592,7 +564,7 @@ class pApiTree
         $parentId = $parentId === false ? 0 : $parentId;
 
         $sql = "SELECT MAX(sortorder) AS max FROM `%s` WHERE `parentid` = %d";
-        $this->_db->query($sql, $this->_table['pica_alloc'], $parentId);
+        $this->_db->query($sql, cDb::getTableName('pica_alloc'), $parentId);
         if ($this->_db->nextRecord()) {
             return cSecurity::toInteger($this->_db->f('max'));
         } else {
@@ -612,7 +584,7 @@ class pApiTree
     {
         $parentIdSql = $parentId === false ? 'IS NULL' : '= ' . cSecurity::toInteger($parentId);
         $sql = "UPDATE `%s` SET `sortorder` = `sortorder` - 1 WHERE `sortorder` >= %d AND `parentid` %s";
-        $this->_db->query($sql, $this->_table['pica_alloc'], $fromOrder, $parentIdSql);
+        $this->_db->query($sql, cDb::getTableName('pica_alloc'), $fromOrder, $parentIdSql);
     }
 
     /**
@@ -627,7 +599,7 @@ class pApiTree
     {
         $parentIdSql = $parentId === false ? 'IS NULL' : '= ' . cSecurity::toInteger($parentId);
         $sql = "UPDATE `%s` SET `sortorder` = `sortorder` + 1 WHERE `sortorder` >= %d AND `parentid` %s";
-        $this->_db->query($sql, $this->_table['pica_alloc'], $fromOrder, $parentIdSql);
+        $this->_db->query($sql, cDb::getTableName('pica_alloc'), $fromOrder, $parentIdSql);
     }
 
     /**

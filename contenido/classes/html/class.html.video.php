@@ -26,12 +26,9 @@ class cHTMLVideo extends cHTMLContentElement
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $content [optional]
-     *         String or object with the contents
-     * @param string $class [optional]
-     *         the class of this element
-     * @param string $id [optional]
-     *         the ID of this element
+     * @param mixed $content [optional] String or object with the contents
+     * @param string $class [optional] The class of this element
+     * @param string $id [optional] The ID of this element
      * @param string $src [optional]
      */
     public function __construct($content = '', $class = '', $id = '', $src = '')
@@ -46,50 +43,47 @@ class cHTMLVideo extends cHTMLContentElement
      *
      * @param string $src
      */
-    public function setSrc($src)
+    public function setSrc($src): self
     {
-        $this->setAttribute('src', $src);
+        return $this->setAttribute('src', $src);
     }
 
     /**
-     * Sets the autoplay attribute which specifies if the sound should be played
-     * automatically.
+     * Sets the autoplay attribute which specifies if the sound should be played automatically.
      *
      * @param bool $autoplay
      */
-    public function setAutoplay($autoplay)
+    public function setAutoplay($autoplay): self
     {
         if ($autoplay) {
-            $this->setAttribute('autoplay', 'autoplay');
+            return $this->setAttribute('autoplay', 'autoplay');
         } else {
-            $this->removeAttribute('autoplay');
+            return $this->removeAttribute('autoplay');
         }
     }
 
     /**
-     * Sets the controls attribute which specifies if controls should be shown
-     * in the player.
+     * Sets the controls attribute which specifies if controls should be shown in the player.
      *
      * @param bool $controls
      */
-    public function setControls($controls)
+    public function setControls($controls): self
     {
         if ($controls) {
-            $this->setAttribute('controls', 'controls');
+            return $this->setAttribute('controls', 'controls');
         } else {
-            $this->removeAttribute('controls');
+            return $this->removeAttribute('controls');
         }
     }
 
     /**
-     * Specifies a link to a poster which is shown until the user plays or seeks
-     * the video.
+     * Specifies a link to a poster which is shown until the user plays or seeks the video.
      *
      * @param string $poster
      */
-    public function setPoster($poster)
+    public function setPoster($poster): self
     {
-        $this->setAttribute('poster', $poster);
+        return $this->setAttribute('poster', $poster);
     }
 
 }

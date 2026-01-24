@@ -10,7 +10,7 @@
  * Type:     function
  * Name:     html_options
  * Purpose:  Prints the list of <option> tags generated from
- *           the passed parameters
+ *           the provided parameters
  * Params:
  *
  * - name       (optional) - string default "select"

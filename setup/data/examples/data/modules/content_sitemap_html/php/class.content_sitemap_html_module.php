@@ -63,8 +63,7 @@ class ContentSitemapHtmlModule
      * Read the IDs of all article languages that are used as start article
      * of their respective category.
      *
-     * @return array
-     *         of article language IDs
+     * @return array List of article language IDs
      */
     private function getStartIdArtLang(): array
     {
@@ -73,7 +72,7 @@ class ContentSitemapHtmlModule
         SELECT
             startidartlang
         FROM
-            `' . cRegistry::getDbTableName('cat_lang') . '`
+            `' . cDb::getTableName('cat_lang') . '`
         WHERE
             visible = 1
             AND public = 1
@@ -93,12 +92,9 @@ class ContentSitemapHtmlModule
      * Optionally an array of article language IDs to exclude can be given.
      * If no article languages were found an empty array will be returned.
      *
-     * @param int $idcat
-     *         ID of category to search in
-     * @param array $excludedIdArtLangs [optional]
-     *         ID of article languages to exclude
-     * @return array
-     *         of article languages
+     * @param int $idcat ID of category to search in
+     * @param array $excludedIdArtLangs [optional] ID of article languages to exclude
+     * @return array List of article languages
      */
     private function getArticlesFromCategory(int $idcat, array $excludedIdArtLangs = []): array
     {
@@ -106,8 +102,8 @@ class ContentSitemapHtmlModule
         SELECT
             art_lang.idartlang
         FROM
-            `' . cRegistry::getDbTableName('art_lang') . '` AS art_lang,
-            `' . cRegistry::getDbTableName('cat_art') . '` AS cat_art
+            `' . cDb::getTableName('art_lang') . '` AS art_lang,
+            `' . cDb::getTableName('cat_art') . '` AS cat_art
         WHERE
             art_lang.idart = cat_art.idart
             AND art_lang.idlang = ' . $this->idlang . '

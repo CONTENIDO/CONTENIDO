@@ -14,13 +14,21 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cTemplate $tpl
+ */
+
 global $select;
+
+$cfg = cRegistry::getConfig();
+$sess = cRegistry::getSession();
+$auth = cRegistry::getAuth();
 
 $tpl->set('s', 'ID', 'oTplSel');
 $tpl->set('s', 'CLASS', 'text_medium');
 $tpl->set('s', 'OPTIONS', '');
 $tpl->set('s', 'CAPTION', '');
-$tpl->set('s', 'ACTION', isset($select) ? $select : '');
+$tpl->set('s', 'ACTION', $select ?? '');
 
 $tmp_mstr = '<a class="con_func_button addfunction" href="javascript:Con.multiLink(\'%s\', \'%s\', \'%s\', \'%s\')">%s</a>';
 $area = 'client';
@@ -30,7 +38,7 @@ $mstr = sprintf(
     'right_bottom', $sess->url("main.php?area=client_edit&action=client_new&frame=4"),
     i18n("Create client")
 );
-if (cString::findFirstPos($auth->auth["perm"], "sysadmin") !== false) {
+if (cString::findFirstPos($auth->getPerms(), 'sysadmin') !== false) {
     $tpl->set('s', 'NEWCLIENT', $mstr);
 } else {
     $tpl->set('s', 'NEWCLIENT', '<a class="con_func_button addfunction_disabled" href="#">' . i18n("Only sysadmins can create clients") . '</a>');

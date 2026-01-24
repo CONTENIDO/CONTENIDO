@@ -104,9 +104,9 @@ class Swift_Encoder_QpEncoder implements Swift_Encoder
      * Creates a new QpEncoder for the given CharacterStream.
      *
      * @param Swift_CharacterStream $charStream to use for reading characters
-     * @param Swift_StreamFilter    $filter     if input should be canonicalized
+     * @param ?Swift_StreamFilter    $filter     if input should be canonicalized
      */
-    public function __construct(Swift_CharacterStream $charStream, Swift_StreamFilter $filter = null)
+    public function __construct(Swift_CharacterStream $charStream, ?Swift_StreamFilter $filter = null)
     {
         $this->_charStream = $charStream;
         if (!isset(self::$_safeMapShare[$this->getSafeMapShareId()])) {

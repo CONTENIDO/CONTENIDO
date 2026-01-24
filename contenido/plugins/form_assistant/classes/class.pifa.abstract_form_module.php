@@ -30,14 +30,14 @@ abstract class PifaAbstractFormModule
      *
      * @var string
      */
-    const GET = 'GET';
+    public const GET = 'GET';
 
     /**
      * The HTTP POST request method.
      *
      * @var string
      */
-    const POST = 'POST';
+    public const POST = 'POST';
 
     /**
      * Array of settings as defined for a content type CMS_PIFAFORM.
@@ -69,11 +69,11 @@ abstract class PifaAbstractFormModule
     private $_tpl = NULL;
 
     /**
-     * @param array $settings as defined for cContentTypePifaForm
+     * @param ?array $settings as defined for cContentTypePifaForm
      *
      * @throws cException
      */
-    public function __construct(array $settings = NULL)
+    public function __construct(?array $settings = NULL)
     {
         $this->_settings = $settings;
         $this->_idform = cSecurity::toInteger($this->getSetting('pifaform_idform'));
@@ -169,15 +169,11 @@ abstract class PifaAbstractFormModule
     }
 
     /**
-     * @param bool $return
-     *
-     * @return mixed|string
-     *
-     * @throws PifaException if request method is unknown
+     * @return ?string
+     * @throws PifaException|SmartyException
      */
-    public function render($return = false)
+    public function render(bool $return = false)
     {
-
         // dispatch request method
         switch ($this->_getRequestMethod()) {
             case self::GET:
@@ -212,10 +208,11 @@ abstract class PifaAbstractFormModule
         // fetch || display template
         $clientConfig = cRegistry::getClientConfig(cRegistry::getClientId());
         $path = $clientConfig['template']['path'];
-        if (true === $return) {
+        if ($return) {
             return $this->_tpl->fetch($path . $this->getTemplateName());
         } else {
             $this->_tpl->display($path . $this->getTemplateName());
+            return null;
         }
     }
 

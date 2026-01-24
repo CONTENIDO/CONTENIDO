@@ -79,16 +79,16 @@ class ContenidoFrontendPreprocessUrlBuildingTest extends TestCase
     public function testOneChain()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendPreprocessUrlBuilding_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoFrontendPreprocessUrlBuilding_Test');
 
         // execute chain
         $result = cApiCecHook::executeAndReturn($this->_chain, $this->_params);
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendPreprocessUrlBuilding_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoFrontendPreprocessUrlBuilding_Test');
 
         $this->assertEquals($this->_paramsOneChain, $result);
     }
@@ -100,18 +100,18 @@ class ContenidoFrontendPreprocessUrlBuildingTest extends TestCase
     public function testTwoChains()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendPreprocessUrlBuilding_Test');
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendPreprocessUrlBuilding_Test2');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoFrontendPreprocessUrlBuilding_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoFrontendPreprocessUrlBuilding_Test2');
 
         // execute chain
         $result = cApiCecHook::executeAndReturn($this->_chain, $this->_params);
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendPreprocessUrlBuilding_Test');
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendPreprocessUrlBuilding_Test2');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoFrontendPreprocessUrlBuilding_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoFrontendPreprocessUrlBuilding_Test2');
 
         $this->assertEquals($this->_paramsTwoChains, $result);
     }

@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Plugin
  * @subpackage Workflow
- * @method Workflow createNewItem
- * @method Workflow|bool next
+ * @extends ItemCollection<Workflow>
  */
 class Workflows extends ItemCollection
 {
@@ -46,8 +45,8 @@ class Workflows extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('workflow'), "idworkflow");
-        $this->_setItemClass("Workflow");
+        parent::__construct(cDb::getTableName('workflow'), 'idworkflow');
+        $this->_setItemClass('Workflow');
     }
 
     /**
@@ -57,65 +56,82 @@ class Workflows extends ItemCollection
     public function create()
     {
         $auth = cRegistry::getAuth();
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
 
         $newItem = $this->createNewItem();
-        $newItem->setField("created", date('Y-m-d H:i:s'));
-        $newItem->setField("idauthor", $auth->auth["uid"]);
-        $newItem->setField("idclient", $client);
-        $newItem->setField("idlang", $lang);
+        $newItem->setField('created', date('Y-m-d H:i:s'));
+        $newItem->setField('idauthor', $auth->getUserId());
+        $newItem->setField('idclient', $client);
+        $newItem->setField('idlang', $lang);
         $newItem->store();
 
         return $newItem;
     }
 
     /**
-     * Deletes all corresponding information to this workflow and delegate call
-     * to parent
+     * Deletes all corresponding information to this workflow and delegate call to parent
      *
-     * @param int $idWorkflow - id of workflow to delete
-     *
+     * @inheritDoc
+     * @param int $id The workflow id.
      * @throws cDbException|cInvalidArgumentException
      */
-    public function delete($idWorkflow)
+    public function delete($id)
     {
-        $oDb = cRegistry::getDb();
+        $db = cRegistry::getDb();
 
-        $aItemIdsDelete = [];
-        $sSql = 'SELECT `idworkflowitem` FROM `%s` WHERE `idworkflow` = %d';
-        $oDb->query($sSql, cRegistry::getDbTableName('workflow_items'), $idWorkflow);
-        while ($oDb->nextRecord()) {
-            $aItemIdsDelete[] = cSecurity::toInteger($oDb->f('idworkflowitem'));
+        $itemIdsToDelete = [];
+        $db->query(
+            'SELECT `idworkflowitem` FROM `%s` WHERE `idworkflow` = %d',
+            cDb::getTableName('workflow_items'),
+            $id
+        );
+        while ($db->nextRecord()) {
+            $itemIdsToDelete[] = cSecurity::toInteger($db->f('idworkflowitem'));
         }
 
-        if (!empty($aItemIdsDelete)) {
-            $aUserSequencesDelete = [];
-            $sSql = 'SELECT `idusersequence` FROM `%s` WHERE `idworkflowitem` IN (' . implode(',', $aItemIdsDelete) . ');';
-            $oDb->query($sSql, cRegistry::getDbTableName('workflow_user_sequences'));
-            while ($oDb->nextRecord()) {
-                $aUserSequencesDelete[] = cSecurity::toInteger($oDb->f('idusersequence'));
+        $userSequencesToDelete = [];
+        if (!empty($itemIdsToDelete)) {
+            $itemIdsToDelete = implode(',', $itemIdsToDelete);
+            $db->query(
+                'SELECT `idusersequence` FROM `%s` WHERE `idworkflowitem` IN (' . $itemIdsToDelete . ');',
+                cDb::getTableName('workflow_user_sequences')
+            );
+            while ($db->nextRecord()) {
+                $userSequencesToDelete[] = cSecurity::toInteger($db->f('idusersequence'));
             }
 
-            $sSql = 'DELETE FROM `%s` WHERE `idworkflowitem` IN (' . implode(',', $aItemIdsDelete) . ');';
-            $oDb->query($sSql, cRegistry::getDbTableName('workflow_user_sequences'));
+            $db->query(
+                'DELETE FROM `%s` WHERE `idworkflowitem` IN (' . $itemIdsToDelete . ');',
+                cDb::getTableName('workflow_user_sequences')
+            );
 
-            $sSql = 'DELETE FROM `%s` WHERE `idworkflowitem` IN (' . implode(',', $aItemIdsDelete) . ');';
-            $oDb->query($sSql, cRegistry::getDbTableName('workflow_actions'));
+            $db->query(
+                'DELETE FROM `%s` WHERE `idworkflowitem` IN (' . $itemIdsToDelete . ');',
+                cDb::getTableName('workflow_actions')
+            );
         }
 
-        if (!empty($aUserSequencesDelete)) {
-            $sSql = 'DELETE FROM `%s` WHERE `idusersequence` IN (' . implode(',', $aUserSequencesDelete) . ');';
-            $oDb->query($sSql, cRegistry::getDbTableName('workflow_art_allocation'));
+        if (!empty($userSequencesToDelete)) {
+            $db->query(
+                'DELETE FROM `%s` WHERE `idusersequence` IN (' . $itemIdsToDelete . ');',
+                cDb::getTableName('workflow_art_allocation')
+            );
         }
 
-        $sSql = 'DELETE FROM `%s` WHERE `idworkflow` = %d';
-        $oDb->query($sSql, cRegistry::getDbTableName('workflow_items'), $idWorkflow);
+        $db->query(
+            'DELETE FROM `%s` WHERE `idworkflow` = %d',
+            cDb::getTableName('workflow_items'),
+            $id
+        );
 
-        $sSql = 'DELETE FROM `%s` WHERE `idworkflow` = %d';
-        $oDb->query($sSql, cRegistry::getDbTableName('workflow_allocation'), $idWorkflow);
+        $db->query(
+            'DELETE FROM `%s` WHERE `idworkflow` = %d',
+            cDb::getTableName('workflow_allocation'),
+            $id
+        );
 
-        parent::delete($idWorkflow);
+        return parent::delete($id);
     }
 
 }
@@ -139,7 +155,7 @@ class Workflow extends Item
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('workflow'), "idworkflow");
+        parent::__construct(cDb::getTableName('workflow'), 'idworkflow');
     }
 
 }

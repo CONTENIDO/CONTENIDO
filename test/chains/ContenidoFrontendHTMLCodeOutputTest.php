@@ -62,16 +62,16 @@ class ContenidoFrontendHTMLCodeOutputTest extends TestCase
     public function testOneChain()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendHTMLCodeOutput_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoFrontendHTMLCodeOutput_Test');
 
         // execute chain
         $newHtml = cApiCecHook::executeAndReturn($this->_chain, $this->_html);
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendHTMLCodeOutput_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoFrontendHTMLCodeOutput_Test');
 
         $this->assertEquals($this->_htmlOneChain, $newHtml);
     }
@@ -83,18 +83,18 @@ class ContenidoFrontendHTMLCodeOutputTest extends TestCase
     public function testTwoChains()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendHTMLCodeOutput_Test');
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendHTMLCodeOutput_Test2');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoFrontendHTMLCodeOutput_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoFrontendHTMLCodeOutput_Test2');
 
         // execute chain
         $newHtml = cApiCecHook::executeAndReturn($this->_chain, $this->_html);
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendHTMLCodeOutput_Test');
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendHTMLCodeOutput_Test2');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoFrontendHTMLCodeOutput_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoFrontendHTMLCodeOutput_Test2');
 
         $this->assertEquals($this->_htmlTwoChains, $newHtml);
     }

@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiClient createNewItem
- * @method cApiClient|bool next
+ * @extends ItemCollection<cApiClient>
  */
 class cApiClientCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiClientCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('clients'), 'idclient');
+        parent::__construct(cDb::getTableName('clients'), 'idclient');
         $this->_setItemClass('cApiClient');
     }
 
@@ -39,37 +38,33 @@ class cApiClientCollection extends ItemCollection
      * Creates a new client entry
      *
      * @param string $name
-     * @param int $errsite_cat [optional]
-     * @param int $errsite_art [optional]
+     * @param int $errorSiteCatId [optional] The category id of the error site.
+     * @param int $errorSiteArtId [optional] The article id of the error site.
      * @param string $author [optional]
      * @param string $created [optional]
-     * @param string $lastmodified [optional]
-     *
+     * @param string $lastModified [optional]
      * @return cApiClient
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($name, $errsite_cat = 0, $errsite_art = 0, $author = '', $created = '', $lastmodified = '')
+    public function create($name, $errorSiteCatId = 0, $errorSiteArtId = 0, $author = '', $created = '', $lastModified = '')
     {
         if (empty($author)) {
-            $auth = cRegistry::getAuth();
-            $author = $auth->auth['uname'];
+            $author = cRegistry::getAuth()->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
         }
-        if (empty($lastmodified)) {
-            $lastmodified = date('Y-m-d H:i:s');
+        if (empty($lastModified)) {
+            $lastModified = date('Y-m-d H:i:s');
         }
 
         $item = $this->createNewItem();
         $item->set('name', $name);
-        $item->set('errsite_cat', $errsite_cat);
-        $item->set('errsite_art', $errsite_art);
+        $item->set('errsite_cat', $errorSiteCatId);
+        $item->set('errsite_art', $errorSiteArtId);
         $item->set('author', $author);
         $item->set('created', $created);
-        $item->set('lastmodified', $lastmodified);
+        $item->set('lastmodified', $lastModified);
         $item->store();
 
         return $item;
@@ -78,19 +73,16 @@ class cApiClientCollection extends ItemCollection
     /**
      * Returns all clients available in the system
      *
-     * @return array
-     *         Array with id and name entries
-     * @throws cDbException
-     * @throws cException
+     * @return array<int, array{name: string}> Array with id and name entries
+     * @throws cDbException|cException
      */
-    public function getAvailableClients()
+    public function getAvailableClients(): array
     {
         $clients = [];
 
         $this->select();
-
-        while (($item = $this->next()) !== false) {
-            $clients[$item->get('idclient')] = [
+        while ($item = $this->next()) {
+            $clients[cSecurity::toInteger($item->get('idclient'))] = [
                 'name' => $item->get('name'),
             ];
         }
@@ -101,44 +93,46 @@ class cApiClientCollection extends ItemCollection
     /**
      * Returns all clients available in the system
      *
-     * @return array
-     *         Array with id and name entries
-     * @throws cDbException
-     * @throws cException
+     * @return array<int, array{name: string}> Array with id and name entries
+     * @throws cDbException|cException
      */
-    public function getAccessibleClients()
+    public function getAccessibleClients(): array
     {
         $perm = cRegistry::getPerm();
         $clients = [];
+
         $this->select();
-        while (($item = $this->next()) !== false) {
-            $idClient = $item->get('idclient');
-            if ($perm->have_perm_client("client[" . $idClient . "]")
-                || $perm->have_perm_client("admin[" . $idClient . "]")
-                || $perm->have_perm_client()) {
-                $clients[$idClient] = [
+        while ($item = $this->next()) {
+            $clientId = cSecurity::toInteger($item->get('idclient'));
+            if (
+                $perm->have_perm_client("client[" . $clientId . "]")
+                || $perm->have_perm_client("admin[" . $clientId . "]")
+                || $perm->have_perm_client()
+            ) {
+                $clients[$clientId] = [
                     'name' => $item->get('name'),
                 ];
             }
         }
+
         return $clients;
     }
 
     /**
      * Returns first client available in the system
      *
-     * @return cApiClient|NULL
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function getFirstAccessibleClient()
+    public function getFirstAccessibleClient(): ?cApiClient
     {
         $perm = cRegistry::getPerm();
         $this->select();
-        while (($item = $this->next()) !== false) {
-            $idClient = $item->get('idclient');
-            if ($perm->have_perm_client("client[" . $idClient . "]")
-                || $perm->have_perm_client("admin[" . $idClient . "]")) {
+        while ($item = $this->next()) {
+            $clientId = cSecurity::toInteger($item->get('idclient'));
+            if (
+                $perm->have_perm_client("client[" . $clientId . "]")
+                || $perm->have_perm_client("admin[" . $clientId . "]")
+            ) {
                 return $item;
             }
         }
@@ -148,15 +142,13 @@ class cApiClientCollection extends ItemCollection
     /**
      * Returns the client name of the given clientid
      *
-     * @param int $idClient
-     * @return string
-     *         Client name if found, or empty string if not.
-     * @throws cDbException
-     * @throws cException
+     * @param int $clientId
+     * @return string Client name if found, or empty string if not.
+     * @throws cDbException|cException
      */
-    public function getClientname($idClient)
+    public function getClientname($clientId): string
     {
-        $this->select("idclient='" . (int)$idClient . "'");
+        $this->select(sprintf("`idclient` = %d", $clientId));
         if (($item = $this->next()) !== false) {
             return $item->get('name');
         } else {
@@ -167,34 +159,25 @@ class cApiClientCollection extends ItemCollection
     /**
      * Returns if the given client has a language
      *
-     * @param int $idClient
-     * @return bool
-     *         true if the client has a language
      * @throws cException
      */
-    public function hasLanguageAssigned($idClient)
+    public function hasLanguageAssigned(int $clientId): bool
     {
-        $client = new cApiClient($idClient);
-
-        return $client->hasLanguages();
+        return (new cApiClient($clientId))->hasLanguages();
     }
 
     /**
      * Checks if the current authenticated user can access the client.
      *
      * @param int $clientId Id of client to check permissions for.
-     * @return bool
      * @since CONTENIDO 4.10.2
      */
     public static function isClientAccessible(int $clientId): bool
     {
         $perm = cRegistry::getPerm();
-        if ($perm->have_perm_client('client[' . $clientId . ']')
-            || $perm->have_perm_client('admin[' . $clientId . ']')) {
-            return true;
-        }
 
-        return false;
+        return $perm->have_perm_client('client[' . $clientId . ']')
+            || $perm->have_perm_client('admin[' . $clientId . ']');
     }
 
 }
@@ -210,33 +193,25 @@ class cApiClient extends Item
 {
 
     /**
-     * Setting of client ID (deprecated)
-     *
-     * @deprecated [2014-12-03]
-     *         Class variable idclient is deprecated
-     * @var int
+     * @deprecated [2014-12-03] Class variable idclient is deprecated
+     * @var int Setting of client ID (deprecated)
      */
-    private $idclient;
+    private $clientId;
 
     /**
-     * Property collection instance
-     *
-     * @var cApiPropertyCollection
+     * @var cApiPropertyCollection Property collection instance
      */
     protected $_oPropertyCollection;
 
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $id [optional]
-     *                  Specifies the ID of item to load
-     *
-     * @throws cDbException
+     * @param mixed $id The ID of item to load
      * @throws cException
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('clients'), 'idclient');
+        parent::__construct(cDb::getTableName('clients'), 'idclient');
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
@@ -245,11 +220,10 @@ class cApiClient extends Item
     /**
      * Magic getter method for deprecated idclient variable.
      *
-     * @param string $name
-     *         only works for "idclient"
-     * @return mixed
+     * @param string $name Works only for "idclient"
+     * @return mixed|null
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         if ($name === 'idclient') {
             return $this->get('idclient');
@@ -261,12 +235,10 @@ class cApiClient extends Item
     /**
      * Magic setter method for deprecated idclient variable
      *
-     * @param string $name
-     *         only works for "idclient"
-     * @param mixed $value
-     *         Value to set
+     * @param string $name Works only for "idclient"
+     * @param mixed $value Value to set
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value)
     {
         if ($name === 'idclient') {
             $this->set('idclient', cSecurity::toInteger($value));
@@ -276,44 +248,33 @@ class cApiClient extends Item
     }
 
     /**
-     * Static accessor to the singleton instance.
-     *
-     * @param int $client [optional]
-     * @return cApiClient
-     *         Reference to the singleton instance.
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
-     * @todo There is no need since caching is available at GenericDB level
+     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      */
-    public static function getInstance($client = false)
+    public static function getInstance($clientId = false)
     {
         static $currentInstance = [];
 
         cDeprecated('This method is deprecated and is not needed any longer');
 
-        if (!$client) {
-            // Use global $client
-            $client = cSecurity::toInteger(cRegistry::getClientId());
+        if (!$clientId) {
+            // Use global $clientId
+            $clientId = cRegistry::getClientId();
         }
 
-        if (!isset($currentInstance[$client])) {
-            $currentInstance[$client] = new cApiClient($client);
+        if (!isset($currentInstance[$clientId])) {
+            $currentInstance[$clientId] = new cApiClient($clientId);
         }
 
-        return $currentInstance[$client];
+        return $currentInstance[$clientId];
     }
 
     /**
-     * Load dataset by primary key
-     *
-     * @param int $idKey
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function loadByPrimaryKey($idKey)
+    public function loadByPrimaryKey($value)
     {
-        if (parent::loadByPrimaryKey($idKey)) {
-            $this->set('idclient', $idKey);
+        if (parent::loadByPrimaryKey($value)) {
+            $this->set('idclient', $value);
             return true;
         }
         return false;
@@ -322,19 +283,12 @@ class cApiClient extends Item
     /**
      * Set client property
      *
-     * @param mixed $type
-     *                          Type of the data to store (arbitrary data)
-     * @param mixed $name
-     *                          Entry name
-     * @param mixed $value
-     *                          Value
+     * @param mixed $type Type of the data to store (arbitrary data)
+     * @param mixed $name Entry name
+     * @param mixed $value Value
      * @param mixed $idproperty [optional]
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      * @todo should return return value as overwritten method
-     *
      */
     public function setProperty($type, $name, $value, $idproperty = 0)
     {
@@ -345,20 +299,13 @@ class cApiClient extends Item
     /**
      * Get client property
      *
-     * @param mixed $type
-     *                      Type of the data to get
-     * @param mixed $name
-     *                      Entry name
-     * @param int $client [optional]
-     *                      Client id (not used, it's declared because of PHP strict warnings)
-     *
-     * @return mixed
-     *                      Value
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $type Type of the data to get
+     * @param mixed $name Entry name
+     * @param int $clientId Client id (not used, it's declared because of PHP strict warnings)
+     * @return mixed Value
+     * @throws cDbException|cException
      */
-    public function getProperty($type, $name, $client = 0)
+    public function getProperty($type, $name, $clientId = 0)
     {
         $propertyColl = $this->_getPropertiesCollectionInstance();
         return $propertyColl->getValue('clientsetting', $this->get('idclient'), $type, $name);
@@ -367,33 +314,23 @@ class cApiClient extends Item
     /**
      * Delete client property
      *
-     * @param int $idProp
-     *                       Id of property
-     * @param string $p2 [optional]
-     *                       Not used, is here to prevent PHP Strict warnings
-     * @param int $client [optional]
-     *                       Client id (not used, it's declared because of PHP strict warnings)
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param int $propertyId Id of property
+     * @param string $p2 Not used, is here to prevent PHP Strict warnings
+     * @param int $clientId Client id (not used, it's declared because of PHP strict warnings)
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function deleteProperty($idProp, $p2 = "", $client = 0)
+    public function deleteProperty($propertyId, $p2 = '', $clientId = 0)
     {
         $propertyColl = $this->_getPropertiesCollectionInstance();
-        $propertyColl->delete($idProp);
+        $propertyColl->delete($propertyId);
     }
 
     /**
      * Get client properties by type
      *
-     * @param mixed $type
-     *         Type of the data to get
-     *
-     * @return array
-     *         Associative array
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $type Type of the data to get
+     * @return array Associative array
+     * @throws cDbException|cException
      */
     public function getPropertiesByType($type)
     {
@@ -405,22 +342,26 @@ class cApiClient extends Item
      * Get all client properties
      *
      * @return array|false
-     *         array
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      * @todo return value should be the same as getPropertiesByType(),
      *         e.g. an empty array instead of false
      */
     public function getProperties()
     {
         $propertyColl = $this->_getPropertiesCollectionInstance();
-        $whereString = "itemid='" . $this->get('idclient') . "' AND itemtype='clientsetting'";
-        $propertyColl->select($whereString, "", "type, name, value ASC");
+        $propertyColl->select(
+            sprintf(
+                "`itemid` = %d AND `itemtype` = 'clientsetting'",
+                $this->get('idclient')
+            ),
+            '',
+            '`type`, `name`, `value` ASC'
+        );
 
         if ($propertyColl->count() > 0) {
             $array = [];
 
-            while (($item = $propertyColl->next()) !== false) {
+            while ($item = $propertyColl->next()) {
                 $array[$item->get('idproperty')]['type'] = $item->get('type');
                 $array[$item->get('idproperty')]['name'] = $item->get('name');
                 $array[$item->get('idproperty')]['value'] = $item->get('value');
@@ -435,33 +376,23 @@ class cApiClient extends Item
     /**
      * Check if client has at least one language
      *
-     * @return bool
      * @throws cException
      */
-    public function hasLanguages()
+    public function hasLanguages(): bool
     {
         $clientLanguageCollection = new cApiClientLanguageCollection();
-        $clientLanguageCollection->setWhere("idclient", $this->get("idclient"));
+        $clientLanguageCollection->setWhere('idclient', $this->get('idclient'));
         $clientLanguageCollection->query();
 
-        if ($clientLanguageCollection->next()) {
-            return true;
-        } else {
-            return false;
-        }
+        return cSecurity::toBoolean($clientLanguageCollection->next());
     }
 
     /**
      * User-defined setter for client fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'errsite_cat':
@@ -470,17 +401,15 @@ class cApiClient extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
     /**
      * Lazy instantiation and return of properties object
      *
-     * @param int $client [optional]
-     *         Client id (not used, it's declared because of PHP strict warnings)
-     * @return cApiPropertyCollection
+     * @param int $clientId Client id (not used, it's declared because of PHP strict warnings)
      */
-    protected function _getPropertiesCollectionInstance($client = 0)
+    protected function _getPropertiesCollectionInstance(int $clientId = 0): cApiPropertyCollection
     {
         // Runtime on-demand allocation of the properties object
         if (!is_object($this->_oPropertyCollection)) {

@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiCommunication createNewItem
- * @method cApiCommunication|bool next
+ * @extends ItemCollection<cApiCommunication>
  */
 class cApiCommunicationCollection extends ItemCollection
 {
@@ -40,7 +39,7 @@ class cApiCommunicationCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('communications'), 'idcommunication');
+        parent::__construct(cDb::getTableName('communications'), 'idcommunication');
         $this->_setItemClass('cApiCommunication');
 
         // set the join partners so that joins can be used via link() method
@@ -51,19 +50,17 @@ class cApiCommunicationCollection extends ItemCollection
      * Creates a new communication item.
      *
      * @return cApiCommunication
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create()
     {
         $auth = cRegistry::getAuth();
-        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $client = cRegistry::getClientId();
 
         $item = $this->createNewItem();
 
         $item->set('idclient', $client);
-        $item->set('author', $auth->auth['uid']);
+        $item->set('author', $auth->getUserId());
         $item->set('created', date('Y-m-d H:i:s'), false);
 
         return $item;
@@ -82,30 +79,26 @@ class cApiCommunication extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('communications'), 'idcommunication');
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('communications'), 'idcommunication');
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * Saves a communication item
      *
-     * @return bool
-     * @see Item::store()
+     * @inheritDoc
      */
     public function store()
     {
         $auth = cRegistry::getAuth();
-        $this->set('modifiedby', $auth->auth['uid']);
+        $this->set('modifiedby', $auth->getUserId());
         $this->set('modified', date('Y-m-d H:i:s'), false);
 
         return parent::store();
@@ -114,13 +107,9 @@ class cApiCommunication extends Item
     /**
      * User-defined setter for communication fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idclient':
@@ -128,7 +117,7 @@ class cApiCommunication extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

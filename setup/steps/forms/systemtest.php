@@ -38,8 +38,8 @@ class cSetupSystemtest extends cSetupMask
         $errors = false;
 
         $this->setHeader(i18n("System Test", "setup"));
-        $this->_stepTemplateClass->set("s", "TITLE", i18n("System Test", "setup"));
-        $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Your system has been tested for compatibility with CONTENIDO:", "setup"));
+        $this->_stepTemplateClass->set('s', 'TITLE', i18n("System Test", "setup"));
+        $this->_stepTemplateClass->set('s', 'DESCRIPTION', i18n("Your system has been tested for compatibility with CONTENIDO:", "setup"));
 
         // reload i18n for contenido locale
         i18nInit('../data/locale/', $_SESSION['language']);
@@ -97,14 +97,12 @@ class cSetupSystemtest extends cSetupMask
             $this->_systemtest->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Unable to set max_execution_time.", "setup"), i18n("Your PHP configuration for max_execution_time can not be changed via this script. We recommend setting the value for the installation or upgrade process to 60 seconds. You can try to execute the process with your current configuration. If the process is stopped, the system is not usable (any longer)", "setup"));
         }
 
-        $results = $this->_systemtest->getResults();
-
-        foreach ($results as $result) {
-            if ($result["result"]) {
+        foreach ($this->_systemtest->getResults() as $result) {
+            if ($result['result']) {
                 continue;
             }
 
-            switch ($result["severity"]) {
+            switch ($result['severity']) {
                 case cSystemtest::C_SEVERITY_INFO:
                     $icon = "images/icons/info.png";
                     $iconDescription = i18n("Information", "setup");
@@ -119,7 +117,7 @@ class cSetupSystemtest extends cSetupMask
                     $errors = true;
                     break;
             }
-            $cHTMLFoldableErrorMessages[] = new cHTMLFoldableErrorMessage($result["headline"], $result["message"], $icon, $iconDescription);
+            $cHTMLFoldableErrorMessages[] = new cHTMLFoldableErrorMessage($result['headline'], $result['message'], $icon, $iconDescription);
         }
 
         if (count($cHTMLFoldableErrorMessages) == 0) {
@@ -128,7 +126,7 @@ class cSetupSystemtest extends cSetupMask
 
         $cHTMLErrorMessageList->setContent($cHTMLFoldableErrorMessages);
 
-        $this->_stepTemplateClass->set("s", "CONTROL_TESTRESULTS", $cHTMLErrorMessageList->render());
+        $this->_stepTemplateClass->set('s', 'CONTROL_TESTRESULTS', $cHTMLErrorMessageList->render());
 
         if ($errors) {
             $this->setNavigation($previous, "");
@@ -144,12 +142,12 @@ class cSetupSystemtest extends cSetupMask
             }
 
             $link = new cHTMLLink("#");
-            $link->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '" . $thisStep . "';");
-            $link->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
+            $link->attachEventDefinition('pageAttach', 'onclick', "document.setupform.step.value = '" . $thisStep . "';");
+            $link->attachEventDefinition('submitAttach', 'onclick', "document.setupform.submit();");
             $link->setClass("nav navRefresh");
             $link->setContent("<span>R</span>");
 
-            $this->_stepTemplateClass->set("s", "NEXT", $link->render());
+            $this->_stepTemplateClass->set('s', 'NEXT', $link->render());
         } else {
             $this->setNavigation($previous, $next);
         }
@@ -214,10 +212,8 @@ class cSetupSystemtest extends cSetupMask
 
     public function doChangedDirsFilesTest()
     {
-        $cfg = cRegistry::getConfig();
-
         $db = getSetupMySQLDBConnection(false);
-        $version = getContenidoVersion($db, $cfg['tab']['system_prop']);
+        $version = getContenidoVersion($db, cDb::getTableName('system_prop'));
 
         // Display message about changed directories/files when user updates a
         // system lower than 4.9
@@ -254,8 +250,8 @@ class cSetupSystemtest extends cSetupMask
             $oLanguage = new cApiLanguage();
             $oLanguage->loadByPrimaryKey($lang);
 
-            $languageCode = $oLanguage->getProperty("language", "code", $client);
-            $countryCode = $oLanguage->getProperty("country", "code", $client);
+            $languageCode = $oLanguage->getProperty('language', 'code', $client);
+            $countryCode = $oLanguage->getProperty('country', 'code', $client);
 
             $oClient = new cApiClient();
             $oClient->loadByPrimaryKey($client);
