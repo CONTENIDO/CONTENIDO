@@ -54,7 +54,7 @@ Dabei ist es hilfreich, wenn die Beschreibung folgende Fragen beantwortet:
 
 **Label:**
 
-Dem Ticket kann man diverse Labels wie zuweisen. Die Übersicht über alle Labels findet man [hier](./labels). 
+Dem Ticket kann man diverse Labels wie zuweisen. Die Übersicht über alle Labels findet man [hier](../../labels). 
 
 **Typ:**
 
