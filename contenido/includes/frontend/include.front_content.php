@@ -41,7 +41,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 $contenido = cRegistry::getBackendSessionId();
 
 // if we are in the frontend and no clients are configured, display an error
-if (!$contenido && !isset($cfgClient["set"])) {
+if (!$contenido && !isset($cfgClient['set'])) {
     echo("CONTENIDO is not configured properly. More details can be found in the error log");
     cError("Could not include config.clients.php. Make sure it exists and has a valid configuration!");
 }
@@ -63,7 +63,7 @@ $backendPath = cRegistry::getBackendPath();
 $backendUrl = cRegistry::getBackendUrl();
 
 // Include cronjob-Emulator
-if ($cfg['use_pseudocron'] == true) {
+if ($cfg['use_pseudocron']) {
     $currentWorkingDirectory = getcwd();
     chdir($backendPath . $cfg['path']['cronjobs']);
     cInclude('includes', 'pseudo-cron.inc.php');
@@ -182,7 +182,6 @@ header("Content-Type: text/html; charset={$encoding[$lang]}");
 if (isset($logout)) {
     $auth->logout(true);
     $auth->resetAuthInfo(true);
-    $auth->auth['uname'] = 'nobody';
 }
 
 // If the path variable was passed, try to resolve it to a category id,
@@ -203,8 +202,8 @@ if (isset($path) && cString::getStringLength($path) > 1) {
 // Error page
 $aParams = [
     'client' => $client,
-    'idcat' => $cfgClient[$client]["errsite"]["idcat"],
-    'idart' => $cfgClient[$client]["errsite"]["idart"],
+    'idcat' => $cfgClient[$client]['errsite']['idcat'],
+    'idart' => $cfgClient[$client]['errsite']['idart'],
     'lang' => $lang,
     'error' => '1'
 ];
@@ -253,8 +252,8 @@ if ($idcatart) {
             die(i18n('No start article for this category'));
         } elseif ($error == 1) {
             $tpl = new cTemplate();
-            $tpl->set("s", "ERROR_TITLE", "Fatal error");
-            $tpl->set("s", "ERROR_TEXT", "No start article for this category.");
+            $tpl->set('s', 'ERROR_TITLE', "Fatal error");
+            $tpl->set('s', 'ERROR_TEXT', "No start article for this category.");
             $tpl->generate($errtpl);
             exit();
         } else {
@@ -281,8 +280,8 @@ if ($idcatart) {
             die(i18n('No start article for this category'));
         } elseif ($error == 1) {
             $tpl = new cTemplate();
-            $tpl->set("s", "ERROR_TITLE", "Fatal error");
-            $tpl->set("s", "ERROR_TEXT", "No start article for this category.");
+            $tpl->set('s', 'ERROR_TITLE', "Fatal error");
+            $tpl->set('s', 'ERROR_TEXT', "No start article for this category.");
             $tpl->generate($errtpl);
             exit();
         } else {
@@ -391,7 +390,7 @@ if ($contenido) {
     if ($locked == 1) {
         // admin can edit article despite its locked status
         $isAdmin = cPermission::checkAdminPermission($auth->getPerms());
-        if (false === $isAdmin) {
+        if (!$isAdmin) {
             $notification = new cGuiNotification();
             $modErrorMessage = i18n('This article is currently frozen and can not be edited!');
             $inUse = true;
@@ -436,7 +435,7 @@ if ($contenido) {
     // CEC to check if the user has permission to edit articles in this category
     // break at 'false', default value 'true'
     cApiCecHook::setBreakCondition(false, true);
-    $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.AllowEdit', $lang, $idcat, $idart, $auth->auth['uid']);
+    $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.AllowEdit', $lang, $idcat, $idart, $auth->getUserId());
 }
 
 // Set global db instance, some modules may still need this!
@@ -461,8 +460,8 @@ $tplCfgData = $catLangColl->fetchIdTplCfgByArticleIdAndLanguageId(
 
 if (isset($tplCfgColl[0]) && $tplCfgColl[0] === 0 && !isset($_REQUEST['idart'])) {
     $tpl = new cTemplate();
-    $tpl->set("s", "ERROR_TITLE", $errorTitle);
-    $tpl->set("s", "ERROR_TEXT", $errorText);
+    $tpl->set('s', 'ERROR_TITLE', $errorTitle);
+    $tpl->set('s', 'ERROR_TEXT', $errorText);
     $tpl->generate($errtpl);
     exit();
 }
@@ -471,15 +470,14 @@ if (isset($tplCfgColl[0]) && $tplCfgColl[0] === 0 && !isset($_REQUEST['idart']))
 $language = cRegistry::getLanguage();
 if ($language->get('active') != 1 && (!$contenido || $view != 'edit')) {
     $tpl = new cTemplate();
-    $tpl->set("s", "ERROR_TITLE", "Current language is not online");
-    $tpl->set("s", "ERROR_TEXT", "You try to view a page of a language, which is not online.");
+    $tpl->set('s', 'ERROR_TITLE', "Current language is not online");
+    $tpl->set('s', 'ERROR_TEXT', "You try to view a page of a language, which is not online.");
     $tpl->generate($errtpl);
     exit();
 }
 
-// If mode is 'edit' and user has permission to edit articles in the current
-// category
-if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat))) {
+// If mode is 'edit' and user has permission to edit articles in the current category
+if (!$inUse && $allow && $view == 'edit' && ($perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat))) {
     cInclude('includes', 'functions.tpl.php');
     include($backendPath . $cfg['path']['includes'] . 'include.con_editcontent.php');
 } else {
@@ -501,8 +499,8 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
 
     if ($oCatArt == false) {
         $tpl = new cTemplate();
-        $tpl->set("s", "ERROR_TITLE", "Fatal error");
-        $tpl->set("s", "ERROR_TEXT", "The URL of the page you have tried to visit seems to be wrong.");
+        $tpl->set('s', 'ERROR_TITLE', "Fatal error");
+        $tpl->set('s', 'ERROR_TEXT', "The URL of the page you have tried to visit seems to be wrong.");
         $tpl->generate($errtpl);
         exit();
     }
@@ -539,13 +537,13 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
 
     // Protected categories
     if ($public == 0) {
-        if ($auth->auth['uid'] == 'nobody') {
-            $userPropColl = new cApiUserPropertyCollection($auth->auth['uid']);
+        if ($auth->getUserId() === cAuth::AUTH_UID_NOBODY) {
+            $userPropColl = new cApiUserPropertyCollection($auth->getUserId());
             $userProperties = $userPropColl->fetchByTypeName('frontend', 'allowed_ip');
             $validated = 0;
             foreach ($userProperties as $userProperty) {
                 $user_id = $userProperty->get('user_id');
-                $range = $userProperty->f('value');
+                $range = $userProperty->get('value');
                 $slash = cString::findFirstPos($range, '/');
 
                 if ($slash == false) {
@@ -558,7 +556,8 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
 
                 if (ipMatch($network, $netmask, $_SERVER['REMOTE_ADDR'])) {
                     $oRightColl = new cApiRightCollection();
-                    if (true === $oRightColl->hasFrontendAccessByCatIdAndUserId($idcat, $user_id)) {
+                    if ($oRightColl->hasFrontendAccessByCatIdAndUserId($idcat, $user_id)) {
+                        // TODO Don't allow direct write access to auth property!
                         $auth->auth['uid'] = $user_id;
                         $validated = 1;
                     }
@@ -568,7 +567,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
                 // CEC to check category access
                 // break at 'true', default value 'false'
                 cApiCecHook::setBreakCondition(true, false);
-                $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->auth['uid']);
+                $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->getUserId());
                 if (!$allow) {
                     $auth->restart();
                 }
@@ -577,11 +576,11 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
             // CEC to check category access
             // break at 'true', default value 'false'
             cApiCecHook::setBreakCondition(true, false);
-            $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->auth['uid']);
+            $allow = cApiCecHook::executeWhileBreakCondition('Contenido.Frontend.CategoryAccess', $lang, $idcat, $auth->getUserId());
 
             // In backendeditmode also check if logged in backenduser has
             // permission to view preview of page
-            if ($allow == false && $contenido && $perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat)) {
+            if (!$allow && $contenido && $perm->have_perm_area_action_item('con_editcontent', 'con_editart', $idcat)) {
                 $allow = true;
             }
 
@@ -593,7 +592,7 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
     }
 
     /**
-     * @deprecated [2023-02-28] Since 4.10.2, `$cApiClient` was used for tracking in earlier
+     * @deprecated [2023-02-28] Since CONTENIDO 4.10.2, `$cApiClient` was used for tracking in earlier
      *     times and is not needed anymore. Frontend modules/plugins should
      *     rather create their own instance if needed, instead of relying on
      *     the global instance.
@@ -730,8 +729,8 @@ if ($inUse == false && $allow == true && $view == 'edit' && ($perm->have_perm_ar
         } else {
             if ($error == 1) {
                 $tpl = new cTemplate();
-                $tpl->set("s", "ERROR_TITLE", "Fatal error");
-                $tpl->set("s", "ERROR_TEXT", "No CONTENIDO session variable set. Probable error cause: Start article in this category is not set on-line.");
+                $tpl->set('s', 'ERROR_TITLE', "Fatal error");
+                $tpl->set('s', 'ERROR_TEXT', "No CONTENIDO session variable set. Probable error cause: Start article in this category is not set on-line.");
                 $tpl->generate($errtpl);
                 exit();
             } else {

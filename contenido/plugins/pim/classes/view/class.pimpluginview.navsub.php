@@ -25,125 +25,96 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class PimPluginViewNavSub
 {
     /**
-     * Pattern for navigation (nav_sub) xml entries
+     * Pattern for navigation (nav_sub) XML entries
      */
-    const PATTERN = '/;(.+)$/';
+    public const PATTERN = '/;(.+)$/';
     /**
-     * Filename of Xml configuration file for plugins
+     * Filename of the XML configuration file for CONTENIDO navigation
      */
-    const PLUGIN_CONFIG_FILENAME = "plugin.xml";
-    /**
-     * Filename of Xml configuration file for CONTENIDO navigation
-     */
-    const CONTENIDO_NAVIGATION_FILENAME = "navigation.xml";
+    public const CONTENIDO_NAVIGATION_FILENAME = 'navigation.xml';
 
     /**
      * @var string
      */
-    private $PluginFoldername;
+    private $pluginFoldername;
 
     /**
-     * CONTENIDO sub navigations: *_nav_sub
-     *
-     * @var SimpleXMLElement
+     * @var SimpleXMLElement CONTENIDO sub navigations: *_nav_sub
      */
-    public static $XmlNavSub;
+    public static $xmlNavSub;
 
     /**
-     * Variable for counted nav entries
-     *
-     * @var int
+     * @var int Variable for counted nav entries
      */
-    protected $_NavCount = 0;
+    protected $navCount = 0;
 
     /**
-     * Variable for filepath to CONTENIDO base navigation.xml
-     *
-     * @todo check variable name
-     * @var string
+     * @var string Variable for the filepath to CONTENIDO base navigation.xml
      */
-    protected $_contenidoLanguageFileLang;
+    protected $navigationXmlPath = '';
 
     /**
-     * Variable for subnavigation name
-     *
-     * @var string
+     * @var string Variable for subnavigation name
      */
-    protected $_SubNav;
+    protected $subNav;
 
     /**
-     * Class variable for DOMDocument
-     *
-     * @var DOMDocument
+     * @var DOMDocument Class variable for DOMDocument
      */
-    protected $_DOMDocument;
+    protected $domDocument;
 
     /**
-     * Class variable for cApiNavMainCollection
-     *
-     * @var cApiNavMainCollection
+     * @var cApiNavMainCollection Class variable for cApiNavMainCollection
      */
-    protected $_ApiNavMainCollection;
+    protected $apiNavMainCollection;
 
     /**
      * Class variable for cApiNavSubCollection
      *
      * @var cApiNavSubCollection
      */
-    protected $_ApiNavSubCollection;
+    protected $apiNavSubCollection;
 
     /**
      * Initializing and set variable for DOMDocument
-     *
-     * @return DOMDocument
      */
-    private function _setDOMDocument()
+    private function setDomDocument(DOMDocument $domDocument)
     {
-        return $this->_DOMDocument = new DOMDocument();
+        $this->domDocument = $domDocument;
     }
 
     /**
      * Initializing and set variable for cApiNavMainCollection
-     *
-     * @return cApiNavMainCollection
      */
-    private function _setApiNavMainCollection()
+    private function setApiNavMainCollection(cApiNavMainCollection $apiNavMainCollection)
     {
-        return $this->_ApiNavMainCollection = new cApiNavMainCollection();
+        $this->apiNavMainCollection = $apiNavMainCollection;
     }
 
     /**
      * Initializing and set variable for cApiNavSubCollection
-     *
-     * @return cApiNavSubCollection
      */
-    private function _setApiNavSubCollection()
+    private function setApiNavSubCollection(cApiNavSubCollection $apiNavSubCollection)
     {
-        return $this->_ApiNavSubCollection = new cApiNavSubCollection();
+        $this->apiNavSubCollection = $apiNavSubCollection;
     }
 
     /**
-     * Set contenidoLanguageFileLang variable
+     * Setter for the navigationXmlPath variable.
      * (Filepath to CONTENIDO base navigation.xml)
-     *
-     * @param string $path
-     * @return bool
      */
-    private function _setNavigationXmlPath($path)
+    private function setNavigationXmlPath(string $path)
     {
-        $this->_contenidoLanguageFileLang = $path;
-        return true;
+        $this->navigationXmlPath = $path;
     }
 
     /**
-     * Get contenidoLanguageFileLang variable
+     * Getter for the navigationXmlPath variable.
      * (Filepath to CONTENIDO base navigation.xml)
-     *
-     * @return string contenigoLanguageFileLang
      */
-    private function _getNavigationXmlPath()
+    private function getNavigationXmlPath(): string
     {
-        return $this->_contenidoLanguageFileLang;
+        return $this->navigationXmlPath;
     }
 
     /**
@@ -151,26 +122,22 @@ class PimPluginViewNavSub
      */
     public function __construct()
     {
-
         // Initializing and set classes
-        $this->_setDOMDocument();
+        $this->setDomDocument(new DOMDocument());
 
         // cApiClasses
-        $this->_setApiNavMainCollection();
-        $this->_setApiNavSubCollection();
+        $this->setApiNavMainCollection(new cApiNavMainCollection());
+        $this->setApiNavSubCollection(new cApiNavSubCollection());
     }
 
     // GET and SET methods for installation routine
 
     /**
      * Set variable for plugin foldername
-     *
-     * @param string $foldername
-     * @return string
      */
-    public function setPluginFoldername($foldername)
+    public function setPluginFoldername(string $foldername)
     {
-        return $this->PluginFoldername = cSecurity::escapeString($foldername);
+        $this->pluginFoldername = cSecurity::escapeString($foldername);
     }
 
     // View methods
@@ -178,244 +145,222 @@ class PimPluginViewNavSub
     /**
      * Get nav_sub entries
      *
-     * @return string
-     *
+     * @return string|false
      * @throws cException
      */
     public function getNavSubentries()
     {
-
-        $cfg = cRegistry::getConfig();
-
         // Get contents of plugin.xml file
-        $dataPluginXml = file_get_contents(cRegistry::getBackendPath() . $cfg['path']['plugins'] . $this->PluginFoldername . DIRECTORY_SEPARATOR . self::PLUGIN_CONFIG_FILENAME);
+        $dataPluginXml = file_get_contents(PimPluginHelper::getPluginConfigFile($this->pluginFoldername));
 
         // Load xml strings
         $xmlPluginXml = simplexml_load_string($dataPluginXml);
 
         // Count nav_sub entries for this plugin
         $entries = $xmlPluginXml->contenido->nav_sub->nav;
-        $this->_NavCount = is_object($entries) ? count($entries) : 0;
+        $this->navCount = is_object($entries) ? count($entries) : 0;
 
         // No navigation configured, so we can stop this process
-        if ($this->_NavCount == 0) {
+        if ($this->navCount == 0) {
             return i18n('No navigation configuration founded', 'pim');
         }
 
-        // Added nav_sub entries to variable XmlNavSub
-        self::$XmlNavSub = $xmlPluginXml->contenido->nav_sub;
+        // Added nav_sub entries to variable xmlNavSub
+        self::$xmlNavSub = $xmlPluginXml->contenido->nav_sub;
 
         // Check for CONTENIDO navigation entries
-        $contenidoNav = $this->_getCONTENIDONavigation();
-
-        if ($contenidoNav != "") { // CONTENIDO navigation entry founded
-            return $this->_getPluginNavigation($contenidoNav);
-        } else { // No CONTENIDO navigation entry founded
-
-            // Check for plugin navigation entry
-            $pluginNav = $this->_checkAndGetPluginNavigation();
-
-            if ($pluginNav != "") { // Plugin navigation entry founded
-                return $this->_getPluginNavigation($pluginNav);
-            } else { // No navigation entries founded
-                return i18n('No navigation configuration founded', 'pim');
-            }
+        $contenidoNav = $this->getContenidoNavigation();
+        if ($contenidoNav != '') {
+            // CONTENIDO navigation entry found
+            return $this->getPluginNavigation($contenidoNav);
         }
+
+        // Check for plugin navigation entry
+        $pluginNav = $this->checkAndGetPluginNavigation();
+        if ($pluginNav != '') {
+            // Plugin navigation entry found
+            return $this->getPluginNavigation($pluginNav);
+        }
+
+        // No navigation entries found
+        return i18n('No navigation configuration founded', 'pim');
     }
 
     /**
-     * Get founded CONTENIDO navigation entries
+     * Get found CONTENIDO navigation entries
      *
-     * @return bool
+     * @return string|false
      */
-    private function _getCONTENIDONavigation()
+    private function getContenidoNavigation()
     {
-        $cfg = cRegistry::getConfig();
+        // Path to CONTENIDO navigation XML file
+        $this->setNavigationXmlPath(cRegistry::getBackendPath() . 'xml/' . self::CONTENIDO_NAVIGATION_FILENAME);
 
-        // Path to CONTENIDO navigation xml file
-        $this->_setNavigationXmlPath(cRegistry::getBackendPath() . 'xml/' . self::CONTENIDO_NAVIGATION_FILENAME);
-
-        if (cFileHandler::exists($this->_getNavigationXmlPath())) {
-
-            for ($i = 0; $i < $this->_NavCount; $i++) {
-
+        if (cFileHandler::exists($this->getNavigationXmlPath())) {
+            for ($i = 0; $i < $this->navCount; $i++) {
                 // Get only navigation value (pattern)
-                preg_match(self::PATTERN, self::$XmlNavSub->nav[$i], $matches);
+                preg_match(self::PATTERN, self::$xmlNavSub->nav[$i], $matches);
 
                 // Get single navigation values
-                $navSubEntries = explode("/", $matches[1]);
+                $navSubEntries = explode('/', $matches[1]);
 
-                if ($navSubEntries[0] == "navigation") {
+                if ($navSubEntries[0] == 'navigation') {
                     // CONTENIDO navigation case
 
                     // Define subnavigation name (example: navigation/content/linkchecker)
-                    $this->_SubNav = $this->_getTranslatedNavigationName('//language/navigation/' . $navSubEntries[1] . '/' . $navSubEntries[2] . '/main');
+                    $this->subNav = $this->getTranslatedNavigationName('//language/navigation/' . $navSubEntries[1] . '/' . $navSubEntries[2] . '/main');
 
                     // Define navigation name (example: navigation/content)
-                    return $this->_getTranslatedNavigationName('//language/navigation/' . $navSubEntries[1] . '/main');
+                    return $this->getTranslatedNavigationName('//language/navigation/' . $navSubEntries[1] . '/main');
                 } else { // No CONTENIDO navigation case
                     return false;
                 }
             }
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
      * Get translated navigation name
      *
-     * @param string $query
-     * @return string XML of translated navigation nane
+     * @return string|false XML of translated navigation nane
      */
-    private function _getTranslatedNavigationName($query = '')
+    private function getTranslatedNavigationName(string $query = '')
     {
-
         if ($query == '') {
             return false;
         }
 
-        // Load CONTENIDO navigation xml file
-        $this->_DOMDocument->load($this->_getNavigationXmlPath());
+        // Load CONTENIDO navigation XML file
+        $this->domDocument->load($this->getNavigationXmlPath());
 
         // Create new DOMXPath
-        $xpath = new DOMXPath($this->_DOMDocument);
+        $xpath = new DOMXPath($this->domDocument);
 
         // Run defined query
         $entriesLang = $xpath->query($query);
 
-        foreach ($entriesLang as $entry) {
-            return $entry->firstChild->nodeValue;
-        }
+        return $entriesLang instanceof DOMNodeList && $entriesLang->length ? $entriesLang->item(0)->firstChild->nodeValue : false;
     }
 
     /**
-     * Checks for plugin navigation entry and get navigation entries from
-     * CONTENIDO navigation xml file
+     * Checks for plugin navigation entry and get navigation entries from CONTENIDO navigation XML file
      *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cException
+     * @return mixed|false
+     * @throws cDbException|cException
      */
-    private function _checkAndGetPluginNavigation()
+    private function checkAndGetPluginNavigation()
     {
-        $cfg = cRegistry::getConfig();
-
-        // Path to CONTENIDO navigation xml file
+        // Path to CONTENIDO navigation XML file
         $contenidoLanguageFileLang = cRegistry::getBackendPath() . 'xml/' . self::CONTENIDO_NAVIGATION_FILENAME;
 
         if (cFileHandler::exists($contenidoLanguageFileLang)) {
-
-            for ($i = 0; $i < $this->_NavCount; $i++) {
-
-                if (cSecurity::toInteger(self::$XmlNavSub->nav[$i]->attributes()->navm) > 0) {
-                    $this->_ApiNavMainCollection->setWhere('idnavm', cSecurity::toInteger(self::$XmlNavSub->nav[$i]->attributes()->navm));
+            for ($i = 0; $i < $this->navCount; $i++) {
+                if (cSecurity::toInteger(self::$xmlNavSub->nav[$i]->attributes()->navm) > 0) {
+                    $this->apiNavMainCollection->setWhere(
+                        'idnavm',
+                        cSecurity::toInteger(self::$xmlNavSub->nav[$i]->attributes()->navm)
+                    );
                 } else {
-                    $this->_ApiNavMainCollection->setWhere('name', cSecurity::escapeString(self::$XmlNavSub->nav[$i]->attributes()->navm));
+                    $this->apiNavMainCollection->setWhere(
+                        'name',
+                        cSecurity::escapeString(self::$xmlNavSub->nav[$i]->attributes()->navm)
+                    );
                 }
 
-                $this->_ApiNavMainCollection->query();
+                $this->apiNavMainCollection->query();
 
-                // If no entry at nav_sub database table founded,
-                // return false
-                if ($this->_ApiNavMainCollection->count() == 0) {
+                // If no entry at nav_sub database table found, return false
+                if ($this->apiNavMainCollection->count() == 0) {
                     return false;
                 }
 
-                $row = $this->_ApiNavMainCollection->next();
+                $row = $this->apiNavMainCollection->next();
 
                 // Define query
                 $query = '//' . $row->get('location');
 
                 // Load plugin navigation xml file
-                $this->_DOMDocument->load($contenidoLanguageFileLang);
+                $this->domDocument->load($contenidoLanguageFileLang);
 
                 // Create new DOMXPath
-                $xpath = new DOMXPath($this->_DOMDocument);
+                $xpath = new DOMXPath($this->domDocument);
 
                 // Run defined query
-                $entriesLang = $xpath->query($query);
+                $entries = $xpath->query($query);
 
-                foreach ($entriesLang as $entry) {
-                    return $entry->firstChild->nodeValue;
-                }
+                return $entries instanceof DOMNodeList && $entries->length ? $entries->item(0)->firstChild->nodeValue : false;
             }
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
-     * Get founded plugin navigation entries
-     *
-     * @param string $contenidoNav
+     * Get found plugin navigation entries
      *
      * @return string|bool
+     * @throws cException
      */
-    private function _getPluginNavigation($contenidoNav = "")
+    private function getPluginNavigation(string $contenidoNav = '')
     {
         $belang = cRegistry::getBackendLanguage();
         $cfg = cRegistry::getConfig();
 
-        // Path to plugin specific navigation xml file with selected backend
-        // language
-        $pluginLanguageFileLang = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $this->PluginFoldername . DIRECTORY_SEPARATOR . 'xml' . DIRECTORY_SEPARATOR . $cfg['lang'][$belang];
+        // Path to the plugin-specific navigation XML file with the selected backend language
+        $pluginLanguageFile = PimPluginHelper::getPluginLanguageFile($this->pluginFoldername, $cfg['lang'][$belang]);
 
-        if (cFileHandler::exists($pluginLanguageFileLang) && $contenidoNav != "") {
+        if (cFileHandler::exists($pluginLanguageFile) && $contenidoNav != '') {
+            // Initializing of the found array
+            $found = [];
 
-            // Initializing founded array
-            $founded = [];
-
-            for ($i = 0; $i < $this->_NavCount; $i++) {
-
+            for ($i = 0; $i < $this->navCount; $i++) {
                 // Get only navigation value (pattern)
-                preg_match(self::PATTERN, self::$XmlNavSub->nav[$i], $matches);
+                preg_match(self::PATTERN, self::$xmlNavSub->nav[$i], $matches);
 
                 // Define query
                 $query = '//' . $matches[1];
 
                 // Load plugin navigation xml file
-                $this->_DOMDocument->load($pluginLanguageFileLang);
+                $this->domDocument->load($pluginLanguageFile);
 
                 // Create new DOMXPath
-                $xpath = new DOMXPath($this->_DOMDocument);
+                $xpath = new DOMXPath($this->domDocument);
 
                 // Run defined query
-                $entriesLang = $xpath->query($query);
+                $entries = $xpath->query($query);
 
                 // Prevent misarrangement
-                if ($entriesLang->length == 0) {
+                if ($entries->length == 0) {
                     return false;
                 }
 
-                foreach ($entriesLang as $entry) {
-
-                    // If we have more then one navigation entry, define
-                    // menuname for other entries
+                foreach ($entries as $entry) {
+                    // If we have more than one navigation entry, define menu name for other entries
                     $menuName = '';
-                    if (self::$XmlNavSub->nav[$i]->attributes()->level == 0 && $this->_NavCount > 1) {
+                    if (self::$xmlNavSub->nav[$i]->attributes()->level == 0 && $this->navCount > 1) {
                         $menuName = $entry->nodeValue;
                         continue;
-                    } elseif (self::$XmlNavSub->nav[$i]->attributes()->level == 1 && $menuName == '') {
+                    } elseif (self::$xmlNavSub->nav[$i]->attributes()->level == 1 && $menuName == '') {
                         // If we have an plugin with level one and no defined menuName, use subnavigation name
                         // as menuName
-                        $menuName = $this->_SubNav;
+                        $menuName = $this->subNav;
                     }
 
-                    $founded[] = i18n('You find this plugin at navigation section', 'pim') . " &quot;{$contenidoNav}&quot; " . i18n('as', 'pim') . (($menuName != '') ? ' &quot;' . $menuName . '&quot; ->' : '') . " &quot;{$entry->nodeValue}&quot;<br />";
+                    $found[] = i18n('You find this plugin at navigation section', 'pim')
+                        . " &quot;$contenidoNav&quot; "
+                        . i18n('as', 'pim')
+                        . (($menuName != '') ? ' &quot;' . $menuName . '&quot; ->' : '')
+                        . " &quot;$entry->nodeValue&quot;<br />";
                 }
             }
 
             // Prevent double entries
-            $founded = array_unique($founded);
+            $found = array_unique($found);
 
-            // Initializing output variable
-
-            // Convert founded array to a string
-            $output = implode('', $founded);
-
-            return $output;
+            // Convert found array to a string
+            return implode('', $found);
         } else {
             return false;
         }

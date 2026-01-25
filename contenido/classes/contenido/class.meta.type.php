@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiMetaType createNewItem
- * @method cApiMetaType|bool next
+ * @extends ItemCollection<cApiMetaType>
  */
 class cApiMetaTypeCollection extends ItemCollection
 {
@@ -31,31 +30,28 @@ class cApiMetaTypeCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('meta_type'), 'idmetatype');
+        parent::__construct(cDb::getTableName('meta_type'), 'idmetatype');
         $this->_setItemClass('cApiMetaType');
     }
 
     /**
      * Creates a meta type entry.
      *
-     * @param string $metatype
-     * @param string $fieldtype
-     * @param int $maxlength
-     * @param string $fieldname
-     *
+     * @param string $metaType
+     * @param string $fieldType
+     * @param int $maxLength
+     * @param string $fieldName
      * @return cApiMetaType
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($metatype, $fieldtype, $maxlength, $fieldname)
+    public function create($metaType, $fieldType, $maxLength, $fieldName)
     {
         $oItem = $this->createNewItem();
 
-        $oItem->set('metatype', $metatype);
-        $oItem->set('fieldtype', $fieldtype);
-        $oItem->set('maxlength', $maxlength);
-        $oItem->set('fieldname', $fieldname);
+        $oItem->set('metatype', $metaType);
+        $oItem->set('fieldtype', $fieldType);
+        $oItem->set('maxlength', $maxLength);
+        $oItem->set('fieldname', $fieldName);
         $oItem->store();
 
         return $oItem;
@@ -74,37 +70,30 @@ class cApiMetaType extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId
-     *         Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('meta_type'), 'idmetatype');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('meta_type'), 'idmetatype');
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * User-defined setter for article language fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         if ('maxlength' == $name) {
             $value = cSecurity::toInteger($value);
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

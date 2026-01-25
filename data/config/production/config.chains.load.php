@@ -23,10 +23,10 @@ cInclude('includes', 'chains/include.chain.content.indexarticle.php');
 cInclude('includes', 'chains/include.chain.template.parsetemplate.php');
 
 // get cec registry instance
-$_cecRegistry = cApiCecRegistry::getInstance();
-$_cecRegistry->addChainFunction('Contenido.Frontend.CategoryAccess', 'cecFrontendCategoryAccess');
-$_cecRegistry->addChainFunction('Contenido.Frontend.CategoryAccess', 'cecFrontendCategoryAccess_Backend');
-$_cecRegistry->addChainFunction('Contenido.Content.CreateMetatags', 'cecCreateMetatags');
-$_cecRegistry->addChainFunction('Contenido.Frontend.BaseHrefGeneration', 'cecCreateBaseHref');
-$_cecRegistry->addChainFunction('Contenido.Content.AfterStore', 'cecIndexArticle');
-$_cecRegistry->addChainFunction('Contenido.Template.BeforeParse', 'cecParseTemplate');
+$cecRegistry = cApiCecRegistry::getInstance();
+$cecRegistry->addChainFunction('Contenido.Frontend.CategoryAccess', 'cecFrontendCategoryAccess');
+$cecRegistry->addChainFunction('Contenido.Frontend.CategoryAccess', 'cecFrontendCategoryAccess_Backend');
+$cecRegistry->addChainFunction('Contenido.Content.CreateMetatags', 'cecCreateMetatags');
+$cecRegistry->addChainFunction('Contenido.Frontend.BaseHrefGeneration', 'cecCreateBaseHref');
+$cecRegistry->addChainFunction('Contenido.Content.AfterStore', 'cecIndexArticle');
+$cecRegistry->addChainFunction('Contenido.Template.BeforeParse', 'cecParseTemplate');

@@ -18,9 +18,9 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 // Display critical error if client does not exist
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getClientId();
 if ($client < 1 || !cRegistry::getClient()->isLoaded()) {
-    $oPage = new cGuiPage("style_edit_form");
+    $oPage = new cGuiPage('style_edit_form');
     $oPage->displayCriticalError(i18n('No Client selected'));
     $oPage->render();
     return;
@@ -33,7 +33,6 @@ $editor = new cGuiSourceEditor($tmpFile);
 
 // Show notice message if backend_file_extension filter is active
 if (empty($tmpFile)) {
-
     // Get system properties for extension filter
     $backend_file_extensions = getSystemProperty('backend', 'backend_file_extensions');
 

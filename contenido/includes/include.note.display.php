@@ -14,15 +14,23 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if ($action == 'note_delete') {
-    $oNoteCollection = new NoteCollection();
-    $oNoteCollection->delete($deleteitem);
+/**
+ * @var int $deleteitem
+ * @var string $itemtype
+ * @var string|int $itemid
+ */
+
+$action = cRegistry::getAction();
+
+if ($action === 'note_delete') {
+    $noteCollection = new NoteCollection();
+    $noteCollection->delete($deleteitem);
 }
 
-$page = new cGuiPage("note.display");
+$page = new cGuiPage('note.display');
 
-$oNoteList = new NoteList($itemtype, $itemid);
-$oNoteList->setDeleteable(true);
+$noteList = new NoteList($itemtype, $itemid);
+$noteList->setDeleteable(true);
 
-$page->setContent($oNoteList);
+$page->setContent($noteList);
 $page->render();

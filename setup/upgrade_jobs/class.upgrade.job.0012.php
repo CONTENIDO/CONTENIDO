@@ -26,13 +26,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cUpgradeJob_0012 extends cUpgradeJobAbstract
 {
 
-    public $maxVersion = "4.9.3";
+    public $maxVersion = '4.9.3';
 
     public function _execute()
     {
         $cfg = cRegistry::getConfig();
 
-        if ($_SESSION['setuptype'] == 'upgrade') {
+        if ($this->_setupType == 'upgrade') {
             // Initializing cApiActionCollection
             $actionColl = new cApiActionCollection();
 
@@ -50,7 +50,7 @@ class cUpgradeJob_0012 extends cUpgradeJobAbstract
             $pluginColl->select();
             while ($plugin = $pluginColl->next()) {
                 // Get path to plugin.xml
-                $pluginXmlPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($plugin->get('folder')) . DIRECTORY_SEPARATOR . "plugin.xml";
+                $pluginXmlPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($plugin->get('folder')) . DIRECTORY_SEPARATOR . 'plugin.xml';
 
                 // Load plugin.xml and get xml strings
                 $xml = simplexml_load_string(file_get_contents($pluginXmlPath));
@@ -68,7 +68,7 @@ class cUpgradeJob_0012 extends cUpgradeJobAbstract
 
                     // Set a relation
                     if ($actionId !== false) {
-                        $pluginRelColl->create($actionId->get("idaction"), $plugin->get('idplugin'), 'action');
+                        $pluginRelColl->create($actionId->get('idaction'), $plugin->get('idplugin'), 'action');
                     }
                 }
             }

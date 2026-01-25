@@ -15,12 +15,11 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Actionlog collection.
+ * Action log collection.
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiActionlog createNewItem
- * @method cApiActionlog|bool next
+ * @extends ItemCollection<cApiActionlog>
  */
 class cApiActionlogCollection extends ItemCollection
 {
@@ -42,14 +41,13 @@ class cApiActionlogCollection extends ItemCollection
     /**
      * Constructor to create an instance of this class.
      *
-     * Tables user, client, language, action & category_article
-     * are allowed as join partners.
+     * Tables user, client, language, action & category_article are allowed as join partners.
      *
      * @throws cInvalidArgumentException
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('actionlog'), 'idlog');
+        parent::__construct(cDb::getTableName('actionlog'), 'idlog');
         $this->_setItemClass('cApiActionlog');
 
         // set the join partners so that joins can be used via link() method
@@ -63,21 +61,16 @@ class cApiActionlogCollection extends ItemCollection
     /**
      * Creates an actionlog item.
      *
-     * @param string $userId
-     *                             User id
-     * @param int $idclient
-     * @param int $idlang
-     * @param int $idaction
-     * @param int $idcatart
+     * @param string $userId User id
+     * @param int $clientId
+     * @param int $languageId
+     * @param int $actionId
+     * @param int $categoryArticleId
      * @param string $logtimestamp [optional]
-     *
      * @return cApiActionlog
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($userId, $idclient, $idlang, $idaction, $idcatart, $logtimestamp = '')
+    public function create($userId, $clientId, $languageId, $actionId, $categoryArticleId, $logtimestamp = '')
     {
         $item = $this->createNewItem();
 
@@ -86,10 +79,10 @@ class cApiActionlogCollection extends ItemCollection
         }
 
         $item->set('user_id', $userId);
-        $item->set('idclient', $idclient);
-        $item->set('idlang', $idlang);
-        $item->set('idaction', $idaction);
-        $item->set('idcatart', $idcatart);
+        $item->set('idclient', $clientId);
+        $item->set('idlang', $languageId);
+        $item->set('idaction', $actionId);
+        $item->set('idcatart', $categoryArticleId);
         $item->set('logtimestamp', $logtimestamp);
 
         $item->store();
@@ -100,14 +93,11 @@ class cApiActionlogCollection extends ItemCollection
     /**
      * Returns the minimum and maximum action log timestamps.
      *
-     * @return array|null Array like ['min' => (string), 'max' => (string))]
-     *      or null, if no entries where found.
-     *
+     * @return array{min: string, max: string}|null Array or null, if no entries where found.
      * @throws cDbException
-     * @throws cInvalidArgumentException
      * @since CONTENIDO 4.10.2
      */
-    public function getMinMaxLogTimestamp()
+    public function getMinMaxLogTimestamp(): ?array
     {
         $sql = 'SELECT MIN(`logtimestamp`) AS `min`, MAX(`logtimestamp`) AS `max` FROM `%s`';
         $this->db->query($sql, $this->getTable());
@@ -124,7 +114,7 @@ class cApiActionlogCollection extends ItemCollection
 }
 
 /**
- * Actionlog item.
+ * Action log item.
  *
  * @package    Core
  * @subpackage GenericDB_Model
@@ -135,31 +125,24 @@ class cApiActionlog extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('actionlog'), 'idlog');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('actionlog'), 'idlog');
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * User-defined setter for action log fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idlang':
@@ -170,7 +153,7 @@ class cApiActionlog extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

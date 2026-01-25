@@ -18,30 +18,29 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var array $cfg
  */
 
-$page = new cGuiPage("system_integrity");
+$page = new cGuiPage('system_integrity');
 
 $test = new cSystemtest($cfg);
 $test->runTests();
-$results = $test->getResults();
 
-foreach ($results as $result) {
-    if ($result["severity"] == cSystemtest::C_SEVERITY_NONE) {
+foreach ($test->getResults() as $result) {
+    if ($result['severity'] == cSystemtest::C_SEVERITY_NONE) {
         continue;
     }
 
-    if ($result["result"] == true) {
-        $page->set("d", "IMAGESOURCE", cRegistry::getBackendUrl() . "images/but_ok.gif");
-    } elseif ($result["severity"] == cSystemtest::C_SEVERITY_WARNING) {
-        $page->set("d", "IMAGESOURCE", cRegistry::getBackendUrl() . "images/icon_warning.gif");
-    } elseif ($result["severity"] == cSystemtest::C_SEVERITY_ERROR) {
-        $page->set("d", "IMAGESOURCE", cRegistry::getBackendUrl() . "images/icon_fatalerror.gif");
-    } elseif ($result["severity"] == cSystemtest::C_SEVERITY_INFO) {
-        $page->set("d", "IMAGESOURCE", cRegistry::getBackendUrl() . "images/info.gif");
+    if ($result['result'] == true) {
+        $page->set('d', 'IMAGESOURCE', cRegistry::getBackendUrl() . 'images/but_ok.gif');
+    } elseif ($result['severity'] == cSystemtest::C_SEVERITY_WARNING) {
+        $page->set('d', 'IMAGESOURCE', cRegistry::getBackendUrl() . 'images/icon_warning.gif');
+    } elseif ($result['severity'] == cSystemtest::C_SEVERITY_ERROR) {
+        $page->set('d', 'IMAGESOURCE', cRegistry::getBackendUrl() . 'images/icon_fatalerror.gif');
+    } elseif ($result['severity'] == cSystemtest::C_SEVERITY_INFO) {
+        $page->set('d', 'IMAGESOURCE', cRegistry::getBackendUrl() . 'images/info.gif');
     }
-    $page->set("d", "HEADLINE", $result["headline"]);
-    $page->set("d", "MESSAGE", $result["message"]);
+    $page->set('d', 'HEADLINE', $result['headline']);
+    $page->set('d', 'MESSAGE', $result['message']);
     $page->next();
 }
 
-$page->set("s", "RESULTS", i18n("Results"));
+$page->set('s', 'RESULTS', i18n("Results"));
 $page->render();

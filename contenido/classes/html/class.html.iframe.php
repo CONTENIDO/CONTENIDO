@@ -38,12 +38,9 @@ class cHTMLIFrame extends cHTML
     /**
      * Sets this frame's source
      *
-     * @param string|object $content
-     *         String with the content or an object to render.
-     * @return cHTMLIFrame
-     *         $this for chaining
+     * @param string $src
      */
-    public function setSrc($src)
+    public function setSrc($src): self
     {
         return $this->updateAttribute('src', $src);
     }
@@ -51,40 +48,31 @@ class cHTMLIFrame extends cHTML
     /**
      * Sets this frame's width
      *
-     * @param string $width
-     *         Width of the item
-     * @return cHTMLIFrame
-     *         $this for chaining
+     * @param int $width Width of the item
      */
-    public function setWidth($width)
+    public function setWidth($width): self
     {
-        return $this->updateAttribute('width', $width);
+        return $this->updateAttribute('width', cSecurity::toInteger($width));
     }
 
     /**
      * Sets this frame's height
      *
-     * @param string $height
-     *         Height of the item
-     * @return cHTMLIFrame
-     *         $this for chaining
+     * @param int $height Height of the item
      */
-    public function setHeight($height)
+    public function setHeight($height): self
     {
-        return $this->updateAttribute('height', $height);
+        return $this->updateAttribute('height', cSecurity::toInteger($height));
     }
 
     /**
-     * Sets wether this iframe should have a border or not
+     * Sets weather this iframe should have a border or not
      *
-     * @param string $border
-     *         If 1 or true, this frame will have a border
-     * @return cHTMLIFrame
-     *         $this for chaining
+     * @param int $border If 1 or true, this frame will have a border
      */
-    public function setBorder($border)
+    public function setBorder($border): self
     {
-        return $this->updateAttribute('frameborder', intval($border));
+        return $this->updateAttribute('frameborder', cSecurity::toInteger($border));
     }
 
 }

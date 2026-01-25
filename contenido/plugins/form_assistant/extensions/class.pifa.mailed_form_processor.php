@@ -27,8 +27,8 @@ plugin_include(Pifa::getName(), 'extensions/class.pifa.default_form_processor.ph
  */
 class MailedFormProcessor extends DefaultFormProcessor
 {
-    const MAIL_MODE_CLIENT = 'client';
-    const MAIL_MODE_SYSTEM = 'system';
+    public const MAIL_MODE_CLIENT = 'client';
+    public const MAIL_MODE_SYSTEM = 'system';
 
     /**
      * Sends client & system mail independantly.
@@ -79,10 +79,8 @@ class MailedFormProcessor extends DefaultFormProcessor
      * Sends a mail to the client or configured system address when mail template was selected.
      *
      * @param string $mode mail mode, must be "client" or "system"
-     *
      * @return boolean|array
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cException|cInvalidArgumentException
      */
     protected function _getMailOptions($mode)
     {

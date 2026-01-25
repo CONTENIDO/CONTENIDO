@@ -14,8 +14,12 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$layoutInFile = new cLayoutHandler(cSecurity::toInteger($_GET['idlay']), '', $cfg, $lang);
-if (($code = $layoutInFile->getLayoutCode()) == false) {
+$cfg = cRegistry::getConfig();
+$lang = cRegistry::getLanguageId();
+
+$idlay = cSecurity::toInteger($_GET['idlay']);
+$layoutInFile = new cLayoutHandler($idlay, '', $cfg, $lang);
+if (($code = $layoutInFile->getLayoutCode()) === false) {
     echo i18n("No such layout");
 }
 
@@ -23,6 +27,6 @@ if (($code = $layoutInFile->getLayoutCode()) == false) {
 $base = '<base href="' . cRegistry::getFrontendUrl() . '">';
 $tags = $base;
 
-$code = str_replace("<head>", "<head>\n" . $tags, $code);
+$code = str_replace('<head>', "<head>\n" . $tags, $code);
 
 eval("?>\n" . cSecurity::unescapeDB($code) . "\n<?php\n");

@@ -26,11 +26,8 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract
     /**
      * Generates the encoded code for the tab menu.
      *
-     * @param array $tabs
-     *         associative array mapping the tab IDs to the tab names
-     *
-     * @return string
-     *         the encoded code for the tab menu
+     * @param array $tabs Associative array mapping the tab IDs to the tab names
+     * @return string The encoded code for the tab menu
      * @throws cInvalidArgumentException
      */
     protected function _generateTabMenuCode(array $tabs): string
@@ -54,22 +51,16 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract
     /**
      * Return the raw settings of a content type
      *
-     * @param string $contentTypeName
-     *         Content type name (e.g. `CONTENT_TYPE`)
-     * @param int $id
-     *         Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
-     * @param array $contentTypes
-     *         Content type array
-     *
-     * @return string
-     * @throws cDbException
-     * @throws cException
+     * @param string $contentTypeName Content type name (e.g. `CONTENT_TYPE`)
+     * @param int $id Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
+     * @param array $contentTypes Content type array
+     * @throws cDbException|cException
      */
     protected function _getRawSettings($contentTypeName, $id, array $contentTypes): string
     {
         $id = cSecurity::toInteger($id);
         if (!isset($contentTypes[$contentTypeName][$id])) {
-            $idArtLang = cSecurity::toInteger(cRegistry::getArticleLanguageId());
+            $idArtLang = cRegistry::getArticleLanguageId();
             // Get the idtype of the content type and then the settings
             $typeItem = new cApiType();
             $typeItem->loadByType($contentTypeName);
@@ -83,8 +74,7 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract
     /**
      * Generates the code for the action buttons (save and cancel).
      *
-     * @return string
-     *         the encoded code for the action buttons
+     * @return string The encoded code for the action buttons
      * @throws cInvalidArgumentException
      */
     protected function _generateActionCode(): string
@@ -112,8 +102,7 @@ abstract class cContentTypeAbstractTabbed extends cContentTypeAbstract
      */
     protected function _getRawSettingsFromContent(
         int $idArtLang, int $idType, int $typeId
-    ): string
-    {
+    ): string {
         // Load the appropriate content entry in order to get the settings
         $content = new cApiContent();
         $content->loadByArticleLanguageIdTypeAndTypeId($idArtLang, $idType, $typeId);

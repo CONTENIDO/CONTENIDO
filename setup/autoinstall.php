@@ -110,7 +110,7 @@ require_once(CON_SETUP_PATH . '/upgrade_jobs/class.upgrade.job.abstract.php');
 require_once(CON_SETUP_PATH . '/upgrade_jobs/class.upgrade.job.main.php');
 
 // Execute upgrade jobs
-$oUpgradeMain = new cUpgradeJobMain($db, $cfg, $cfgClient, "0");
+$oUpgradeMain = new cUpgradeJobMain($db, $cfg, $cfgClient, '0');
 $oUpgradeMain->_execute();
 
 // write the config.php and finish the setup

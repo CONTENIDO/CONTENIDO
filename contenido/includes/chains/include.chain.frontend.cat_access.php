@@ -20,17 +20,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @param int $idlang
  * @param int $idcat
  * @param int $idfrontenduser
- *
- * @return bool
- *
- * @throws cDbException
- * @throws cException
+ * @throws cDbException|cException
  */
-function cecFrontendCategoryAccess($idlang, $idcat, $idfrontenduser)
+function cecFrontendCategoryAccess($idlang, $idcat, $idfrontenduser): bool
 {
-
-    global $cfg;
-
     // get idcatlang from idcat & lang
     // TODO should use cApiCategoryLanguage::loadByCategoryIdAndLanguageId()
     $db = cRegistry::getDb();
@@ -38,7 +31,7 @@ function cecFrontendCategoryAccess($idlang, $idcat, $idfrontenduser)
         SELECT
             idcatlang
         FROM
-            " . $cfg['tab']['cat_lang'] . "
+            " . cDb::getTableName('cat_lang') . "
         WHERE
             idcat = " . cSecurity::toInteger($idcat) . "
             AND idlang = " . cSecurity::toInteger($idlang));

@@ -21,9 +21,9 @@ $client = cRegistry::getClientId();
 $area = cRegistry::getArea();
 $frame = cRegistry::getFrame();
 
-$oPage = new cGuiPage("frontend.user_menu");
+$oPage = new cGuiPage('frontend.user_menu');
 
-$oUser = new cApiUser($auth->auth["uid"]);
+$oUser = new cApiUser($auth->getUserId());
 
 $requestElemPerPage = cSecurity::toInteger($_REQUEST['elemperpage'] ?? '0');
 $requestPage = cSecurity::toInteger($_REQUEST['page'] ?? '0');
@@ -36,12 +36,12 @@ $requestFrontendUser = $_GET['frontenduser'] ?? '';
 
 // Set default values
 if ($requestElemPerPage <= 0) {
-    $requestElemPerPage = cSecurity::toInteger($oUser->getProperty("itemsperpage", $area));
+    $requestElemPerPage = cSecurity::toInteger($oUser->getProperty('itemsperpage', $area));
 }
 if (!is_numeric($requestElemPerPage)) {
     $requestElemPerPage = 25;
 }
-$oUser->setProperty("itemsperpage", $area, $requestElemPerPage);
+$oUser->setProperty('itemsperpage', $area, $requestElemPerPage);
 
 if ($requestPage <= 0 || $requestElemPerPage == 0) {
     $requestPage = 1;
@@ -65,8 +65,8 @@ $aSortOrderOptions = [
     "desc" => i18n("Descending")
 ];
 
-$bUsePlugins = getEffectiveSetting("frontendusers", "pluginsearch", "true");
-$bUsePlugins = ($bUsePlugins == "false") ? false : true;
+$bUsePlugins = getEffectiveSetting('frontendusers', 'pluginsearch', 'true');
+$bUsePlugins = !($bUsePlugins === 'false');
 
 $oFEUsers = new cApiFrontendUserCollection();
 
@@ -91,14 +91,15 @@ if ($bUsePlugins == true && cHasPlugins('frontendusers')) {
         $_aValidPlugins = explode(',', $_sValidPlugins);
     }
 
-    $_iCountValidPlugins = sizeof($_aValidPlugins);
+    $_iCountValidPlugins = count($_aValidPlugins);
 
     foreach ($cfg['plugins']['frontendusers'] as $plugin) {
         if ($_iCountValidPlugins == 0 || in_array($plugin, $_aValidPlugins)) {
-            if (function_exists('frontendusers_' . $plugin . '_wantedVariables')
+            if (
+                function_exists('frontendusers_' . $plugin . '_wantedVariables')
                 && function_exists('frontendusers_' . $plugin . '_canonicalVariables')
-                && function_exists('frontendusers_' . $plugin . '_getvalue')) {
-
+                && function_exists('frontendusers_' . $plugin . '_getvalue')
+            ) {
                 $aVariableNames = call_user_func('frontendusers_' . $plugin . '_canonicalVariables');
 
                 if (is_array($aVariableNames)) {
@@ -116,7 +117,7 @@ if ($bUsePlugins == true && cHasPlugins('frontendusers')) {
 $oFEUsers->setWhere("cApiFrontendUserCollection.idclient", $client);
 
 if (cString::getStringLength($requestFilter) > 0) {
-    if ($requestSearchIn == "--all--" || $requestSearchIn == "") {
+    if ($requestSearchIn == "--all--" || $requestSearchIn == '') {
         foreach ($aFieldSources as $variableName => $source) {
             $oFEUsers->setWhereGroup("filter", $variableName, $requestFilter, "LIKE");
         }
@@ -132,7 +133,7 @@ if (cString::getStringLength($requestFilter) > 0) {
     }
 }
 
-if ($requestRestrictGroup != "" && $requestRestrictGroup != "--all--") {
+if ($requestRestrictGroup != '' && $requestRestrictGroup != "--all--") {
     $oFEUsers->link("cApiFrontendGroupMemberCollection", 'idfrontenduser');
     $oFEUsers->setWhere("cApiFrontendGroupMemberCollection.idfrontendgroup", $requestRestrictGroup);
 }
@@ -167,22 +168,22 @@ $aUserTable = [];
 
 while ($feuser = $oFEUsers->next()) {
     foreach ($aFieldSources as $key => $field) {
-        $idfrontenduser = $feuser->get("idfrontenduser");
+        $idfrontenduser = $feuser->get('idfrontenduser');
 
         $aUserTable[$idfrontenduser]['idfrontenduser'] = $idfrontenduser;
 
         switch ($field) {
             case "base":
-                $aUserTable[$idfrontenduser][$key] = $feuser->get("username");
+                $aUserTable[$idfrontenduser][$key] = $feuser->get('username');
                 break;
             case "created":
-                $aUserTable[$idfrontenduser][$key] = $feuser->get("created");
+                $aUserTable[$idfrontenduser][$key] = $feuser->get('created');
                 break;
             case "modified":
-                $aUserTable[$idfrontenduser][$key] = $feuser->get("modified");
+                $aUserTable[$idfrontenduser][$key] = $feuser->get('modified');
                 break;
             default:
-                if ($requestFilter != "") {
+                if ($requestFilter != '') {
                     $aUserTable[$idfrontenduser][$key] = call_user_func("frontendusers_" . $field . "_getvalue", $key);
                 }
                 break;
@@ -194,7 +195,7 @@ $cGuiMenu = new cGuiMenu();
 $iMenu = 0;
 
 foreach ($aUserTable as $mkey => $params) {
-    $idfrontenduser = $params["idfrontenduser"];
+    $idfrontenduser = $params['idfrontenduser'];
     $link = new cHTMLLink();
     $link->setClass('show_item')
         ->setLink('javascript:void(0)')
@@ -208,7 +209,7 @@ foreach ($aUserTable as $mkey => $params) {
         . '</a>';
 
     $cGuiMenu->setId($iMenu, $idfrontenduser);
-    $cGuiMenu->setTitle($iMenu, conHtmlentities($params["username"]));
+    $cGuiMenu->setTitle($iMenu, conHtmlentities($params['username']));
     $cGuiMenu->setLink($iMenu, $link);
     $cGuiMenu->setActions($iMenu, "delete", $deleteLink);
     $cGuiMenu->setImage($iMenu, "");
@@ -221,22 +222,22 @@ foreach ($aUserTable as $mkey => $params) {
 $oPage->addScript('parameterCollector.js');
 
 $message = i18n("Do you really want to delete the user %s?");
-$oPage->set("s", "DELETE_MESSAGE", $message);
+$oPage->set('s', 'DELETE_MESSAGE', $message);
 
 // generate current content for Object Pager
 $oPagerLink = new cHTMLLink();
 $oPagerLink->setTargetFrame('left_bottom');
 $oPagerLink->setLink("main.php");
-$oPagerLink->setCustom("elemperpage", $requestElemPerPage);
-$oPagerLink->setCustom("filter", $requestFilter);
-$oPagerLink->setCustom("sortby", $requestSortBy);
-$oPagerLink->setCustom("sortorder", $requestSortOrder);
-$oPagerLink->setCustom("searchin", $requestSearchIn);
-$oPagerLink->setCustom("restrictgroup", $requestRestrictGroup);
-$oPagerLink->setCustom("frame", $frame);
-$oPagerLink->setCustom("area", $area);
+$oPagerLink->setCustom('elemperpage', $requestElemPerPage);
+$oPagerLink->setCustom('filter', $requestFilter);
+$oPagerLink->setCustom('sortby', $requestSortBy);
+$oPagerLink->setCustom('sortorder', $requestSortOrder);
+$oPagerLink->setCustom('searchin', $requestSearchIn);
+$oPagerLink->setCustom('restrictgroup', $requestRestrictGroup);
+$oPagerLink->setCustom('frame', $frame);
+$oPagerLink->setCustom('area', $area);
 $oPagerLink->enableAutomaticParameterAppend();
-$oPagerLink->setCustom("contenido", $sess->id);
+$oPagerLink->setCustom('contenido', $sess->id);
 
 $pagingLink = "paginglink";
 $oPager = new cGuiObjectPager("25c6a67d-a3f1-4ea4-8391-446c131952c9", $fullTableCount, $requestElemPerPage, $mPage, $oPagerLink, "page", $pagingLink);
@@ -246,8 +247,8 @@ $sPagerContent = $oPager->render(1);
 $sPagerContent = str_replace('\\', '\\\\', $sPagerContent);
 $sPagerContent = str_replace('\'', '\\\'', $sPagerContent);
 
-$oPage->set("s", "MPAGE", $mPage);
-$oPage->set("s", "PAGER_CONTENT", $sPagerContent);
-$oPage->set("s", "PAGE", $mPage);
-$oPage->set("s", "FORM", $cGuiMenu->render(false));
+$oPage->set('s', 'MPAGE', $mPage);
+$oPage->set('s', 'PAGER_CONTENT', $sPagerContent);
+$oPage->set('s', 'PAGE', $mPage);
+$oPage->set('s', 'FORM', $cGuiMenu->render(false));
 $oPage->render();

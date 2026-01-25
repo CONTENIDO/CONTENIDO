@@ -25,77 +25,64 @@ class PimPluginArchiveExtractor
 {
 
     /**
-     * The extractor initializer
-     *
-     * @var int
+     * @var int The extractor initializer.
      */
-    protected $_extractor = 0;
+    protected $extractor = 0;
 
     /**
-     * The temp dir
-     *
-     * @var string
+     * @var string The temp dir
      */
     protected $tempDir = '';
 
     /**
-     * The archive file
-     *
-     * @var string
+     * @var string The archive file
      */
-    protected $_source = '';
+    protected $source = '';
 
     /**
-     * The destination path
-     *
-     * @var string
+     * @var string The destination path
      */
-    protected $_destination = '';
+    protected $destination = '';
 
     /**
-     * The absolute path
-     *
-     * @var string
+     * @var string The absolute path
      */
-    protected $_absPath = '';
+    protected $absolutePath = '';
 
     /**
      * Constructor of ArchiveExtractor, load the file list
      *
      * @param string $source path to the temp directory
      * @param string $filename name of zip archive
-     *
      * @throws cException if the source file does not exist or zip archive
      *      could not be opened
      */
-    public function __construct($source, $filename)
+    public function __construct(string $source, string $filename)
     {
-        $cfg = cRegistry::getConfig();
-
         // initializing ziparchive
-        $this->_extractor = new ZipArchive();
+        $this->extractor = new ZipArchive();
 
         // path to temp directory
         $this->tempDir = $source;
 
         // temp directory with zip archive
-        $this->_source = (string)$source . (string)$filename;
+        $this->source = $source . $filename;
 
-        if (file_exists($source)) {
-            // generate absolute path to the plugin manager directory
-            $this->_absPath = cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'pim' . DIRECTORY_SEPARATOR;
+        if (cFileHandler::exists($source)) {
+            // Set the absolute path to the plugin manager directory
+            $this->absolutePath = PimPluginHelper::getPluginFolderPath('pim');
 
             // open the zip archive
-            $result = $this->_extractor->open($this->_source);
+            $result = $this->extractor->open($this->source);
             if ($result !== true) {
                 $message = ['Could not open zip archive `' . $filename . '`.'];
-                $resultMsg = $this->_openErrorToMessage($result);
+                $resultMsg = $this->openErrorToMessage($result);
                 if (!empty($resultMsg)) {
                     $message[] = 'Reason: ' . $resultMsg;
                 }
                 throw new cException(implode(' ', $message));
             }
-            $this->_validateArchive($filename);
+            $this->validateArchive($filename);
         } else {
             throw new cException('Source file does not exists');
         }
@@ -103,25 +90,24 @@ class PimPluginArchiveExtractor
 
     public function closeArchive()
     {
-        $this->_extractor->close();
+        $this->extractor->close();
     }
 
     /**
      * Sets the path where the extractor extracts the archive files
      *
      * @param string $destination string
-     *
-     * @throws cException if the destination path can not set (directory is not writable)
+     * @throws cException if the destination path cannot set (directory is not writable)
      * @throws cException if the defined destination already exists
      */
-    public function setDestinationPath($destination)
+    public function setDestinationPath(string $destination)
     {
-        if (!is_dir($destination)) {
+        if (!cDirHandler::exists($destination)) {
             $makeDirectory = mkdir($destination, cDirHandler::getDefaultPermissions());
             if (!$makeDirectory) {
                 throw new cException('Can not set destination path: directory is not writable');
             }
-            $this->_destination = (string)$destination;
+            $this->destination = $destination;
         } else {
             throw new cException('Destination already exists');
         }
@@ -134,27 +120,24 @@ class PimPluginArchiveExtractor
      */
     public function extractArchive()
     {
-        if ($this->_destination != '') {
-            $this->_extractor->extractTo($this->_destination);
+        if ($this->destination != '') {
+            $this->extractor->extractTo($this->destination);
         } else {
             throw new cException('Extraction failed: no destination path set');
         }
     }
 
     /**
-     * Extracts a specific file from archive and return its content to use it in
-     * a variable
+     * Extracts a specific file from the archive and return its content to use it in a variable
      *
      * @param string $filename
      * @param bool $content [optional] whether to return the content or just the
-     *            dir and filename of the extracted file
-     * @return string content of extracted file or dir and filename of extracted File
+     *      dir and filename of the extracted file
+     * @return string content of the extracted file or dir and filename of extracted File
      */
-    public function extractArchiveFileToVariable($filename, $content = true)
+    public function extractArchiveFileToVariable(string $filename, bool $content = true): string
     {
-        $filename = (string)$filename;
-        $this->_extractor->extractTo($this->tempDir, $filename);
-
+        $this->extractor->extractTo($this->tempDir, $filename);
         if ($content) {
             return file_get_contents($this->tempDir . $filename);
         } else {
@@ -163,26 +146,25 @@ class PimPluginArchiveExtractor
     }
 
     /**
-     * Destroy temporary plugin files (plugin.xml, plugin_install.sql and files
-     * at CONTENIDO temp dir)
+     * Destroy temporary plugin files (plugin.xml, plugin_install.sql and files at CONTENIDO temp dir)
      *
      * @throws cInvalidArgumentException
      */
     public function destroyTempFiles()
     {
         // remove plugin.xml if exists
-        if (cFileHandler::exists($this->tempDir . 'plugin.xml')) {
-            cFileHandler::remove($this->tempDir . 'plugin.xml');
+        if (cFileHandler::exists($this->tempDir . PimPluginHelper::PLUGIN_CONFIG_FILENAME)) {
+            cFileHandler::remove($this->tempDir . PimPluginHelper::PLUGIN_CONFIG_FILENAME);
         }
 
         // remove plugin_install.sql if exists
-        if (cFileHandler::exists($this->tempDir . 'plugin_install.sql')) {
-            cFileHandler::remove($this->tempDir . 'plugin_install.sql');
+        if (cFileHandler::exists($this->tempDir . PimPluginHelper::PLUGIN_INSTALL_FILENAME)) {
+            cFileHandler::remove($this->tempDir . PimPluginHelper::PLUGIN_INSTALL_FILENAME);
         }
 
         // remove temporary plugin dir if exists
-        if (cFileHandler::exists($this->_source)) {
-            cFileHandler::remove($this->_source);
+        if (cFileHandler::exists($this->source)) {
+            cFileHandler::remove($this->source);
         }
     }
 
@@ -192,23 +174,21 @@ class PimPluginArchiveExtractor
      * - Archive does not contain the plugin.xml
      * - Archive contains the plugin folder, e.g. plugin_name.zip contains `plugin_name`
      *
-     * @param $filename
-     * @return void
      * @throws cException
      */
-    private function _validateArchive($filename)
+    private function validateArchive($filename)
     {
         $filenameWithoutExt = pathinfo($filename, PATHINFO_FILENAME);
 
-        if ($this->_extractor->numFiles === 0) {
+        if ($this->extractor->numFiles === 0) {
             throw new cException(
                 sprintf('Archive validation failed: Empty archive `%s`.', $filename)
             );
-        } elseif ($this->_extractor->locateName('plugin.xml') === false) {
+        } elseif ($this->extractor->locateName(PimPluginHelper::PLUGIN_CONFIG_FILENAME) === false) {
             throw new cException(
                 sprintf('Archive validation failed: No plugin.xml found in archive `%s`.', $filename)
             );
-        } elseif ($this->_extractor->getNameIndex(0) === $filenameWithoutExt) {
+        } elseif ($this->extractor->getNameIndex(0) === $filenameWithoutExt) {
             throw new cException(
                 sprintf(
                     'Archive validation failed: Archive `%s` contains plugin folder `%s`.',
@@ -224,7 +204,7 @@ class PimPluginArchiveExtractor
      * @param int|bool $result The result from a ZipArchive::open() call
      * @return string The error message or empty string.
      */
-    private function _openErrorToMessage($result)
+    private function openErrorToMessage($result): string
     {
         // We may not need all the error codes, they are here for the sake of completeness.
         switch ($result) {

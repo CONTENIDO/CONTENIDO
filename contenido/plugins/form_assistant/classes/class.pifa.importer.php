@@ -82,8 +82,7 @@ class PifaImporter
      *
      * @throws PifaDatabaseException
      * @throws PifaException if table could not be created
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function import($xml)
     {
@@ -248,7 +247,7 @@ class PifaImporter
     {
         $db = cRegistry::getDb();
         $sql = "-- _checkTableName()
-            SHOW TABLES 
+            SHOW TABLES
                 LIKE '" . $db->escape($this->_tableName) . "'
             ;";
         $db->query($sql);

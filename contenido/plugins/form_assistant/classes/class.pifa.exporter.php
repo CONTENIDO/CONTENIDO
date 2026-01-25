@@ -361,7 +361,7 @@ class PifaExporter
 
             // build attributes
             $attr = [];
-            if (true === (bool)$pifaForm->get('with_timestamp')) {
+            if ((bool)$pifaForm->get('with_timestamp')) {
                 $attr['timestamp'] = $row['pifa_timestamp'];
             }
             $attr = array_filter($attr);

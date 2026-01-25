@@ -24,11 +24,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // Global variables, send by the form
 global $idfrontenduser, $username, $newpd, $newpd2, $active;
 
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getClientId();
 $idfrontenduser = cSecurity::toInteger($idfrontenduser ?? '0');
 $action = $action ?? '';
 
-$page = new cGuiPage("frontend.user_edit");
+$page = new cGuiPage('frontend.user_edit');
 
 $feUsers = new cApiFrontendUserCollection();
 
@@ -53,9 +53,9 @@ if ($idfrontenduser) {
     }
 }
 
-if ($action == "frontend_create" && $perm->have_perm_area_action("frontend", "frontend_create")) {
+if ($action == 'frontend_create' && $perm->have_perm_area_action('frontend', 'frontend_create')) {
     $feuser = $feUsers->create(" " . i18n("-- new user --"));
-    $idfrontenduser = $feuser->get("idfrontenduser");
+    $idfrontenduser = $feuser->get('idfrontenduser');
     // Put idfrontenduser of newly created user into superglobals for plugins
     $_GET['idfrontenduser'] = $idfrontenduser;
     $_REQUEST['idfrontenduser'] = $_GET['idfrontenduser'];
@@ -80,16 +80,15 @@ if ($idfrontenduser && $action != '') {
 </script>
 JS;
 } else {
-    $sReloadScript = "";
+    $sReloadScript = '';
 }
 
-if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "frontend_delete")) {
+if ($action == 'frontend_delete' && $perm->have_perm_area_action('frontend', 'frontend_delete')) {
     $feUsers->delete($idfrontenduser);
 
-    $_cecRegistry = cApiCecRegistry::getInstance();
-    $iterator = $_cecRegistry->getIterator("Contenido.Permissions.FrontendUser.AfterDeletion");
-
-    while ($chainEntry = $iterator->next()) {
+    $cecIterator = cApiCecRegistry::getInstance()
+        ->getIterator('Contenido.Permissions.FrontendUser.AfterDeletion');
+    while ($chainEntry = $cecIterator->next()) {
         $chainEntry->execute($idfrontenduser);
     }
 
@@ -101,37 +100,37 @@ if ($action == "frontend_delete" && $perm->have_perm_area_action("frontend", "fr
     $page->displayOk(i18n("Deleted user successfully!"));
 }
 
-if ($feuser->isLoaded() && $feuser->get("idclient") == $client) {
+if ($feuser->isLoaded() && $feuser->get('idclient') == $client) {
     $username = isset($username) ? trim(stripslashes($username)) : '';
     $messages = [];
     $variablesToStore = [];
 
-    if ($action == "frontend_save_user" && cString::getStringLength($username) == 0) {
+    if ($action == 'frontend_save_user' && cString::getStringLength($username) == 0) {
         $page->displayError(i18n("Username can't be empty"));
-    } elseif ($action == "frontend_save_user" && cString::getStringLength($username) > 0) {
+    } elseif ($action == 'frontend_save_user' && cString::getStringLength($username) > 0) {
         if (!empty($sReloadScript)) {
             $page->addScript($sReloadScript);
         }
 
-        if ($feuser->get("username") != $username) {
+        if ($feuser->get('username') != $username) {
             $usernameDb = $feuser->escape($username);
             $feUsers->select("username = '" . $usernameDb . "' and idclient='$client'");
             if ($feUsers->next()) {
                 $messages[] = i18n("Could not set new username: Username already exists");
             } else {
-                $feuser->set("username", $username);
+                $feuser->set('username', $username);
             }
         }
 
         if ($newpd != $newpd2) {
             $messages[] = i18n("Could not set new password: Passwords don't match");
         } else {
-            if ($newpd != "") {
-                $feuser->set("password", $newpd);
+            if ($newpd != '') {
+                $feuser->set('password', $newpd);
             }
         }
 
-        $feuser->set("active", $active);
+        $feuser->set('active', $active);
 
         // Check out if there are any plugins
         if (cHasPlugins('frontendusers')) {
@@ -166,12 +165,10 @@ if ($feuser->isLoaded() && $feuser->get("idclient") == $client) {
             }
         }
 
-        $iterator = $_cecRegistry->getIterator('Contenido.Permissions.FrontendUser.BeforeStore');
-
-        if ($iterator->count() > 0) {
-            while (false !== $chainEntry = $iterator->next()) {
-                $chainEntry->execute($variablesToStore);
-            }
+        $cecIterator = cApiCecRegistry::getInstance()
+            ->getIterator('Contenido.Permissions.FrontendUser.BeforeStore');
+        while ($chainEntry = $cecIterator->next()) {
+            $chainEntry->execute($variablesToStore);
         }
 
         $feuser->store();
@@ -182,23 +179,23 @@ if ($feuser->isLoaded() && $feuser->get("idclient") == $client) {
         $page->displayWarning(implode("<br>", $messages)) . "<br>";
     }
 
-    $form = new cGuiTableForm("properties");
-    $form->setVar("frame", $frame);
-    $form->setVar("area", $area);
-    $form->setVar("action", "frontend_save_user");
-    $form->setVar("idfrontenduser", $idfrontenduser);
+    $form = new cGuiTableForm('properties');
+    $form->setVar('frame', $frame);
+    $form->setVar('area', $area);
+    $form->setVar('action', 'frontend_save_user');
+    $form->setVar('idfrontenduser', $idfrontenduser);
 
     $form->setHeader(i18n("Edit user"));
 
-    $username = new cHTMLTextbox("username", $feuser->get("username"), 40);
-    $newpw = new cHTMLPasswordBox("newpd", "", 40);
+    $username = new cHTMLTextbox('username', $feuser->get('username'), 40);
+    $newpw = new cHTMLPasswordBox('newpd', '', 40);
     $newpw->setAutofill(false);
     $newpw->setAttribute('autocomplete', 'off');;
     $newpw2 = new cHTMLPasswordBox("newpd2", "", 40);
     $newpw2->setAttribute('autocomplete', 'off');
     $newpw2->setAutofill(false);
-    $active = new cHTMLCheckbox("active", "1");
-    $active->setChecked($feuser->get("active"));
+    $active = new cHTMLCheckbox('active', '1');
+    $active->setChecked($feuser->get('active'));
 
     $form->add(i18n("User name"), $username->render());
     $form->add(i18n("New password"), $newpw->render());
@@ -246,7 +243,7 @@ if ($feuser->isLoaded() && $feuser->get("idclient") == $client) {
 
             foreach ($arrGroups as $iGroup) {
                 $oMemberGroup = new cApiFrontendGroup($iGroup);
-                $aMemberGroups[] = $oMemberGroup->get("groupname");
+                $aMemberGroups[] = $oMemberGroup->get('groupname');
             }
 
             asort($aMemberGroups);
@@ -258,10 +255,10 @@ if ($feuser->isLoaded() && $feuser->get("idclient") == $client) {
 
         $form->add(i18n("Group membership"), $sTemp);
 
-        $oUser = new cApiUser($feuser->get("author"));
-        $form->add(i18n("Author"), $oUser->get('username') . " (" . cDate::formatDatetime($feuser->get("created")) . ")");
-        $oUser2 = new cApiUser($feuser->get("modifiedby"));
-        $form->add(i18n("Last modified by"), $oUser2->get('username') . " (" . cDate::formatDatetime($feuser->get("modified")) . ")");
+        $oUser = new cApiUser($feuser->get('author'));
+        $form->add(i18n("Author"), $oUser->get('username') . " (" . cDate::formatDatetime($feuser->get('created')) . ")");
+        $oUser2 = new cApiUser($feuser->get('modifiedby'));
+        $form->add(i18n("Last modified by"), $oUser2->get('username') . " (" . cDate::formatDatetime($feuser->get('modified')) . ")");
     }
     $page->setContent($form);
     if (!empty($sReloadScript)) {

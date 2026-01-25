@@ -16,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Upgrade job 8.
- * Update the old system property for insite editing
+ * Update the old system property for inside editing
  *
  * @package    Setup
  * @subpackage UpgradeJob
@@ -24,11 +24,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cUpgradeJob_0008 extends cUpgradeJobAbstract
 {
 
-    public $maxVersion = "4.9.0";
+    public $maxVersion = '4.9.0';
 
     public function _execute()
     {
-        $systemPropTable = cRegistry::getDbTableName('system_prop');
+        $systemPropTable = cDb::getTableName('system_prop');
 
         if ($this->_setupType == 'upgrade') {
             $sql = "UPDATE `" . $systemPropTable . "` SET `name` = 'insite_editing_activated' WHERE `name` = 'insight_editing_activated'";

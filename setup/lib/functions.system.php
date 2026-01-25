@@ -16,9 +16,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Checks if a plugin is already installed
- * @param cDb $db
- * @param string $pluginName
- * @return bool
  * @throws cDbException
  */
 function checkExistingPlugin(cDb $db, string $pluginName): bool
@@ -28,23 +25,23 @@ function checkExistingPlugin(cDb $db, string $pluginName): bool
         return true;
     }
 
-    $sTable = cRegistry::getDbTableName('nav_sub');
+    $sTable = cDb::getTableName('nav_sub');
 
     switch ($pluginName) {
         case 'plugin_cronjob_overview':
-            $sSql = "SELECT * FROM `%s` WHERE idnavs=950";
+            $sSql = "SELECT * FROM `%s` WHERE `idnavs` = 950";
             break;
         case 'plugin_conman':
-            $sSql = "SELECT * FROM `%s` WHERE idnavs=900";
+            $sSql = "SELECT * FROM `%s` WHERE `idnavs` = 900";
             break;
         case 'plugin_content_allocation':
-            $sSql = "SELECT * FROM `%s` WHERE idnavs=800";
+            $sSql = "SELECT * FROM `%s` WHERE `idnavs` = 800";
             break;
         case 'plugin_newsletter':
-            $sSql = "SELECT * FROM `%s` WHERE idnavs=610";
+            $sSql = "SELECT * FROM `%s` WHERE `idnavs` = 610";
             break;
         case 'plugin_mod_rewrite':
-            $sSql = "SELECT * FROM `%s` WHERE idnavs=700 OR location='mod_rewrite/xml/;navigation/content/mod_rewrite'";
+            $sSql = "SELECT * FROM `%s` WHERE `idnavs` = 700 OR location = 'mod_rewrite/xml/;navigation/content/mod_rewrite'";
             break;
         default:
             $sSql = '';
@@ -63,10 +60,8 @@ function checkExistingPlugin(cDb $db, string $pluginName): bool
 
 /**
  * Updates system properties
- * @param cDb $db
  * @param string $table DB table name
- * @throws cDbException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cInvalidArgumentException
  */
 function updateSystemProperties(cDb $db, string $table)
 {
@@ -118,7 +113,6 @@ function updateSystemProperties(cDb $db, string $table)
 
 /**
  * Updates contenido version in given table
- * @param cDb $db
  * @param string $table DB table name
  * @param string $version Version
  * @throws cDbException
@@ -126,7 +120,6 @@ function updateSystemProperties(cDb $db, string $table)
 function updateContenidoVersion(cDb $db, string $table, string $version)
 {
     $db->query("SELECT `idsystemprop` FROM `%s` WHERE `type` = 'system' AND `name` = 'version'", $table);
-
     if ($db->nextRecord()) {
         $db->query("UPDATE `%s` SET `value` = '%s' WHERE `type` = 'system' AND `name` = 'version'", $table, $version);
     } else {
@@ -136,7 +129,6 @@ function updateContenidoVersion(cDb $db, string $table, string $version)
 
 /**
  * Returns current version
- * @param cDb $db
  * @param string $table DB table name
  * @return string|false
  * @throws cDbException
@@ -144,9 +136,8 @@ function updateContenidoVersion(cDb $db, string $table, string $version)
 function getContenidoVersion(cDb $db, string $table)
 {
     $db->query("SELECT `value` FROM `%s` WHERE `type` = 'system' AND `name` = 'version'", $table);
-
     if ($db->nextRecord()) {
-        return $db->f("value");
+        return $db->f('value');
     } else {
         return false;
     }
@@ -155,14 +146,9 @@ function getContenidoVersion(cDb $db, string $table)
 /**
  * Updates the system administrators password.
  *
- * @param cDb $db
- * @param string $table
- * @param string $password
- * @param string $mail
- * @return bool
  * @throws cDbException
  */
-function updateSysadminPassword(cDb $db, string $table, string $password, string $mail)
+function updateSysadminPassword(cDb $db, string $table, string $password, string $mail): bool
 {
     $db->query("SELECT password FROM `%s` WHERE username='sysadmin'", $table);
 
@@ -176,12 +162,10 @@ function updateSysadminPassword(cDb $db, string $table, string $password, string
 
 /**
  * Reads and returns the total list of system clients.
- * @param cDb $db
- * @param string $table
- * @return array
+ *
  * @throws cDbException
  */
-function listClients(cDb $db, string $table)
+function listClients(cDb $db, string $table): array
 {
     $cfgClient = cRegistry::getClientConfig();
 
@@ -189,11 +173,11 @@ function listClients(cDb $db, string $table)
 
     $clients = [];
     while ($db->nextRecord()) {
-        $idClient = cSecurity::toInteger($db->f('idclient'));
-        $clients[$idClient] = [
-            "name" => $db->f("name"),
-            "frontendpath" => $cfgClient[$idClient]['path']['frontend'],
-            "htmlpath" => $cfgClient[$idClient]['path']['htmlpath'],
+        $clientId = cSecurity::toInteger($db->f('idclient'));
+        $clients[$clientId] = [
+            'name' => $db->f('name'),
+            'frontendpath' => $cfgClient[$clientId]['path']['frontend'],
+            'htmlpath' => $cfgClient[$clientId]['path']['htmlpath'],
         ];
     }
 
@@ -202,29 +186,23 @@ function listClients(cDb $db, string $table)
 
 /**
  * Updates the path information of a client and refreshes the configuration file.
- * @param int $idclient
- * @param string $frontendpath
- * @param string $htmlpath
- * @throws cDbException
- * @throws cInvalidArgumentException
+ *
+ * @throws cDbException|cInvalidArgumentException
  */
-function updateClientPath(int $idclient, string $frontendpath, string $htmlpath)
+function updateClientPath(int $clientid, string $frontendpath, string $htmlpath)
 {
     $cfg = cRegistry::getConfig();
 
     checkAndInclude($cfg['path']['contenido'] . 'includes/functions.general.php');
-    updateClientCache($idclient, $htmlpath, $frontendpath);
+    updateClientCache($clientid, $htmlpath, $frontendpath);
 }
 
 /**
  * Removes the trailing slash of a string.
- * @param string $sInput
- *
- * @return string
  */
 function stripLastSlash(string $sInput): string
 {
-    if (cString::getPartOfString($sInput, cString::getStringLength($sInput) - 1, 1) == "/") {
+    if (cString::getPartOfString($sInput, cString::getStringLength($sInput) - 1, 1) == '/') {
         $sInput = cString::getPartOfString($sInput, 0, cString::getStringLength($sInput) - 1);
     }
 
@@ -282,10 +260,6 @@ function getSystemDirectories(bool $originalPath = false): array
 
 /**
  * Searchs for a string in a given text and returns the position of it.
- * @param string $string1
- * @param string $string2
- *
- * @return int
  */
 function findSimilarText(string $string1, string $string2): int
 {

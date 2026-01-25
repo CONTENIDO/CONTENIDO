@@ -78,16 +78,16 @@ class ContenidoArticleConCopyArtLang_AfterInsertTest extends TestCase
     public function testOneChain()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoArticleConCopyArtLang_AfterInsert_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoArticleConCopyArtLang_AfterInsert_Test');
 
         // execute chain
         cApiCecHook::execute($this->_chain, $this->_data);
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoArticleConCopyArtLang_AfterInsert_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoArticleConCopyArtLang_AfterInsert_Test');
 
         $this->assertEquals(array(1, $this->_data), array(self::$invokeCounter, $this->_data));
     }
@@ -99,18 +99,18 @@ class ContenidoArticleConCopyArtLang_AfterInsertTest extends TestCase
     public function testTwoChains()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoArticleConCopyArtLang_AfterInsert_Test');
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoArticleConCopyArtLang_AfterInsert_Test2');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoArticleConCopyArtLang_AfterInsert_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoArticleConCopyArtLang_AfterInsert_Test2');
 
         // execute chain
         cApiCecHook::execute($this->_chain, $this->_data);
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoArticleConCopyArtLang_AfterInsert_Test');
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoArticleConCopyArtLang_AfterInsert_Test2');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoArticleConCopyArtLang_AfterInsert_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoArticleConCopyArtLang_AfterInsert_Test2');
 
         $this->assertEquals(array(2, $this->_data), array(self::$invokeCounter, $this->_data));
     }

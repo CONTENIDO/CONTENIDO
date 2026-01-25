@@ -191,7 +191,7 @@
         // add possibility to expand and close directories
         self.$frame.find('.con_directory_list em a').unbind('click');
         self.$frame.find('.con_directory_list em a').click(function(e) {
-        	e.preventDefault();
+            e.preventDefault();
             var divContainer = $(this).parent().parent();
             var dirname = $(this).parent('em').parent().find('a[class="on"]').attr('title');
             if (divContainer.next('ul').length > 0) {
@@ -208,9 +208,9 @@
                     url: self.pathBackend + 'ajaxmain.php',
                     data: 'ajax=dirlist&dir=' + dirname + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                     success: function(msg) {
-						if (Con.checkAjaxResponse(msg) === false)  {
-							return false;
-						}
+                        if (Con.checkAjaxResponse(msg) === false)  {
+                            return false;
+                        }
 
                         divContainer.after(msg);
                         divContainer.parent('li').removeClass('collapsed');
@@ -295,8 +295,8 @@
                         url: self.pathBackend + 'ajaxmain.php',
                         data: 'ajax=loadImageMeta&filename=' + filename + '&id=' + self.id + '&idartlang=' + self.idArtLang + '&contenido=' + self.session,
                         success: function(msg) {
-							if (Con.checkAjaxResponse(msg) === false)  {
-								return false;
+                            if (Con.checkAjaxResponse(msg) === false)  {
+            					return false;
 							}
 
                             var imageMeta = $.parseJSON(msg);

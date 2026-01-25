@@ -24,9 +24,7 @@ class cI18n
 {
 
     /**
-     * i18n related associative data cache.
-     *
-     * @var array
+     * @var array i18n related associative data cache.
      */
     protected static $_i18nData = [
         'language' => null,
@@ -38,14 +36,11 @@ class cI18n
     /**
      * Initializes the i18n.
      *
-     * @param string $localePath
-     *         Path to the locales
-     * @param string $langCode
-     *         Language code to set
-     * @param string $domain [optional]
-     *         Language domain
+     * @param string $localePath Path to the locales
+     * @param string $locale Locale (language code= to set, e.g. 'de_DE', 'en_US'
+     * @param string $domain Language domain
      */
-    public static function init($localePath, $langCode, $domain = 'contenido')
+    public static function init(string $localePath, string $locale, string $domain = 'contenido')
     {
         if (function_exists('bindtextdomain')) {
             // Bind the domain 'contenido' to our locale path
@@ -56,36 +51,31 @@ class cI18n
 
             // Half brute-force to set the locale.
             if (!ini_get('safe_mode')) {
-                putenv("LANG=$langCode");
+                putenv("LANG=$locale");
             }
 
             if (defined('LC_MESSAGES')) {
-                setlocale(LC_MESSAGES, $langCode);
+                setlocale(LC_MESSAGES, $locale);
             }
 
-            if (false === empty($langCode)) {
-                setlocale(LC_CTYPE, $langCode);
+            if (!empty($locale)) {
+                setlocale(LC_CTYPE, $locale);
             }
         }
 
         self::$_i18nData['domains'][$domain] = $localePath;
-        self::$_i18nData['language'] = $langCode;
+        self::$_i18nData['language'] = $locale;
     }
 
     /**
      * Returns translation of a specific text, wrapper for translate().
      *
-     * @param string $string
-     *                       The string to translate
-     * @param string $domain [optional]
-     *                       The domain to look up
-     *
-     * @return string
-     *         Returns the translation
-     *
+     * @param string $string The string to translate
+     * @param string $domain [optional] The domain to look up
+     * @return string Returns the translation
      * @throws cException
      */
-    public static function __($string, $domain = 'contenido')
+    public static function __(string $string, string $domain = 'contenido')
     {
         return self::translate($string, $domain);
     }
@@ -93,46 +83,41 @@ class cI18n
     /**
      * Returns translation of a specific text
      *
-     * @param string $string
-     *         The string to translate
-     * @param string $domain [optional]
-     *         The domain to look up
-     *
-     * @return string
-     *         Returns the translation
-     *
-     * @throws cException
-     *         if this is the backend mode and the $belang is not set
+     * @param string $string The string to translate
+     * @param string $domain [optional] The domain to look up
+     * @return string Returns the translation
+     * @throws cException If this is the backend mode and the $belang is not set
      */
-    public static function translate($string, $domain = 'contenido')
+    public static function translate(string $string, string $domain = 'contenido')
     {
-        global $cfg, $belang, $contenido;
+        global $belang;
+
+        $cfg = cRegistry::getConfig();
 
         // Auto initialization
         if (!self::$_i18nData['language']) {
             if (!isset($belang)) {
-                if ($contenido) {
+                if (cRegistry::getBackendSessionId()) {
                     throw new cException('init $belang is not set');
                 }
                 // Needed - otherwise this won't work
                 $belang = false;
             }
 
+            $locale = $belang ? (string) $belang : cRegistry::getBackendLanguage();
+
             // CON-2165
             // initialise localisation of plugins correctly in frontend
             if ($domain === 'contenido') {
-                self::init($cfg['path']['contenido_locale'], $belang, $domain);
+                self::init($cfg['path']['contenido_locale'], $locale, $domain);
             } else {
                 if (empty($belang)) {
                     $oApiLang = cRegistry::getLanguage();
                     $language = $oApiLang->getProperty('language', 'code');
                     $country = $oApiLang->getProperty('country', 'code');
-
                     $locale = $language . '_' . cString::toUpperCase($country);
-                    self::init(cRegistry::getBackendPath() . $cfg['path']['plugins'] . $domain . '/locale/', $locale, $domain);
-                } else {
-                    self::init(cRegistry::getBackendPath() . $cfg['path']['plugins'] . $domain . '/locale/', $belang, $domain);
                 }
+                self::init(cRegistry::getBackendPath() . $cfg['path']['plugins'] . $domain . '/locale/', $locale, $domain);
             }
         }
 
@@ -142,27 +127,27 @@ class cI18n
             // hopefully a proper replacement for
             // mb_convert_encoding($string, 'HTML-ENTITIES', 'utf-8');
             // see https://stackoverflow.com/q/11974008
-            $ret = htmlspecialchars_decode(@utf8_decode(conHtmlentities($ret, ENT_COMPAT, 'utf-8')));
+            $ret = htmlspecialchars_decode(
+                cString::convertEncoding(conHtmlentities($ret, ENT_COMPAT, 'utf-8'), 'ISO-8859-1')
+            );
             return $ret;
         }
 
         // Try to use native gettext implementation
-        if (extension_loaded('gettext')) {
-            if (function_exists('dgettext')) {
-                if ($domain != 'contenido') {
-                    $translation = dgettext($domain, $string);
-                    return $translation;
-                } else {
-                    return gettext($string);
-                }
+        if (extension_loaded('gettext') && function_exists('dgettext')) {
+            if ($domain !== 'contenido') {
+                return dgettext($domain, $string);
+            } else {
+                return gettext($string);
             }
         }
 
         // Emulator as fallback
         $ret = self::emulateGettext($string, $domain);
         if (cString::isUtf8($ret)) {
-            $ret = utf8_decode($ret);
+            $ret = cString::convertEncoding($ret, 'ISO-8859-1');
         }
+
         return $ret;
     }
 
@@ -173,13 +158,11 @@ class cI18n
      */
     public static function getLanguage()
     {
-        return (self::$_i18nData['language']) ? self::$_i18nData['language'] : false;
+        return self::$_i18nData['language'] ?? false;
     }
 
     /**
      * Returns list of registered domains
-     *
-     * @return array
      */
     public static function getDomains()
     {
@@ -187,21 +170,17 @@ class cI18n
     }
 
     /**
-     * Returns list of cached tranlation files
-     *
-     * @return array
+     * Returns list of cached translation files
      */
-    public static function getFiles()
+    public static function getFiles(): array
     {
         return self::$_i18nData['files'];
     }
 
     /**
-     * Returns list of cached tranlations
-     *
-     * @return array
+     * Returns list of cached translations
      */
-    public static function getCache()
+    public static function getCache(): array
     {
         return self::$_i18nData['cache'];
     }
@@ -220,17 +199,12 @@ class cI18n
     /**
      * Emulates GNU gettext
      *
-     * @param string $string
-     *                       The string to translate
-     * @param string $domain [optional]
-     *                       The domain to look up
-     *
-     * @return string
-     *         Returns the translation
-     *
+     * @param string $string  The string to translate
+     * @param string $domain [optional] The domain to look up
+     * @return string Returns the translation
      * @throws cInvalidArgumentException
      */
-    public static function emulateGettext($string, $domain = 'contenido')
+    public static function emulateGettext(string $string, string $domain = 'contenido'): string
     {
         if ($string == '') {
             return '';
@@ -289,12 +263,10 @@ class cI18n
     /**
      * Registers a new i18n domain.
      *
-     * @param string $domain
-     *         Domain to bind to
-     * @param string $localePath
-     *         Path to the locales
+     * @param string $domain Domain to bind to
+     * @param string $localePath Path to the locales
      */
-    public static function registerDomain($domain, $localePath)
+    public static function registerDomain(string $domain, string $localePath)
     {
         if (function_exists('bindtextdomain')) {
             // Bind the domain 'contenido' to our locale path
@@ -304,17 +276,12 @@ class cI18n
     }
 
     /**
-     * Loads gettext translation and file does some operations like stripping
-     * comments on the content.
+     * Loads gettext translation and file does some operations like stripping comments on the content.
      *
-     * @param string $translationFile
-     *
-     * @return string
-     *         The preparend translation file content
-     *
+     * @return string The prepared translation file content
      * @throws cInvalidArgumentException
      */
-    protected static function _loadTranslationFile($translationFile)
+    protected static function _loadTranslationFile(string $translationFile)
     {
         $content = cFileHandler::read($translationFile);
 

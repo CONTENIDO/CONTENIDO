@@ -18,8 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Asset helper class.
  * Adds a version parameter to passed asset files (css & js).
- * Helps to serve modified files, so the cached versions on
- * the clients will be updated.
+ * Helps to serve modified files, so the cached versions on the clients will be updated.
  *
  * @package    Core
  * @subpackage Util
@@ -36,20 +35,17 @@ class cAsset
 
     /**
      * Returns versioned asset file path for the CONTENIDO backend.
-     * The file must exist and the path must start relative from
-     * CONTENIDO backend, which is usually '{installation_root}/contenido'.
+     * The file must exist and the path must start relative from CONTENIDO backend,
+     * which is usually '{installation_root}/contenido'.
      *
      * Use following CEC Hook to have a custom modified asset file path:
      * - Contenido.Backend.Asset
      *
-     * @param string $file The relative path to the file from
-     *     CONTENIDO backend.
+     * @param string $file The relative path to the file from CONTENIDO backend.
      *     Examples:
      *     - scripts/contenido.js
      *     - styles/includes/con_editcontent.css
-     *
-     * @return string The modified path with the version parameter or
-     *     the original value.
+     * @return string The modified path with the version parameter or the original value.
      *     Examples:
      *     - scripts/contenido.js?v=123456789
      *     - styles/includes/con_editcontent.css?v=123456789
@@ -77,30 +73,29 @@ class cAsset
         }
 
         self::$_files[$file] = $file;
+
         return self::$_files[$file];
     }
 
     /**
      * Returns versioned asset file path for the frontend.
-     * The file must exist and the path must start relative from
-     * clients frontend path, which is usually '{installation_root}/cms'.
+     * The file must exist and the path must start relative from clients frontend path,
+     * which is usually '{installation_root}/cms'.
      *
      * Use following CEC Hook to have a custom modified asset file path:
      * - Contenido.Frontend.Asset
      *
-     * @param string $file The relative path to the file from
-     *     CONTENIDO backend.
+     * @param string $file The relative path to the file from CONTENIDO backend.
      *     Examples:
      *     - js/main.js
      *     - css/main.css
-     * @param int $client Client id
-     * @return string The modified path with the version parameter or
-     *     the original value.
+     * @param ?int $client Client id
+     * @return string The modified path with the version parameter or the original value.
      *     Examples:
      *     - js/main.js?v=123456789
      *     - css/main.css?v=123456789
      */
-    public static function frontend(string $file, int $client = null): string
+    public static function frontend(string $file, ?int $client = null): string
     {
         if (!self::_isValidAsset($file)) {
             return $file;
@@ -110,7 +105,7 @@ class cAsset
         }
 
         $clientCfg = cRegistry::getClientConfig($client);
-        if (!is_array($clientCfg)) {
+        if (empty($clientCfg)) {
             return $file;
         }
 
@@ -136,9 +131,6 @@ class cAsset
      * - Value can't be empty, and can't be a fully qualified url
      * - Value can't be schemeless (protocol-relative) url
      * - The asset file extension can be '.css' or '.js'
-     *
-     * @param string $file
-     * @return bool
      */
     protected static function _isValidAsset(string $file): bool
     {
@@ -148,28 +140,23 @@ class cAsset
         if (filter_var($file, FILTER_VALIDATE_URL) === true) {
             return false;
         }
-        if (!preg_match('/\.(css|js)$/i', $file)) {
-            return false;
-        }
 
-        return true;
+        return (bool) preg_match('/\.(css|js)$/i', $file);
     }
 
     /**
      * Returns the real path to the file (absolute pathname).
      *
      * @param string $file The relative asset file path
-     * @param string $basePath The base path, e.g. path to CONTENIDO
-     *     backend folder or to a client frontend folder.
-     * @return string|null  The real path or null in case the path
-     *     couldn't be resolved.
+     * @param string $basePath The base path, e.g. path to CONTENIDO backend folder or to a client frontend folder.
+     * @return ?string The real path or null in case the path couldn't be resolved.
      */
-    protected static function _getRealPath(string $file, string $basePath)
+    protected static function _getRealPath(string $file, string $basePath): ?string
     {
         // Some checks & modifications on the file path
         if (substr($file, 0, 2) === '..') {
             $fileToUse = '/' . $file;
-        } else if (in_array(substr($file, 0, 1), ['.', '/']) === false) {
+        } elseif (in_array(substr($file, 0, 1), ['.', '/']) === false) {
             $fileToUse = '/' . $file;
         } else {
             $fileToUse = $file;
@@ -177,16 +164,12 @@ class cAsset
 
         // Return the absolute pathname to the file
         $filePathName = realpath($basePath . $fileToUse);
-        if ($filePathName === false) {
-            return null;
-        }
 
-        return $filePathName;
+        return $filePathName !== false ? $filePathName : null;
     }
 
     /**
-     * Reads the file modification time and adds it to the file
-     * as a query parameter.
+     * Reads the file modification time and adds it to the file as a query parameter.
      *
      * @param string $file The relative asset file path
      * @param string $filePathName The real path to the file.
@@ -203,6 +186,7 @@ class cAsset
         // Get file modification time and add as a version parameter (e.g. v=123456789)
         $parts['params']['v'] = filemtime($filePathName);
         $parts['query'] = http_build_query($parts['params']);
+
         return cUri::getInstance()->composeByComponents($parts);
     }
 

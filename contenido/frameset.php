@@ -18,7 +18,7 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // CONTENIDO startup process
-include_once('./includes/startup.php');
+include_once(__DIR__ . '/includes/startup.php');
 
 cRegistry::bootstrap([
     'sess' => 'cSession',
@@ -59,7 +59,7 @@ $tpl->set('s', 'LOCATION', $backendUrl);
 
 // Hide menu-frame for some areas
 $oAreaColl = new cApiAreaCollection();
-$oAreaColl->select('menuless=1');
+$oAreaColl->select('`menuless` = 1');
 $aMenulessAreas = [];
 while ($oItem = $oAreaColl->next()) {
     $aMenulessAreas[] = $oItem->get('name');
@@ -85,8 +85,8 @@ $tpl->set('s', 'CONTENIDOPATH', cRegistry::getBackendUrl() . 'favicon.ico');
 if ((isset($menuless) && $menuless == 1)) {
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset_menuless_content']);
 } else {
-    preg_match('/msie/i', $_SERVER['HTTP_USER_AGENT'], $msie);
-    preg_match('/safari/i', $_SERVER['HTTP_USER_AGENT'], $safari);
+    preg_match('/msie/i', $_SERVER['HTTP_USER_AGENT'] ?? '', $msie);
+    preg_match('/safari/i', $_SERVER['HTTP_USER_AGENT'] ?? '', $safari);
     $tpl->set('s', 'CONTENT_FRAME_BORDER', ($msie ? '0' : '1'));
     $tpl->set('s', 'LEFT_BORDER', ($safari ? '1' : '0'));
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['frameset_content']);

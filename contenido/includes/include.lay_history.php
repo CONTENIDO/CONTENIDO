@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 global $idlay, $bInUse;
 
 $perm = cRegistry::getPerm();
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getClientId();
 $area = cRegistry::getArea();
 
 $oPage = new cGuiPage('lay_history');
@@ -49,7 +49,7 @@ $frame = cRegistry::getFrame();
 $cfgClient = cRegistry::getClientConfig();
 $belang = cRegistry::getBackendLanguage();
 
-$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
+$readOnly = getEffectiveSetting('client', 'readonly', 'false') === 'true';
 if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
@@ -62,14 +62,14 @@ $requestLayCode = $_POST['laycode'] ?? '';
 $requestLayName = $_POST['layname'] ?? '';
 
 // Truncate history action
-if ((!$readOnly) && $requestAction === 'history_truncate') {
+if (!$readOnly && $requestAction === 'history_truncate') {
     $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
     $bDeleteFile = $oVersion->deleteFile();
     unset($oVersion);
 }
 
 // Save action
-if ((!$readOnly) && $requestLaySend && $requestLayName != '' && $requestLayCode != '' && (int)$idlay > 0) {
+if (!$readOnly && $requestLaySend && $requestLayName != '' && $requestLayCode != '' && (int)$idlay > 0) {
     $oVersion = new cVersionLayout($idlay, $cfg, $cfgClient, $db, $client, $area, $frame);
     $sLayoutName = $requestLayName;
     $sLayoutCode = $requestLayCode;
@@ -92,8 +92,11 @@ $oVersion->setVarForm('idlay', $idlay);
 
 // Create and output the select box
 $sSelectBox = $oVersion->buildSelectBox(
-    'lay_history', 'Layout History',
-    i18n('Show history entry'), 'idlayhistory', $readOnly
+    'lay_history',
+    'Layout History',
+    i18n('Show history entry'),
+    'idlayhistory',
+    $readOnly
 );
 
 // Generate form

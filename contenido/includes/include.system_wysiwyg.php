@@ -32,7 +32,6 @@ if ('tinymce3' === $curWysiwygEditor) {
 $configClass = 'c' . cString::toUpperCase($curWysiwygEditor[0]) . cString::getPartOfString($curWysiwygEditor, 1) . 'Configuration';
 
 if (class_exists($configClass)) {
-
     // call WYSIWYG editor configuration code
     if (class_exists($configClass)) {
         // create class instance based on variable value

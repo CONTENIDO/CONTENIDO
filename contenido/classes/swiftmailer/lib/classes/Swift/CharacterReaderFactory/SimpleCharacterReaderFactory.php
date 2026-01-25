@@ -25,7 +25,7 @@ class Swift_CharacterReaderFactory_SimpleCharacterReaderFactory implements Swift
     /**
      * Factories which have already been loaded.
      *
-     * @var Swift_CharacterReaderFactory[]
+     * @var Swift_CharacterReaderFactory[]|object[]
      */
     private static $_loaded = array();
 
@@ -99,7 +99,7 @@ class Swift_CharacterReaderFactory_SimpleCharacterReaderFactory implements Swift
      *
      * @param string $charset
      *
-     * @return Swift_CharacterReader
+     * @return ?Swift_CharacterReader|object
      */
     public function getReaderFor($charset)
     {
@@ -120,5 +120,7 @@ class Swift_CharacterReaderFactory_SimpleCharacterReaderFactory implements Swift
                 return self::$_loaded[$pattern];
             }
         }
+
+        return null;
     }
 }

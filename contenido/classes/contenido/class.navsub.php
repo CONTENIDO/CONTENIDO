@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiNavSub createNewItem
- * @method cApiNavSub|bool next
+ * @extends ItemCollection<cApiNavSub>
  */
 class cApiNavSubCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiNavSubCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('nav_sub'), 'idnavs');
+        parent::__construct(cDb::getTableName('nav_sub'), 'idnavs');
         $this->_setItemClass('cApiNavSub');
 
         // set the join partners so that joins can be used via link() method
@@ -43,17 +42,12 @@ class cApiNavSubCollection extends ItemCollection
      * Create new item with given values.
      *
      * @param int $navm
-     * @param int|string $area
-     *                           AreaId or area name
+     * @param int|string $area AreaId or area name
      * @param int $level
      * @param string $location
      * @param int $online [optional]
-     *
      * @return cApiNavSub
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($navm, $area, $level, $location, $online = 1)
     {
@@ -67,7 +61,11 @@ class cApiNavSubCollection extends ItemCollection
                 $area = $c->get('idarea');
             } else {
                 $area = 0;
-                cWarning(__FILE__, __LINE__, "Could not resolve area [$area] passed to method [create], assuming 0");
+                cWarning(
+                    __FILE__,
+                    __LINE__,
+                    "Could not resolve area [$area] passed to method [create], assuming 0"
+                );
             }
         }
 
@@ -88,50 +86,53 @@ class cApiNavSubCollection extends ItemCollection
      * @param string $area
      * @param int $level [optional]
      * @param int $online [optional]
-     *
-     * @return array
-     *                       List of assiziative arrays like
-     *                       <pre>
-     *                       $arr[] = [
-     *                           'location'  => location xml path
-     *                           'caption'   => The tanslation of location from XML file
-     *                           'name'      => area name for sub navigation item
-     *                           'menulesss' => Menuless state
-     *                       ];
-     *                       </pre>
-     * @throws cDbException
-     * @throws cException
+     * @return array List of associative arrays like
+     *      <pre>
+     *      $arr[] = [
+     *          'location' => location xml path
+     *          'caption'  => The translation of location from XML file
+     *          'name'     => area name for sub navigation item
+     *          'menuless' => Menuless state
+     *      ];
+     *      </pre>
+     * @throws cDbException|cException
      */
-    public function getSubnavigationsByAreaName($area, $level = 1, $online = 1)
+    public function getSubnavigationsByAreaName($area, $level = 1, $online = 1): array
     {
-        $level = (int)$level;
-        $online = (1 == $online) ? 1 : 0;
+        $level = cSecurity::toInteger($level);
+        $online = $online == 1 ? 1 : 0;
 
         $nav = new cGuiNavigation();
 
-        $sql = "SELECT
+        $this->db->query(
+            "SELECT
                     ns.location AS location,
                     a.name AS name,
                     a.menuless AS menuless
                 FROM
-                    " . cRegistry::getDbTableName('area') . " AS a,
-                    " . $this->table . " AS ns
+                    `%s` AS a,
+                    `%s` AS ns
                 WHERE
                     a.idarea = ns.idarea
                 AND
-                    ns.level = " . $level . "
+                    ns.level = %d
                 AND
-                    ns.online = " . $online . "
+                    ns.online = %d
                 AND (
-                    a.parent_id = '" . $this->db->escape($area) . "'
+                    a.parent_id = '%s'
                     OR
-                    a.name = '" . $this->db->escape($area) . "'
+                    a.name = '%s'
                 )
                 ORDER BY
                     a.parent_id ASC,
-                    ns.idnavs ASC";
-
-        $this->db->query($sql);
+                    ns.idnavs ASC",
+            cDb::getTableName('area'),
+            $this->table,
+            $level,
+            $online,
+            $area,
+            $area
+        );
 
         $areasNsRs = [];
         while ($this->db->nextRecord()) {
@@ -156,31 +157,24 @@ class cApiNavSub extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('nav_sub'), 'idnavs');
+        parent::__construct(cDb::getTableName('nav_sub'), 'idnavs');
         $this->setFilters(['addslashes'], ['stripslashes']);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * User-defined setter for navsub fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idarea':
@@ -193,7 +187,7 @@ class cApiNavSub extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

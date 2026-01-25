@@ -25,23 +25,22 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract
 {
 
     /**
-     * Number of max items to process
-     * @var  int
+     * @var int Number of max items to process
      */
-    protected $_iMaxItems = 0;
+    protected $maxItems = 0;
 
     /**
      * Initializer method, sets some view variables
      */
     public function init()
     {
-        $this->_oView->content = '';
-        $this->_oView->form_idart_chk = ($this->_getParam('idart')) ? ' checked="checked"' : '';
-        $this->_oView->form_idcat_chk = ($this->_getParam('idcat')) ? ' checked="checked"' : '';
-        $this->_oView->form_idcatart_chk = ($this->_getParam('idcatart')) ? ' checked="checked"' : '';
-        $this->_oView->form_idartlang_chk = ($this->_getParam('idartlang')) ? ' checked="checked"' : '';
-        $this->_oView->form_maxitems = (int)$this->_getParam('maxitems', 200);
-        $this->_iMaxItems = $this->_oView->form_maxitems;
+        $this->view->content = '';
+        $this->view->form_idart_chk = $this->getRequestParam('idart') ? ' checked="checked"' : '';
+        $this->view->form_idcat_chk = $this->getRequestParam('idcat') ? ' checked="checked"' : '';
+        $this->view->form_idcatart_chk = $this->getRequestParam('idcatart') ? ' checked="checked"' : '';
+        $this->view->form_idartlang_chk = $this->getRequestParam('idartlang') ? ' checked="checked"' : '';
+        $this->view->form_maxitems = cSecurity::toInteger($this->getRequestParam('maxitems', 200));
+        $this->maxItems = $this->view->form_maxitems;
     }
 
     /**
@@ -49,66 +48,64 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract
      */
     public function indexAction()
     {
-        $this->_oView->content = '';
+        $this->view->content = '';
     }
 
     /**
      * Test action
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function testAction()
     {
-        $this->_oView->content = '';
+        $this->view->content = '';
 
         // Array for testcases
-        $aTests = [];
+        $test = [];
 
         // Instance of mr test
-        $oMRTest = new ModRewriteTest($this->_iMaxItems);
+        $oMRTest = new ModRewriteTest($this->maxItems);
 
         $startTime = getmicrotime();
 
         // Fetch complete CONTENIDO page structure
-        $aStruct = $oMRTest->fetchFullStructure();
-        ModRewriteDebugger::add($aStruct, 'mr_test.php $aStruct');
+        $catArtStruct = $oMRTest->fetchFullStructure();
+        ModRewriteDebugger::add($catArtStruct, 'mr_test.php $catArtStruct');
 
         // Loop through the structure and compose testcases
-        foreach ($aStruct as $idcat => $aCat) {
+        foreach ($catArtStruct as $catData) {
             // category
-            $aTests[] = [
-                'url' => $oMRTest->composeURL($aCat, 'c'),
-                'level' => $aCat['level'],
-                'name' => $aCat['name']
+            $test[] = [
+                'url' => $oMRTest->composeURL($catData, 'c'),
+                'level' => $catData['level'],
+                'name' => $catData['name']
             ];
 
-            foreach ($aCat['articles'] as $idart => $aArt) {
+            foreach ($catData['articles'] as $artData) {
                 // articles
-                $aTests[] = [
-                    'url' => $oMRTest->composeURL($aArt, 'a'),
-                    'level' => $aCat['level'],
-                    'name' => $aCat['name'] . ' :: ' . $aArt['title']
+                $test[] = [
+                    'url' => $oMRTest->composeURL($artData, 'a'),
+                    'level' => $catData['level'],
+                    'name' => $catData['name'] . ' :: ' . $artData['title']
                 ];
             }
         }
 
         // compose content
-        $this->_oView->content = '<pre>';
+        $this->view->content = '<pre>';
 
-        $oMRUrlStack = ModRewriteUrlStack::getInstance();
+        $mrUrlStack = ModRewriteUrlStack::getInstance();
 
         // first loop to add urls to mr url stack
-        foreach ($aTests as $p => $v) {
-            $oMRUrlStack->add($v['url']);
+        foreach ($test as $v) {
+            $mrUrlStack->add($v['url']);
         }
 
         $successCounter = 0;
         $failCounter = 0;
 
         // second loop to do the rest
-        foreach ($aTests as $p => $v) {
+        foreach ($test as $v) {
             $url = mr_buildNewUrl($v['url']);
             $arr = $oMRTest->resolveUrl($url);
             $error = '';
@@ -116,7 +113,7 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract
             $color = 'green';
 
             if ($url !== $resUrl) {
-                if ($oMRTest->getRoutingFoundState()) {
+                if ($oMRTest->isRoutingFound()) {
                     $successCounter++;
                     $resUrl = 'route to -&gt; ' . $resUrl;
                 } else {
@@ -151,7 +148,7 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract
             $pref = str_repeat('    ', $v['level']);
 
             // render resolve information for current item
-            $itemTpl = $this->_oView->lng_result_item_tpl;
+            $itemTpl = $this->view->lng_result_item_tpl;
             $itemTpl = str_replace('{pref}', $pref, $itemTpl);
             $itemTpl = str_replace('{name}', $v['name'], $itemTpl);
             $itemTpl = str_replace('{url_in}', $v['url'], $itemTpl);
@@ -161,20 +158,20 @@ class ModRewrite_ContentTestController extends ModRewrite_ControllerAbstract
             $itemTpl = str_replace('{err}', $error, $itemTpl);
             $itemTpl = str_replace('{data}', $oMRTest->getReadableResolvedData($arr), $itemTpl);
 
-            $this->_oView->content .= "\n" . $itemTpl . "\n";
+            $this->view->content .= "\n" . $itemTpl . "\n";
         }
-        $this->_oView->content .= '</pre>';
+        $this->view->content .= '</pre>';
 
         $totalTime = sprintf('%.4f', (getmicrotime() - $startTime));
 
-        // render information about current test
-        $msg = $this->_oView->lng_result_message_tpl;
+        // render information about the current test
+        $msg = $this->view->lng_result_message_tpl;
         $msg = str_replace('{time}', $totalTime, $msg);
         $msg = str_replace('{num_urls}', ($successCounter + $failCounter), $msg);
         $msg = str_replace('{num_success}', $successCounter, $msg);
         $msg = str_replace('{num_fail}', $failCounter, $msg);
 
-        $this->_oView->content = $msg . $this->_oView->content;
+        $this->view->content = $msg . $this->view->content;
     }
 
 }

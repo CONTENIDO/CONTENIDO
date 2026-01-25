@@ -27,9 +27,8 @@ class cHTMLTableHead extends cHTMLContentElement
      * Constructor to create an instance of this class.
      * Creates an HTML th element.
      *
-     * @param mixed $content [optional]
-     *         String or object with the contents
-     *         Since CONTENIDO 4.10.2
+     * @param string|object|array|null $content [optional] String or object with the contents.
+     *      Since CONTENIDO 4.10.2
      */
     public function __construct($content = NULL)
     {

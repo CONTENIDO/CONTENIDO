@@ -28,12 +28,9 @@ class cHTMLParagraph extends cHTMLContentElement
      *
      * Creates an HTML p element.
      *
-     * @param mixed $content [optional]
-     *         String or object with the contents
-     * @param string $class [optional]
-     *         class of this element
-     * @param string $id [optional]
-     *         the ID of this element
+     * @param mixed $content [optional] String or object with the contents
+     * @param string $class [optional] Class of this element
+     * @param string $id [optional] The ID of this element
      */
     public function __construct($content = '', $class = '', $id = '')
     {

@@ -25,7 +25,7 @@ class cSetupPath extends cSetupMask
 
     /**
      * cSetupPath constructor.
-     * @param string $step
+     * @param bool|int $step
      * @param bool $previous
      * @param $next
      */
@@ -33,18 +33,18 @@ class cSetupPath extends cSetupMask
     {
         parent::__construct("templates/setup/forms/pathinfo.tpl", $step);
         $this->setHeader(i18n("System Directories", "setup"));
-        $this->_stepTemplateClass->set("s", "TITLE", i18n("System Directories", "setup"));
-        $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Please check the directories identified by the system. If you need to change a path, click on the name and enter the new path in the available input box.", "setup"));
+        $this->_stepTemplateClass->set('s', 'TITLE', i18n("System Directories", "setup"));
+        $this->_stepTemplateClass->set('s', 'DESCRIPTION', i18n("Please check the directories identified by the system. If you need to change a path, click on the name and enter the new path in the available input box.", "setup"));
 
         list($rootPath, $rootHttpPath) = getSystemDirectories(true);
         list($rootPath2, $rootHttpPath2) = getSystemDirectories();
 
-        $oRootPath = new cHTMLTextbox("override_root_path", $rootPath2);
+        $oRootPath = new cHTMLTextbox('override_root_path', $rootPath2);
         $oRootPath->setWidth(100);
-        $oRootPath->setClass("small");
-        $oWebPath = new cHTMLTextbox("override_root_http_path", $rootHttpPath2);
+        $oRootPath->setClass('small');
+        $oWebPath = new cHTMLTextbox('override_root_http_path', $rootHttpPath2);
         $oWebPath->setWidth(100);
-        $oWebPath->setClass("small");
+        $oWebPath->setClass('small');
 
         $cHTMLFoldableErrorMessages = [];
         $cHTMLFoldableErrorMessages[0] = new cHTMLFoldableErrorMessage(i18n("CONTENIDO Root Path", "setup") . ":<br>" . $rootPath, (string)$oRootPath);
@@ -55,7 +55,7 @@ class cSetupPath extends cSetupMask
         $cHTMLErrorMessageList = new cHTMLErrorMessageList();
         $cHTMLErrorMessageList->setContent($cHTMLFoldableErrorMessages);
 
-        $this->_stepTemplateClass->set("s", "CONTROL_PATHINFO", $cHTMLErrorMessageList->render());
+        $this->_stepTemplateClass->set('s', 'CONTROL_PATHINFO', $cHTMLErrorMessageList->render());
 
         $this->setNavigation($previous, $next);
     }

@@ -35,7 +35,7 @@ $perm = cRegistry::getPerm();
 $sess = cRegistry::getSession();
 
 if (!$perm->have_perm_area_action($area, $action)) {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
     return;
 }
 

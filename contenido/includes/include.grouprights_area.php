@@ -32,9 +32,9 @@ $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
         WHERE user_id = ':user_id' AND idclient = :idclient
         AND idlang = :idlang AND idcat = 0 AND A.idaction = C.idaction AND A.idarea = B.idarea";
 $db->query($sql, [
-    'tab_rights' => $cfg['tab']['rights'],
-    'tab_area' => $cfg['tab']['area'],
-    'tab_actions' => $cfg['tab']['actions'],
+    'tab_rights' => cDb::getTableName('rights'),
+    'tab_area' => cDb::getTableName('area'),
+    'tab_actions' => cDb::getTableName('actions'),
     'user_id' => $groupid,
     'idclient' => $rights_client,
     'idlang' => $rights_lang,
@@ -42,11 +42,11 @@ $db->query($sql, [
 
 $rights_list_old = [];
 while ($db->nextRecord()) { // set a new rights list for this user
-    $rights_list_old[$db->f(3) . "|" . $db->f(4) . "|" . $db->f("idcat")] = "x";
+    $rights_list_old[$db->f(3) . "|" . $db->f(4) . "|" . $db->f('idcat')] = "x";
 }
 $rights_list_old_keys = array_keys($rights_list_old);
 
-if (($perm->have_perm_area_action("groups_overview", $action)) && ($action == "group_edit")) {
+if (($perm->have_perm_area_action("groups_overview", $action)) && ($action === 'group_edit')) {
     if (cRights::saveGroupRights() === true) {
         cRegistry::addOkMessage(i18n('Changes saved'));
     } else {
@@ -54,7 +54,7 @@ if (($perm->have_perm_area_action("groups_overview", $action)) && ($action == "g
     }
 } else {
     if (!$perm->have_perm_area_action("groups_overview", $action)) {
-        // $notification->displayNotification("error", i18n("Permission
+        // $notification->displayNotification('error', i18n("Permission
         // denied"));
         cRegistry::addErrorMessage(i18n("Permission denied"));
     }
@@ -68,12 +68,12 @@ $sTable = '';
 
 $sJsBefore .= "var areatree = [];\n";
 
-if (!isset($rights_perms) || $action == "" || !isset($action)) {
+if (!isset($rights_perms) || empty($action)) {
     // search for the permissions of this user
     $sql = "SELECT `perms` FROM `%s` WHERE `group_id` = '`%s`'";
-    $db->query($sql, $cfg['tab']['groups'], $groupid);
+    $db->query($sql, cDb::getTableName('groups'), $groupid);
     $db->nextRecord();
-    $rights_perms = $db->f("perms");
+    $rights_perms = $db->f('perms');
 }
 
 // Init Table
@@ -143,7 +143,7 @@ foreach ($right_list as $key => $value) {
         $items = "";
         if ($key == $key2) {
             // does the user have the right
-            if (in_array($value2["perm"] . "|fake_permission_action|0", $rights_list_old_keys)) {
+            if (in_array($value2['perm'] . "|fake_permission_action|0", $rights_list_old_keys)) {
                 $checked = 'checked="checked"';
             } else {
                 $checked = "";
@@ -153,7 +153,7 @@ foreach ($right_list as $key => $value) {
             $main = $nav->getName(str_replace('/overview', '/main', $value2['location']));
 
             if ($debug) {
-                $locationString = $value2["location"] . " " . $value2["perm"] . "-->" . $main;
+                $locationString = $value2['location'] . " " . $value2['perm'] . "-->" . $main;
             } else {
                 $locationString = $main;
             }
@@ -168,7 +168,7 @@ foreach ($right_list as $key => $value) {
             $objItem->updateAttributes([
                 "class" => "td_rights2"
             ]);
-            $objItem->setContent("<input type=\"checkbox\" name=\"rights_list[" . $value2["perm"] . "|fake_permission_action|0]\" value=\"x\" $checked>");
+            $objItem->setContent("<input type=\"checkbox\" name=\"rights_list[" . $value2['perm'] . "|fake_permission_action|0]\" value=\"x\" $checked>");
             $items .= $objItem->render();
             $objItem->advanceID();
 
@@ -185,15 +185,15 @@ foreach ($right_list as $key => $value) {
             $objRow->advanceID();
             // set javascript array for areatree
             $sJsBefore .= "areatree[\"$key\"] = [];\n"
-                . "areatree[\"$key\"][\"" . $value2["perm"] . "0\"] = \"rights_list[" . $value2["perm"] . "|fake_permission_action|0]\";\n";
+                . "areatree[\"$key\"][\"" . $value2['perm'] . "0\"] = \"rights_list[" . $value2['perm'] . "|fake_permission_action|0]\";\n";
         }
 
         // if there are some
-        if (isset($value2["action"]) && is_array($value2["action"])) {
-            foreach ($value2["action"] as $key3 => $value3) {
+        if (isset($value2['action']) && is_array($value2['action'])) {
+            foreach ($value2['action'] as $key3 => $value3) {
                 $idaction = $value3;
                 // does the user have the right
-                if (in_array($value2["perm"] . "|$idaction|0", $rights_list_old_keys)) {
+                if (in_array($value2['perm'] . "|$idaction|0", $rights_list_old_keys)) {
                     $checked = 'checked="checked"';
                 } else {
                     $checked = "";
@@ -202,13 +202,13 @@ foreach ($right_list as $key => $value) {
                 // set the checkbox the name consists of areaid+actionid+itemid
                 $sCellContent = '';
                 if ($debug) {
-                    $label = $lngAct[$value2["perm"]][$value3] ?? i18n('not available');
-                    $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . " | " . $value3 . "-->" . $label . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                    $label = $lngAct[$value2['perm']][$value3] ?? i18n('not available');
+                    $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2['perm'] . " | " . $value3 . "-->" . $label . "&nbsp;&nbsp;&nbsp;&nbsp;";
                 } else {
-                    if (empty($lngAct[$value2["perm"]][$value3])) {
-                        $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2["perm"] . "|" . $value3 . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                    if (empty($lngAct[$value2['perm']][$value3])) {
+                        $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $value2['perm'] . "|" . $value3 . "&nbsp;&nbsp;&nbsp;&nbsp;";
                     } else {
-                        $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $lngAct[$value2["perm"]][$value3] . "&nbsp;&nbsp;&nbsp;&nbsp;";
+                        $sCellContent = "&nbsp;&nbsp;&nbsp;&nbsp; " . $lngAct[$value2['perm']][$value3] . "&nbsp;&nbsp;&nbsp;&nbsp;";
                     }
                 }
 
@@ -222,7 +222,7 @@ foreach ($right_list as $key => $value) {
                 $objItem->updateAttributes([
                     "class" => "td_rights2"
                 ]);
-                $objItem->setContent("<input type=\"checkbox\" id=\"rights_list[" . $value2["perm"] . "|$value3|0]\" name=\"rights_list[" . $value2["perm"] . "|$value3|0]\" value=\"x\" $checked>");
+                $objItem->setContent("<input type=\"checkbox\" id=\"rights_list[" . $value2['perm'] . "|$value3|0]\" name=\"rights_list[" . $value2['perm'] . "|$value3|0]\" value=\"x\" $checked>");
                 $items .= $objItem->render();
                 $objItem->advanceID();
 
@@ -238,7 +238,7 @@ foreach ($right_list as $key => $value) {
                 $output .= $objRow->render();
                 $objRow->advanceID();
                 // set javscript array for areatree
-                $sJsBefore .= "areatree[\"$key\"][\"" . $value2["perm"] . "$value3\"]=\"rights_list[" . $value2["perm"] . "|$value3|0]\";\n";
+                $sJsBefore .= "areatree[\"$key\"][\"" . $value2['perm'] . "$value3\"]=\"rights_list[" . $value2['perm'] . "|$value3|0]\";\n";
             }
         }
     }

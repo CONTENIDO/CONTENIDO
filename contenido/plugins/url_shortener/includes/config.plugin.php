@@ -16,13 +16,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $cfg, $lngAct;
 
-$pluginName = basename(dirname(__DIR__, 1));
+$pluginName = basename(dirname(__DIR__));
 
 $cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
 
-// extend the $cfg array with the table name if the table name has not been
-// defined yet
-// @deprecated [2023-02-03] Since 4.10.2, don't use $cfg['tab']['url_shortener']['shorturl'], use $cfg['tab']['url_shortener_shorturl'] instead!
+// extend the $cfg array with the table name if the table name has not been defined yet
+// @deprecated [2023-02-03] Since CONTENIDO 4.10.2, don't use $cfg['tab']['url_shortener']['shorturl'], use $cfg['tab']['url_shortener_shorturl'] instead!
 if (!isset($cfg['tab']['url_shortener']['shorturl'])) {
     $cfg['tab']['url_shortener']['shorturl'] = $cfg['sql']['sqlprefix'] . '_pi_shorturl';
 }
@@ -43,8 +42,8 @@ if (!isset($cfg['url_shortener']['allowed_chars'])) {
 }
 
 // Plugin translations for backend
-$lngAct[$pluginName]["url_shortener_delete"] = i18n("Delete Short URLs", $pluginName);
-$lngAct[$pluginName]["url_shortener_edit"] = i18n("Edit Short URLs", $pluginName);
+$lngAct[$pluginName]['url_shortener_delete'] = i18n("Delete Short URLs", $pluginName);
+$lngAct[$pluginName]['url_shortener_edit'] = i18n("Edit Short URLs", $pluginName);
 
 // Include plugin sources
 plugin_include($pluginName, 'classes/class.url_shortener.shorturl.php');
@@ -53,12 +52,12 @@ plugin_include($pluginName, 'includes/functions.url_shortener.php');
 // add chain functions
 $cecRegistry = cApiCecRegistry::getInstance();
 // add additional rows to the article edit form
-$cecRegistry->addChainFunction('Contenido.Backend.ConMetaEditFormAdditionalRows', 'piUsEditFormAdditionalRows');
+$cecRegistry->addChainFunction('Contenido.Backend.ConMetaEditFormAdditionalRows', 'pius_editFormAdditionalRows');
 // extend the save action of articles, so that the short URL is also saved
-$cecRegistry->addChainFunction('Contenido.Action.con_meta_saveart.AfterCall', 'piUsConSaveArtAfter');
+$cecRegistry->addChainFunction('Contenido.Action.con_meta_saveart.AfterCall', 'pius_conSaveArtAfter');
 // hook as soon as possible, so that short URLs can be resolved early
-$cecRegistry->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'piUsAfterLoadPlugins');
+$cecRegistry->addChainFunction('Contenido.Frontend.AfterLoadPlugins', 'pius_afterLoadPlugins');
 // delete short url entries if you delete article
-$cecRegistry->addChainFunction('Contenido.Action.con_deleteart.AfterCall', 'piUseConDeleteArtAfter');
+$cecRegistry->addChainFunction('Contenido.Action.con_deleteart.AfterCall', 'pius_conDeleteArtAfter');
 
 unset($pluginName);

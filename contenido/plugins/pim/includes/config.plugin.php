@@ -16,13 +16,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $cfg;
 
-$pluginName = basename(dirname(__DIR__, 1));
+$pluginName = basename(dirname(__DIR__));
 
 $cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
 
 // plugin includes
 plugin_include($pluginName, 'classes/class.pim.plugin.collection.php');
 plugin_include($pluginName, 'classes/class.pim.plugin.relations.collection.php');
+plugin_include($pluginName, 'classes/util/class.pim.plugin.helper.php');
 plugin_include($pluginName, 'classes/util/zip/class.pimpluginarchiveextractor.php');
 plugin_include($pluginName, 'classes/setup/class.pimpluginsetup.php');
 plugin_include($pluginName, 'classes/setup/class.pimpluginsetup.install.php');

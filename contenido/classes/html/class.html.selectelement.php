@@ -35,31 +35,30 @@ class cHTMLSelectElement extends cHTMLFormElement
      *
      * Creates an HTML select field (aka "DropDown").
      *
-     * @param string $name
-     *         Name of the element
-     * @param string $width [optional]
-     *         Width of the select element
-     * @param string $id [optional]
-     *         ID of the element
-     * @param bool $disabled [optional]
-     *         Item disabled flag (non-empty to set disabled)
-     * @param int|null $tabindex [optional]
-     *         Tab index for form elements
-     * @param string $accesskey [optional]
-     *         Key to access the field
-     * @param string $class [optional]
-     *         the class of this element
+     * @param string $name Name of the element
+     * @param string $width [optional] CSS width of the select element, used to set it in the style attribute
+     * @param string $id [optional] ID of the element
+     * @param bool $disabled [optional] Item disabled flag (non-empty to set disabled)
+     * @param ?int $tabindex [optional] Tab index for form elements
+     * @param string $accessKey [optional] Key to access the field
+     * @param string $class [optional] The class of this element
      */
     public function __construct(
-        $name, $width = '', $id = '', $disabled = false, $tabindex = null, $accesskey = '', $class = ''
+        $name,
+        $width = '',
+        $id = '',
+        $disabled = false,
+        $tabindex = null,
+        $accessKey = '',
+        $class = ''
     )
     {
-        parent::__construct($name, $id, $disabled, $tabindex, $accesskey, $class);
+        parent::__construct($name, $id, $disabled, $tabindex, $accessKey, $class);
         $this->_tag = 'select';
         $this->_contentlessTag = false;
 
-        if ($width != "") {
-            $this->appendStyleDefinition("width", $width);
+        if ($width != '') {
+            $this->appendStyleDefinition('width', $width);
         }
     }
 
@@ -78,12 +77,9 @@ class cHTMLSelectElement extends cHTMLFormElement
      *     'value' => 'title'
      * ];
      *
-     * @param array $stuff
-     *         Array with all items
-     * @return cHTMLSelectElement
-     *         $this for chaining
+     * @param array $stuff Array with all items
      */
-    public function autoFill(array $stuff): cHTMLSelectElement
+    public function autoFill(array $stuff): self
     {
         foreach ($stuff as $key => $row) {
             if (is_array($row)) {
@@ -94,53 +90,46 @@ class cHTMLSelectElement extends cHTMLFormElement
                 $this->addOptionElement($key, $option);
             }
         }
+
         return $this;
     }
 
     /**
-     * Adds an cHTMLOptionElement to the number of choices at the specified
-     * position.
+     * Adds an cHTMLOptionElement to the number of choices at the specified position.
      *
-     * @param string $index
-     *         Index of the element
-     * @param cHTMLOptionElement $element
-     *         Filled cHTMLOptionElement to add
-     * @return cHTMLSelectElement
-     *         $this for chaining
+     * @param string|int $index Index of the element
+     * @param cHTMLOptionElement $element Filled cHTMLOptionElement to add
      */
-    public function addOptionElement($index, cHTMLOptionElement $element): cHTMLSelectElement
+    public function addOptionElement($index, cHTMLOptionElement $element): self
     {
         $this->_options[$index] = $element;
+
         return $this;
     }
 
     /**
      * Appends a cHTMLOptionElement to the number of choices.
      *
-     * @param cHTMLOptionElement $element
-     *         Filled cHTMLOptionElement to add
-     * @return cHTMLSelectElement
-     *         $this for chaining
+     * @param cHTMLOptionElement $element Filled cHTMLOptionElement to add
      */
-    public function appendOptionElement(cHTMLOptionElement $element): cHTMLSelectElement
+    public function appendOptionElement(cHTMLOptionElement $element): self
     {
         $this->_options[] = $element;
+
         return $this;
     }
 
     /**
      * Defines that this select element is a multiselect element.
-     *
-     * @return cHTMLSelectElement
-     *         $this for chaining
      */
-    public function setMultiselect(): cHTMLSelectElement
+    public function setMultiselect(): self
     {
         $name = $this->getAttribute('name');
         $strLength = cString::getStringLength($name);
         if (cString::getPartOfString($name, $strLength - 2, $strLength) != '[]') {
             $this->updateAttribute('name', $name . '[]');
         }
+
         return $this->updateAttribute('multiple', 'multiple');
     }
 
@@ -148,10 +137,8 @@ class cHTMLSelectElement extends cHTMLFormElement
      * Defines the size of this select element.
      *
      * @param int $size
-     * @return cHTMLSelectElement
-     *         $this for chaining
      */
-    public function setSize($size): cHTMLSelectElement
+    public function setSize($size): self
     {
         return $this->updateAttribute('size', $size);
     }
@@ -159,12 +146,9 @@ class cHTMLSelectElement extends cHTMLFormElement
     /**
      * Sets a specific cHTMLOptionElement to the selected state.
      *
-     * @param array|string $lvalue
-     *         Specifies the "value" of the cHTMLOptionElement to set
-     * @return cHTMLSelectElement
-     *         $this for chaining
+     * @param array|string $lvalue Specifies the "value" of the cHTMLOptionElement to set
      */
-    public function setDefault($lvalue): cHTMLSelectElement
+    public function setDefault($lvalue): self
     {
         if (is_array($lvalue)) {
             foreach ($this->_options as $key => $value) {
@@ -187,14 +171,14 @@ class cHTMLSelectElement extends cHTMLFormElement
                 }
             }
         }
+
         return $this;
     }
 
     /**
      * Search for the selected elements
      *
-     * @return string|bool
-     *         "lvalue" or false
+     * @return string|bool "lvalue" or false
      */
     public function getDefault()
     {
@@ -209,12 +193,9 @@ class cHTMLSelectElement extends cHTMLFormElement
     /**
      * Sets specified elements as selected (and all others as unselected)
      *
-     * @param array $elements
-     *         Array with "values" of the cHTMLOptionElement to set
-     * @return cHTMLSelectElement
-     *         $this for chaining
+     * @param array $elements Array with "values" of the cHTMLOptionElement to set
      */
-    public function setSelected(array $elements): cHTMLSelectElement
+    public function setSelected(array $elements): self
     {
         foreach ($this->_options as $key => $option) {
             $selected = in_array($option->getAttribute('value'), $elements);
@@ -226,14 +207,12 @@ class cHTMLSelectElement extends cHTMLFormElement
     }
 
     /**
-     * Renders the select box
-     *
-     * @return string
-     *         Rendered HTML
+     * @inheritDoc
      */
     public function toHtml(): string
     {
         $this->_setContent($this->_options);
+
         return parent::toHtml();
     }
 

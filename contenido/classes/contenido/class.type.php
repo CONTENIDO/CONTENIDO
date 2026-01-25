@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiType createNewItem
- * @method cApiType|bool next
+ * @extends ItemCollection<cApiType>
  */
 class cApiTypeCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiTypeCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('type'), 'idtype');
+        parent::__construct(cDb::getTableName('type'), 'idtype');
         $this->_setItemClass('cApiType');
     }
 
@@ -45,17 +44,13 @@ class cApiTypeCollection extends ItemCollection
      * @param string $author [optional]
      * @param string $created [optional]
      * @param string $lastmodified [optional]
-     *
      * @return cApiType
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($type, $description, $code = '', $status = 0, $author = '', $created = '', $lastmodified = '')
     {
         if (empty($author)) {
-            $auth = cRegistry::getAuth();
-            $author = $auth->auth['uname'];
+            $author = cRegistry::getAuth()->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
@@ -91,43 +86,33 @@ class cApiType extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $id [optional]
-     *                  Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('type'), 'idtype');
-        $this->setFilters([], []);
+        parent::__construct(cDb::getTableName('type'), 'idtype');
+        $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
     }
 
     /**
-     * Loads an type entry by its type.
+     * Loads a type entry by its type.
      *
-     * @param string $type
-     *         e.g. CMS_HTML, CMS_TEXT, etc.
-     *
-     * @return bool
-     *
+     * @param string $type e.g. CMS_HTML, CMS_TEXT, etc.
      * @throws cException
      */
-    public function loadByType($type)
+    public function loadByType(string $type): bool
     {
-        $aProps = [
-            'type' => $type,
-        ];
-        $aRecordSet = $this->_oCache->getItemByProperties($aProps);
-        if ($aRecordSet) {
+        $recordSet = $this->_oCache->getItemByProperties(['type' => $type]);
+        if ($recordSet) {
             // entry in cache found, load entry from cache
-            $this->loadByRecordSet($aRecordSet);
+            $this->loadByRecordSet($recordSet);
             return true;
         } else {
-            $where = $this->db->prepare("type = '%s'", $type);
+            $where = $this->db->prepare("`type` = '%s'", $type);
             return $this->_loadByWhereClause($where);
         }
     }
@@ -135,12 +120,7 @@ class cApiType extends Item
     /**
      * User-defined setter for item fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $safe [optional]
-     *         Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function setField($name, $value, $safe = true)
     {

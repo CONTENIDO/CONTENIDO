@@ -22,6 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cAuthHandlerFrontend extends cAuth
 {
+    use cAuthBackendUserDetailsTrait;
 
     /**
      *
@@ -63,7 +64,7 @@ class cAuthHandlerFrontend extends cAuth
     }
 
     /**
-     * @deprecated [2023-02-05] Since 4.10.2, use {@see cAuthHandlerFrontend::preAuthenticate} instead
+     * @deprecated [2023-02-05] Since CONTENIDO 4.10.2, use {@see cAuthHandlerFrontend::preAuthenticate} instead
      */
     public function preAuthorize()
     {
@@ -88,76 +89,25 @@ class cAuthHandlerFrontend extends cAuth
         $username = $_POST['username'] ?? '';
         $password = $_POST['password'] ?? '';
 
-        $frontendUserColl = new cApiFrontendUserCollection();
-        $username = $frontendUserColl->escape(stripslashes(trim($username)));
-
-        $groupPerm = [];
-
         if ($password == '') {
             return false;
         }
 
-        if (isset($username)) {
+        if ($username !== '') {
             $this->auth['uname'] = $username;
         } elseif ($this->_defaultNobody) {
             return $this->auth['uname'] = $this->auth['uid'] = self::AUTH_UID_NOBODY;
         }
 
-        $uid = false;
-        $perm = false;
-        $pass = false;
-        $salt = false;
-
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-
-        $where = "username = '" . $username . "' AND idclient = '" . $client . "' AND active = 1";
-        $frontendUserColl->select($where);
-
-        while (($item = $frontendUserColl->next()) !== false) {
-            $uid = $item->get('idfrontenduser');
-            $perm = 'frontend';
-            $pass = $item->get('password');
-            $salt = $item->get('salt');
+        $userDetails = $this->createUserDetailsObject();
+        $this->loadFrontendUserDetails($userDetails, $username);
+        if (!$userDetails->userId) {
+            $this->loadBackendUserDetails($userDetails, $username);
         }
 
-        if (!$uid) {
-            $userColl = new cApiUserCollection();
-            $where = "username = '" . $username . "'";
-            $where .= " AND (valid_from <= NOW() OR valid_from = '0000-00-00 00:00:00' OR valid_from is NULL)";
-            $where .= " AND (valid_to >= NOW() OR valid_to = '0000-00-00 00:00:00' OR valid_to is NULL)";
+        $result = $this->postProcessValidateCredentials($userDetails, $password);
 
-            $maintenanceMode = getSystemProperty('maintenance', 'mode');
-            if ($maintenanceMode == 'enabled') {
-                $where .= " AND perms = 'sysadmin'";
-            }
-
-            $userColl->select($where);
-
-            while (($item = $userColl->next()) !== false) {
-                $uid = $item->get('user_id');
-                $perm = $item->get('perms');
-                // password is stored as a sha256 hash
-                $pass = $item->get('password');
-                $salt = $item->get('salt');
-            }
-        }
-
-        if (!$uid || hash('sha256', md5($password) . $salt) != $pass) {
-            sleep(2);
-
-            return false;
-        }
-
-        if ($perm != '') {
-            $groupPerm[] = $perm;
-        }
-
-        $groupColl = new cApiGroupCollection();
-        $this->auth['perm'] = cPermission::permissionToString(
-            array_merge($groupPerm, $groupColl->getPermissionsByUserId($uid))
-        );
-
-        return $uid;
+        return $result ? $userDetails->userId : false;
     }
 
     /**
@@ -182,6 +132,29 @@ class cAuthHandlerFrontend extends cAuth
             return $user->get('user_id') != '' || $frontendUser->get('idfrontenduser') != '';
         } else {
             return false;
+        }
+    }
+
+    /**
+     * Populates the given user details object with frontend user information based on the provided username.
+     *
+     * @param stdClass $userDetails The object where the user details will be loaded.
+     * @param string $username The username of the frontend user.
+     * @since CONTENIDO 4.10.2
+     */
+    private function loadFrontendUserDetails(stdClass $userDetails, string $username)
+    {
+        try {
+            $frontendUser = (new cApiFrontendUserCollection())
+                ->fetchUserForLoginAttempt($username, cRegistry::getClientId());
+            if ($frontendUser) {
+                $userDetails->userId = $frontendUser->getId();
+                $userDetails->perm = 'frontend';
+                $userDetails->password = $frontendUser->get('password');
+                $userDetails->salt = $frontendUser->get('salt');
+            }
+        } catch (cDbException|cException $e) {
+            $e->log();
         }
     }
 

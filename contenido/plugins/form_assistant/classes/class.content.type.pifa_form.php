@@ -49,9 +49,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
      * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is used
      * @param array $contentTypes array containing the values of all content types
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function __construct($rawSettings, $id, array $contentTypes)
     {
@@ -229,7 +227,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         }
 
         // loop all forms
-        while (false !== $form = $forms->next()) {
+        while ($form = $forms->next()) {
             // attributes of option element
             $title = $form->get('name');
             $value = $form->get('idform');
@@ -755,12 +753,12 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         try {
             $filename = Pifa::fromCamelCase($moduleClass);
             $filename = "extensions/class.pifa.$filename.php";
-            if (false === file_exists(Pifa::getPath() . $filename)) {
+            if (!file_exists(Pifa::getPath() . $filename)) {
                 $msg = sprintf(Pifa::i18n('MISSING_MODULE_FILE'), $filename);
                 throw new PifaException($msg);
             }
             plugin_include(Pifa::getName(), $filename);
-            if (false === class_exists($moduleClass)) {
+            if (!class_exists($moduleClass)) {
                 $msg = sprintf(Pifa::i18n('MISSING_MODULE_CLASS'), $moduleClass);
                 throw new PifaException($msg);
             }

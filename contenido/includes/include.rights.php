@@ -19,11 +19,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 global $notification, $oTpl, $db, $db2, $aViewRights, $bExclusive;
 
 // Display critical error if client or language does not exist
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
 if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegistry::getLanguage()->isLoaded())) {
-    $message = $client && !cRegistry::getClient()->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
-    $oPage = new cGuiPage("mod_overview");
+    $message = $client && !cRegistry::getClient()->isLoaded()
+        ? i18n('No Client selected')
+        : i18n('No language selected');
+    $oPage = new cGuiPage('mod_overview');
     $oPage->displayCriticalError($message);
     $oPage->render();
     // We exit the process here, this file is included by others
@@ -89,17 +91,16 @@ $firstClientsLang = 0;
 $availableClients = [];
 
 foreach ($clientList as $key => $value) {
-    $sql = "SELECT * FROM " . $cfg['tab']['lang'] . " AS A, " . $cfg['tab']['clients_lang']
+    $sql = "SELECT * FROM " . cDb::getTableName('lang') . " AS A, " . cDb::getTableName('clients_lang')
         . " AS B WHERE B.idclient=" . cSecurity::toInteger($key) . " AND A.idlang=B.idlang";
     $db->query($sql);
 
     while ($db->nextRecord()) {
-
         $idClientsLang = $db->f('idclientslang');
 
         if ((cString::findFirstPos($userPerms, "client[$key]") !== false)
-            && (cString::findFirstPos($userPerms, "lang[" . $db->f("idlang") . "]") !== false)
-            && ($perm->have_perm("lang[" . $db->f("idlang") . "]"))) {
+            && (cString::findFirstPos($userPerms, "lang[" . $db->f('idlang') . "]") !== false)
+            && ($perm->have_perm("lang[" . $db->f('idlang') . "]"))) {
             if (!$firstSel) {
                 $firstSel = true;
                 $firstClientsLang = $idClientsLang;

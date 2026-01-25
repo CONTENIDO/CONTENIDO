@@ -27,12 +27,9 @@ class cXmlReader extends cXmlBase
      * Loads a XML document from file and initializes a corresponding DOMXPath
      * instance.
      *
-     * @param string $filename
-     *         path to the XML document
-     * @return bool
-     *         load state (true = successfully loaded, false = not found or loaded)
-     * @throws cException
-     *         if file could not be loaded
+     * @param string $filename Path to the XML document
+     * @return bool Load state (true = successfully loaded, false = not found or loaded)
+     * @throws cException If file could not be loaded
      */
     public function load(string $filename): bool
     {
@@ -52,15 +49,11 @@ class cXmlReader extends cXmlBase
     }
 
     /**
-     * Loads a XML document from file and initializes a corresponding DOMXPath
-     * instance.
+     * Loads a XML document from file and initializes a corresponding DOMXPath instance.
      *
-     * @param string $source
-     *         path to the XML document
-     * @return bool
-     *         load state (true = successfully loaded, false = not found or loaded)
-     * @throws cException
-     *         if XML could not be loaded
+     * @param string $source Path to the XML document
+     * @return bool Load state (true = successfully loaded, false = not found or loaded)
+     * @throws cException If XML could not be loaded
      */
     public function loadXML(string $source): bool
     {
@@ -79,10 +72,9 @@ class cXmlReader extends cXmlBase
     /**
      * Returns a DOMNodeList for a given XPath expression.
      *
-     * @param string $path
-     *         xpath string
+     * @param string $path XPath string
      * @return DOMNodeList|false|mixed
-     * @throws cException if there is no xpath
+     * @throws cException if there is no XPath
      */
     public function getXpathNodeList(string $path)
     {
@@ -94,12 +86,10 @@ class cXmlReader extends cXmlBase
     }
 
     /**
-     * Returns the element of an DOMNodeList read out by a xpath string.
+     * Returns the element of an DOMNodeList read out by a XPath string.
      *
-     * @param string $path
-     *        xpath string
-     * @param int $nodeKey [optional, default: 0]
-     *        node key
+     * @param string $path XPath string
+     * @param int $nodeKey [optional, default: 0] Node key
      * @return DOMNode|null
      * @throws cException
      */
@@ -112,14 +102,11 @@ class cXmlReader extends cXmlBase
     }
 
     /**
-     * Returns the value of an DOMNode read out by a xpath string.
+     * Returns the value of an DOMNode read out by a XPath string.
      *
-     * @param string $path
-     *        xpath string
-     * @param int $nodeKey [optional, default: 0]
-     *        node key
-     * @return string
-     *         value of DOMNode
+     * @param string $path XPath string
+     * @param int $nodeKey [optional, default: 0] Node key
+     * @return string Value of DOMNode
      * @throws cException
      */
     public function getXpathValue(string $path, int $nodeKey = 0): string
@@ -131,10 +118,8 @@ class cXmlReader extends cXmlBase
     /**
      * Returns the amount of nodes in a given XPath string.
      *
-     * @param string $path
-     *         XPath string
-     * @return int
-     *         amount of nodes in node list
+     * @param string $path XPath string
+     * @return int Amount of nodes in node list
      * @throws cException
      */
     public function countXpathNodes(string $path): int
@@ -153,16 +138,14 @@ class cXmlReader extends cXmlBase
     /**
      * Decodes the value if XML document has not UTF-8 encoding.
      *
-     * @param string $value
-     *         value to decode
-     * @return string
-     *         decoded value
+     * @param string $value Value to decode
+     * @return string Decoded value
      * @throws cException
      */
     protected function _decode(string $value): string
     {
         if ($this->getEncoding() != 'UTF-8') {
-            $value = @utf8_decode($value);
+            $value = cString::convertEncoding($value, 'ISO-8859-1');
         }
 
         return $value;

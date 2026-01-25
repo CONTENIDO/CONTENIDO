@@ -25,7 +25,7 @@ if (!defined('CON_FRAMEWORK')) {
  */
 
 // CONTENIDO startup process
-include_once('../includes/startup.php');
+include_once(__DIR__ . '/../includes/startup.php');
 
 $fullstart = getmicrotime();
 
@@ -84,7 +84,7 @@ if (!cSecurity::isPositiveInteger($client ?? 0)) {
     $oClientColl = new cApiClientCollection();
     $oClientColl->select('', '', 'idclient ASC', '1');
     if ($oClient = $oClientColl->next()) {
-        $client = $oClient->get('idclient');
+        $client = cSecurity::toInteger($oClient->get('idclient'));
     }
 } else {
     $sess->register('client');

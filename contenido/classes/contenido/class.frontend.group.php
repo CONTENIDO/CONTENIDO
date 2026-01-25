@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiFrontendGroup createNewItem
- * @method cApiFrontendGroup|bool next
+ * @extends ItemCollection<cApiFrontendGroup>
  */
 class cApiFrontendGroupCollection extends ItemCollection
 {
@@ -40,7 +39,7 @@ class cApiFrontendGroupCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('frontendgroups'), 'idfrontendgroup');
+        parent::__construct(cDb::getTableName('frontendgroups'), 'idfrontendgroup');
         $this->_setItemClass('cApiFrontendGroup');
 
         // set the join partners so that joins can be used via link() method
@@ -50,60 +49,48 @@ class cApiFrontendGroupCollection extends ItemCollection
     /**
      * Creates a new group
      *
-     * @param string $groupname
-     *         Specifies the groupname
-     *
+     * @param string $groupName Specifies the group name
      * @return cApiFrontendGroup
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($groupname)
+    public function create($groupName, ?int $clientId = null)
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $clientId = $clientId ?? cRegistry::getClientId();
 
         $group = new cApiFrontendGroup();
 
-        // _arrInFilters = ['urlencode', 'htmlspecialchars', 'addslashes'];
-
-        $mangledGroupName = $group->inFilter($groupname);
-        $this->select("idclient = " . cSecurity::toInteger($client) . " AND groupname = '" . $mangledGroupName . "'");
-
-        if (($obj = $this->next()) !== false) {
-            $groupname = $groupname . md5(rand());
+        $mangledGroupName = $group->inFilter($groupName);
+        $this->select(sprintf("`idclient` = %d AND `groupname` = '%s'", $clientId, $mangledGroupName));
+        if ($this->next()) {
+            // Groupname exists, append random hash
+            $groupName .= md5(rand());
         }
 
         $item = $this->createNewItem();
-        $item->set('idclient', $client);
-        $item->set('groupname', $groupname);
+        $item->set('idclient', $clientId);
+        $item->set('groupname', $groupName);
         $item->store();
 
         return $item;
     }
 
     /**
-     * Overridden delete method to remove groups from groupmember table
-     * before deleting group
+     * Overridden delete method to remove groups from group member table before deleting group
      *
-     * @param int $itemID
-     *         specifies the frontend user group
-     *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @inheritDoc
+     * @param int $id The frontend user group id.
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function delete($itemID)
+    public function delete($id)
     {
         $associations = new cApiFrontendGroupMemberCollection();
-        $associations->select('idfrontendgroup = ' . (int)$itemID);
+        $associations->select(sprintf('`idfrontendgroup` = %d', $id));
 
-        while (($item = $associations->next()) !== false) {
+        while ($item = $associations->next()) {
             $associations->delete($item->get('idfrontendgroupmember'));
         }
 
-        return parent::delete($itemID);
+        return parent::delete($id);
     }
 }
 
@@ -118,17 +105,14 @@ class cApiFrontendGroup extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('frontendgroups'), 'idfrontendgroup');
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('frontendgroups'), 'idfrontendgroup');
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 }

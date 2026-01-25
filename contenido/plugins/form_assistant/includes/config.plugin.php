@@ -14,7 +14,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $cfg, $lngAct;
 
-$pluginName = basename(dirname(__DIR__, 1));
+$pluginName = basename(dirname(__DIR__));
 plugin_include($pluginName, 'classes/class.pifa.php');
 
 $pluginName = Pifa::getName();

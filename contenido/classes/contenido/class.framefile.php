@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiFrameFile createNewItem
- * @method cApiFrameFile|bool next
+ * @extends ItemCollection<cApiFrameFile>
  */
 class cApiFrameFileCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiFrameFileCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('framefiles'), 'idframefile');
+        parent::__construct(cDb::getTableName('framefiles'), 'idframefile');
         $this->_setItemClass('cApiFrameFile');
 
         // set the join partners so that joins can be used via link() method
@@ -43,34 +42,34 @@ class cApiFrameFileCollection extends ItemCollection
      * Creates a frame file item
      *
      * @param string $area
-     * @param int $idframe
-     * @param int $idfile
-     *
+     * @param int $frameId
+     * @param int $fileId
      * @return cApiFrameFile
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($area, $idframe, $idfile)
+    public function create($area, $frameId, $fileId)
     {
         $item = $this->createNewItem();
 
         if (is_string($area)) {
-            $c = new cApiArea();
-            $c->loadBy('name', $area);
+            $areaObj = new cApiArea();
+            $areaObj->loadBy('name', $area);
 
-            if ($c->isLoaded()) {
-                $area = $c->get('idarea');
+            if ($areaObj->isLoaded()) {
+                $area = $areaObj->get('idarea');
             } else {
                 $area = 0;
-                cWarning(__FILE__, __LINE__, "Could not resolve area [$area] passed to method [create], assuming 0");
+                cWarning(
+                    __FILE__,
+                    __LINE__,
+                    "Could not resolve area [$area] passed to method [create], assuming 0"
+                );
             }
         }
 
         $item->set('idarea', $area);
-        $item->set('idfile', $idfile);
-        $item->set('idframe', $idframe);
+        $item->set('idfile', $fileId);
+        $item->set('idframe', $frameId);
 
         $item->store();
 
@@ -89,31 +88,24 @@ class cApiFrameFile extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('framefiles'), 'idframefile');
+        parent::__construct(cDb::getTableName('framefiles'), 'idframefile');
         $this->setFilters(['addslashes'], ['stripslashes']);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * User-defined setter for framefile fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idfile':
@@ -123,7 +115,7 @@ class cApiFrameFile extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

@@ -29,15 +29,15 @@ $sortorder = cSecurity::toString($_REQUEST['sortorder'] ?? '');
 $filter = cSecurity::toString($_REQUEST['filter'] ?? '');
 $restrict = cSecurity::toString($_REQUEST['restrict'] ?? '');
 
-$oUser = new cApiUser($auth->auth["uid"]);
+$oUser = new cApiUser($auth->getUserId());
 if ($elemPerPage < 0) {
-    $elemPerPage = $oUser->getProperty("itemsperpage", $area);
+    $elemPerPage = $oUser->getProperty('itemsperpage', $area);
     if ((int)$elemPerPage <= 0) {
-        $oUser->setProperty("itemsperpage", $area, 25);
+        $oUser->setProperty('itemsperpage', $area, 25);
         $elemPerPage = 25;
     }
 } else {
-    $oUser->setProperty("itemsperpage", $area, $elemPerPage);
+    $oUser->setProperty('itemsperpage', $area, $elemPerPage);
 }
 
 // The following lines unset all right objects since I don't know (or I was unable
@@ -100,27 +100,27 @@ $listOptionId = "listoption";
 $tpl->set('s', 'LISTOPLINK', $listOptionId);
 $oListOptionRow = new cGuiFoldingRow("5498dbba-ed4a-4618-8e49-3a3635396e22", i18n("List options"), $listOptionId);
 $oListOptionRow->setExpanded('true');
-$oSelectItemsPerPage = new cHTMLSelectElement("elemperpage");
+$oSelectItemsPerPage = new cHTMLSelectElement('elemperpage');
 $oSelectItemsPerPage->autoFill([25 => 25, 50 => 50, 75 => 75, 100 => 100]);
 $oSelectItemsPerPage->setDefault($elemPerPage);
 
-$oSelectSortBy = new cHTMLSelectElement("sortby");
+$oSelectSortBy = new cHTMLSelectElement('sortby');
 $oSelectSortBy->autoFill($aSortByOptions);
 $oSelectSortBy->setDefault($sortby);
 
-$oSelectSortOrder = new cHTMLSelectElement("sortorder");
+$oSelectSortOrder = new cHTMLSelectElement('sortorder');
 $oSelectSortOrder->autoFill($aSortOrderOptions);
 $oSelectSortOrder->setDefault($sortorder);
 
-$oTextboxFilter = new cHTMLTextbox("filter", $filter, 20);
+$oTextboxFilter = new cHTMLTextbox('filter', $filter, 20);
 $oTextboxFilter->setStyle('width:114px;');
 
 $tplFilter = new cTemplate();
-$tplFilter->set("s", "AREA", $area);
-$tplFilter->set("s", "ITEMS_PER_PAGE", $oSelectItemsPerPage->render());
-$tplFilter->set("s", "SORT_BY", $oSelectSortBy->render());
-$tplFilter->set("s", "SORT_ORDER", $oSelectSortOrder->render());
-$tplFilter->set("s", "FILTER_USER", $oTextboxFilter->render());
+$tplFilter->set('s', 'AREA', $area);
+$tplFilter->set('s', 'ITEMS_PER_PAGE', $oSelectItemsPerPage->render());
+$tplFilter->set('s', 'SORT_BY', $oSelectSortBy->render());
+$tplFilter->set('s', 'SORT_ORDER', $oSelectSortOrder->render());
+$tplFilter->set('s', 'FILTER_USER', $oTextboxFilter->render());
 $oListOptionRow->setContentData($tplFilter->generate($cfg['path']['templates'] . $cfg['templates']['rights_left_top_filter'], true));
 $tpl->set('s', 'LISTOPTIONS', $oListOptionRow->render());
 
@@ -134,14 +134,14 @@ $iItemCount = $cApiUserCollection->count();
 $oPagerLink = new cHTMLLink;
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
-$oPagerLink->setCustom("elemperpage", $elemPerPage);
-$oPagerLink->setCustom("filter", $filter);
-$oPagerLink->setCustom("sortby", $sortby);
-$oPagerLink->setCustom("sortorder", $sortorder);
-$oPagerLink->setCustom("frame", 2);
-$oPagerLink->setCustom("area", $area);
+$oPagerLink->setCustom('elemperpage', $elemPerPage);
+$oPagerLink->setCustom('filter', $filter);
+$oPagerLink->setCustom('sortby', $sortby);
+$oPagerLink->setCustom('sortorder', $sortorder);
+$oPagerLink->setCustom('frame', 2);
+$oPagerLink->setCustom('area', $area);
 $oPagerLink->enableAutomaticParameterAppend();
-$oPagerLink->setCustom("contenido", $sess->id);
+$oPagerLink->setCustom('contenido', $sess->id);
 
 $pagerID = "pager";
 $oPager = new cGuiObjectPager("44b41691-0dd4-443c-a594-66a8164e25fd", $iItemCount, $elemPerPage, $page, $oPagerLink, "page", $pagerID);

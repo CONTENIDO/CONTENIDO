@@ -28,7 +28,7 @@ cInclude('includes', 'functions.file.php');
 
 $page = new cGuiPage('upl_search_results');
 
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getClientId();
 $area = cRegistry::getArea();
 
 $resultsPerPageOptions = [

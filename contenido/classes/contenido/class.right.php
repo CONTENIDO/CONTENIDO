@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiRight createNewItem
- * @method cApiRight|bool next
+ * @extends ItemCollection<cApiRight>
  */
 class cApiRightCollection extends ItemCollection
 {
@@ -46,7 +45,7 @@ class cApiRightCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('rights'), 'idright');
+        parent::__construct(cDb::getTableName('rights'), 'idright');
         $this->_setItemClass('cApiRight');
 
         // set the join partners so that joins can be used via link() method
@@ -62,28 +61,25 @@ class cApiRightCollection extends ItemCollection
      * Creates a right entry.
      *
      * @param string $userId
-     * @param int $idarea
-     * @param int $idaction
-     * @param int $idcat
-     * @param int $idclient
-     * @param int $idlang
+     * @param int $areaId
+     * @param int $actionId
+     * @param int $categoryId
+     * @param int $clientId
+     * @param int $languageId
      * @param int $type
-     *
      * @return cApiRight
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($userId, $idarea, $idaction, $idcat, $idclient, $idlang, $type)
+    public function create($userId, $areaId, $actionId, $categoryId, $clientId, $languageId, $type)
     {
         $oItem = $this->createNewItem();
 
         $oItem->set('user_id', $userId);
-        $oItem->set('idarea', $idarea);
-        $oItem->set('idaction', $idaction);
-        $oItem->set('idcat', $idcat);
-        $oItem->set('idclient', $idclient);
-        $oItem->set('idlang', $idlang);
+        $oItem->set('idarea', $areaId);
+        $oItem->set('idaction', $actionId);
+        $oItem->set('idcat', $categoryId);
+        $oItem->set('idclient', $clientId);
+        $oItem->set('idlang', $languageId);
         $oItem->set('type', $type);
 
         $oItem->store();
@@ -94,14 +90,11 @@ class cApiRightCollection extends ItemCollection
     /**
      * Checks if a specific user has frontend access to a protected category.
      *
-     * @param int $idcat
+     * @param int $categoryId
      * @param string $userId
-     *
-     * @return bool
-     *
      * @throws cDbException
      */
-    public function hasFrontendAccessByCatIdAndUserId($idcat, $userId)
+    public function hasFrontendAccessByCatIdAndUserId($categoryId, $userId): bool
     {
         $sql = "SELECT :pk FROM `:rights` AS A, `:actions` AS B, `:area` AS C
                 WHERE B.name = 'front_allow' AND C.name = 'str' AND A.user_id = ':userid'
@@ -111,10 +104,10 @@ class cApiRightCollection extends ItemCollection
         $params = [
             'pk' => $this->getPrimaryKeyName(),
             'rights' => $this->table,
-            'actions' => cRegistry::getDbTableName('actions'),
-            'area' => cRegistry::getDbTableName('area'),
+            'actions' => cDb::getTableName('actions'),
+            'area' => cDb::getTableName('area'),
             'userid' => $userId,
-            'idcat' => (int)$idcat,
+            'idcat' => (int)$categoryId,
         ];
 
         $sql = $this->db->prepare($sql, $params);
@@ -126,19 +119,12 @@ class cApiRightCollection extends ItemCollection
      * Deletes right entries by user id.
      *
      * @param string $userId
-     *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
-     * @todo Implement functions to delete rights by area, action, cat, client,
-     *       language.
-     *
+     * @throws cDbException|cInvalidArgumentException
+     * @todo Implement functions to delete rights by area, action, cat, client, language.
      */
     public function deleteByUserId($userId)
     {
-        $result = $this->deleteBy('user_id', $userId);
-        return $result > 0;
+        return $this->deleteBy('user_id', $userId) > 0;
     }
 
 }
@@ -154,31 +140,24 @@ class cApiRight extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('rights'), 'idright');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('rights'), 'idright');
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * User-defined setter for right fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idaction':
@@ -191,7 +170,7 @@ class cApiRight extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

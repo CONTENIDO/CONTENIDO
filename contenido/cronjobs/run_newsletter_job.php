@@ -19,10 +19,12 @@ if (!defined('CON_FRAMEWORK')) {
 global $cfg;
 
 // CONTENIDO path
-$contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/';
+$contenidoPath = str_replace('\\', '/', realpath(__DIR__ . '/../')) . '/';
 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
+
+$area = cRegistry::getArea();
 
 if (class_exists('NewsletterJobCollection') && (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs')) {
     $oJobs = new NewsletterJobCollection();

@@ -32,10 +32,10 @@ class cSetupLanguageChooser extends cSetupMask
     {
         parent::__construct("templates/languagechooser.tpl");
         $this->setHeader('Version ' . CON_VERSION);
-        $this->_stepTemplateClass->set("s", "DE_HINT", "Diese Anwendung hilft Ihnen bei der Installation von CONTENIDO.");
-        $this->_stepTemplateClass->set("s", "EN_HINT", "This application will guide you trough the setup process.");
-        $this->_stepTemplateClass->set("s", "DE_HINT_LANG", "W&auml;hlen Sie bitte die gew&uuml;nschte Sprache f&uuml;r das Setup aus.");
-        $this->_stepTemplateClass->set("s", "EN_HINT_LANG", "Please choose your language to continue.");
+        $this->_stepTemplateClass->set('s', 'DE_HINT', "Diese Anwendung hilft Ihnen bei der Installation von CONTENIDO.");
+        $this->_stepTemplateClass->set('s', 'EN_HINT', "This application will guide you trough the setup process.");
+        $this->_stepTemplateClass->set('s', 'DE_HINT_LANG', "W&auml;hlen Sie bitte die gew&uuml;nschte Sprache f&uuml;r das Setup aus.");
+        $this->_stepTemplateClass->set('s', 'EN_HINT_LANG', "Please choose your language to continue.");
 
         $languages = ["de_DE" => "Deutsch", "C" => "English"];
 
@@ -45,7 +45,7 @@ class cSetupLanguageChooser extends cSetupMask
             $links .= $test->render();
         }
 
-        $this->_stepTemplateClass->set("s", "LANGUAGECHOOSER", $links);
+        $this->_stepTemplateClass->set('s', 'LANGUAGECHOOSER', $links);
     }
 
 }

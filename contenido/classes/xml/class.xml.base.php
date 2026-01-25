@@ -38,10 +38,8 @@ abstract class cXmlBase
     /**
      * Creates a new XML document using DOMDocument.
      *
-     * @param string $version [optional, default: 1.0]
-     *         version of DOMDocument
-     * @param string $encoding [optional, default: UTF-8]
-     *         encoding of DOMDocument
+     * @param string $version [optional, default: 1.0] Version of DOMDocument
+     * @param string $encoding [optional, default: UTF-8] Encoding of DOMDocument
      */
     protected function _createDocument(string $version = '', string $encoding = '')
     {
@@ -69,8 +67,6 @@ abstract class cXmlBase
      * Sets a current DOMDocument object to class.
      *
      * @param DOMDocument $domDocument
-     *         DOMDocument object
-     *
      * @throws cException
      */
     public function setDomDocument(DOMDocument $domDocument)
@@ -82,8 +78,6 @@ abstract class cXmlBase
     /**
      * Returns the encoding of the XML document.
      *
-     * @return string
-     *     encoding
      * @throws cException if there is no DOM document
      */
     public function getEncoding(): string
@@ -95,11 +89,6 @@ abstract class cXmlBase
         return $this->_dom->xmlEncoding;
     }
 
-    /**
-     *
-     * @param string $name
-     * @param string $value
-     */
     public function registerXpathNamespace(string $name, string $value)
     {
         $this->_xpath->registerNamespace($name, $value);
@@ -123,10 +112,8 @@ abstract class cXmlBase
      * Resolves a given path which contains ".." statement for moving up one
      * level in path.
      *
-     * @param string $path
-     *         path to resolve
-     * @return string
-     *         resolved path
+     * @param string $path Path to resolve
+     * @return string Resolved path
      */
     public static function resolvePath(string $path): string
     {
@@ -155,12 +142,9 @@ abstract class cXmlBase
     /**
      * Returns given XPath with integrated level definition.
      *
-     * @param string $path
-     *         XPath to extend
-     * @param int $level
-     *         level
-     * @return string
-     *         extended XPath
+     * @param string $path XPath to extend
+     * @param int $level level
+     * @return string Extended XPath
      */
     public static function getLevelXpath(string $path, int $level): string
     {
@@ -214,18 +198,14 @@ abstract class cXmlBase
      *     </key3>
      * </root>
      *
-     * @param array $array
-     *         the array which should be converted to XML
-     * @param SimpleXMLElement|NULL $xml [optional]
-     *         the element to which the array should be added
-     * @param string $rootTagName [optional]
-     *         the root tag name which should be used - is only used when $xml is NULL!
-     * @return SimpleXMLElement
-     *         the array as a SimpleXMLElement
+     * @param array $array The array which should be converted to XML
+     * @param ?SimpleXMLElement $xml The element to which the array should be added
+     * @param string $rootTagName The root tag name which should be used - is only used when $xml is NULL!
+     * @return SimpleXMLElement The array as a SimpleXMLElement
      * @throws Exception
      */
     public static function arrayToXml(
-        array $array, SimpleXMLElement $xml = NULL, string $rootTagName = 'root'
+        array $array, ?SimpleXMLElement $xml = NULL, string $rootTagName = 'root'
     )
     {
         if ($xml == NULL) {
@@ -284,9 +264,7 @@ abstract class cXmlBase
      *     'key3' => array('key31' => 'value31', 'key32' => 'value32')
      * );
      *
-     * @param string $xmlString
-     *         contains a valid XML structure
-     * @return array
+     * @param string $xmlString Contains a valid XML structure
      * @throws Exception
      */
     public static function xmlStringToArray(string $xmlString): array
@@ -298,11 +276,14 @@ abstract class cXmlBase
      * Checks if a string is valid XML
      *
      * @param string $xmlString
-     * @return bool
-     *         True if the XML is valid
+     * @return bool True if the XML is valid
      */
     public static function isValidXML(string $xmlString): bool
     {
+        if (empty($xmlString) || is_numeric($xmlString)) {
+            return false;
+        }
+
         try {
             $testArray = @cXmlBase::xmlStringToArray($xmlString);
         } catch (Exception $e) {
@@ -335,9 +316,6 @@ abstract class cXmlBase
      *      'key2' => array('value21', 'value22'),
      *      'key3' => array('key31' => 'value31', 'key32' => 'value32')
      *  );
-     *
-     * @param SimpleXMLElement $xml
-     * @return array
      */
     public static function xmlToArray(SimpleXMLElement $xml): array
     {
@@ -351,10 +329,8 @@ abstract class cXmlBase
      * Additionally, the function replaces all associative arrays which have
      * only empty values with the array keys of the array.
      *
-     * @param array $array
-     *         the array to clean
-     * @return array
-     *         the cleaned array
+     * @param array $array The array to clean
+     * @return array The cleaned array
      */
     private static function _cleanArray(array $array): array
     {

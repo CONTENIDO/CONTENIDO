@@ -14,7 +14,18 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if (!isset($_GET['file'])) {
+/**
+ * @var cTemplate $tpl
+ */
+
+$idcat = cRegistry::getCategoryId();
+$area = cRegistry::getArea();
+$perm = cRegistry::getPerm();
+$cfg = cRegistry::getConfig();
+$sess = cRegistry::getSession();
+
+$file = $_GET['file'] ?? null;
+if (!$file) {
     $tpl->reset();
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
     return;

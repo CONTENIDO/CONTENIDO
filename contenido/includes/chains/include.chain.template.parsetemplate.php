@@ -7,7 +7,7 @@
  * Replaces following placeholders in templates:
  * - {_SID_}:  CONTENIDO session id
  * - {_PATH_CONTENIDO_FULLHTML_}:  Full URL to contenido backend (protocol + host + path)
- * - {_META_HEAD_CONTENIDO_}:  Default meta tags
+ * - {_META_HEAD_CONTENIDO_}:  Default meta-tags
  * - {_CSS_HEAD_CONTENIDO_}:  Default links tags to load core CSS files
  * - {_CSS_HEAD_CONTENIDO_FULLHTML_}:  Default links tags with full URL to contenido backend
  * - {_JS_HEAD_CONTENIDO_}:  Default script tags to load core JS files
@@ -28,20 +28,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Does some replacements in the given template.
  * Replaces some CONTENIDO specific placeholders against their values.
  *
- * @param string $template
- *         Template string to preprocess
- * @param cTemplate $templateObj
- *         The current template instance
- *
- * @return string
- *
+ * @param string $template Template string to preprocess
+ * @param cTemplate $templateObj The current template instance
  * @throws cInvalidArgumentException
  */
-function cecParseTemplate($template, cTemplate $templateObj)
+function cecParseTemplate($template, cTemplate $templateObj): string
 {
-
-    global $frame;
-
     // Autofill special placeholders like
     // - Session id
     // - Initial CONTENIDO scripts
@@ -49,24 +41,22 @@ function cecParseTemplate($template, cTemplate $templateObj)
     $prefix = "\n    ";
 
     $cfg = cRegistry::getConfig();
-    $sessid = (string)cRegistry::getBackendSessionId();
+    $sessionId = cRegistry::getBackendSessionId();
     $backendPath = cRegistry::getBackendUrl();
     $backendLang = cRegistry::getBackendLanguage();
     $area = cRegistry::getArea();
+    $frame = cRegistry::getFrame();
 
     // Fixme: Creates an error on backend login form, since we have no language there, see main.loginform.php
-    // $oLanguage = cRegistry::getLanguage();
-    // $encoding = $oLanguage->get("encoding");
-    $languageid = cRegistry::getLanguageId();
-    if ($languageid) {
-        $oLanguage = cRegistry::getLanguage();
-        $encoding = $oLanguage->get('encoding');
+    $languageId = cRegistry::getLanguageId();
+    if ($languageId) {
+        $encoding = cRegistry::getLanguage()->get('encoding');
     } else {
         $encoding = 'utf-8';
     }
     $frameNr = (!empty($frame) && is_numeric($frame)) ? $frame : 0;
 
-    // Default meta tags
+    // Default meta-tags
     // @TODO  Make this also configurable
     $metaCon = '
     <meta http-equiv="Content-type" content="text/html;charset=' . $encoding . '">
@@ -80,7 +70,7 @@ function cecParseTemplate($template, cTemplate $templateObj)
     $jsConfiguration = '
     <script type="text/javascript">
     (function(Con, $) {
-        Con.sid = "' . $sessid . '";
+        Con.sid = "' . $sessionId . '";
         $.extend(Con.cfg, {
             urlBackend: "' . $backendPath . '",
             urlHelp: "' . $urlHelp . '",
@@ -132,7 +122,7 @@ function cecParseTemplate($template, cTemplate $templateObj)
 
     // Placeholders to replace
     $replacements = [
-        '_SID_' => $sessid,
+        '_SID_' => $sessionId,
         '_PATH_CONTENIDO_FULLHTML_' => $backendPath,
         '_META_HEAD_CONTENIDO_' => $metaCon,
         '_CSS_HEAD_CONTENIDO_' => str_replace('{basePath}', '', $cssHeadCon),

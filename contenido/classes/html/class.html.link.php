@@ -43,7 +43,7 @@ class cHTMLLink extends cHTMLContentElement
     /**
      * @var string
      */
-    protected $_image;
+    protected $_image = '';
 
     /**
      * @var string
@@ -85,14 +85,10 @@ class cHTMLLink extends cHTMLContentElement
      *
      * Creates an HTML link.
      *
-     * @param string $href [optional]
-     *         String with the location to link to
-     * @param mixed $content [optional]
-     *         String or object with the contents
-     * @param string $class [optional]
-     *         the class of this element
-     * @param string $id [optional]
-     *         the ID of this element
+     * @param string $href [optional] String with the location to link to
+     * @param mixed $content [optional] String or object with the contents
+     * @param string $class [optional] The class of this element
+     * @param string $id [optional] The ID of this element
      */
     public function __construct($href = '', $content = '', $class = '', $id = '')
     {
@@ -100,21 +96,18 @@ class cHTMLLink extends cHTMLContentElement
 
         $this->setLink($href);
         $this->_tag = 'a';
-        $this->_image = '';
 
         // Check for backend
         $sess = cRegistry::getSession();
-        if (is_object($sess) && get_class($sess) == 'cSession') {
+        if (is_object($sess) && get_class($sess) === 'cSession') {
             $this->enableAutomaticParameterAppend();
         }
     }
 
     /**
-     *
-     * @return cHTML
-     *         $this for chaining
+     * Sets JavaScript onclick attribute event which appends registered parameters to the link.
      */
-    public function enableAutomaticParameterAppend(): cHTML
+    public function enableAutomaticParameterAppend(): self
     {
         return $this->setEvent(
             'click',
@@ -123,11 +116,9 @@ class cHTMLLink extends cHTMLContentElement
     }
 
     /**
-     *
-     * @return cHTML
-     *         $this for chaining
+     * Removes the JavaScript onclick event attribute
      */
-    public function disableAutomaticParameterAppend(): cHTML
+    public function disableAutomaticParameterAppend(): self
     {
         return $this->unsetEvent('click');
     }
@@ -135,12 +126,9 @@ class cHTMLLink extends cHTMLContentElement
     /**
      * Sets the link to a specific location
      *
-     * @param string $href
-     *         String with the location to link to
-     * @return cHTMLLink
-     *         $this for chaining
+     * @param string $href String with the location to link to
      */
-    public function setLink($href): cHTMLLink
+    public function setLink($href): self
     {
         $this->_link = $href;
         $this->_type = 'link';
@@ -155,12 +143,9 @@ class cHTMLLink extends cHTMLContentElement
     /**
      * Sets the target frame
      *
-     * @param string $target
-     *         Target frame identifier
-     * @return cHTMLLink
-     *         $this for chaining
+     * @param string $target Target frame identifier
      */
-    public function setTargetFrame($target): cHTMLLink
+    public function setTargetFrame($target): self
     {
         return $this->updateAttribute('target', $target);
     }
@@ -168,16 +153,11 @@ class cHTMLLink extends cHTMLContentElement
     /**
      * Sets a CONTENIDO link (area, frame, action)
      *
-     * @param string $targetarea
-     *         Target backend area
-     * @param string $targetframe
-     *         Target frame (1-4)
-     * @param string $targetaction [optional]
-     *         Target action
-     * @return cHTMLLink
-     *         $this for chaining
+     * @param string $targetarea Target backend area
+     * @param string $targetframe Target frame (1-4)
+     * @param string $targetaction [optional] Target action
      */
-    public function setCLink($targetarea, $targetframe, $targetaction = ''): cHTMLLink
+    public function setCLink($targetarea, $targetframe, $targetaction = ''): self
     {
         $this->_targetarea = $targetarea;
         $this->_targetframe = $targetframe;
@@ -190,18 +170,12 @@ class cHTMLLink extends cHTMLContentElement
     /**
      * Sets a multilink
      *
-     * @param string $righttoparea
-     *         Area (right top)
-     * @param string $righttopaction
-     *         Action (right top)
-     * @param string $rightbottomarea
-     *         Area (right bottom)
-     * @param string $rightbottomaction
-     *         Action (right bottom)
-     * @return cHTMLLink
-     *         $this for chaining
+     * @param string $righttoparea Area (right top)
+     * @param string $righttopaction Action (right top)
+     * @param string $rightbottomarea Area (right bottom)
+     * @param string $rightbottomaction Action (right bottom)
      */
-    public function setMultiLink($righttoparea, $righttopaction, $rightbottomarea, $rightbottomaction): cHTMLLink
+    public function setMultiLink($righttoparea, $righttopaction, $rightbottomarea, $rightbottomaction): self
     {
         $this->_targetarea = $righttoparea;
         $this->_targetframe = 3;
@@ -217,14 +191,10 @@ class cHTMLLink extends cHTMLContentElement
     /**
      * Sets a custom attribute to be appended to the link
      *
-     * @param string $key
-     *         Parameter name
-     * @param string $value
-     *         Parameter value
-     * @return cHTMLLink
-     *         $this for chaining
+     * @param string $key Parameter name
+     * @param string $value Parameter value
      */
-    public function setCustom($key, $value): cHTMLLink
+    public function setCustom($key, $value): self
     {
         $this->_custom[$key] = $value;
 
@@ -232,12 +202,9 @@ class cHTMLLink extends cHTMLContentElement
     }
 
     /**
-     *
      * @param string $src
-     * @return cHTMLLink
-     *         $this for chaining
      */
-    public function setImage($src): cHTMLLink
+    public function setImage($src): self
     {
         $this->_image = $src;
 
@@ -247,12 +214,9 @@ class cHTMLLink extends cHTMLContentElement
     /**
      * Unsets a previous set custom attribute
      *
-     * @param string $key
-     *         Parameter name
-     * @return cHTMLLink
-     *         $this for chaining
+     * @param string $key Parameter name
      */
-    public function unsetCustom($key): cHTMLLink
+    public function unsetCustom($key): self
     {
         if (isset($this->_custom[$key])) {
             unset($this->_custom[$key]);
@@ -261,10 +225,6 @@ class cHTMLLink extends cHTMLContentElement
         return $this;
     }
 
-    /**
-     *
-     * @return string
-     */
     public function getHref(): string
     {
         $sess = cRegistry::getSession();
@@ -276,11 +236,7 @@ class cHTMLLink extends cHTMLContentElement
             }
         }
 
-        if ($this->_anchor) {
-            $anchor = '#' . $this->_anchor;
-        } else {
-            $anchor = '';
-        }
+        $anchor = $this->_anchor ? '#' . $this->_anchor : '';
 
         switch ($this->_type) {
             case 'link':
@@ -298,27 +254,43 @@ class cHTMLLink extends cHTMLContentElement
                 return $this->_link . $custom . $anchor;
             case 'clink':
                 $this->disableAutomaticParameterAppend();
-                return 'main.php?area=' . $this->_targetarea . '&frame=' . $this->_targetframe . '&action=' . $this->_targetaction . $custom . '&contenido=' . $sess->id . $anchor;
+                return sprintf(
+                    'main.php?area=%s&frame=%d&action=%s&contenido=%s',
+                    $this->_targetarea,
+                    $this->_targetframe,
+                    $this->_targetaction . $custom,
+                    $sess->id . $anchor
+                );
             case 'multilink':
                 $this->disableAutomaticParameterAppend();
-                $tmp_mstr = 'javascript:Con.multiLink(\'%s\',\'%s\',\'%s\',\'%s\');';
-                $mstr = sprintf($tmp_mstr, 'right_top', $sess->url('main.php?area=' . $this->_targetarea . '&frame=' . $this->_targetframe . '&action=' . $this->_targetaction . $custom), 'right_bottom', $sess->url('main.php?area=' . $this->_targetarea2 . '&frame=' . $this->_targetframe2 . '&action=' . $this->_targetaction2 . $custom));
-                return $mstr;
+                return sprintf(
+                    "javascript:Con.multiLink('%s','%s','%s','%s');",
+                    'right_top',
+                    $sess->url(sprintf(
+                        'main.php?area=%s&frame=%d&action=%s',
+                        $this->_targetarea,
+                        $this->_targetframe,
+                        $this->_targetaction . $custom
+                    )),
+                    'right_bottom',
+                    $sess->url(sprintf(
+                        'main.php?area=%s&frame=%d&action=%s',
+                        $this->_targetarea2,
+                        $this->_targetframe2,
+                        $this->_targetaction2 . $custom
+                    ))
+                );
             default:
                 return '';
         }
     }
 
     /**
-     * Sets an anchor
-     * Only works for the link types Link and cLink.
+     * Sets an anchor, works only for the link types Link and cLink.
      *
-     * @param string $content
-     *         Anchor name
-     * @return cHTMLLink
-     *         $this for chaining
+     * @param string $anchor Anchor name
      */
-    public function setAnchor($anchor): cHTMLLink
+    public function setAnchor($anchor): self
     {
         $this->_anchor = $anchor;
 
@@ -326,10 +298,7 @@ class cHTMLLink extends cHTMLContentElement
     }
 
     /**
-     * Renders the link
-     *
-     * @return string
-     *         Rendered HTML
+     * @inheritDoc
      */
     public function toHtml(): string
     {

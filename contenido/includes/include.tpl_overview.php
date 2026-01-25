@@ -24,9 +24,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 
 // Display critical error if client does not exist
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getClientId();
 if ($client < 1 || !cRegistry::getClient()->isLoaded()) {
-    $oPage = new cGuiPage("tpl_overview");
+    $oPage = new cGuiPage('tpl_overview');
     $oPage->displayCriticalError(i18n('No Client selected'));
     $oPage->render();
     return;
@@ -66,7 +66,7 @@ $copyLink = $copyLink->setClass('con_img_button')
     ->setAttribute('data-action', 'duplicate_template')
     ->setContent(cHTMLImage::img($cfg['path']['images'] . 'but_copy.gif', i18n('Duplicate template')));
 
-while (($template = $templateColl->next()) !== false) {
+while ($template = $templateColl->next()) {
     if (is_null($hasCommonTplRights)) {
         $hasCommonTplRights = (
             $perm->have_perm_area_action('tpl', 'tpl_delete') ||

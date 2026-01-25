@@ -22,7 +22,7 @@
  */
 class cSessionTest extends cTestingTestCase
 {
-    const URL_BASE = 'http:://contenido.localhost';
+    public const URL_BASE = 'http:://contenido.localhost';
 
     /**
      * @var cSession

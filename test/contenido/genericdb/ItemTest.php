@@ -41,8 +41,7 @@ class ItemTest extends cTestingTestCase
     protected $_tables = ['con_test'];
 
     /**
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      * @throws cTestingException
      */
     protected function setUp(): void

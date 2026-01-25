@@ -29,15 +29,10 @@ class cContentTypeImgdescr extends cContentTypeImgeditor
      *
      * Initialises class attributes and handles store events.
      *
-     * @param string $rawSettings
-     *         the raw settings in an XML structure or as plaintext
-     * @param int $id
-     *         ID of the content type, e.g. 3 if CMS_DATE[3] is used
-     * @param array $contentTypes
-     *         array containing the values of all content types
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param string $rawSettings The raw settings in an XML structure or as plaintext
+     * @param int $id ID of the content type, e.g. 3 if CMS_DATE[3] is used
+     * @param array $contentTypes Array containing the values of all content types
+     * @throws cDbException|cException
      */
     public function __construct($rawSettings, $id, array $contentTypes)
     {
@@ -45,7 +40,7 @@ class cContentTypeImgdescr extends cContentTypeImgeditor
         // saved in con_upl_meta. So compute the appropriate raw settings
         // and call the parent constructor with them.
         if (!cXmlBase::isValidXML($rawSettings)) {
-            $rawSettings = $this->_getRawSettings("CMS_IMGEDITOR", $id, $contentTypes);
+            $rawSettings = $this->_getRawSettings('CMS_IMGEDITOR', $id, $contentTypes);
         }
 
         parent::__construct($rawSettings, $id, $contentTypes);

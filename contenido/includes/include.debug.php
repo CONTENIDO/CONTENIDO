@@ -15,6 +15,21 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var string $querytype
+ * @var string $areaselect
+ * @var string $actionselect
+ * @var int $itemid
+ * @var int $frame
+ * @var int|string $groupid
+ */
+
+$perm = cRegistry::getPerm();
+$cfg = cRegistry::getConfig();
+$sess = cRegistry::getSession();
+$area = cRegistry::getArea();
+$lang = cRegistry::getLanguageId();
+
 $areaList = new cApiAreaCollection();
 $areas = $areaList = $areaList->getAvailableAreas();
 
@@ -45,7 +60,7 @@ foreach ($actions as $key => $value) {
 
 $actionSelector = $actionSelectTemplate->generate($cfg['path']['templates'] . $cfg['templates']['generic_select'], true);
 
-if ($querytype == "areaactionitem") {
+if ($querytype == 'areaactionitem') {
     $res = $perm->have_perm_area_action_item($areaselect, $actionselect, $itemid);
 
     if ($res) {
@@ -55,7 +70,7 @@ if ($querytype == "areaactionitem") {
     }
 }
 
-if ($querytype == "areaaction") {
+if ($querytype == 'areaaction') {
     $res = $perm->have_perm_area_action($areaselect, $actionselect);
 
     if ($res) {
@@ -64,7 +79,7 @@ if ($querytype == "areaaction") {
         $result = "has no right for have_perm_area_action($areaselect, $actionselect)";
     }
 }
-if ($querytype == "area") {
+if ($querytype == 'area') {
     $res = $perm->have_perm_area_action($areaselect, 0);
 
     if ($res) {

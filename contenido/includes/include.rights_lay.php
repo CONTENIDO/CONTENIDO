@@ -24,9 +24,9 @@ $action = cRegistry::getAction();
 include_once(cRegistry::getBackendPath() . 'includes/include.rights.php');
 
 // set the areas which are in use fore selecting these
-$possible_area = "'" . implode("','", $area_tree[$perm->showareas('lay')]) . "'";
+$possible_area = "'" . implode("','", $area_tree[$perm->showAreas('lay')]) . "'";
 $sql = 'SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
-        FROM ' . $cfg['tab']['rights'] . ' AS A, ' . $cfg['tab']['area'] . ' AS B, ' . $cfg['tab']['actions'] . " AS C
+        FROM ' . cDb::getTableName('rights') . ' AS A, ' . cDb::getTableName('area') . ' AS B, ' . cDb::getTableName('actions') . " AS C
         WHERE user_id = '" . $db->escape($userid) . "' AND idclient = " . cSecurity::toInteger($rights_client) . "
         AND A.type = 0 AND idlang = " . cSecurity::toInteger($rights_lang) . " AND B.idarea IN ($possible_area)
         AND idcat != 0 AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
@@ -38,7 +38,7 @@ while ($db->nextRecord()) { // set a new rights list for this user
 }
 
 $sMessage = '';
-if (($perm->have_perm_area_action("user_overview", $action)) && ($action == 'user_edit')) {
+if (($perm->have_perm_area_action("user_overview", $action)) && ($action === 'user_edit')) {
     $ret = cRights::saveRights();
     if ($ret === true) {
         $sMessage = $notification->returnNotification('ok', i18n('Changes saved'));
@@ -150,7 +150,7 @@ $objHeaderRow->advanceID();
 // table content
 $output = '';
 // Select the itemids
-$sql = 'SELECT * FROM ' . $cfg['tab']['lay'] . " WHERE idclient='" . cSecurity::toInteger($rights_client) . "' ORDER BY name";
+$sql = 'SELECT * FROM ' . cDb::getTableName('lay') . " WHERE idclient='" . cSecurity::toInteger($rights_client) . "' ORDER BY name";
 $db->query($sql);
 
 while ($db->nextRecord()) {
@@ -184,7 +184,7 @@ while ($db->nextRecord()) {
                     'class' => 'td_rights3',
                     'style' => ''
                 ]);
-                $objItem->setContent("<input type=\"checkbox\"  name=\"rights_list[" . $value2["perm"] . "|$value3|" . $db->f("idlay") . "]\" value=\"x\" $checked>");
+                $objItem->setContent("<input type=\"checkbox\"  name=\"rights_list[" . $value2['perm'] . "|$value3|" . $db->f('idlay') . "]\" value=\"x\" $checked>");
                 $items .= $objItem->render();
                 $objItem->advanceID();
             }
@@ -196,7 +196,7 @@ while ($db->nextRecord()) {
         "class" => "td_rights3",
         "style" => ""
     ]);
-    $objItem->setContent("<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_" . $value3 . "_" . $db->f("idlay") . "\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "', '$value3', '" . $db->f("idlay") . "')\">");
+    $objItem->setContent("<input type=\"checkbox\" name=\"checkall_" . $value2['perm'] . "_" . $value3 . "_" . $db->f('idlay') . "\" value=\"\" onClick=\"setRightsFor('" . $value2['perm'] . "', '$value3', '" . $db->f('idlay') . "')\">");
     $items .= $objItem->render();
     $objItem->advanceID();
 

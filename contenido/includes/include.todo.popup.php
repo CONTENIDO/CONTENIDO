@@ -31,9 +31,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var int|string $itemid
  */
 
-$oPage = new cGuiPage("todo.popup");
+$oPage = new cGuiPage('todo.popup');
 
 $action = $action ?? '';
+$message = $message ?? '';
 
 if ($action === 'todo_save_item') {
     $todo = new TODOCollection();
@@ -45,7 +46,7 @@ if ($action === 'todo_save_item') {
 
     if (!empty($userassignment) && is_array($userassignment)) {
         foreach ($userassignment as $key => $value) {
-            $item = $todo->createItem($itemtype, $itemid, strtotime($reminderdate), $subject, $message, $notiemail, $notibackend, $auth->auth['uid']);
+            $item = $todo->createItem($itemtype, $itemid, strtotime($reminderdate), $subject, $message, $notiemail, $notibackend, $auth->getUserId());
             $item->set('recipient', $value);
             $item->setProperty('todo', 'enddate', $enddate);
             $item->store();
@@ -144,13 +145,13 @@ if ($action === 'todo_save_item') {
     $userColl = new cApiUserCollection();
     $assignedUsers = [];
     foreach ($userColl->getAccessibleUsers($auth->getPermsArray(), true) as $key => $value) {
-        $assignedUsers[$key] = $value["username"] . " (" . $value["realname"] . ")";
+        $assignedUsers[$key] = $value['username'] . " (" . $value['realname'] . ")";
     }
 
     asort($assignedUsers);
 
     $userSelect->autoFill($assignedUsers);
-    $userSelect->setDefault($auth->auth["uid"]);
+    $userSelect->setDefault($auth->getUserId());
     $userSelect->setMultiselect();
     $userSelect->setSize(5);
 

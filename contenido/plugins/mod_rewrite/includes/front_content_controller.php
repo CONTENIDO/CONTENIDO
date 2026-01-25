@@ -24,9 +24,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $changeclient, $changelang, $path, $mr_preprocessedPageError;
 
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getClientId();
 $cfgClient = cRegistry::getClientConfig();
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$lang = cRegistry::getLanguageId();
 $idart = cRegistry::getArticleId();
 $idcat = cRegistry::getCategoryId();
 
@@ -36,22 +36,23 @@ ModRewriteDebugger::add(ModRewrite::getConfig(), 'front_content_controller.php m
 $requestUri = $_SERVER['REQUEST_URI'] ?? '';
 
 // create a mod rewrite controller instance and execute processing
-$oMRController = new ModRewriteController($requestUri);
-$oMRController->execute();
+$mrController = new ModRewriteController($requestUri);
+$mrController->execute();
 
-if ($oMRController->errorOccured()) {
-
+if ($mrController->isError()) {
     // an error occurred (idcat and or idart couldn't catch by controller)
 
-    $iRedirToErrPage = ModRewrite::getConfig('redirect_invalid_article_to_errorsite', 0);
-    // try to redirect to errorpage if desired
-    if ($iRedirToErrPage == 1 && (int)$client > 0 && (int)$lang > 0) {
-        // errorpage
-        $aParams = [
-            'client' => $client, 'idcat' => $cfgClient[$client]["errsite"]["idcat"], 'idart' => $cfgClient[$client]["errsite"]["idart"],
-            'lang' => $lang, 'error' => '1'
-        ];
-        $errsite = 'Location: ' . cUri::getInstance()->buildRedirect($aParams);
+    $redirectToErrorPage = ModRewrite::getConfig('redirect_invalid_article_to_errorsite', 0);
+    // try to redirect to the error page if desired
+    if ($redirectToErrorPage == 1 && $client > 0 && $lang > 0) {
+        // error page
+        $errsite = 'Location: ' . cUri::getInstance()->buildRedirect([
+            'client' => $client,
+            'idcat' => $cfgClient[$client]['errsite']['idcat'],
+            'idart' => $cfgClient[$client]['errsite']['idart'],
+            'lang' => $lang,
+            'error' => '1'
+        ]);
         mr_header($errsite);
         exit();
     }
@@ -63,39 +64,39 @@ if ($oMRController->errorOccured()) {
 
     // set some global variables
 
-    if ($oMRController->getClient()) {
-        $client = $oMRController->getClient();
+    if ($mrController->getClient()) {
+        $client = $mrController->getClient();
     }
 
-    if ($oMRController->getChangeClient()) {
-        $changeclient = $oMRController->getChangeClient();
+    if ($mrController->getChangeClient()) {
+        $changeclient = $mrController->getChangeClient();
     }
 
-    if ($oMRController->getLang()) {
-        $lang = $oMRController->getLang();
+    if ($mrController->getLang()) {
+        $lang = $mrController->getLang();
     }
 
-    if ($oMRController->getChangeLang()) {
-        $changelang = $oMRController->getChangeLang();
+    if ($mrController->getChangeLang()) {
+        $changelang = $mrController->getChangeLang();
     }
 
-    if ($oMRController->getIdArt()) {
-        $idart = $oMRController->getIdArt();
+    if ($mrController->getIdArt()) {
+        $idart = $mrController->getIdArt();
     }
 
-    if ($oMRController->getIdCat()) {
-        $idcat = $oMRController->getIdCat();
+    if ($mrController->getIdCat()) {
+        $idcat = $mrController->getIdCat();
     }
 
-    if ($oMRController->getPath()) {
-        $path = $oMRController->getPath();
+    if ($mrController->getPath()) {
+        $path = $mrController->getPath();
     }
 }
 
 // some debugs
 ModRewriteDebugger::add($mr_preprocessedPageError, 'mr $mr_preprocessedPageError');
-if ($oMRController->getError()) {
-    ModRewriteDebugger::add($oMRController->getError(), 'mr error');
+if ($mrController->getError()) {
+    ModRewriteDebugger::add($mrController->getError(), 'mr error');
 }
 ModRewriteDebugger::add($idart, 'mr $idart');
 ModRewriteDebugger::add($idcat, 'mr $idcat');

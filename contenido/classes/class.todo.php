@@ -36,32 +36,19 @@ class TODOCollection extends cApiCommunicationCollection
     }
 
     /**
-     * Selects all entries from the database.
-     * Objects are loaded using their primary key.
+     * Extends the where statement. See the original function for the parameters.
      *
-     * @param string $where [optional]
-     *                         Specifies the where clause.
-     * @param string $group_by [optional]
-     *                         Specifies the group by clause.
-     * @param string $order_by [optional]
-     *                         Specifies the order by clause.
-     * @param string $limit [optional]
-     *                         Specifies the limit by clause.
-     *
-     * @return bool
-     *         True on success, otherwise false
-     *
-     * @throws cDbException
+     * @inheritDoc
      */
-    public function select($where = '', $group_by = '', $order_by = '', $limit = '')
+    public function select($where = '', $groupBy = '', $orderBy = '', $limit = '')
     {
         if ($where == '') {
             $where = "`comtype` = 'todo'";
         } else {
-            $where .= " AND `comtype`= 'todo'";
+            $where .= " AND `comtype` = 'todo'";
         }
 
-        return parent::select($where, $group_by, $order_by, $limit);
+        return parent::select($where, $groupBy, $orderBy, $limit);
     }
 
     /**
@@ -80,9 +67,7 @@ class TODOCollection extends cApiCommunicationCollection
      *
      * @return cApiCommunication
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function createItem(
         $itemtype, $itemid, $reminderdate, $subject, $content, $notimail, $notibackend, $recipient
@@ -161,22 +146,7 @@ class TODOItem extends cApiCommunication
     /**
      * Sets a custom property.
      *
-     * @param string $type
-     *                       Specifies the type
-     * @param string $name
-     *                       Specifies the name
-     * @param mixed $value
-     *                       Specifies the value
-     * @param int $client [optional]
-     *                       unused (should be "Id of client to set property for")
-     *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
-     * @see Item::setProperty()
-     *
+     * @inheritDoc
      */
     public function setProperty($type, $name, $value, $client = 0): bool
     {

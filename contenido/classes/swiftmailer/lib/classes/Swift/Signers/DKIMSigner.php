@@ -237,6 +237,8 @@ class Swift_Signers_DKIMSigner implements Swift_Signers_HeaderSigner
         foreach ($this->_bound as $is) {
             $is->write($bytes);
         }
+
+        return 1;
     }
 
     /**

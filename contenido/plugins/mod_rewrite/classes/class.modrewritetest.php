@@ -25,95 +25,65 @@ class ModRewriteTest
 {
 
     /**
-     * Global $cfg array
-     * @var  array
+     * @var int Max items to process
      */
-    protected $_aCfg;
+    protected $maxItems;
 
     /**
-     * Global $cfg['tab'] array
-     * @var  array
+     * @var string Actual resolved url
      */
-    protected $_aCfgTab;
+    protected $resolvedUrl = '';
 
     /**
-     * Max items to process
-     * @var  int
+     * @var bool Flag about a found routing status
      */
-    protected $_iMaxItems;
+    protected $routingFound = false;
 
     /**
-     * Actual resolved url
-     * @var  string
-     */
-    protected $_sResolvedUrl;
-
-    /**
-     * Routing found flag
-     * @var  bool
-     */
-    protected $_bRoutingFound = false;
-
-    /**
-     * Constructor
      * @param int $maxItems Max items (urls to articles/categories) to process
      */
-    public function __construct($maxItems)
+    public function __construct(int $maxItems)
     {
-        global $cfg;
-        $this->_aCfg = &$cfg;
-        $this->_aCfgTab = &$cfg['tab'];
-        $this->_iMaxItems = $maxItems;
+        $this->maxItems = $maxItems;
     }
 
     /**
      * Returns resolved URL
-     *
-     * @return  string  Resolved URL
      */
-    public function getResolvedUrl()
+    public function getResolvedUrl(): string
     {
-        return $this->_sResolvedUrl;
+        return $this->resolvedUrl;
     }
 
     /**
      * Returns flags about found routing
-     *
-     * @return  bool
      */
-    public function getRoutingFoundState()
+    public function isRoutingFound(): bool
     {
-        return $this->_bRoutingFound;
+        return $this->routingFound;
     }
 
     /**
-     * Fetches full structure of the installation (categories and articles) and returns it back.
+     * Fetches the full structure of the installation (categories and articles) and returns it back.
      *
-     * @param int $idclient Client id
-     * @param int $idlang Language id
-     *
-     * @return  array  Full structure as follows
+     * @param ?int $clientId Client id
+     * @param ?int $languageId Language id
+     * @return array Full structure as follows
      * <code>
      *   $arr[idcat] = Category dataset
      *   $arr[idcat]['articles'][idart] = Article dataset
      * </code>
      * @throws cDbException
      */
-    public function fetchFullStructure($idclient = NULL, $idlang = NULL)
+    public function fetchFullStructure(?int $clientId = NULL, ?int $languageId = NULL): array
     {
         $db = cRegistry::getDb();
         $db2 = cRegistry::getDb();
 
-        if (!$idclient || (int)$idclient == 0) {
-            $idclient = cRegistry::getClientId();
-        }
-        if (!$idlang || (int)$idlang == 0) {
-            $idlang = cRegistry::getLanguageId();
-        }
+        $clientId = $clientId ?? cRegistry::getClientId();
+        $languageId = $languageId ?? cRegistry::getLanguageId();
 
-        $aTab = $this->_aCfgTab;
-
-        $aStruct = [];
+        $structure = [];
 
         $sql = "SELECT
                     *
@@ -129,18 +99,25 @@ class ModRewriteTest
                 ORDER BY
                     a.idtree";
 
-        $db->query($sql, $aTab['cat_tree'], $aTab['cat_lang'], $aTab['cat'], $idclient, $idlang);
+        $db->query(
+            $sql,
+            cDb::getTableName('cat_tree'),
+            cDb::getTableName('cat_lang'),
+            cDb::getTableName('cat'),
+            $clientId,
+            $languageId
+        );
 
         $counter = 0;
 
         while ($db->nextRecord()) {
-            if (++$counter == $this->_iMaxItems) {
+            if (++$counter == $this->maxItems) {
                 break; // break this loop
             }
 
             $idcat = $db->f('idcat');
-            $aStruct[$idcat] = $db->getRecord();
-            $aStruct[$idcat]['articles'] = [];
+            $structure[$idcat] = $db->getRecord();
+            $structure[$idcat]['articles'] = [];
 
             $sql2 = "SELECT
                          *
@@ -157,18 +134,26 @@ class ModRewriteTest
                      ORDER BY
                          c.title ASC";
 
-            $db2->query($sql2, $aTab['cat_art'], $aTab['art'], $aTab['art_lang'], $idcat, $idlang, $idclient);
+            $db2->query(
+                $sql2,
+                cDb::getTableName('cat_art'),
+                cDb::getTableName('art'),
+                cDb::getTableName('art_lang'),
+                $idcat,
+                $languageId,
+                $clientId
+            );
 
             while ($db2->nextRecord()) {
                 $idart = $db2->f('idart');
-                $aStruct[$idcat]['articles'][$idart] = $db2->getRecord();
-                if (++$counter == $this->_iMaxItems) {
+                $structure[$idcat]['articles'][$idart] = $db2->getRecord();
+                if (++$counter == $this->maxItems) {
                     break 2; // break this and also superior loop
                 }
             }
         }
 
-        return $aStruct;
+        return $structure;
     }
 
     /**
@@ -177,20 +162,18 @@ class ModRewriteTest
      * The result is used to generate seo urls...
      *
      * @param array $arr Associative array with some data as follows:
-     *                        <code>
-     *                        $arr['idcat']
-     *                        $arr['idart']
-     *                        $arr['idcatart']
-     *                        $arr['idartlang']
-     *                        </code>
+     *      <code>
+     *      $arr['idcat']
+     *      $arr['idart']
+     *      $arr['idcatart']
+     *      $arr['idartlang']
+     *      </code>
      * @param string $type Either 'c' or 'a' (category or article). If set to
-     *                        'c' only the parameter idcat will be added to the URL
-     *
-     * @return string
+     *      'c' only the parameter idcat will be added to the URL
      */
-    public function composeURL($arr, $type)
+    public function composeURL(array $arr, string $type): string
     {
-        $type = ($type == 'a') ? 'a' : 'c';
+        $type = $type == 'a' ? 'a' : 'c';
 
         $param = [];
 
@@ -211,6 +194,7 @@ class ModRewriteTest
             }
         }
         $param[] = 'foo=bar';
+
         return 'front_content.php?' . implode('&amp;', $param);
     }
 
@@ -219,19 +203,16 @@ class ModRewriteTest
      * processing passed url using ModRewriteController
      *
      * @param string $url Url to resolve
-     *
-     * @return  array   Associative array with resolved data
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @return array Associative array with resolved data
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function resolveUrl($url)
+    public function resolveUrl(string $url): array
     {
         // some globals to reset
         $aGlobs = [
             'mr_preprocessedPageError', 'idart', 'idcat'
         ];
-        foreach ($aGlobs as $p => $k) {
+        foreach ($aGlobs as $k) {
             if (isset($GLOBALS[$k])) {
                 unset($GLOBALS[$k]);
             }
@@ -243,20 +224,17 @@ class ModRewriteTest
         $oMRController = new ModRewriteController($url);
         $oMRController->execute();
 
-        if ($oMRController->errorOccured()) {
-
+        if ($oMRController->isError()) {
             // an error occurred (idcat and or idart couldn't caught by controller)
             $aReturn['mr_preprocessedPageError'] = 1;
             $aReturn['error'] = $oMRController->getError();
 
-            $this->_sResolvedUrl = '';
-            $this->_bRoutingFound = false;
+            $this->resolvedUrl = '';
+            $this->routingFound = false;
         } else {
-
             // set some global variables
-
-            $this->_sResolvedUrl = $oMRController->getResolvedUrl();
-            $this->_bRoutingFound = $oMRController->getRoutingFoundState();
+            $this->resolvedUrl = $oMRController->getResolvedUrl();
+            $this->routingFound = $oMRController->isRoutingFound();
 
             if ($oMRController->getClient()) {
                 $aReturn['client'] = $oMRController->getClient();
@@ -291,12 +269,12 @@ class ModRewriteTest
     }
 
     /**
-     * Creates a readable string from passed resolved data array.
+     * Creates a readable string from an assigned data array.
      *
      * @param array $data Associative array with resolved data
-     * @return  string  Readable resolved data
+     * @return string Readable resolved data
      */
-    public function getReadableResolvedData(array $data)
+    public function getReadableResolvedData(array $data): string
     {
         // compose resolved string
         $ret = '';

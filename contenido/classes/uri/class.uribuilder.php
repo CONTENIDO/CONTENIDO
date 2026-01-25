@@ -44,10 +44,8 @@ abstract class cUriBuilder
      * It is meant to be an abstract function but not declared as abstract,
      * because PHP Strict Standards are against abstract static functions.
      *
-     * @throws cBadMethodCallException
-     *         if child class has not implemented this function
+     * @throws cBadMethodCallException If child class has not implemented this function
      */
-
     public static function getInstance()
     {
         throw new cBadMethodCallException("Child class has to implement this function");

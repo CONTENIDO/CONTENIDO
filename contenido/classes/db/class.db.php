@@ -15,8 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class contains functions for handling record sets and interaction with
- * database in CONTENIDO.
+ * This class contains functions for handling record sets and interaction with database in CONTENIDO.
  *
  * @package    Core
  * @subpackage Database
@@ -120,10 +119,8 @@ class cDb extends cDbDriverHandler
 
     /**
      * Return the current row count.
-     *
-     * @return int
      */
-    public function getRow()
+    public function getRow(): int
     {
         return $this->_row;
     }
@@ -132,12 +129,11 @@ class cDb extends cDbDriverHandler
      * Sets the current row count.
      * Do not set it manually unless you know what you are doing.
      *
-     * @param int $row
-     *         current row count
+     * @param int $row Current row count
      */
-    public function setRow($row)
+    public function setRow(int $row)
     {
-        $this->_row = (int)$row;
+        $this->_row = $row;
     }
 
     /**
@@ -152,7 +148,7 @@ class cDb extends cDbDriverHandler
     /**
      * @inheritdoc
      */
-    public function getErrorMessage()
+    public function getErrorMessage(): string
     {
         return $this->_errorMessage;
     }
@@ -160,7 +156,7 @@ class cDb extends cDbDriverHandler
     /**
      * @inheritdoc
      */
-    public function setErrorMessage($errorMessage)
+    public function setErrorMessage(string $errorMessage)
     {
         $this->_errorMessage = $errorMessage;
     }
@@ -168,7 +164,7 @@ class cDb extends cDbDriverHandler
     /**
      * @inheritdoc
      */
-    public function getErrorNumber()
+    public function getErrorNumber(): int
     {
         return $this->_errorNumber;
     }
@@ -176,9 +172,18 @@ class cDb extends cDbDriverHandler
     /**
      * @inheritdoc
      */
-    public function setErrorNumber($errorNumber)
+    public function setErrorNumber(int $errorNumber)
     {
-        $this->_errorNumber = (int)$errorNumber;
+        $this->_errorNumber = $errorNumber;
+    }
+
+    /**
+     * Shorter alias for {@see cRegistry::getDbTableName()}.
+     * @since CONTENIDO 4.10.2
+     */
+    public static function getTableName(string $tableName): string
+    {
+        return cRegistry::getDbTableName($tableName);
     }
 
 }

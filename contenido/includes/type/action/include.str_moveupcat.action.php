@@ -14,12 +14,22 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cGuiNotification $notification
+ */
+
 cInclude('includes', 'functions.str.php');
 
-if ($perm->have_perm_area_action("str", "str_moveupcat") || $perm->have_perm_area_action_item("str", "str_moveupcat", $idcat)) {
+$idcat = cRegistry::getCategoryId();
+$perm = cRegistry::getPerm();
+
+if (
+    $perm->have_perm_area_action('str', 'str_moveupcat')
+    || $perm->have_perm_area_action_item('str', 'str_moveupcat', $idcat)
+) {
     strMoveUpCategory($idcat);
     strRemakeTreeTable();
-    cApiCecHook::execute("Contenido.Action.str_moveupcat.AfterCall", $idcat);
+    cApiCecHook::execute('Contenido.Action.str_moveupcat.AfterCall', $idcat);
 } else {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
 }

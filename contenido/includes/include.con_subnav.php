@@ -45,8 +45,7 @@ if (!isset($bNoArticle)) {
 
 $area = $_GET['area'];
 
-if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
-
+if (($_GET['display_menu'] ?? 0) == 1) {
     $anchorTpl = '<a class="white%s" style="%s" onclick="%s">%s</a>';
 
     $nav = new cGuiNavigation();
@@ -56,9 +55,9 @@ if (isset($_GET['display_menu']) && $_GET['display_menu'] == 1) {
         "SELECT
                     COUNT(*) AS article_count
                  FROM
-                    " . $cfg['tab']['art_lang'] . " AS a,
-                    " . $cfg['tab']['art'] . " AS b,
-                    " . $cfg['tab']['cat_art'] . " AS c
+                    " . cDb::getTableName('art_lang') . " AS a,
+                    " . cDb::getTableName('art') . " AS b,
+                    " . cDb::getTableName('cat_art') . " AS c
                  WHERE
                     (a.idlang   = " . cSecurity::toInteger($lang) . " {SYNCOPTIONS}) AND
                     a.idart     = b.idart AND

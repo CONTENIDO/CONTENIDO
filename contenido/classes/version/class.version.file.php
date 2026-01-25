@@ -26,31 +26,22 @@ class cVersionFile extends cVersion
 {
 
     /**
-     * Content code of current file.
-     *
-     * @var string
+     * @var string Content code of current file.
      */
     public $sCode;
 
     /**
-     * Description folder of history sub nav.
-     * Its not required to use it.
-     *
-     * @var string
+     * @var string Description folder of history sub nav. It's not required to use it.
      */
     public $sDescription;
 
     /**
-     * The path of style file.
-     *
-     * @var string
+     * @var string The path of style file.
      */
     public $sPath;
 
     /**
-     * The id of Type.
-     *
-     * @var string
+     * @var string The id of Type.
      */
     public $sFileName;
 
@@ -59,53 +50,57 @@ class cVersionFile extends cVersion
      *
      * Initializes class variables.
      *
-     * @param string $iIdOfType
-     *                                 The name of style file
-     * @param array $aFileInfo
-     *                                 Get FileInformation from table file_information
-     * @param string $sFileName
+     * @param string $fileTypeId File type id
+     * @param array $fileInfo Get FileInformation from table file_information
+     * @param string $filename The name of the file
      * @param string $sTypeContent
-     * @param array $aCfg
-     * @param array $aCfgClient
-     * @param cDb $oDB
-     *                                 CONTENIDO database object
-     * @param int $iClient
-     * @param string $sArea
-     * @param int $iFrame
+     * @param array $cfg
+     * @param array $cfgClient
+     * @param cDb $db CONTENIDO database object
+     * @param int $clientId
+     * @param string $area
+     * @param int $frame
      * @param string $sVersionFileName [optional]
-     *
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function __construct(
-        $iIdOfType, $aFileInfo, $sFileName, $sTypeContent, $aCfg, $aCfgClient,
-        $oDB, $iClient, $sArea, $iFrame, $sVersionFileName = ''
+        $fileTypeId,
+        array $fileInfo,
+        $filename,
+        $sTypeContent,
+        array $cfg,
+        array $cfgClient,
+        cDb $db,
+        $clientId,
+        $area,
+        $frame,
+        $sVersionFileName = ''
     )
     {
-
         // Set globals in super class constructor
-        parent::__construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
+        parent::__construct($cfg, $cfgClient, $db, $clientId, $area, $frame);
 
         // Folder name is css or js ...
         $this->sType = $sTypeContent;
 
         // File Name for xml node
-        $this->sFileName = $sFileName;
+        $this->sFileName = $filename;
 
         // File Information, set for class Version to generate head xml nodes
-        $this->sDescription = $aFileInfo['description'] ?? '';
-        $this->sAuthor = $aFileInfo['author'] ?? '';
-        $this->dLastModified = $aFileInfo['lastmodified'] ?? '';
-        $this->dCreated = $aFileInfo['created'] ?? '';
+        $this->sDescription = $fileInfo['description'] ?? '';
+        $this->sAuthor = $fileInfo['author'] ?? '';
+        $this->dLastModified = $fileInfo['lastmodified'] ?? '';
+        $this->dCreated = $fileInfo['created'] ?? '';
 
         // Frontendpath to files
         if ($sTypeContent == 'templates') {
             $sTypeContent = 'tpl';
         }
 
-        $this->sPath = $this->aCfgClient[$this->iClient][$sTypeContent]['path'];
+        $this->sPath = $this->aCfgClient[$this->clientId][$sTypeContent]['path'];
 
         // Identity the Id of Content Type
-        $this->iIdentity = $iIdOfType;
+        $this->entityId = $fileTypeId;
 
         // This function looks if maximum number of stored versions is achieved
         $this->prune();
@@ -144,60 +139,48 @@ class cVersionFile extends cVersion
     }
 
     /**
-     * This function read an xml file nodes
+     * This function read an XML file nodes
      *
-     * @param string $sPath
-     *         Path to file
-     *
-     * @return array
-     *         returns array width nodes
+     * @param string $path Path to file
+     * @return array Returns array width nodes
      * @throws cException
      */
-    public function initXmlReader($sPath)
+    public function initXmlReader(string $path): array
     {
-        $aResult = [];
-        if ($sPath != '') {
+        $result = [];
+        if ($path != '') {
             $xml = new cXmlReader();
-            $xml->load($sPath);
+            $xml->load($path);
 
-            $aResult['name'] = $xml->getXpathValue('/version/body/name');
-            $aResult['desc'] = $xml->getXpathValue('/version/body/description');
-            $aResult['code'] = $xml->getXpathValue('/version/body/code');
+            $result['name'] = $xml->getXpathValue('/version/body/name');
+            $result['desc'] = $xml->getXpathValue('/version/body/description');
+            $result['code'] = $xml->getXpathValue('/version/body/code');
         }
 
-        return $aResult;
+        return $result;
     }
 
     /**
-     * This function reads the path of file
-     *
-     * @return string
-     *         the path of file
+     * Returns the path of file
      */
-    public function getPathFile()
+    public function getPathFile(): string
     {
         return $this->sPath;
     }
 
     /**
-     * Function returns javascript which refreshes CONTENIDO frames for file
-     * list an sub-navigation.
-     * This is necessary, if filenames where changed, when a history entry is
-     * restored
+     * Function returns javascript which refreshes CONTENIDO frames for file list a sub-navigation.
+     * This is necessary, if filenames where changed, when a history entry is restored
      *
-     * @param string $sArea
-     *         name of CONTENIDO area in which this procedure should be done
-     * @param string $sFilename
-     *         new filename of file which should be updated in other frames
-     * @param object $sess
-     *         CONTENIDO session object
-     * @return string
-     *         Javascript for refreshing frames
+     * @param string $area Name of CONTENIDO area in which this procedure should be done
+     * @param string $filename New filename of file which should be updated in other frames
+     * @param cSession $sess CONTENIDO session object
+     * @return string Javascript for refreshing frames
      */
-    public function renderReloadScript($sArea, $sFilename, $sess)
+    public function renderReloadScript($area, $filename, cSession $sess)
     {
-        $urlRightTop = $sess->url("main.php?area=$sArea&frame=3&file=$sFilename&history=true");
-        $urlLeftBottom = $sess->url("main.php?area=$sArea&frame=2&file=$sFilename");
+        $urlRightTop = $sess->url("main.php?area=$area&frame=3&file=$filename&history=true");
+        $urlLeftBottom = $sess->url("main.php?area=$area&frame=2&file=$filename");
         return <<<JS
 <script type="text/javascript">
 (function(Con, $) {

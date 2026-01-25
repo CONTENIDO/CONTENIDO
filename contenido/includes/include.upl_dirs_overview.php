@@ -32,11 +32,13 @@ cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.str.php');
 
 // Display critical error if client or language does not exist
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
 if (($client < 1 || !cRegistry::getClient()->isLoaded()) || ($lang < 1 || !cRegistry::getLanguage()->isLoaded())) {
-    $message = $client && !cRegistry::getClient()->isLoaded() ? i18n('No Client selected') : i18n('No language selected');
-    $oPage = new cGuiPage("upl_dirs_overview");
+    $message = $client && !cRegistry::getClient()->isLoaded()
+        ? i18n('No Client selected')
+        : i18n('No language selected');
+    $oPage = new cGuiPage('upl_dirs_overview');
     $oPage->displayCriticalError($message);
     $oPage->render();
     return;
@@ -51,25 +53,22 @@ $cfgClient = cRegistry::getClientConfig();
 /**
  *
  * @param TreeItem $item
- *
- * @return string
- *
  * @throws cException
  */
-function getUplExpandCollapseButton($item)
+function getUplExpandCollapseButton($item): string
 {
     if (count($item->getSubItems()) > 0) {
         if ($item->isCollapsed() == true) {
             $title = i18n('Open category');
             // Attention: Render nodes without whitespace in between!
-            $link = '<a class="con_func_button dir_collapse_link" href="javascript:void(0)" data-action="expand_upl_dir" data-dir="' . $item->getId() . '" 
-               title="' . $title . '"><img class="dir_collapse_img" 
+            $link = '<a class="con_func_button dir_collapse_link" href="javascript:void(0)" data-action="expand_upl_dir" data-dir="' . $item->getId() . '"
+               title="' . $title . '"><img class="dir_collapse_img"
                 src="' . $item->getCollapsedIcon() . '" alt=""></a>';
         } else {
             $title = i18n('Close category');
             // Attention: Render nodes without whitespace in between!
-            $link = '<a class="con_func_button dir_collapse_link" href="javascript:void(0)" data-action="collapse_upl_dir" data-dir="' . $item->getId() . '" 
-                title="' . $title . '"><img class="dir_collapse_img" 
+            $link = '<a class="con_func_button dir_collapse_link" href="javascript:void(0)" data-action="collapse_upl_dir" data-dir="' . $item->getId() . '"
+                title="' . $title . '"><img class="dir_collapse_img"
                 src="' . $item->getExpandedIcon() . '" alt=""></a>';
         }
     } else {
@@ -133,7 +132,7 @@ $file = 'Upload';
 $rootTreeItem = new TreeItem();
 $rootTreeItem->setCustom('level', 0);
 $rootTreeItem->setName(i18n("Upload directory"));
-$aInvalidDirectories = uplRecursiveDirectoryList($cfgClient[$client]["upl"]["path"], $rootTreeItem, 2);
+$aInvalidDirectories = uplRecursiveDirectoryList($cfgClient[$client]['upl']['path'], $rootTreeItem, 2);
 if (count($aInvalidDirectories) > 0) {
     $sWarningInfo = i18n('The following directories contains invalid characters and were ignored: ');
     $sSeparator = '<br>';
@@ -290,7 +289,7 @@ if (is_array($objects)) {
         $hasFiles = uplHasFiles($pathString);
         $hasSubdirs = uplHasSubdirs($pathString);
 
-        if ((!$hasSubdirs) && (!$hasFiles) && $perm->have_perm_area_action($tmp_area, "upl_rmdir")) {
+        if ((!$hasSubdirs) && (!$hasFiles) && $perm->have_perm_area_action($tmp_area, 'upl_rmdir')) {
             $deleteLink = $deleteLinkTpl;
         } else {
             if ($hasFiles) {

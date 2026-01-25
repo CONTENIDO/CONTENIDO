@@ -19,7 +19,7 @@ if (!defined('CON_FRAMEWORK')) {
 global $cfg;
 
 // CONTENIDO path
-$contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/';
+$contenidoPath = str_replace('\\', '/', realpath(__DIR__ . '/../')) . '/';
 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
@@ -31,6 +31,8 @@ $statisticmode = getSystemProperty('stats', 'tracking');
 if ($statisticmode == 'disabled') {
     return false;
 }
+
+$area = cRegistry::getArea();
 
 include_once(cRegistry::getBackendPath() . $cfg['path']['includes'] . 'functions.stat.php');
 
@@ -48,5 +50,3 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
 
     statsArchive(sprintf('%04d%02d', $year, $month));
 }
-
-?>

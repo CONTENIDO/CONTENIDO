@@ -27,22 +27,17 @@ class cDate
     /**
      * @var int Maximum value for a day.
      */
-    const MAX_DAY_VALUE = 31;
+    public const MAX_DAY_VALUE = 31;
 
     /**
      * @var int Maximum value for a month.
      */
-    const MAX_MONTH_VALUE = 12;
+    public const MAX_MONTH_VALUE = 12;
 
     /**
-     * Normalizes a value for the usage as day, ensures to return a two digit
-     * representation of a day.
-     *
+     * Normalizes a value for the usage as day, ensures to return a two digit representation of a day.
      * - Empty value will return '00'
      * - Values up to '9' will be preceded by a '0', e.g. '09'
-     *
-     * @param string $value
-     * @return string
      */
     public static function padDay(string $value): string
     {
@@ -50,14 +45,9 @@ class cDate
     }
 
     /**
-     * Normalizes a value for the usage as month, ensures to return a two digit
-     * representation of a month.
-     *
+     * Normalizes a value for the usage as month, ensures to return a two digit representation of a month.
      * - Empty value will return '00'
      * - Values up to '9' will be preceded by a '0', e.g. '09'
-     *
-     * @param string $value
-     * @return string
      */
     public static function padMonth(string $value): string
     {
@@ -65,13 +55,8 @@ class cDate
     }
 
     /**
-     * Normalizes a value for the usage as day/month, ensures to return
-     * a two digit representation of a day/month.
-     *
+     * Normalizes a value for the usage as day/month, ensures to return a two digit representation of a day/month.
      * Same behaviour as {@see cDate::padDay()}
-     *
-     * @param string $value
-     * @return string
      */
     public static function padDayOrMonth(string $value): string
     {
@@ -81,15 +66,11 @@ class cDate
     /**
      * Returns the translated month name for to the given numeric month value.
      *
-     * @param int|null|mixed $month
-     *         Numeric month value
-     *
-     * @return string|null
-     *         Translated month name
-     *
+     * @param int|null|mixed $month Numeric month value
+     * @return ?string Translated month name
      * @throws cException
      */
-    public static function getCanonicalMonth($month)
+    public static function getCanonicalMonth($month): ?string
     {
         $map = [
             i18n("January"), i18n("February"), i18n("March"), i18n("April"),
@@ -105,18 +86,13 @@ class cDate
 
     /**
      * Returns the translated weekday name for to the given numeric weekday value.
-     *
      * This function assumes that monday is the first day of the week!
      *
-     * @param int|null|mixed $weekday
-     *         Numeric weekday value
-     *
-     * @return string|null
-     *         Translated weekday name
-     *
+     * @param int|null|mixed $weekday Numeric weekday value
+     * @return ?string Translated weekday name
      * @throws cException
      */
-    public static function getCanonicalDay($weekday)
+    public static function getCanonicalDay($weekday): ?string
     {
         $map = [
             i18n("Monday"), i18n("Tuesday"), i18n("Wednesday"), i18n("Thursday"),
@@ -132,16 +108,9 @@ class cDate
     /**
      * Returns a formatted date and/or time-string according to the current settings
      *
-     * @param string|null|mixed $timestamp
-     *         A timestamp. If no value is given the current time will be used.
-     * @param bool $date
-     *         If true the date will be included in the string
-     * @param bool $time
-     *         If true the time will be included in the string
-     *
-     * @return string
-     *         The formatted time string.
-     *
+     * @param string|null|mixed $timestamp A timestamp. If no value is given the current time will be used.
+     * @param bool $date If true the date will be included in the string
+     * @param bool $time If true the time will be included in the string
      * @throws cDbException|cException
      */
     public static function formatDatetime($timestamp = '', bool $date = false, bool $time = false): string
@@ -154,7 +123,7 @@ class cDate
 
         if ($date && !$time) {
             $ret = date(getEffectiveSetting('dateformat', 'date', 'Y-m-d'), $timestamp);
-        } else if ($time && !$date) {
+        } elseif ($time && !$date) {
             $ret = date(getEffectiveSetting('dateformat', 'time', 'H:i:s'), $timestamp);
         } else {
             $ret = date(getEffectiveSetting('dateformat', 'full', 'Y-m-d H:i:s'), $timestamp);
@@ -173,10 +142,10 @@ class cDate
      * @TODO We should use `IntlDateFormatter::format()` to support localized dates for PHP >= 8.1.0, but this requires the `ext-intl` extension.
      *
      * @param string $format Either `strftime()` format or `date()` format.
-     * @param int|null $timestamp Unix timestamp, current time will be used if omitted.
+     * @param ?int $timestamp Unix timestamp, current time will be used if omitted.
      * @return false|string The formatted date string or false on error
      */
-    public static function formatToDate(string $format, int $timestamp = null)
+    public static function formatToDate(string $format, ?int $timestamp = null)
     {
         if (empty($format)) {
             return false;
@@ -184,7 +153,7 @@ class cDate
 
         // All strftime formats start with a '%', check for this!
         if ($format[0] === '%') {
-            // strftime() is deprecated as of PHP 8.1, check the version
+            // @phpVersion strftime() is deprecated as of PHP 8.1, check the version
             if (version_compare(PHP_VERSION, '8.1.0') >= 0) {
                 self::_logStrftimeDeprecation();
                 // Use date() as fallback
@@ -207,7 +176,6 @@ class cDate
      * - '0000-00-00 00:00:00'
      *
      * @param string|null|mixed $dateString
-     * @return bool
      */
     public static function isEmptyDate($dateString): bool
     {
@@ -223,7 +191,6 @@ class cDate
      * Converts deprecated `strftime` format to `date´ format.
      *
      * @param string $format The strftime format to convert
-     *
      * @return bool|string Converted date format or false
      */
     public static function strftimeToDate(string $format)
@@ -255,15 +222,11 @@ class cDate
      * https://gist.github.com/mcaskill
      *
      * IMPORTANT:
-     * This is only a temporary solution, in the medium term we should
-     * completely avoid using `strftime()`formats.
+     * This is only a temporary solution, in the medium term we should completely avoid using `strftime()`formats.
      *
      * @param string $format The format to parse.
-     * @param string $syntax The format's syntax. Either 'strf' for
-     *                       `strtime()` or 'date' for `date()`.
-     *
-     * @return bool|string Returns a string formatted according $syntax
-     *      using the given $format or `false`.
+     * @param string $syntax The format's syntax. Either 'strf' for `strtime()` or 'date' for `date()`.
+     * @return bool|string Returns a string formatted according $syntax using the given $format or `false`.
      */
     protected static function _formatTo(string $format, string $syntax)
     {
@@ -316,11 +279,6 @@ class cDate
         return preg_replace($pattern, $to, $format);
     }
 
-    /**
-     * @param string $value
-     * @param int $maxValue
-     * @return string
-     */
     protected static function _padDayOrMonth(string $value, int $maxValue): string
     {
         $tmpValue = cSecurity::toInteger($value);
@@ -331,11 +289,9 @@ class cDate
     }
 
     /**
-     * Logs deprecated usage of strftime formats and ensures to log it once
-     * per request lifecycle.
+     * Logs deprecated usage of strftime formats and ensures to log it once per request lifecycle.
      *
      * @return void
-     * @throws cInvalidArgumentException
      */
     private static function _logStrftimeDeprecation()
     {
@@ -344,7 +300,7 @@ class cDate
         // Log deprecation once to not flood the log file
         if (!$deprecationLogged) {
             cDeprecated('The function `strftime()` is deprecated as of PHP 8.1.0, '
-                . 'and the passed format string was detected as a `strftime()` format. '
+                . 'and the provided format string was detected as a `strftime()` format. '
                 . 'The `date()` function will be used as a fallback, but without '
                 . 'localization support.');
             $deprecationLogged = true;

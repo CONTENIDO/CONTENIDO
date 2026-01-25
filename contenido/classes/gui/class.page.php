@@ -34,7 +34,7 @@ class cGuiPage
     protected $_pageName;
 
     /**
-     * The name of the plugin of the current web page.
+     * The name of the plugin for the current web page.
      *
      * @var string
      */
@@ -48,7 +48,7 @@ class cGuiPage
     protected $_pageTemplate;
 
     /**
-     * The file used generate the page.
+     * The file used to generate the page.
      *
      * @var string
      */
@@ -153,7 +153,7 @@ class cGuiPage
 
     /**
      * Array of arrays where each array contains information about a
-     * meta tag.
+     * meta-tag.
      *
      * @var array
      */
@@ -198,16 +198,12 @@ class cGuiPage
      * and every stylesheet in the form of /styles/*.PAGENAME.css to the
      * page as well as /scripts/PAGENAME.js and /styles/PAGENAME.css.
      *
-     * @param string $pageName
-     *         The name of the page which will be used to load
-     *         corresponding stylesheets, templates and scripts.
-     * @param string $pluginName [optional]
-     *         The name of the plugin in which the site is run
-     * @param string $subMenu [optional]
-     *         The number of the submenu which should be highlighted
-     *         when this page is shown.
-     * @throws cDbException
-     * @throws cException
+     * @param string $pageName The name of the page which will be used to load
+     *      corresponding stylesheets, templates and scripts.
+     * @param string $pluginName [optional] The name of the plugin in which the site is run
+     * @param string $subMenu [optional] The number of the submenu which should be highlighted
+     *      when this page is shown.
+     * @throws cDbException|cException
      */
     public function __construct($pageName, $pluginName = '', $subMenu = '')
     {
@@ -294,17 +290,16 @@ class cGuiPage
      * folder.
      *
      * NOTE: This function will also add inline JavaScript in the form
-     * of "<script...". However this shouldn't be used.
+     * of "<script...". However, this shouldn't be used.
      *
      * If the page was constructed in a plugin and the plugin name was
-     * given in the constructor it will find the JS script in
+     * given in the constructor, it will find the JS script in
      * plugins/PLUGINNAME/scripts/ too.
      *
      * @param string $script
      *         The filename of the script. It has to reside in /scripts/
      *         in order to be found.
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cException|cInvalidArgumentException
      */
     public function addScript($script)
     {
@@ -355,8 +350,7 @@ class cGuiPage
      * @param string $stylesheet
      *         The filename of the stylesheet. It has to reside in
      *         /styles/ in order to be found.
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cException|cInvalidArgumentException
      */
     public function addStyle($stylesheet)
     {
@@ -372,19 +366,33 @@ class cGuiPage
         $filePathName = $this->_getRealFilePathName($stylesheet);
 
         // Warning message for not existing resources
-        if ($perm->isSysadmin($this->_currentUser) && ((!empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $stylesheet))) ||
-            (empty($this->_pluginName) && !cFileHandler::exists($backendPath . $cfg['path']['styles'] . $filePathName))) {
+        if (
+            $perm->isSysadmin($this->_currentUser)
+            &&  (
+                !empty($this->_pluginName)
+                && !cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $stylesheet)
+            )
+            || (
+                empty($this->_pluginName)
+                && !cFileHandler::exists($backendPath . $cfg['path']['styles'] . $filePathName)
+            )
+        ) {
             $this->displayWarning(i18n("The requested resource") . " <strong>" . $filePathName . "</strong> " . i18n("was not found"));
         }
 
-        if (cString::findFirstPos($stylesheet, 'http') === 0 || cString::findFirstPos($stylesheet, '//') === 0) {
+        if (
+            cString::findFirstPos($stylesheet, 'http') === 0
+            || cString::findFirstPos($stylesheet, '//') === 0
+        ) {
             // the given stylesheet path is absolute
             if (!in_array($stylesheet, $this->_styles)) {
                 $this->_styles[] = $stylesheet;
             }
-        } elseif (!empty($this->_pluginName) && cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $filePathName)) {
-            // the given stylesheet path is relative to the plugin stylesheets
-            // folder
+        } elseif (
+            !empty($this->_pluginName)
+            && cFileHandler::exists($backendPath . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $filePathName)
+        ) {
+            // the given stylesheet path is relative to the plugin stylesheets folder
             $fullPath = $backendUrl . $cfg['path']['plugins'] . $this->_pluginName . '/' . $cfg['path']['styles'] . $stylesheet;
             if (!in_array($fullPath, $this->_styles)) {
                 $this->_styles[] = $fullPath;
@@ -400,12 +408,12 @@ class cGuiPage
     }
 
     /**
-     * Adds a meta tag to the website.
+     * Adds a meta-tag to the website.
      *
      * @param array $meta
-     *         Associative array with the meta tag attributes
+     *         Associative array with the meta-tag attributes
      * @throws cInvalidArgumentException
-     *         if an invalid attribute for the meta tag has been given
+     *         if an invalid attribute for the meta-tag has been given
      */
     public function addMeta(array $meta)
     {
@@ -418,7 +426,7 @@ class cGuiPage
         ];
         foreach ($meta as $key => $value) {
             if (!in_array($key, $allowedAttributes)) {
-                throw new cInvalidArgumentException('Unallowed attribute for meta tag given - meta tag will be ignored!');
+                throw new cInvalidArgumentException('Unallowed attribute for meta-tag given - meta-tag will be ignored!');
             }
         }
         $this->_metaTags[] = $meta;
@@ -601,7 +609,7 @@ class cGuiPage
      * Sets the encoding of the website.
      *
      * @param string $encoding
-     *         An encoding which should be valid to use in the meta tag
+     *         An encoding which should be valid to use in the meta-tag
      */
     public function setEncoding($encoding)
     {
@@ -768,22 +776,19 @@ class cGuiPage
     /**
      * Renders the page and either prints it or returns it.
      *
-     * @param cTemplate|NULL $template [optional]
-     *                                 If set, use this content template instead of the default one
-     * @param bool $return [optional]
-     *                                 If true, the page will be returned instead of echoed
-     *
+     * @param ?cTemplate $template If set, use this content template instead of the default one
+     * @param bool $return If true, the page will be returned instead of echoed
      * @return string|void
      * @throws cInvalidArgumentException
      * @throws cException
      */
-    public function render($template = NULL, $return = false)
+    public function render($template = NULL, bool $return = false)
     {
         if ($template == NULL) {
             $template = $this->_contentTemplate;
         }
 
-        // Render some parts like meta tags, scripts, styles, etc...
+        // Render some parts like meta-tags, scripts, styles, etc...
         $this->_renderMetaTags();
         $this->_renderScripts();
         $this->_renderStyles();
@@ -812,11 +817,11 @@ class cGuiPage
     }
 
     /**
-     * Renders set meta tags and adds them to _pageTemplate property.
+     * Renders set meta-tags and adds them to _pageTemplate property.
      */
     protected function _renderMetaTags()
     {
-        // render the meta tags
+        // render the meta-tags
         // NB! We don't produce xhtml in the backend
         // $produceXhtml = getEffectiveSetting('generator', 'xhtml', 'false');
         $produceXhtml = false;
@@ -875,12 +880,9 @@ class cGuiPage
     }
 
     /**
-     * Renders text for all available content messages and returns the
-     * assembled message string.
-     *
-     * @return string
+     * Renders text for all available content messages and returns the assembled message string.
      */
-    protected function _renderContentMessages()
+    protected function _renderContentMessages(): string
     {
         global $notification;
 
@@ -924,12 +926,11 @@ class cGuiPage
 
     /**
      * Loops through all defined objects, calls their render function,
-     * collects the output of the objects and returns it back.
+     * collects the output of the objects and returns it.
      *
-     * @return string
      * @throws cInvalidArgumentException
      */
-    protected function _renderObjects()
+    protected function _renderObjects(): string
     {
         $output = '';
 
@@ -942,20 +943,23 @@ class cGuiPage
                 continue;
             }
 
-            // Ridiculous workaround because some objects return
-            // code if the parameter is true and some return the
-            // code if the parameter is false.
+            // Ridiculous workaround because some objects return code if the parameter is true
+            // and some return the code if the parameter is false.
             $oldOutput = $output;
 
             // We don't want any code outside the body (in case the
-            // object outputs directly we will catch this output).
+            // object outputs directly, we will catch this output).
             ob_start();
             $output .= $obj->render(false);
 
             // We get the code either directly or via the output
             $output .= ob_get_contents();
             if ($oldOutput == $output) {
-                cWarning(__FILE__, __LINE__, "Rendering this object (" . print_r($obj, true) . ") doesn't seem to have any effect.");
+                cWarning(
+                    __FILE__,
+                    __LINE__,
+                    "Rendering this object (" . print_r($obj, true) . ") doesn't seem to have any effect."
+                );
             }
             ob_end_clean();
         }
@@ -964,14 +968,13 @@ class cGuiPage
     }
 
     /**
-     * Renders template of a page or of a plugin and returns the output back.
+     * Renders the template of a page or of a plugin and returns the output.
      *
      * @param cTemplate $template
      * @return string
-     * @throws cInvalidArgumentException
-     * @throws cException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    protected function _renderTemplate($template)
+    protected function _renderTemplate(cTemplate $template): string
     {
         global $notification;
 
@@ -987,7 +990,10 @@ class cGuiPage
         $output = '';
         // Warning message for not existing resources
         if (!$this->_skipTemplateCheck && $perm->isSysadmin($this->_currentUser) && !cFileHandler::exists($file)) {
-            $output .= $notification->returnNotification('warning', i18n("The requested resource") . " <strong>template." . $this->_pageName . ".html</strong> " . i18n("was not found")) . '<br>';
+            $output .= $notification->returnNotification(
+                'warning',
+                i18n("The requested resource") . " <strong>template." . $this->_pageName . ".html</strong> " . i18n("was not found")
+            ) . '<br>';
         }
 
         if (cFileHandler::exists($file)) {
@@ -1005,11 +1011,8 @@ class cGuiPage
      * Some JS or CSS file URLs may contain a query part, like
      * "/path/to/file.js.php?contenido=12234" and this function returns
      * only the path part "/path/to/file.js.php" of it.
-     *
-     * @param string $file
-     * @return string
      */
-    protected function _getRealFilePathName($file)
+    protected function _getRealFilePathName(string $file): string
     {
         $tmp = explode('?', $file);
         return $tmp[0];

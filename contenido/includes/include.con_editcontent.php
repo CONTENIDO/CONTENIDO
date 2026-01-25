@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $contenido, $type, $typenr, $encoding;
 
-$idcat = cSecurity::toInteger(cRegistry::getCategoryId());
+$idcat = cRegistry::getCategoryId();
 if ($idcat <= 0) {
     cRegistry::shutdown();
     return;
@@ -34,11 +34,11 @@ $scripts = '';
 $cssData = '';
 $jsData = '';
 $action = cRegistry::getAction();
-$idartlang = cSecurity::toInteger(cRegistry::getArticleLanguageId());
+$idartlang = cRegistry::getArticleLanguageId();
 $idart = cRegistry::getArticleId();
 $cfg = cRegistry::getConfig();
 $client = cRegistry::getClientId();
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$lang = cRegistry::getLanguageId();
 $sess = cRegistry::getSession();
 
 // Initialize $_REQUEST with common used keys to prevent PHP 'Undefined array key' warnings
@@ -120,8 +120,10 @@ switch ($wysiwygeditor) {
 $jslibs = '';
 // get scripts from editor class
 $jslibs .= $oEditor->getScripts();
-if ('tinymce3' === cString::getPartOfString($wysiwygeditor, 0, 8)
-    && true === $oEditor->getGZIPMode()) {
+if (
+    'tinymce3' === cString::getPartOfString($wysiwygeditor, 0, 8)
+    && $oEditor->getGZIPMode()
+) {
     // tinyMCE_GZ.init call must be placed in its own script tag
     // User defined plugins and themes should be identical in both "inits"
     $jslibs .= <<<JS
@@ -161,7 +163,7 @@ if ('tinymce4' === $wysiwygeditor) {
         $curType = $typeEntry->get('type');
 
         $contentTypeClassName = cTypeGenerator::getContentTypeClassName($curType);
-        if (false === class_exists($contentTypeClassName)) {
+        if (!class_exists($contentTypeClassName)) {
             continue;
         }
         $cContentType = new $contentTypeClassName('', 0, []);
@@ -178,7 +180,7 @@ if ('tinymce4' === $wysiwygeditor) {
 
     foreach ($aConfigInlineEdit as $sCmsType => $setting) {
         // Get configuration for popup and inline tiny
-        $aTinyOptions[$sCmsType] = $aConfigInlineEdit[$sCmsType];
+        $aTinyOptions[$sCmsType] = $setting;
         $aTinyOptions[$sCmsType]['fullscreen_settings'] = $aConfigFullscreen[$sCmsType];
     }
 
@@ -493,7 +495,7 @@ if ($selectedArticle != NULL) {
 }
 
 if ($code == "0601") {
-    markSubMenuItem("1");
+    markSubMenuItem('1');
     $code = "<script type='text/javascript'>location.href = '" . $backendUrl . "main.php?frame=4&area=con_editart&action=con_edit&idart=" . $idart . "&idcat=" . $idcat . "&contenido=" . $contenido . "'; /*console.log(location.href);*/</script>";
 } else {
     // Inject some additional markup

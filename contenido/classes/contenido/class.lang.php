@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiLanguage createNewItem
- * @method cApiLanguage|bool next
+ * @extends ItemCollection<cApiLanguage>
  */
 class cApiLanguageCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiLanguageCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('lang'), 'idlang');
+        parent::__construct(cDb::getTableName('lang'), 'idlang');
         $this->_setItemClass('cApiLanguage');
     }
 
@@ -42,13 +41,10 @@ class cApiLanguageCollection extends ItemCollection
      * @param int $active
      * @param string $encoding
      * @param string $direction
-     *
      * @return cApiLanguage
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($name, $active, $encoding, $direction)
+    public function create($name, $active, $encoding, $direction, ?string $author = null)
     {
         $auth = cRegistry::getAuth();
 
@@ -58,7 +54,7 @@ class cApiLanguageCollection extends ItemCollection
         $item->set('active', $active, false);
         $item->set('encoding', $encoding, false);
         $item->set('direction', $direction, false);
-        $item->set('author', $auth->auth['uid'], false);
+        $item->set('author', $author ?? $auth->getUserId(), false);
         $item->set('created', date('Y-m-d H:i:s'), false);
         $item->set('lastmodified', '0000-00-00 00:00:00', false);
         $item->store();
@@ -67,14 +63,11 @@ class cApiLanguageCollection extends ItemCollection
     }
 
     /**
-     * Returns next accessible language for current client and current logged-in
-     * user.
+     * Returns next accessible language for current client and current logged-in user.
      *
-     * @return cApiLanguage|NULL
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function nextAccessible()
+    public function nextAccessible(): ?cApiLanguage
     {
         $item = $this->next();
 
@@ -82,10 +75,10 @@ class cApiLanguageCollection extends ItemCollection
             return NULL;
         }
 
-        $client = cSecurity::toInteger(cRegistry::getClientId());
+        $client = cRegistry::getClientId();
 
         $clientsLanguageColl = new cApiClientLanguageCollection();
-        $clientsLanguageColl->select('idlang = ' . $item->get("idlang"));
+        $clientsLanguageColl->select('`idlang` = ' . $item->get('idlang'));
         if (($clientsLang = $clientsLanguageColl->next()) !== false) {
             if ($client != $clientsLang->get('idclient')) {
                 $item = $this->nextAccessible();
@@ -94,7 +87,11 @@ class cApiLanguageCollection extends ItemCollection
 
         if ($item) {
             $perm = cRegistry::getPerm();
-            if ($perm->have_perm_client('lang[' . $item->get('idlang') . ']') || $perm->have_perm_client('admin[' . $client . ']') || $perm->have_perm_client()) {
+            if (
+                $perm->have_perm_client('lang[' . $item->get('idlang') . ']')
+                || $perm->have_perm_client('admin[' . $client . ']')
+                || $perm->have_perm_client()
+            ) {
                 // Do nothing for now
             } else {
                 $item = $this->nextAccessible();
@@ -109,19 +106,15 @@ class cApiLanguageCollection extends ItemCollection
     /**
      * Returns the language name of the language with the given ID.
      *
-     * @param int $idlang
-     *         the ID of the language
-     * @return string
-     *         the name of the language
+     * @param int $languageId The ID of the language
+     * @return string The name of the language
+     * @throws cDbException|cException
      */
-    public function getLanguageName($idlang)
+    public function getLanguageName($languageId): string
     {
-        $item = new cApiLanguage($idlang);
-        if ($item->isLoaded()) {
-            return $item->get('name');
-        } else {
-            return i18n('No language');
-        }
+        $item = new cApiLanguage($languageId);
+
+        return $item->isLoaded() ? $item->get('name') : i18n('No language');
     }
 
 }
@@ -147,27 +140,22 @@ class cApiLanguage extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('lang'), 'idlang');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('lang'), 'idlang');
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * Stores made changes.
      *
-     * @return bool
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @inheritDoc
      */
     public function store()
     {
@@ -178,13 +166,9 @@ class cApiLanguage extends Item
     /**
      * User-defined setter for lang fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'active':
@@ -192,79 +176,70 @@ class cApiLanguage extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
     /**
-     * Loads all languagesettings into an static array.
+     * Loads all language settings into a static array.
      *
-     * @param int $idclient [optional]
-     *                      Id of client to load properties from
-     * @throws cDbException
-     * @throws cException
+     * @param int $clientId Id of client to load properties from
+     * @throws cDbException|cException
      */
-    protected function _loadProperties($idclient = 0)
+    protected function _loadProperties($clientId = 0)
     {
+        $clientId = cSecurity::toInteger($clientId);
+        if (!isset(self::$_propertiesCacheLoaded[$clientId])) {
+            self::$_propertiesCache[$clientId] = [];
 
-        if (!isset(self::$_propertiesCacheLoaded[$idclient])) {
-            self::$_propertiesCache[$idclient] = [];
-
-            $itemtype = $this->db->escape($this->getPrimaryKeyName());
-            $itemid = $this->db->escape($this->get($this->getPrimaryKeyName()));
-
-            $propColl = $this->_getPropertiesCollectionInstance($idclient);
-            $propColl->select("itemtype='$itemtype' AND itemid='$itemid'", '', 'type, value ASC');
+            $propColl = $this->_getPropertiesCollectionInstance($clientId);
+            $propColl->select($this->db->prepare(
+                "`itemtype` = '%s' AND `itemid` = '%s'",
+                $this->getPrimaryKeyName(),
+                $this->get($this->getPrimaryKeyName())
+            ), '', 'type, value ASC');
 
             if (0 < $propColl->count()) {
-
-                while (false !== $item = $propColl->next()) {
-
+                while ($item = $propColl->next()) {
                     $type = $item->get('type');
-                    if (!isset(self::$_propertiesCache[$idclient][$type])) {
-                        self::$_propertiesCache[$idclient][$type] = [];
+                    if (!isset(self::$_propertiesCache[$clientId][$type])) {
+                        self::$_propertiesCache[$clientId][$type] = [];
                     }
 
                     $name = $item->get('name');
                     $value = $item->get('value');
-                    self::$_propertiesCache[$idclient][$type][$name] = $value;
+                    self::$_propertiesCache[$clientId][$type][$name] = $value;
                 }
             }
         }
 
-        self::$_propertiesCacheLoaded[$idclient] = true;
+        self::$_propertiesCacheLoaded[$clientId] = true;
     }
 
     /**
      * Returns a custom property.
      *
-     * @param string $type
-     *                         Specifies the type
-     * @param string $name
-     *                         Specifies the name
-     * @param int $idclient [optional]
-     *                         Id of client to set property for
-     * @return mixed
-     *                         Value of the given property or false if item hasn't been loaded
-     * @throws cDbException
-     * @throws cException
+     * @param string $type Specifies the type
+     * @param string $name Specifies the name
+     * @param int $clientId Id of client to set property for
+     * @return mixed Value of the given property or false if item hasn't been loaded
+     * @throws cDbException|cException
      */
-    public function getProperty($type, $name, $idclient = 0)
+    public function getProperty($type, $name, $clientId = 0)
     {
-
         // skip & return false if item hasn't been loaded
         if (true !== $this->isLoaded()) {
             $this->lasterror = 'No item loaded';
             return false;
         }
 
-        $this->_loadProperties($idclient);
+        $this->_loadProperties($clientId);
 
         if (isset(
-            self::$_propertiesCache[$idclient],
-            self::$_propertiesCache[$idclient][$type],
-            self::$_propertiesCache[$idclient][$type][$name]
+            self::$_propertiesCache[$clientId],
+            self::$_propertiesCache[$clientId][$type],
+            self::$_propertiesCache[$clientId][$type][$name]
         )) {
-            return self::$_propertiesCache[$idclient][$type][$name];
+            return self::$_propertiesCache[$clientId][$type][$name];
         } else {
             return false;
         }

@@ -29,7 +29,7 @@ if (!defined('CON_FRAMEWORK')) {
  */
 
 // CONTENIDO startup process
-include_once('./includes/startup.php');
+include_once(__DIR__ . '/includes/startup.php');
 
 $backendPath = cRegistry::getBackendPath();
 
@@ -60,20 +60,18 @@ require_once($cfg['path']['contenido_config'] . 'cfg_actions.inc.php');
 $sess->register('belang');
 
 // Include cronjob-Emulator (for frame 1 only)
-if ($cfg['use_pseudocron'] == true) {
-    if ($frame == 1) {
-        $sess->freeze();
+if ($cfg['use_pseudocron'] && $frame == 1) {
+    $sess->freeze();
 
-        $currentWorkingDirectory = getcwd();
-        chdir($backendPath . $cfg['path']['cronjobs']);
-        cInclude('includes', 'pseudo-cron.inc.php');
-        chdir($currentWorkingDirectory);
+    $currentWorkingDirectory = getcwd();
+    chdir($backendPath . $cfg['path']['cronjobs']);
+    cInclude('includes', 'pseudo-cron.inc.php');
+    chdir($currentWorkingDirectory);
 
-        if ($bJobRunned) {
-            // Some cronjobs might overwrite important system variables.
-            // We are thaw'ing the session again to re-register these variables.
-            $sess->thaw();
-        }
+    if ($bJobRunned) {
+        // Some cronjobs might overwrite important system variables.
+        // We are thaw'ing the session again to re-register these variables.
+        $sess->thaw();
     }
 }
 
@@ -101,7 +99,7 @@ $classarea = new cApiAreaCollection();
 $classlayout = new cApiLayout();
 $classclient = new cApiClientCollection();
 
-$currentuser = new cApiUser($auth->auth['uid']);
+$currentuser = new cApiUser($auth->getUserId());
 
 // Change client
 if (isset($changeclient) && is_numeric($changeclient)) {
@@ -130,14 +128,16 @@ if (isset($changelang) && is_numeric($changelang)) {
     }
 }
 
-if (!cSecurity::isPositiveInteger($client ?? 0)
-    || !cApiClientCollection::isClientAccessible(cSecurity::toInteger($client))) {
+if (
+    !cSecurity::isPositiveInteger($client ?? 0)
+    || !cApiClientCollection::isClientAccessible(cSecurity::toInteger($client))
+) {
     // use first client which is accessible
     $sess->register('client');
     $oClientColl = new cApiClientCollection();
     if ($oClient = $oClientColl->getFirstAccessibleClient()) {
         unset($lang);
-        $client = $oClient->get('idclient');
+        $client = cSecurity::toInteger($oClient->get('idclient'));
     }
 } else {
     $sess->register('client');
@@ -172,7 +172,7 @@ if (isset($area)) {
 
 // Initialize CONTENIDO_Backend.
 // Load all actions from the DB and check if permission is granted.
-$oldmemusage = memory_get_usage();
+$oldMemUsage = memory_get_usage();
 
 // Select frameset
 $backend->setFrame($frame);
@@ -193,7 +193,7 @@ if (isset($action) && $action != '') {
     if (!isset($idart)) {
         $idart = 0;
     }
-    $backend->log($idcat, $idart, $client, $lang, $action);
+    $backend->log($idcat, $idart, $client, $lang ?? 0, $action);
 }
 
 // Include action file if exists
@@ -224,7 +224,7 @@ if (count($backend->getFile('main')) > 0) {
 }
 
 // Finalize debug of backend rendering
-cDebug::out(cBuildBackendRenderDebugInfo($cfg, $oldmemusage, $sFilename));
+cDebug::out(cBuildBackendRenderDebugInfo($cfg, $oldMemUsage ?? 0, $sFilename));
 
 // User Tracking (who is online)
 $oActiveUser = new cApiOnlineUserCollection();

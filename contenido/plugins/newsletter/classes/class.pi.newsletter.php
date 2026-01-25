@@ -38,7 +38,7 @@ final class PiNewsletter
     public function __construct()
     {
         $this->name = 'Newsletter';
-        $this->folderName = basename(dirname(__DIR__, 1));
+        $this->folderName = basename(dirname(__DIR__));
     }
 
     /**
@@ -62,48 +62,42 @@ final class PiNewsletter
     }
 
     /**
-     * Returns date format for current language.
-     * Returns the default configured date format in plugin, if no setting found.
-     *
-     * @param int $idLang
-     * @return string
+     * Returns date format for the current language.
+     * Returns the default configured date format in plugin if no setting is found.
      */
-    public function getDateFormat(int $idLang): string
+    public function getDateFormat(int $languageId): string
     {
-        $key = 'dateFormat:' . $idLang; 
+        $key = 'dateFormat:' . $languageId;
         if (!isset($this->data[$key])) {
-            $this->initializeDateTimeFormatData($idLang);
+            $this->initializeDateTimeFormatData($languageId);
         }
 
         return $this->data[$key];
     }
 
     /**
-     * Returns time format for current language.
-     * Returns the default configured time format in plugin, if no setting found.
-     *
-     * @param int $idLang
-     * @return string
+     * Returns time format for the current language.
+     * Returns the default configured time format in plugin if no setting is found.
      */
-    public function getTimeFormat(int $idLang): string
+    public function getTimeFormat(int $languageId): string
     {
-        $key = 'timeFormat:' . $idLang;
+        $key = 'timeFormat:' . $languageId;
         if (!isset($this->data[$key])) {
-            $this->initializeDateTimeFormatData($idLang);
+            $this->initializeDateTimeFormatData($languageId);
         }
 
         return $this->data[$key];
     }
 
-    private function initializeDateTimeFormatData(int $idLang)
+    private function initializeDateTimeFormatData(int $languageId)
     {
         $cfg = cRegistry::getConfig();
 
-        $dateKey = 'dateFormat:' . $idLang;
-        $timeKey = 'timeFormat:' . $idLang;
+        $dateKey = 'dateFormat:' . $languageId;
+        $timeKey = 'timeFormat:' . $languageId;
 
         try {
-            $oLanguage = new cApiLanguage($idLang);
+            $oLanguage = new cApiLanguage($languageId);
             $dateFormat = $oLanguage->getProperty('dateformat', 'date');
             $timeFormat = $oLanguage->getProperty('dateformat', 'time');
         } catch (Throwable $e) {

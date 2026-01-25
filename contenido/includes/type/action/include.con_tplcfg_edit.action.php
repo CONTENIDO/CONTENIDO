@@ -14,5 +14,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+$cfg = cRegistry::getConfig();
+
 // rights are being checked by the include file itself
 include($cfg['path']['includes'] . "include.tplcfg_edit_form.php");

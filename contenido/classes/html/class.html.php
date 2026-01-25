@@ -118,10 +118,9 @@ class cHTML
     /**
      * Constructor to create an instance of this class.
      *
-     * @param array $attributes [optional]
-     *         Associative array of table tag attributes
+     * @param ?array $attributes Associative array of table tag attributes
      */
-    public function __construct(array $attributes = NULL)
+    public function __construct(?array $attributes = NULL)
     {
         if (!is_null($attributes)) {
             $this->setAttributes($attributes);
@@ -130,9 +129,7 @@ class cHTML
         if (self::$_generateXHTML === NULL) {
             try {
                 $renderXhtml = getEffectiveSetting('generator', 'xhtml', 'false');
-            } catch (cDbException $e) {
-                $renderXhtml = false;
-            } catch (cException $e) {
+            } catch (cDbException|cException $e) {
                 $renderXhtml = false;
             }
             if ($renderXhtml == 'true') {
@@ -156,7 +153,7 @@ class cHTML
      */
     public static function setGenerateXHTML($value)
     {
-        self::$_generateXHTML = (bool)$value;
+        self::$_generateXHTML = cSecurity::toBoolean($value);
     }
 
     /**
@@ -164,11 +161,8 @@ class cHTML
      *
      * This function is useful if you need to use HTML elements
      * in a loop, but don't want to re-create new objects each time.
-     *
-     * @return cHTML
-     *         $this for chaining
      */
-    public function advanceID(): cHTML
+    public function advanceID(): self
     {
         self::$_idCounter++;
         return $this->updateAttribute('id', 'm' . self::$_idCounter);
@@ -177,8 +171,7 @@ class cHTML
     /**
      * Returns the current ID
      *
-     * @return string
-     *         current ID
+     * @return ?string Current ID
      */
     public function getID()
     {
@@ -188,12 +181,9 @@ class cHTML
     /**
      * Sets the ID class
      *
-     * @param string $id
-     *         Text to set as the "id"
-     * @return cHTML
-     *         $this for chaining
+     * @param string $id Text to set as the "id"
      */
-    public function setID($id): cHTML
+    public function setID($id): self
     {
         return $this->updateAttribute('id', $id);
     }
@@ -201,12 +191,9 @@ class cHTML
     /**
      * Sets the HTML tag to $tag
      *
-     * @param string $tag
-     *         The new tag
-     * @return cHTML
-     *         $this for chaining
+     * @param string $tag The new tag
      */
-    public function setTag($tag): cHTML
+    public function setTag($tag): self
     {
         $this->_tag = $tag;
 
@@ -216,21 +203,15 @@ class cHTML
     /**
      * Sets the alt and title attributes
      *
-     * Sets the "alt" and "title" tags. Usually, "alt" is used
-     * for accessibility and "title" for mouse overs.
+     * Sets the "alt" and "title" tags. Usually, "alt" is used for accessibility and "title" for mouse overs.
      *
-     * To set the text for all browsers for mouse over, set "alt"
-     * and "title". IE behaves incorrectly and shows "alt" on
-     * mouse over. Mozilla browsers only show "title" as mouse over.
+     * To set the text for all browsers for mouse over, set "alt" and "title". IE behaves incorrectly and
+     * shows "alt" on mouse over. Mozilla browsers only show "title" as mouse over.
      *
-     * @param string $alt
-     *         Text to set as the "alt" and "title" attribute
-     * @param bool $setTitle [optional]
-     *         Whether title attribute should be set, too (optional, default: true)
-     * @return cHTML
-     *         $this for chaining
+     * @param string $alt Text to set as the "alt" and "title" attribute
+     * @param bool $setTitle [optional] Whether title attribute should be set, too (optional, default: true)
      */
-    public function setAlt($alt, $setTitle = true): cHTML
+    public function setAlt($alt, $setTitle = true): self
     {
         $attributes = ['alt' => $alt, 'title' => $alt];
 
@@ -244,12 +225,9 @@ class cHTML
     /**
      * Sets the CSS class
      *
-     * @param string $class
-     *         Text to set as the "class" attribute
-     * @return cHTML
-     *         $this for chaining
+     * @param string $class Text to set as the "class" attribute
      */
-    public function setClass($class): cHTML
+    public function setClass($class): self
     {
         return $this->updateAttribute('class', $class);
     }
@@ -257,31 +235,26 @@ class cHTML
     /**
      * Appends the CSS class, if it doesn't exist.
      *
-     * @param string $class
-     *         Text to append to the "class" attribute
-     * @return cHTML
-     *         $this for chaining
+     * @param string $class Text to append to the "class" attribute
      * @since CONTENIDO 4.10.2
      */
-    public function appendClass($class): cHTML
+    public function appendClass($class): self
     {
         $classes = explode(' ', $this->getAttribute('class'));
         if (!in_array($class, $classes)) {
             $classes[] = $class;
             $this->setAttribute('class', implode(' ', $classes));
         }
+
         return $this;
     }
 
     /**
      * Sets the CSS style
      *
-     * @param string $style
-     *         Text to set as the "style" attribute
-     * @return cHTML
-     *         $this for chaining
+     * @param string $style Text to set as the "style" attribute
      */
-    public function setStyle($style): cHTML
+    public function setStyle($style): self
     {
         return $this->updateAttribute('style', $style);
     }
@@ -289,17 +262,13 @@ class cHTML
     /**
      * Adds an "on???" javascript event handler
      *
-     * example:
+     * Example:
      * $item->setEvent('change', 'document.forms[0].submit');
      *
-     * @param string $event
-     *         Type of the event, e.g. "change" for "onchange"
-     * @param string $action
-     *         Function or action to call (JavaScript Code)
-     * @return cHTML
-     *         $this for chaining
+     * @param string $event Type of the event, e.g. "change" for "onchange"
+     * @param string $action Function or action to call (JavaScript Code)
      */
-    public function setEvent($event, $action): cHTML
+    public function setEvent($event, $action): self
     {
         if (cString::getPartOfString($event, 0, 2) !== 'on' && $event != 'disabled') {
             return $this->updateAttribute('on' . $event, conHtmlSpecialChars($action));
@@ -311,15 +280,12 @@ class cHTML
     /**
      * Removes an event handler
      *
-     * example:
+     * Example:
      * $item->unsetEvent('change');
      *
-     * @param string $event
-     *         Type of the event
-     * @return cHTML
-     *         $this for chaining
+     * @param string $event Type of the event
      */
-    public function unsetEvent($event): cHTML
+    public function unsetEvent($event): self
     {
         if (cString::getPartOfString($event, 0, 2) !== 'on') {
             return $this->removeAttribute('on' . $event);
@@ -331,10 +297,8 @@ class cHTML
     /**
      * Returns the value of the given attribute.
      *
-     * @param string $attributeName
-     *         Attribute name
-     * @return string
-     *         NULL value or NULL if the attribute does not exist
+     * @param string $attributeName Attribute name
+     * @return ?string Value or NULL if the attribute does not exist
      */
     public function getAttribute($attributeName)
     {
@@ -350,14 +314,10 @@ class cHTML
     /**
      * Sets a specific attribute
      *
-     * @param string $attributeName
-     *         Name of the attribute
-     * @param string $value [optional]
-     *         Value of the attribute
-     * @return cHTML
-     *         $this for chaining
+     * @param string $attributeName Name of the attribute
+     * @param ?string $value [optional] Value of the attribute
      */
-    public function setAttribute($attributeName, $value = NULL): cHTML
+    public function setAttribute($attributeName, $value = NULL): self
     {
         $attributeName = cString::toLowerCase($attributeName);
 
@@ -376,8 +336,7 @@ class cHTML
     /**
      * Returns the assoc array(default) or string of attributes
      *
-     * @param bool $returnAsString [optional]
-     *         Whether to return the attributes as string
+     * @param ?bool $returnAsString [optional] Whether to return the attributes as string
      * @return array|string
      */
     public function getAttributes($returnAsString = false)
@@ -392,12 +351,9 @@ class cHTML
     /**
      * Sets the HTML attributes
      *
-     * @param array $attributes
-     *         Associative array with attributes
-     * @return cHTML
-     *         $this for chaining
+     * @param array $attributes Associative array with attributes
      */
-    public function setAttributes(array $attributes): cHTML
+    public function setAttributes(array $attributes): self
     {
         list($validAttributes) = $this->_parseAttributes($attributes);
         $this->_attributes = $validAttributes;
@@ -406,32 +362,22 @@ class cHTML
     }
 
     /**
-     * Updates the passed attribute without changing the other existing
-     * attributes
+     * Updates the provided attribute without changing the other existing attributes
      *
-     * @param string $name
-     *         the name of the attribute
-     * @param string $value
-     *         the value of the attribute with the given name
-     * @return cHTML
-     *         $this for chaining
+     * @param string $name The name of the attribute
+     * @param string $value The value of the attribute with the given name
      */
-    public function updateAttribute($name, $value): cHTML
+    public function updateAttribute($name, $value): self
     {
-        $this->updateAttributes([$name => $value]);
-
-        return $this;
+        return $this->updateAttributes([$name => $value]);
     }
 
     /**
-     * Updates the passed attributes without changing the other existing attributes.
+     * Updates the provided attributes without changing the other existing attributes.
      *
-     * @param array $attributes
-     *         Associative array with attributes
-     * @return cHTML
-     *         $this for chaining
+     * @param array $attributes Associative array with attributes
      */
-    public function updateAttributes(array $attributes): cHTML
+    public function updateAttributes(array $attributes): self
     {
         list($validAttributes, $invalidAttributes) = $this->_parseAttributes($attributes);
         foreach ($validAttributes as $key => $value) {
@@ -447,12 +393,9 @@ class cHTML
     /**
      * Removes an attribute
      *
-     * @param string $attributeName
-     *         Attribute name
-     * @return cHTML
-     *         $this for chaining
+     * @param string $attributeName Attribute name
      */
-    public function removeAttribute($attributeName): cHTML
+    public function removeAttribute($attributeName): self
     {
         if (isset($this->_attributes[$attributeName])) {
             unset($this->_attributes[$attributeName]);
@@ -464,10 +407,8 @@ class cHTML
     /**
      * Returns a valid attributes array.
      *
-     * @param array $attributes
-     *         Associative array with attributes
-     * @return array
-     *         the parsed attributes as valid and invalid attributes
+     * @param array $attributes Associative array with attributes
+     * @return array The parsed attributes as valid and invalid attributes
      */
     protected function _parseAttributes(array $attributes): array
     {
@@ -492,18 +433,15 @@ class cHTML
     /**
      * Fills the open SGML tag skeleton
      *
-     * fillSkeleton fills the SGML opener tag with the
-     * specified attributes. Attributes need to be passed
+     * fillSkeleton fills the SGML opener tag with the specified attributes. Attributes need to be passed
      * in the stringyfied variant.
      *
-     * @param string $attributes
-     *         Attributes to set
-     * @return string
-     *         filled SGML opener skeleton
+     * @param string $attributes Attributes string to set
+     * @return string Filled SGML opener skeleton
      */
     public function fillSkeleton($attributes): string
     {
-        if ($this->_contentlessTag == true) {
+        if ($this->_contentlessTag) {
             return sprintf($this->_skeletonSingle, $this->_tag, $attributes);
         } else {
             return sprintf($this->_skeletonOpen, $this->_tag, $attributes);
@@ -513,8 +451,7 @@ class cHTML
     /**
      * Fills the close skeleton
      *
-     * @return string
-     *         filled SGML closer skeleton
+     * @return string Filled SGML closer skeleton
      */
     public function fillCloseSkeleton(): string
     {
@@ -527,14 +464,10 @@ class cHTML
      * Example usage:
      * $element->appendStyleDefinition('margin', '5px');
      *
-     * @param string $property
-     *         the property name, e.g. 'margin'
-     * @param string $value
-     *         the value of the property, e.g. '5px'
-     * @return cHTML
-     *         $this for chaining
+     * @param string $property The property name, e.g. 'margin'
+     * @param string $value The value of the property, e.g. '5px'
      */
-    public function appendStyleDefinition($property, $value): cHTML
+    public function appendStyleDefinition($property, $value): self
     {
         if (!empty($value) && is_string($value)) {
             $value = trim($value, ' ;');
@@ -561,12 +494,9 @@ class cHTML
      *   'padding' => '0'
      * ]);
      *
-     * @param array $styles
-     *         the styles to append
-     * @return cHTML
-     *         $this for chaining
+     * @param array $styles The styles to append
      */
-    public function appendStyleDefinitions(array $styles): cHTML
+    public function appendStyleDefinitions(array $styles): self
     {
         foreach ($styles as $property => $value) {
             $this->appendStyleDefinition($property, $value);
@@ -579,12 +509,9 @@ class cHTML
      * Adds a required script to the current element.
      * Anyway, scripts are not included twice.
      *
-     * @param string $script
-     *         the script to include
-     * @return cHTML
-     *         $this for chaining
+     * @param string $script The script to include
      */
-    public function addRequiredScript($script): cHTML
+    public function addRequiredScript($script): self
     {
         $this->_requiredScripts[] = $script;
         $this->_requiredScripts = array_unique($this->_requiredScripts);
@@ -595,19 +522,15 @@ class cHTML
     /**
      * Sets the content of the object
      *
-     * @param string|object|array $content
-     *         String with the content or a cHTML object to render or an array
+     * @param string|object|array|null $content String with the content or a cHTML object to render or an array
      *         of strings / objects.
-     *
-     * @return cHTML $this for chaining
      */
-    protected function _setContent($content): cHTML
+    protected function _setContent($content): self
     {
         $this->_contentlessTag = false;
         if (is_array($content)) {
-            // reset content
+            // content is an array, so iterate over it and append the elements reset content
             $this->_content = '';
-            // content is an array, so iterate over it and append the elements
             foreach ($content as $item) {
                 if (is_object($item)) {
                     if (method_exists($item, 'render')) {
@@ -620,19 +543,17 @@ class cHTML
                     $this->_content .= $item;
                 }
             }
-        } else {
-            // content is an object or a string, so just set the rendered
-            // content
-            if (is_object($content)) {
-                if (method_exists($content, 'render')) {
-                    $this->_content = $content->render();
-                }
-                if (count($content->_requiredScripts) > 0) {
-                    $this->_requiredScripts = array_merge($this->_requiredScripts, $content->_requiredScripts);
-                }
-            } else {
-                $this->_content = $content;
+        } elseif (is_object($content)) {
+            // content is an object or a string, so just set the rendered content
+            if (method_exists($content, 'render')) {
+                $this->_content = $content->render();
             }
+            if (count($content->_requiredScripts) > 0) {
+                $this->_requiredScripts = array_merge($this->_requiredScripts, $content->_requiredScripts);
+            }
+        } else {
+            // Content is tring or NULL
+            $this->_content = is_string($content) ? $content : '';
         }
 
         return $this;
@@ -641,13 +562,10 @@ class cHTML
     /**
      * Adds the given content to the already existing content of this object.
      *
-     * @param string|object|array $content
-     *         String with the content or an object to render
+     * @param string|object|array $content String with the content or an object to render
      *         or an array of strings/objects.
-     * @return cHTML
-     *         $this for chaining
      */
-    protected function _appendContent($content): cHTML
+    protected function _appendContent($content): self
     {
         if (!is_string($this->_content)) {
             $this->_content = '';
@@ -685,16 +603,11 @@ class cHTML
      * Example to attach an onClick handler:
      * attachEventDefinition('foo', 'onClick', 'alert("foo");');
      *
-     * @param string $name
-     *         Defines the name of the event
-     * @param string $event
-     *         Defines the event (e.g. onClick)
-     * @param string $code
-     *         Defines the code
-     * @return cHTML
-     *         $this for chaining
+     * @param string $name Defines the name of the event
+     * @param string $event Defines the event (e.g. onClick)
+     * @param string $code Defines the code
      */
-    public function attachEventDefinition($name, $event, $code): cHTML
+    public function attachEventDefinition($name, $event, $code): self
     {
         $this->_eventDefinitions[cString::toLowerCase($event)][$name] = $code;
 
@@ -704,10 +617,8 @@ class cHTML
     /**
      * Returns an HTML formatted attribute string
      *
-     * @param array $attributes
-     *         Associative array with attributes
-     * @return string
-     *         Attribute string in HTML format
+     * @param array $attributes Associative array with attributes
+     * @return string Attribute string in HTML format
      */
     protected function _getAttrString(array $attributes): string
     {
@@ -724,8 +635,6 @@ class cHTML
      *
      * @param string $attributeName The attribute to check
      * @param mixed $value The value of the attribute
-     *
-     * @return bool
      */
     protected function _isAttributeToRemove($attributeName, $value): bool
     {
@@ -735,8 +644,7 @@ class cHTML
     /**
      * Generates the markup of the element.
      *
-     * @return string
-     *         generated markup
+     * @return string generated markup
      */
     public function toHtml(): string
     {
@@ -783,7 +691,7 @@ class cHTML
         }
 
         $attributes = $this->getAttributes(true);
-        if (!empty($this->_content) || $this->_contentlessTag === false) {
+        if (!empty($this->_content) || !$this->_contentlessTag) {
             return $this->fillSkeleton($attributes) . $this->_content . $this->fillCloseSkeleton();
         } else {
             // This is a single style tag
@@ -793,9 +701,6 @@ class cHTML
 
     /**
      * Alias for toHtml
-     *
-     * @return string
-     *         generated markup
      */
     public function render(): string
     {
@@ -805,10 +710,9 @@ class cHTML
     /**
      * Direct call of object as string will return its generated markup.
      *
-     * @return string
-     *         Generated markup
+     * @return string Generated markup
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render();
     }

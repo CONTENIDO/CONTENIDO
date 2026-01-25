@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $auth = cRegistry::getAuth();
 $cfgClient = cRegistry::getClientConfig();
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getClientId();
 
 // Configuration array of frontend caching
 global $cfgConCache;
@@ -64,7 +64,7 @@ $cfgConCache['idoptions'] = [
     'uri'  => &$_SERVER['REQUEST_URI'],
     'post' => &$_POST,
     'get'  => &$_GET,
-    'auth' => &$auth->auth['perm']
+    'auth' => &$auth->getPerms()
 ];
 
 /**
@@ -107,8 +107,8 @@ $cfgConCache['raiseonevent'] = [
         if (getSystemProperty(\'stats\', \'tracking\') != \'disabled\' && cRegistry::isTrackingAllowed()) {
             // Track page hit for statistics
             global $idcatart;
-            $client = cSecurity::toInteger(cRegistry::getClientId());
-            $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+            $client = cRegistry::getClientId();
+            $lang = cRegistry::getLanguageId();
             $idcatart = cSecurity::toInteger($idcatart);
             $oStatColl = new cApiStatCollection();
             $oStatColl->trackVisit($idcatart, $lang, $client);

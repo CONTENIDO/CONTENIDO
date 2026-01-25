@@ -35,10 +35,8 @@ class cXmlWriter extends cXmlBase
      *
      * Creates the XML document.
      *
-     * @param string $version [optional, default: 1.0]
-     *         version of XML document
-     * @param string $encoding [optional, default: UTF-8]
-     *         encoding of XML document
+     * @param string $version [optional, default: 1.0] Version of XML document
+     * @param string $encoding [optional, default: UTF-8] Encoding of XML document
      */
     public function __construct(string $version = '', string $encoding = '')
     {
@@ -60,25 +58,18 @@ class cXmlWriter extends cXmlBase
 
     /**
      * Adds a new element to the XML document.
-     * If no root element is given the element will be appended to the root
-     * node.
+     * If no root element is given the element will be appended to the root node.
      *
-     * @param string $name
-     *         name of the element
-     * @param string|int|mixed $value [optional]
-     *         value of the element
-     * @param DOMElement|NULL $rootElement [optional]
-     *         root element
-     * @param array $attributes [optional]
-     *         array of attributes added to this element
-     * @param bool $cdata [optional]
-     *         whether the value is surrounded by CDATA blocks
-     * @return DOMElement
-     *         created DOM element
+     * @param string $name Name of the element
+     * @param string|int|mixed $value [optional] Value of the element
+     * @param ?DOMElement $rootElement [optional] Root element
+     * @param array $attributes [optional] Array of attributes added to this element
+     * @param bool $cdata [optional] Whether the value is surrounded by CDATA blocks
+     * @return DOMElement Created DOM element
      * @throws DOMException
      */
     public function addElement(
-        string $name, $value = '', DOMElement $rootElement = NULL, array $attributes = [], bool $cdata = false
+        string $name, $value = '', ?DOMElement $rootElement = NULL, array $attributes = [], bool $cdata = false
     ): DOMElement
     {
         $isEmptyValue = in_array($value, ['', NULL]);
@@ -105,12 +96,9 @@ class cXmlWriter extends cXmlBase
     /**
      * Adds an array of attributes to a specific DOM element.
      *
-     * @param DOMElement $element
-     *         DOM element to add attributes
-     * @param array $attributes [optional]
-     *         array of attributes
-     * @return DOMElement
-     *         DOM element with assigned attributes
+     * @param DOMElement $element DOM element to add attributes
+     * @param array $attributes [optional] Array of attributes
+     * @return DOMElement DOM element with assigned attributes
      */
     protected function _addElementAttributes(DOMElement $element, array $attributes = []): DOMElement
     {
@@ -128,8 +116,7 @@ class cXmlWriter extends cXmlBase
     /**
      * Returns the complete XML tree as string.
      *
-     * @return string
-     *         XML tree
+     * @return string XML tree
      */
     public function saveToString(): string
     {
@@ -151,18 +138,14 @@ class cXmlWriter extends cXmlBase
     /**
      * Saves the XML tree into a file.
      *
-     * @param string $directory
-     *         path to destination directory
-     * @param string $fileName
-     *         name of the written file
-     * @return bool
-     *         state of saving process (true if file was created, false otherwise)
-     * @throws cException
-     *         if the directory is not writable
+     * @param string $directory Path to destination directory
+     * @param string $fileName Name of the written file
+     * @return bool State of saving process (true if file was created, false otherwise)
+     * @throws cException If the directory is not writable
      */
     public function saveToFile(string $directory, string $fileName): bool
     {
-        if (is_writable($directory) === false) {
+        if (cFileHandler::writeable($directory) === false) {
             throw new cException('Can not write XML file: Directory is not writable.');
         }
 

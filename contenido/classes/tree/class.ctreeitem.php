@@ -20,80 +20,68 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GUI
  */
+#[AllowDynamicProperties]
 class cTreeItem
 {
 
     /**
-     * Sub Items of this tree item
-     *
-     * @var array
+     * @var cTreeItem[]|object[] Sub Items of this tree item
      */
     protected $_subitems = [];
 
     /**
-     * Determinates if this tree item is collapsed
-     *
-     * @var bool
+     * @var bool Determinate if this tree item is collapsed
      */
     protected $_collapsed;
 
     /**
-     * ID of this tree item
-     *
-     * @var string
+     * @var string|int ID of this tree item
      */
     protected $_id;
 
     /**
-     * Name of this tree item
-     *
-     * @var string
+     * @var string Name of this tree item
      */
     protected $_name;
 
     /**
-     * level of this tree item
-     *
-     * @var int
+     * @var int Level of this tree item
      */
     protected $_level;
 
     /**
-     * Contains custom entries
-     *
-     * @var array
+     * @var array Contains custom entries
      */
     protected $_attributes = [];
 
     /**
-     * parent of this tree item
-     *
-     * @var array
+     * @var array|false Parent of this tree item
      */
     protected $_parent = false;
 
     /**
-     * next sibling of this tree item
-     *
-     * @var array
+     * @var array|false Next sibling of this tree item
      */
     protected $_next = false;
 
     /**
-     * previous sibling of this tree item
-     *
-     * @var array
+     * @var array|false Previous sibling of this tree item
      */
     protected $_previous = false;
 
     /**
+     * @var ?object
+     */
+    protected $payload;
+
+    /**
      * Constructor to create an instance of this class.
      *
-     * @param string $id [optional]
+     * @param string|int $id [optional]
      * @param string $name [optional]
      * @param bool $collapsed [optional]
      */
-    public function __construct($id = "", $name = "", $collapsed = false)
+    public function __construct($id = "", $name = "", bool $collapsed = false)
     {
         $this->_id = $id;
         $this->_name = $name;
@@ -103,7 +91,7 @@ class cTreeItem
     /**
      * Id getter.
      *
-     * @return string
+     * @return string|int
      */
     public function getId()
     {
@@ -121,11 +109,21 @@ class cTreeItem
     }
 
     /**
+     * Sets the name for this item.
+     *
+     * @param string $name New name for this item
+     */
+    public function setName($name)
+    {
+        $this->_name = $name;
+    }
+
+    /**
      * Collapsed state getter.
      *
      * @return bool
      */
-    public function getCollapsed()
+    public function getCollapsed(): bool
     {
         return $this->_collapsed;
     }
@@ -135,68 +133,68 @@ class cTreeItem
      *
      * The entries "collapsed" and "attributes" are optional!
      *
-     * @param array $flat_array
-     *         array(
-     *             array(
-     *                 "id" => "Item ID",
-     *                 "name" => "Item name",
-     *                 "level" => 1,
-     *                 "collapsed" => true|false,
-     *                 "attributes" => array(
-     *                     "attr_name" => "attr_value"
-     *                 )
-     *             )
-     *         )
-     * @return bool
+     * @param array|mixed $flat_array
+     *      <pre>
+     *      [
+     *          [
+     *              "id" => "Item ID",
+     *              "name" => "Item name",
+     *              "level" => 1,
+     *              "collapsed" => true|false,
+     *              "attributes" => [
+     *                  "attr_name" => "attr_value"
+     *              ]
+     *          ]
+     *       ]
+     *      </pre>
      */
-    public function importTable($flat_array)
+    public function importTable($flat_array): bool
     {
-        $lastobj[0] = $this->_id;
-        $currentlevel = 1;
+        $lastObjId[0] = $this->_id;
+        $currentLevel = 1;
 
         if (!is_array($flat_array)) {
             return false;
         }
 
+        $mItem = [];
         foreach ($flat_array as $item) {
-            $mitem[$item["id"]] = new cTreeItem($item["id"], $item["name"]);
+            $mItem[$item['id']] = new cTreeItem($item['id'], $item['name']);
 
-            if ($item["level"] > $currentlevel) {
-                $currentlevel++;
+            if ($item['level'] > $currentLevel) {
+                $currentLevel++;
             }
 
-            if ($item["level"] < $currentlevel) {
-                $currentlevel = $item["level"];
+            if ($item['level'] < $currentLevel) {
+                $currentLevel = $item['level'];
             }
 
-            if (is_array($item["attributes"])) {
-                $mitem[$item["id"]]->setAttributes($item["attributes"]);
+            if (is_array($item['attributes'])) {
+                $mItem[$item['id']]->setAttributes($item['attributes']);
             }
 
             if (array_key_exists("collapsed", $item)) {
-                $mitem[$item["id"]]->setCollapsed($item["collapsed"]);
+                $mItem[$item['id']]->setCollapsed($item['collapsed']);
             }
 
             /* Set payload object */
             if (array_key_exists("payload", $item)) {
-                $mitem[$item["id"]]->setPayloadObject($item["payload"]);
+                $mItem[$item['id']]->setPayloadObject($item['payload']);
             }
 
-            if (is_object($mitem[$lastobj[$currentlevel - 1]])) {
-                $mitem[$lastobj[$currentlevel - 1]]->addItem($mitem[$item["id"]]);
+            if (is_object($mItem[$lastObjId[$currentLevel - 1]])) {
+                $mItem[$lastObjId[$currentLevel - 1]]->addItem($mItem[$item['id']]);
             } else {
-                $this->addItemToID($lastobj[$currentlevel - 1], $mitem[$item["id"]]);
+                $this->addItemToID($lastObjId[$currentLevel - 1], $mItem[$item['id']]);
             }
 
-            $lastobj[$currentlevel] = $item["id"];
+            $lastObjId[$currentLevel] = $item['id'];
         }
+
+        return true;
     }
 
-    /**
-     *
-     * @param array $array
-     */
-    public function importStructuredArray($array)
+    public function importStructuredArray(array $array)
     {
         $i = [];
 
@@ -210,53 +208,53 @@ class cTreeItem
 
     /**
      *
-     * @param array $sourcearray
-     * @param array $destarray
-     * @param int $lastid
+     * @param array $sourceArray
+     * @param array $destArray
+     * @param int $lastId
      * @param int $level
-     * @return bool
      */
-    protected function _flattenArray($sourcearray, &$destarray, &$lastid, &$level)
+    protected function _flattenArray($sourceArray, &$destArray, &$lastId, &$level): bool
     {
-        if ($lastid == false) {
-            $lastid = 1;
+        if (!$lastId) {
+            $lastId = 1;
         }
 
-        if ($level == false) {
+        if (!$level) {
             $level = 1;
         }
 
-        if (!is_array($sourcearray)) {
+        if (!is_array($sourceArray)) {
             return false;
         }
 
-        foreach ($sourcearray as $id => $item) {
-            $lastid++;
-            $destarray[$lastid]["id"] = $item["class"] . "." . $id;
+        foreach ($sourceArray as $id => $item) {
+            $lastId++;
+            $destArray[$lastId]['id'] = $item['class'] . "." . $id;
 
             // Name should be fetched via the meta object
-            $meta = $item["object"]->getMetaObject();
+            $meta = $item['object']->getMetaObject();
 
             if (is_object($meta)) {
-                $destarray[$lastid]["name"] = $meta->getName();
+                $destArray[$lastId]['name'] = $meta->getName();
             }
 
-            $destarray[$lastid]["level"] = $level;
-            $destarray[$lastid]["payload"] = $item["object"];
+            $destArray[$lastId]['level'] = $level;
+            $destArray[$lastId]['payload'] = $item['object'];
 
-            if (count($item["items"]) > 0) {
+            if (count($item['items']) > 0) {
                 $level++;
-                $this->_flattenArray($item["items"], $destarray, $lastid, $level);
+                $this->_flattenArray($item['items'], $destArray, $lastId, $level);
                 $level--;
             }
         }
+
+        return true;
     }
 
     /**
      * Adds an item as a subitem to the current item.
      *
-     * @param cTreeItem $item
-     *         item object to add
+     * @param cTreeItem|object $item Item object to add
      */
     public function addItem(&$item)
     {
@@ -273,16 +271,14 @@ class cTreeItem
     /**
      * Adds an item to a specific ID.
      *
-     * @param string $id
-     *         ID to add the item to
-     * @param cTreeItem $item
-     *         Item to add
-     * @return bool
+     * @param string|int $id ID to add the item to
+     * @param cTreeItem|object $item Item to add
      */
-    public function addItemToID($id, &$item)
+    public function addItemToID($id, &$item): bool
     {
         if ($this->_id == $id) {
             // Update last item
+            /** @var cTreeItem|object $lastitem */
             if ($lastitem = end($this->_subitems) !== false) {
                 $this->_subitems[key($this->_subitems)]->_next = $item->_id;
             }
@@ -294,7 +290,7 @@ class cTreeItem
         } else {
             foreach (array_keys($this->_subitems) as $key) {
                 $result = $this->_subitems[$key]->addItemToID($id, $item);
-                if ($result == true) {
+                if ($result) {
                     return true;
                 }
             }
@@ -306,10 +302,8 @@ class cTreeItem
     /**
      * Moves an item to another object.
      *
-     * @param cTreeItem $targetItem
-     *         Item to move the subitem to
-     * @param mixed $itemToMove
-     *         cTreeItem-Object or id of object to move
+     * @param cTreeItem|object $targetItem Item to move the subitem to
+     * @param mixed $itemToMove cTreeItem-Object or id of object to move
      */
     public function moveItem($targetItem, $itemToMove)
     {
@@ -318,78 +312,74 @@ class cTreeItem
     /**
      * Deletes a subitem.
      *
-     * @param mixed $id
-     *         item object or ID to delete
-     * @return object
-     *         deleted object
+     * @param string|int $id Item object or ID to delete
+     * @return cTreeItem|object|null Deleted object
      */
     public function deleteItem($id)
     {
         foreach (array_keys($this->_subitems) as $key) {
             if ($this->_subitems[$key]->_id == $id) {
                 // Fetch next item, reset to current item
-                $nextitem = next($this->_subitems);
+                $nextItem = next($this->_subitems);
                 $nkey = key($this->_subitems);
                 prev($this->_subitems);
 
-                $previtem = &prev($this->_subitems);
+                $prevItem = prev($this->_subitems);
                 $pkey = key($this->_subitems);
                 next($this->_subitems);
 
-                if ($nextitem !== false) {
-                    if ($previtem !== false) {
+                if ($nextItem !== false) {
+                    if ($prevItem !== false) {
                         $this->_subitems[$nkey]->_previous = $this->_subitems[$pkey]->_id;
                     }
                 }
 
-                if ($previtem !== false) {
-                    if ($nextitem !== false) {
+                if ($prevItem !== false) {
+                    if ($nextItem !== false) {
                         $this->_subitems[$pkey]->_next = $this->_subitems[$nkey]->_id;
                     }
                 }
 
-                $itemcopy = $this->_subitems[$key];
+                $itemCopy = $this->_subitems[$key];
                 unset($this->_subitems[$key]);
 
-                return ($itemcopy);
+                return $itemCopy;
             } else {
                 $this->_subitems[$key]->deleteItem($id);
             }
         }
+
+        return null;
     }
 
     /**
      * Retrieves a specific item by its ID.
+     * Note that this function traverses all subitems to find the correct item.
      *
-     * Note that this function traverses all subitems to find the
-     * correct item.
-     *
-     * @param string $id
-     *         ID to retrieve
-     * @return cTreeItem
+     * @param string|int $id ID to retrieve
+     * @return cTreeItem|object|null
      */
-    public function &getItemByID($id)
+    public function getItemByID($id)
     {
         if ($this->_id == $id) {
             return $this;
-        } else {
-            foreach (array_keys($this->_subitems) as $key) {
-                $retObj = &$this->_subitems[$key]->getItemByID($id);
-                if ($retObj->_id == $id) {
-                    return $retObj;
-                }
+        }
+
+        foreach (array_keys($this->_subitems) as $key) {
+            $retObj = $this->_subitems[$key]->getItemByID($id);
+            if ($retObj && $retObj->_id == $id) {
+                return $retObj;
             }
         }
 
-        return false;
+        return null;
     }
 
     /**
      * Sets a custom attribute for this TreeItem.
      *
      * @param string $attributeName
-     * @param array $attributeValue
-     *         The value(s) of the attribute
+     * @param array $attributeValue The value(s) of the attribute
      */
     public function setAttribute($attributeName, $attributeValue)
     {
@@ -398,10 +388,8 @@ class cTreeItem
 
     /**
      * Sets a bunch of attributes.
-     *
-     * @param array $aAttributeArray
      */
-    public function setAttributes($aAttributeArray)
+    public function setAttributes(array $aAttributeArray)
     {
         $this->_attributes = array_merge($aAttributeArray, $this->_attributes);
     }
@@ -414,20 +402,15 @@ class cTreeItem
      */
     public function getAttribute($attributeName)
     {
-        if (array_key_exists($attributeName, $this->_attributes)) {
-            return ($this->_attributes[$attributeName]);
-        } else {
-            return false;
-        }
+        return $this->_attributes[$attributeName] ?? false;
     }
 
     /**
      * Deletes an attribute.
      *
      * @param string $attributeName
-     * @return bool
      */
-    public function deleteAttribute($attributeName)
+    public function deleteAttribute($attributeName): bool
     {
         if (array_key_exists($attributeName, $this->_attributes)) {
             unset($this->_attributes[$attributeName]);
@@ -438,40 +421,31 @@ class cTreeItem
     }
 
     /**
-     *
      * @param string $attributeName
-     * @param bool $bRecursive [optional]
-     * @return bool
      */
-    public function hasAttribute($attributeName, $bRecursive = false)
+    public function hasAttribute($attributeName, bool $recursive = false): bool
     {
         if (array_key_exists($attributeName, $this->_attributes)) {
             return true;
-        } else {
-            if ($bRecursive == true) {
-                if (count($this->_subitems) > 0) {
-                    foreach ($this->_subitems as $oSubitem) {
-                        $bFound = $oSubitem->hasAttribute($attributeName, true);
-                        if ($bFound == true) {
-                            return true;
-                        }
+        }
+
+        if ($recursive) {
+            if (count($this->_subitems) > 0) {
+                foreach ($this->_subitems as $oSubitem) {
+                    if ($oSubitem->hasAttribute($attributeName, true)) {
+                        return true;
                     }
                 }
-
-                return false;
-            } else {
-                return false;
             }
         }
+
+        return false;
     }
 
     /**
-     *
-     * @param mixed $id
-     *         expand ID of item to expand or array of item ID's to expand
-     * @return bool
+     * @param string|int|array $id Expand ID of item to expand or array of item ID's to expand
      */
-    public function setExpanded($id)
+    public function setExpanded($id): bool
     {
         if (is_array($id)) {
             if (in_array($this->_id, $id, true)) {
@@ -491,15 +465,15 @@ class cTreeItem
                 }
             }
         }
+
+        return false;
     }
 
     /**
      *
-     * @param mixed $id
-     *         collapse ID to collapse or an array with items to collapse
-     * @return void|bool
+     * @param string|int|array $id Collapse ID to collapse or an array with items to collapse
      */
-    public function setCollapsed($id)
+    public function setCollapsed($id): bool
     {
         if (is_array($id)) {
             if (in_array($this->_id, $id, true)) {
@@ -519,52 +493,48 @@ class cTreeItem
                 }
             }
         }
+
+        return false;
     }
 
     /**
-     *
-     * @param int $leveloffset
-     *         leveloffset Level offset. Ignores all expand operations below the offset.
+     * @param int $levelOffset Level offset. Ignores all expand operations below the offset.
      */
-    protected function _expandBelowLevel($leveloffset)
+    protected function _expandBelowLevel(int $levelOffset)
     {
-        if ($leveloffset > 0) {
-            $leveloffset--;
+        if ($levelOffset > 0) {
+            $levelOffset--;
         } else {
             $this->_collapsed = false;
         }
 
         foreach (array_keys($this->_subitems) as $key) {
-            $this->_subitems[$key]->expandBelowLevel($leveloffset);
+            $this->_subitems[$key]->expandBelowLevel($levelOffset);
         }
     }
 
     /**
-     *
-     * @param int $leveloffset
-     *         Level offset. Ignores all expand operations below the offset.
+     * @param int $levelOffset Level offset. Ignores all expand operations below the offset.
      */
-    protected function _collapseBelowLevel($leveloffset)
+    protected function _collapseBelowLevel(int $levelOffset)
     {
-        if ($leveloffset > 0) {
-            $leveloffset--;
+        if ($levelOffset > 0) {
+            $levelOffset--;
         } else {
             $this->_collapsed = true;
         }
 
         foreach (array_keys($this->_subitems) as $key) {
-            $this->_subitems[$key]->collapseBelowLevel($leveloffset);
+            $this->_subitems[$key]->collapseBelowLevel($levelOffset);
         }
     }
 
     /**
-     *
-     * @param string $id
-     * @param bool $found [optional]
+     * @param string|int $id
      */
-    protected function _expandBelowID($id, $found = false)
+    protected function _expandBelowID($id, bool $found = false)
     {
-        if ($found === true) {
+        if ($found) {
             $this->_collapsed = false;
         }
 
@@ -579,13 +549,11 @@ class cTreeItem
     }
 
     /**
-     *
-     * @param string $id
-     * @param bool $found [optional]
+     * @param string|int $id
      */
-    protected function _collapseBelowID($id, $found = false)
+    protected function _collapseBelowID($id, bool $found = false)
     {
-        if ($found === true) {
+        if ($found) {
             $this->_collapsed = true;
         }
 
@@ -602,16 +570,11 @@ class cTreeItem
     /**
      * Returns all items (as ID array) which are collapsed.
      *
-     * @param array $list
-     *         Contains the list with all collapsed items
+     * @param array $list Contains the list with ids of all collapsed items
      */
-    public function getCollapsedList(&$list)
+    public function getCollapsedList(array &$list)
     {
-        if (!is_array($list)) {
-            $list = [];
-        }
-
-        if ($this->_collapsed == true) {
+        if ($this->_collapsed) {
             $list[] = $this->_id;
         }
 
@@ -623,16 +586,11 @@ class cTreeItem
     /**
      * Returns all items (as ID array) which are expanded.
      *
-     * @param array $list
-     *         Contains the list with all expanded items
+     * @param array $list Contains the list with ids of all expanded items
      */
-    public function getExpandedList(&$list)
+    public function getExpandedList(array &$list)
     {
-        if (!is_array($list)) {
-            $list = [];
-        }
-
-        if ($this->_collapsed == false && !in_array($this->_id, $list)) {
+        if (!$this->_collapsed && !in_array($this->_id, $list)) {
             $list[] = $this->_id;
         }
 
@@ -644,8 +602,7 @@ class cTreeItem
     /**
      * Sets a payload object for later reference.
      *
-     * @param object $payload
-     *         The object to payload
+     * @param object|mixed $payload The object to payload
      */
     public function setPayloadObject($payload)
     {
@@ -654,28 +611,25 @@ class cTreeItem
 
     /**
      * Unsets a payload object.
-     *
-     * @return object
      */
     public function unsetPayloadObject()
     {
+        unset($this->payload);
     }
 
     /**
      * Traverses the tree starting from this item, and returning all
      * objects as $objects in a nested array.
      *
-     * @param array $objects
-     *         all found objects
-     * @param int $level [optional]
-     *         Level to start on
+     * @param cTreeItem[]|object[] $objects All found objects
+     * @param int $level Level to start on
      */
-    public function traverse(&$objects, $level = 0)
+    public function traverse(&$objects, int $level = 0)
     {
         $objects[count($objects)] = &$this;
         $this->_level = $level;
 
-        if ($this->_collapsed == false) {
+        if (!$this->_collapsed) {
             foreach (array_keys($this->_subitems) as $key) {
                 $this->_subitems[$key]->traverse($objects, $level + 1);
             }
@@ -686,33 +640,21 @@ class cTreeItem
      * Traverses the tree starting from this item, and returning
      * all objects as $objects in a flat array.
      *
-     * @param int $level [optional]
-     *         Level to start on
-     * @return array
+     * @param int $level Level to start on
+     * @return cTreeItem[]|object[]
      */
-    public function flatTraverse($level = 0)
+    public function flatTraverse(int $level = 0): array
     {
         $objects[] = &$this;
         $this->_level = $level;
 
-        if ($this->_collapsed == false) {
+        if (!$this->_collapsed) {
             foreach (array_keys($this->_subitems) as $key) {
                 $objects = array_merge($objects, $this->_subitems[$key]->flatTraverse($level + 1));
             }
         }
 
         return $objects;
-    }
-
-    /**
-     * Sets the name for this item.
-     *
-     * @param string $name
-     *         New name for this item
-     */
-    public function setName($name)
-    {
-        $this->_name = $name;
     }
 
 }

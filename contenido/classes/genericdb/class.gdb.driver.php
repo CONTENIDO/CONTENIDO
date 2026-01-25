@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage GenericDB
  */
-class cGenericDbDriver
+abstract class cGenericDbDriver
 {
 
     /**
@@ -57,17 +57,23 @@ class cGenericDbDriver
      * @param string $primaryKey
      * @return array
      */
-    public function buildJoinQuery($destinationTable, $destinationClass, $destinationPrimaryKey, $sourceClass, $primaryKey)
-    {
-    }
+    abstract public function buildJoinQuery(
+        string $destinationTable,
+        string $destinationClass,
+        string $destinationPrimaryKey,
+        string $sourceClass,
+        string $primaryKey
+    ): array;
 
     /**
-     * @param string $sField
-     * @param string $sOperator
-     * @param string $sRestriction
+     * @param string $field
+     * @param string $operator
+     * @param mixed $restriction
      * @return string
      */
-    public function buildOperator($sField, $sOperator, $sRestriction)
-    {
-    }
+    abstract public function buildOperator(
+        string $field,
+        string $operator,
+        $restriction
+    ): string;
 }

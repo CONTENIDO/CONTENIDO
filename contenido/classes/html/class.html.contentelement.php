@@ -26,14 +26,11 @@ class cHTMLContentElement extends cHTML
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $content [optional]
-     *         String or object with the contents
-     * @param string $class [optional]
-     *         the class of this element
-     * @param string $id [optional]
-     *         the ID of this element
+     * @param string|object|array|null $content [optional] String or object with the contents
+     * @param string $class [optional] The class of this element
+     * @param string $id [optional] The ID of this element
      */
-    public function __construct($content = '', $class = '', $id = '')
+    public function __construct($content = NULL, $class = '', $id = '')
     {
         parent::__construct();
         $this->setContent($content);
@@ -45,31 +42,23 @@ class cHTMLContentElement extends cHTML
     /**
      * Sets the element's content
      *
-     * @param string|object|array $content
-     *         String with the content or a cHTML object to render or an array
-     *         of strings / objects.
-     * @return cHTMLContentElement
-     *         $this for chaining
+     * @param string|object|array|null $content String with the content or a cHTML object to render
+     *      or an array of strings / objects.
      */
-    public function setContent($content)
+    public function setContent($content): self
     {
-        $this->_setContent($content);
-        return $this;
+        return $this->_setContent($content);
     }
 
     /**
      * Appends code / objects to the content.
      *
-     * @param string|object|array $content
-     *         String with the content or a cHTML object to render
-     *         or an array of strings / objects.
-     * @return cHTMLContentElement
-     *         $this for chaining
+     * @param string|object|array $content String with the content or a cHTML object to render
+     *      or an array of strings / objects.
      */
-    public function appendContent($content)
+    public function appendContent($content): self
     {
-        $this->_appendContent($content);
-        return $this;
+        return $this->_appendContent($content);
     }
 
 }

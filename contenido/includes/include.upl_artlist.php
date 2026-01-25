@@ -18,18 +18,19 @@ cInclude('includes', 'functions.con.php');
 
 $page = new cGuiPage('upl_artlist');
 
+$idcat = cRegistry::getCategoryId();
+$lang = cRegistry::getLanguageId();
+
 conCreateLocationString($idcat, '/', $cat_str);
 
 $mcatlink = '';
 
-$_cecIterator = $_cecRegistry->getIterator('Contenido.Content.CreateCategoryLink');
-if ($_cecIterator->count() > 0) {
-    while ($chainEntry = $_cecIterator->next()) {
-        $catlink = $chainEntry->execute($idcat);
+$cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.Content.CreateCategoryLink');
+while ($chainEntry = $cecIterator->next()) {
+    $catlink = $chainEntry->execute($idcat);
 
-        if ($catlink != '') {
-            $mcatlink = $catlink;
-        }
+    if ($catlink != '') {
+        $mcatlink = $catlink;
     }
 }
 
@@ -51,7 +52,6 @@ $dateformat = getEffectiveSetting('dateformat', 'full', 'Y-m-d H:i:s');
 $odd = false;
 
 while ($cApiCategoryArticle = $cApiCategoryArticleCollection->next()) {
-
     $obj = $cApiCategoryArticleCollection->fetchObject('cApiArticleCollection');
     $idart = $obj->get('idart');
 
@@ -64,14 +64,11 @@ while ($cApiCategoryArticle = $cApiCategoryArticleCollection->next()) {
         continue;
     }
 
-    $_cecIterator = $_cecRegistry->getIterator('Contenido.Content.CreateArticleLink');
-    if ($_cecIterator->count() > 0) {
-        while ($chainEntry = $_cecIterator->next()) {
-            $artlink = $chainEntry->execute($idart, $idcat);
-
-            if ($artlink != '') {
-                $martlink = $artlink;
-            }
+    $cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.Content.CreateArticleLink');
+    while ($chainEntry = $cecIterator->next()) {
+        $artlink = $chainEntry->execute($idart, $idcat);
+        if ($artlink != '') {
+            $martlink = $artlink;
         }
     }
 

@@ -24,9 +24,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var string $belang
  */
 
-$page = new cGuiPage("mycontenido", "", "0");
+$page = new cGuiPage('mycontenido', '', '0');
 
-$vuser = new cApiUser($auth->auth['uid']);
+$vuser = new cApiUser($auth->getUserId());
 
 $saveLoginTime = $saveLoginTime ?? false;
 
@@ -57,7 +57,7 @@ if (getSystemProperty('maintenance', 'mode') == 'enabled') {
 }
 
 // Check, if setup folder is still available
-if (cFileHandler::exists(dirname(dirname(dirname(__FILE__))) . '/setup')) {
+if (cFileHandler::exists(dirname(__FILE__, 3) . '/setup')) {
     $page->displayWarning(i18n("The setup directory still exists. Please remove the setup directory before you continue."));
 }
 
@@ -86,13 +86,13 @@ if (is_array($cfgClient)) {
         if (!is_numeric($iclient)) {
             continue;
         }
-        $foldersToCheck[] = $cfgClient[$iclient]['path']['frontend'] . "layouts";
-        $foldersToCheck[] = $cfgClient[$iclient]['path']['frontend'] . "logs";
+        $foldersToCheck[] = $aclient['path']['frontend'] . "layouts";
+        $foldersToCheck[] = $aclient['path']['frontend'] . "logs";
     }
 }
 $faultyFolders = [];
 foreach ($foldersToCheck as $folder) {
-    if (true === @file_exists($folder)) {
+    if (@file_exists($folder)) {
         $faultyFolders[] = $folder;
     }
 }
@@ -102,7 +102,7 @@ foreach ($faultyFolders as $folder) {
     }
 }
 
-$userid = $auth->auth['uid'];
+$userid = $auth->getUserId();
 
 $page->set('s', 'WELCOME', '<b>' . i18n('Welcome') . ' </b>' . ($vuser->getRealName() ? $vuser->getRealName() : $vuser->getUserName()) . '.');
 $page->set('s', 'LASTLOGIN', i18n('Last login') . ': ' . $lastlogin);
@@ -130,10 +130,6 @@ if (count($clients) > 1) {
     $clientselect = $select->render();
 
     $page->set('s', 'CLIENTSDROPDOWN', $clientselect);
-
-    if ($perm->have_perm() && count($warnings) > 0) {
-        $page->displayWarning(implode('<br>', $warnings));
-    }
     $page->set('s', 'OKBUTTON', cHTMLButton::image('images/but_ok.gif', i18n('Change client'), ['class' => 'con_img_button mgl3']));
 } else {
     $page->set('s', 'OKBUTTON', '');
@@ -175,7 +171,7 @@ if (count($todoitems) > 0) {
     $in = 1;
 }
 $todoitems = new TODOCollection();
-$recipient = $auth->auth['uid'];
+$recipient = $auth->getUserId();
 $todoitems->select("recipient = '$recipient' AND idclient = " . (int)$client . " AND $in");
 
 $openTasks = 0;

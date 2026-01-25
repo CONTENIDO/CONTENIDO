@@ -68,17 +68,12 @@ class cAjaxRequest
      *          request, e.g. due to an invalid or expired session.
      * </ul>
      *
-     * @param string $action
-     *         name of requested ajax action
-     *
-     * @return string
-     *
+     * @param string $action Name of requested ajax action
+     * @return string The Ajax response
      * @throws cDbException|cException|cInvalidArgumentException
-     * @todo use registry instead of globals where possible
-     *
-     * @todo split functionality into seperate methods
+     * @todo split functionality into separate methods
      */
-    public function handle($action)
+    public function handle(string $action): string
     {
         $backendPath = cRegistry::getBackendPath();
 
@@ -162,7 +157,9 @@ class cAjaxRequest
                             }
 
                             $cfg = cRegistry::getConfig();
-                            $string = '<div class="inuse_info" >' . $template->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['inuse_lay_mod'], true) . '</div>';
+                            $string = '<div class="inuse_info">'
+                                . $template->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['inuse_lay_mod'], true)
+                                . '</div>';
                         } else {
                             $string = i18n('No data found!');
                         }
@@ -190,7 +187,9 @@ class cAjaxRequest
                         }
 
                         $cfg = cRegistry::getConfig();
-                        $string = '<div class="inuse_info" >' . $template->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['inuse_lay_mod'], true) . '</div>';
+                        $string = '<div class="inuse_info">'
+                            . $template->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['inuse_lay_mod'], true)
+                            . '</div>';
                     } else {
                         $string = i18n('No data found!');
                     }
@@ -212,7 +211,7 @@ class cAjaxRequest
 
                     if (isset($usedData['cat'])) {
                         $template->set('s', 'HEAD_TYPE', i18n('Category'));
-                        foreach ($usedData['cat'] as $i => $cat) {
+                        foreach ($usedData['cat'] as $cat) {
                             $template->set('d', 'ID', $cat['idcat']);
                             $template->set('d', 'LANG', $cat['lang']);
                             $template->set('d', 'NAME', $cat['name']);
@@ -228,10 +227,10 @@ class cAjaxRequest
 
                     if (isset($usedData['art'])) {
                         $template->set('s', 'HEAD_TYPE', i18n('Article'));
-                        foreach ($usedData['art'] as $i => $aArt) {
-                            $template->set('d', 'ID', $aArt['idart']);
-                            $template->set('d', 'LANG', $aArt['lang']);
-                            $template->set('d', 'NAME', $aArt['title']);
+                        foreach ($usedData['art'] as $art) {
+                            $template->set('d', 'ID', $art['idart']);
+                            $template->set('d', 'LANG', $art['lang']);
+                            $template->set('d', 'NAME', $art['title']);
                             $template->next();
                         }
                         $template->set('s', 'HEAD_ID', i18n('idart'));
@@ -295,13 +294,16 @@ class cAjaxRequest
                 $languageCollection = new cApiArticleLanguageCollection();
 
                 $fields = $_REQUEST['fields'] ?? [];
-                for ($i = 0; $i < count($fields); $i++) {
-                    $requestIdArt = cSecurity::toInteger($_REQUEST['fields'][$i]['idart'] ?? '0');
-                    $idartlang = $languageCollection->getIdByArticleIdAndLanguageId($requestIdArt, cRegistry::getLanguageId());
+                foreach ($fields as $fieldItem) {
+                    $requestIdArt = cSecurity::toInteger($fieldItem['idart'] ?? '0');
+                    $idartlang = $languageCollection->getIdByArticleIdAndLanguageId(
+                        $requestIdArt,
+                        cRegistry::getLanguageId()
+                    );
 
                     $artLang = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
-                    $artLang->set('title', cSecurity::escapeString($_REQUEST['fields'][$i]['title']));
-                    $artLang->set('artsort', cSecurity::escapeString($_REQUEST['fields'][$i]['index']));
+                    $artLang->set('title', cSecurity::escapeString($fieldItem['title']));
+                    $artLang->set('artsort', cSecurity::escapeString($fieldItem['index']));
                     $artLang->store();
                 }
                 break;
@@ -395,8 +397,8 @@ class cAjaxRequest
 
                 $id = cSecurity::toInteger($_REQUEST['id'] ?? '0');
                 $idArtLang = cSecurity::toInteger($_REQUEST['idartlang'] ?? '0');
-                $levelId = cSecurity::toString($_REQUEST['level'] ?? '');
-                $parentidcat = cSecurity::toString($_REQUEST['parentidcat'] ?? '');
+                $levelId = cSecurity::toInteger($_REQUEST['level'] ?? '');
+                $parentidcat = cSecurity::toInteger($_REQUEST['parentidcat'] ?? '');
 
                 $art = new cApiArticleLanguage($idArtLang);
                 $artReturn = $art->getContent('CMS_LINKEDITOR', $id);
@@ -503,7 +505,7 @@ class cAjaxRequest
                         $result['message'] = i18n("Module successfully compiled");
                     } else {
                         $result['state'] = 'error';
-                        $result['message'] = $result['errorMessage'];
+                        $result['message'] = $result['message'] ?? $result['errorMessage'];
                     }
                 }
 

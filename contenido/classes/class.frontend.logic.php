@@ -32,11 +32,9 @@ abstract class FrontendLogic
 {
 
     /**
-     * getFriendlyName: Returns the friendly (e.g. display) name of your
-     * objects.
+     * getFriendlyName: Returns the friendly (e.g. display) name of your objects.
      *
-     * @return string
-     *         Name of the object
+     * @return string Name of the object
      */
     public function getFriendlyName()
     {
@@ -46,10 +44,9 @@ abstract class FrontendLogic
     /**
      * listActions: Lists all actions
      *
-     * The returned array has the format $actionname => $actiondescription
+     * The returned array has the format $actionname => $actiondesorption
      *
-     * @return array
-     *         Array of all actions
+     * @return array Array of all actions
      */
     public function listActions()
     {
@@ -61,8 +58,7 @@ abstract class FrontendLogic
      *
      * The returned array has the format $itemid => $itemname
      *
-     * @return array
-     *         Array of items
+     * @return array Array of items
      */
     public function listItems()
     {

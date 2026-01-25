@@ -24,7 +24,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 
 // include editor config/combat file
-include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.php');
+include(__DIR__ . '/config.php');
 // cInclude('external', 'wysiwyg/tinymce4/contenido/editorclass.php');
 
 // name of textarea element
@@ -64,7 +64,7 @@ if (false !== $editor_height) {
     $cTinyMCEEditor->setSetting(null, 'height', $editor_height, true);
 }
 
-$currentuser = new cApiUser($auth->auth['uid']);
+$currentuser = new cApiUser($auth->getUserId());
 
 if ($currentuser->getField('wysi') == 1) {
     echo $cTinyMCEEditor->getScripts();

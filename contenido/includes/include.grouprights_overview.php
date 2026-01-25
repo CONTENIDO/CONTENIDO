@@ -56,23 +56,32 @@ $sNotification = '';
 $aPerms = [];
 
 // Info message for a new group
-if (isset($request['created']) && $request['created'] == 1) {
-    $sNotification = $notification->returnNotification("ok", i18n("New group created. Now you can edit and configure your new group."));
+if (($request['created'] ?? null) == 1) {
+    $sNotification = $notification->returnNotification(
+        'ok',
+        i18n("New group created. Now you can edit and configure your new group.")
+    );
 }
 
 // Action edit group
-if (($action == 'group_edit')) {
+if ($action === 'group_edit') {
     $bError = false;
 
     if (isset($mlang) && is_array($mlang)) {
         if (0 < count($mlang) && !isset($mclient)) {
-            $sNotification = $notification->returnNotification("error", i18n("If you want to assign a language to a group you need to give it access to the client too."));
+            $sNotification = $notification->returnNotification(
+                'error',
+                i18n("If you want to assign a language to a group you need to give it access to the client too.")
+            );
             $bError = true;
         } else {
             foreach ($mlang as $ilang) {
                 $clientLangColl = new cApiClientLanguageCollection();
                 if (!$clientLangColl->hasLanguageInClients($ilang, $mclient)) {
-                    $sNotification = $notification->returnNotification("error", i18n("If you want to assign a language to a group you need to give it access to the client too."));
+                    $sNotification = $notification->returnNotification(
+                        'error',
+                        i18n("If you want to assign a language to a group you need to give it access to the client too.")
+                    );
                     $bError = true;
                     break;
                 }

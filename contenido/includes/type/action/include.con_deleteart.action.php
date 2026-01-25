@@ -14,9 +14,21 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cGuiNotification $notification
+ */
+
 cInclude('includes', 'functions.con.php');
 
-if ($perm->have_perm_area_action("con", "con_deleteart") || $perm->have_perm_area_action_item("con", "con_deleteart", $idcat)) {
+$idcat = cRegistry::getCategoryId();
+$perm = cRegistry::getPerm();
+$area = cRegistry::getArea();
+$idart = cRegistry::getArticleId();
+
+if (
+    $perm->have_perm_area_action('con', 'con_deleteart')
+    || $perm->have_perm_area_action_item('con','con_deleteart', $idcat)
+) {
     if (isset($_POST['idarts'])) {
         //delete articles (bulk editing)
         $idarts = json_decode($_POST['idarts'], true);
@@ -27,7 +39,7 @@ if ($perm->have_perm_area_action("con", "con_deleteart") || $perm->have_perm_are
         conDeleteArt($idart);
     }
 
-    $tmp_notification = $notification->returnNotification("ok", i18n("Article deleted"));
+    $tmp_notification = $notification->returnNotification('ok', i18n("Article deleted"));
 } else {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
 }

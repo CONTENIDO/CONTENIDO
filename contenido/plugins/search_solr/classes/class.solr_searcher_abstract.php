@@ -21,56 +21,34 @@ abstract class SolrSearcherAbstract
 {
 
     /**
-     * Term to be searched for.
-     *
-     * @var string
+     * @var string Term to be searched for.
      */
-    protected $_searchTerm = '';
+    protected $searchTerm = '';
 
     /**
-     * Number of search result page to be displayed.
-     * This value is one-based!
-     *
+     * @var int Number of search result page to be displayed. This value is one-based!
+     */
+    protected $page = 1;
+
+    /**
      * @var int
      */
-    protected $_page = 1;
+    protected $itemsPerPage = 10;
 
-    /**
-     *
-     * @var int
-     */
-    protected $_itemsPerPage = 10;
-
-    /**
-     *
-     * @param string $searchTerm
-     */
-    public function setSearchTerm($searchTerm)
+    public function setSearchTerm(string $searchTerm)
     {
-        $this->_searchTerm = $searchTerm;
+        $this->searchTerm = $searchTerm;
     }
 
-    /**
-     *
-     * @param int $page
-     */
-    public function setPage($page)
+    public function setPage(int $page)
     {
-        $this->_page = $page;
+        $this->page = $page;
     }
 
-    /**
-     *
-     * @param int $itemsPerPage
-     */
-    public function setItemsPerPage($itemsPerPage)
+    public function setItemsPerPage(int $itemsPerPage)
     {
-        $this->_itemsPerPage = $itemsPerPage;
+        $this->itemsPerPage = $itemsPerPage;
     }
 
-    /**
-     *
-     * @return SolrObject
-     */
-    abstract public function getSearchResults();
+    abstract public function getSearchResults(): ?SolrObject;
 }

@@ -1,7 +1,12 @@
 <?php
 
 /**
- * description: login/logout form
+ * Description: login/logout form.
+ *
+ * The class {@see cAuthHandlerFrontend()} deals with the login/authentication process when the
+ * login credentials are sent by a form.
+ *
+ * This module displays the login form in case the user is not logged in or the users' logged in status.
  *
  * @package    Module
  * @subpackage FormLogin
@@ -14,36 +19,37 @@
 
 $tpl = cSmartyFrontend::getInstance();
 $auth = cRegistry::getAuth();
-$idcat = cSecurity::toInteger(cRegistry::getCategoryId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
-$idart = cSecurity::toInteger(cRegistry::getArticleId());
+$idcat = cRegistry::getCategoryId();
+$lang = cRegistry::getLanguageId();
+$idart = cRegistry::getArticleId();
 
-if ($auth->auth["uid"] == "nobody") {
-    $sTargetIdart = getEffectiveSetting('login', 'idart', '1');
-    $sFormAction = 'front_content.php?idart=' . $sTargetIdart;
-
-    $tpl->assign('form_action', $sFormAction);
+if ($auth->getUserId() === cAuth::AUTH_UID_NOBODY) {
+    $loginArticleId = cSecurity::toInteger(getEffectiveSetting('login', 'idart', '1'));
+    $tpl->assign('form_action', sprintf('front_content.php?idart=%d', $loginArticleId));
     $tpl->assign('label_name', mi18n("NAME"));
     $tpl->assign('label_pass', mi18n("PASS"));
     $tpl->assign('label_login', mi18n("LOGIN"));
     $tpl->display('login.tpl');
 } else {
     try {
-        $category = new cApiCategoryLanguage();
-        $category->loadByCategoryIdAndLanguageId($idcat, $lang);
-        $bCatIsPublic = $category->get('visible') == 1 && $category->get('public') == 1;
+        $categoryLanguage = new cApiCategoryLanguage();
+        $isCategoryPublicAndVisible = $categoryLanguage->loadByCategoryIdAndLanguageId($idcat, $lang)
+            && $categoryLanguage->get('visible') == 1
+            && $categoryLanguage->get('public') == 1;
     } catch (Exception $e) {
-        $bCatIsPublic = false;
+        $isCategoryPublicAndVisible = false;
         echo $e->getMessage();
     }
-    $oFeUserCollection = new cApiFrontendUserCollection();
-    $oFeUser = $oFeUserCollection->loadItem($auth->auth["uid"]);
-    $sText = str_replace('[uname]', $oFeUser->get('username'), mi18n("TXT_WELCOME_USER"));
-    if ($bCatIsPublic === true) {
-        $sUrl = 'front_content.php?idcat=' . $idcat . '&idart=' . $idart . '&logout=true';
+
+    $frontendUser = new cApiFrontendUser($auth->getUserId());
+    $sText = str_replace('[uname]', $frontendUser->get('username'), mi18n("TXT_WELCOME_USER"));
+    if ($isCategoryPublicAndVisible) {
+        $sUrl = sprintf('front_content.php?idcat=%d&idart=%d&logout=true', $idcat, $idart);
     } else {
-        $iIdcatHome = (int)getEffectiveSetting('navigation', 'idcat-home', '1');
-        $sUrl = 'front_content.php?idcat=' . $iIdcatHome . '&logout=true';
+        $sUrl = sprintf(
+            'front_content.php?idcat=%d&logout=true',
+            cSecurity::toInteger(getEffectiveSetting('navigation', 'idcat-home', '1'))
+        );
     }
 
     $tpl->assign('text', $sText);

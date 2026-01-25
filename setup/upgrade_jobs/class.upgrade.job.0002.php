@@ -27,17 +27,17 @@ checkAndInclude($cfg['path']['contenido'] . 'includes/functions.api.string.php')
 class cUpgradeJob_0002 extends cUpgradeJobAbstract
 {
 
-    public $maxVersion = "4.9.0-alpha1";
+    public $maxVersion = '4.9.0-alpha1';
 
     /**
-     * This method will transfer the moduls from $cfg['tab']['mod'] to the
+     * This method will transfer the moduls from cDb::getTableName('mod') to the
      * file system.
      * This Method will be called by setup
      */
     private function _convertModulesToFile($clientId)
     {
         $db = getSetupMySQLDBConnection();
-        $modulesTable = cRegistry::getDbTableName('mod');
+        $modulesTable = cDb::getTableName('mod');
         $db->query("SELECT * FROM `%s` WHERE `idclient` = %d ORDER BY `idmod`", $modulesTable, $clientId);
 
         $moduleHandler = new cModuleHandler();
@@ -60,7 +60,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract
         }
 
         // update input and output fields
-        $sql = sprintf("UPDATE %s SET input = '', output = '' WHERE idclient='%s'", $modulesTable, $clientId);
+        $sql = sprintf("UPDATE `%s` SET input = '', output = '' WHERE idclient = %d", $modulesTable, $clientId);
         $db->query($sql);
     }
 
@@ -73,14 +73,14 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract
             return;
         }
 
-        $clientsTable = cRegistry::getDbTableName('clients');
+        $clientsTable = cDb::getTableName('clients');
 
         $this->_oDb->query("SHOW COLUMNS FROM `%s` LIKE 'frontendpath'", $clientsTable);
         if ($this->_oDb->numRows() != 0) {
             $this->_oDb->query("SELECT * FROM `%s`", $clientsTable);
 
             while ($this->_oDb->nextRecord()) {
-                updateClientCache($this->_oDb->f("idclient"), $this->_oDb->f("htmlpath"), $this->_oDb->f("frontendpath"));
+                updateClientCache($this->_oDb->f('idclient'), $this->_oDb->f('htmlpath'), $this->_oDb->f('frontendpath'));
             }
 
             $this->_oDb->query(
@@ -96,7 +96,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract
         $db2 = getSetupMySQLDBConnection();
 
         // Update module aliases
-        $modulesTable = cRegistry::getDbTableName('mod');
+        $modulesTable = cDb::getTableName('mod');
         $this->_oDb->query("SELECT * FROM `%s`", $modulesTable);
         while ($this->_oDb->nextRecord()) {
             $newName = cString::toLowerCase(cModuleHandler::getCleanName($this->_oDb->f('name')));
@@ -105,7 +105,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract
         }
 
         // Update layout aliases
-        $layoutsTable = cRegistry::getDbTableName('lay');
+        $layoutsTable = cDb::getTableName('lay');
         $this->_oDb->query("SELECT * FROM `%s`", $layoutsTable);
         while ($this->_oDb->nextRecord()) {
             $newName = cModuleHandler::getCleanName(cString::toLowerCase($this->_oDb->f('name')));
@@ -130,7 +130,7 @@ class cUpgradeJob_0002 extends cUpgradeJobAbstract
             // Save all layouts from db-table to the filesystem if exists
             $this->_oDb->query("SHOW COLUMNS FROM `%s` LIKE 'code'", $layoutsTable);
             if ($this->_oDb->numRows() > 0) {
-                cLayoutHandler::upgrade($this->_oDb, $cfg, $client);
+                cLayoutHandler::upgrade($this->_oDb, $cfg, (int) $client);
             }
         }
 

@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Plugin
  * @subpackage Workflow
- * @method WorkflowAllocation createNewItem
- * @method WorkflowAllocation|bool next
+ * @extends ItemCollection<WorkflowAllocation>
  */
 class WorkflowAllocations extends ItemCollection
 {
@@ -31,72 +30,81 @@ class WorkflowAllocations extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('workflow_allocation'), "idallocation");
-        $this->_setItemClass("WorkflowAllocation");
+        parent::__construct(cDb::getTableName('workflow_allocation'), 'idallocation');
+        $this->_setItemClass('WorkflowAllocation');
     }
 
     /**
-     * @param mixed $idallocation
-     *
-     * @return bool
+     * @inheritDoc
+     * @param int $id The workflow allocation id.
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function delete($idallocation)
+    public function delete($id)
     {
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $id = cSecurity::toInteger($id);
+
+        $lang = cRegistry::getLanguageId();
 
         $obj = new WorkflowAllocation();
-        $obj->loadByPrimaryKey($idallocation);
+        $obj->loadByPrimaryKey($id);
 
-        $idcatlang = $obj->get("idcatlang");
+        $categoryLanguageId = cSecurity::toInteger($obj->get('idcatlang'));
 
         $db = cRegistry::getDb();
-        $sql = "SELECT `idcat` FROM `%s` WHERE `idcatlang` = %d";
-        $db->query($sql, cRegistry::getDbTableName('cat_lang'), $idcatlang);
+        $db->query(
+            "SELECT `idcat` FROM `%s` WHERE `idcatlang` = %d",
+            cDb::getTableName('cat_lang'),
+            $categoryLanguageId
+        );
         $db->nextRecord();
-        $idcat = cSecurity::toInteger($db->f("idcat"));
+        $categoryId = cSecurity::toInteger($db->f('idcat'));
 
-        $sql = "SELECT `idart` FROM `%s` WHERE `idcat` = %d";
-        $db->query($sql, cRegistry::getDbTableName('cat_art'), $idcat);
-
-        $idArts = [];
+        $db->query(
+            "SELECT `idart` FROM `%s` WHERE `idcat` = %d",
+            cDb::getTableName('cat_art'),
+            $categoryId
+        );
+        $articleIds = [];
         while ($db->nextRecord()) {
-            $idArts[] = cSecurity::toInteger($db->f("idart"));
+            $articleIds[] = cSecurity::toInteger($db->f('idart'));
         }
 
-        $idArtLangs = [];
-        foreach ($idArts as $idart) {
-            $sql = "SELECT `idartlang` FROM `%s` WHERE `idart` = %d AND `idlang` = %d";
-            $db->query($sql, cRegistry::getDbTableName('art_lang'), $idart, $lang);
+        $articleLanguageIds = [];
+        foreach ($articleIds as $idart) {
+            $db->query(
+                "SELECT `idartlang` FROM `%s` WHERE `idart` = %d AND `idlang` = %d",
+                cDb::getTableName('art_lang'),
+                $idart,
+                $lang
+            );
             if ($db->nextRecord()) {
-                $idArtLangs[] = cSecurity::toInteger($db->f("idartlang"));
+                $articleLanguageIds[] = cSecurity::toInteger($db->f('idartlang'));
             }
         }
 
         $workflowArtAllocation = new WorkflowArtAllocation();
         $workflowArtAllocations = new WorkflowArtAllocations();
 
-        foreach ($idArtLangs as $idartlang) {
-            $workflowArtAllocation->loadBy("idartlang", $idartlang);
-            $workflowArtAllocations->delete($workflowArtAllocation->get("idartallocation"));
+        foreach ($articleLanguageIds as $articleLanguageId) {
+            $workflowArtAllocation->loadBy('idartlang', $articleLanguageId);
+            $workflowArtAllocations->delete($workflowArtAllocation->get('idartallocation'));
         }
 
-        return parent::delete($idallocation);
+        return parent::delete($id);
     }
 
     /**
-     * @param $idworkflow
-     * @param $idcatlang
-     *
-     * @return bool|Item
+     * @param $workflowId
+     * @param $categoryLanguageId
+     * @return WorkflowAllocation|false
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idworkflow, $idcatlang)
+    public function create($workflowId, $categoryLanguageId)
     {
-        $idworkflow = cSecurity::toInteger($idworkflow);
-        $idcatlang = cSecurity::toInteger($idcatlang);
+        $workflowId = cSecurity::toInteger($workflowId);
+        $categoryLanguageId = cSecurity::toInteger($categoryLanguageId);
 
-        $this->select("idcatlang = $idcatlang");
+        $this->select("`idcatlang` = $categoryLanguageId");
 
         if ($this->next() !== false) {
             $this->lasterror = i18n("Category already has a workflow assigned", "workflow");
@@ -104,7 +112,7 @@ class WorkflowAllocations extends ItemCollection
         }
 
         $workflows = new Workflows();
-        $workflows->select("idworkflow = $idworkflow");
+        $workflows->select("`idworkflow` = $workflowId");
 
         if ($workflows->next() === false) {
             $this->lasterror = i18n("Workflow doesn't exist", "workflow");
@@ -112,15 +120,15 @@ class WorkflowAllocations extends ItemCollection
         }
 
         $newItem = $this->createNewItem();
-        if (!$newItem->setWorkflow($idworkflow)) {
+        if (!$newItem->setWorkflow($workflowId)) {
             $this->lasterror = $newItem->lasterror;
-            $workflows->delete($newItem->getField("idallocation"));
+            $workflows->delete($newItem->getField('idallocation'));
             return false;
         }
 
-        if (!$newItem->setCatLang($idcatlang)) {
+        if (!$newItem->setCatLang($categoryLanguageId)) {
             $this->lasterror = $newItem->lasterror;
-            $workflows->delete($newItem->getField("idallocation"));
+            $workflows->delete($newItem->getField('idallocation'));
             return false;
         }
 
@@ -150,67 +158,59 @@ class WorkflowAllocation extends Item
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('workflow_allocation'), "idallocation");
+        parent::__construct(cDb::getTableName('workflow_allocation'), 'idallocation');
     }
 
     /**
      * Overridden setField function.
      * Users should only use setWorkflow.
      *
-     * @param string $field Void field since we override the usual setField
-     *                      function
-     * @param string $value Void field since we override the usual setField
-     *                      function
-     * @param bool $safe
-     *
+     * @inheritDoc
      * @throws cBadMethodCallException if this function is called
      */
-    public function setField($field, $value, $safe = true)
+    public function setField($name, $value, $safe = true)
     {
-        throw new cBadMethodCallException("Don't use setField for WorkflowAllocation items! Use setWorkflow instead!");
+        throw new cBadMethodCallException(
+            "Don't use setField for WorkflowAllocation items! Use setWorkflow instead!"
+        );
     }
 
     /**
      * setWorkflow sets the workflow for the current item.
      *
-     * @param int $idworkflow Workflow-ID to set the item to
-     *
-     * @return bool
+     * @param int $workflowId Workflow-ID to set the item to
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function setWorkflow($idworkflow)
+    public function setWorkflow($workflowId): bool
     {
         $workflows = new Workflows();
 
-        $workflows->select("idworkflow = '$idworkflow'");
+        $workflows->select("`idworkflow` = '$workflowId'");
 
         if ($workflows->next() === false) {
             $this->lasterror = i18n("Workflow doesn't exist", "workflow");
             return false;
         }
 
-        parent::setField("idworkflow", $idworkflow);
+        parent::setField('idworkflow', $workflowId);
         $this->store();
         return true;
     }
 
     /**
-     * setCatLang sets the idcatlang for the current item.
-     * Should
-     * only be called by the create function.
+     * setCatLang sets the category language id for the current item.
+     * Should only be called by the create function.
      *
-     * @param int $idcatlang idcatlang to set
-     *
-     * @return bool
+     * @param int $categoryLanguageId The category language id to set
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function setCatLang($idcatlang)
+    public function setCatLang($categoryLanguageId): bool
     {
-        $idcatlang = cSecurity::toInteger($idcatlang);
+        $categoryLanguageId = cSecurity::toInteger($categoryLanguageId);
 
         $allocations = new WorkflowAllocations();
 
-        $allocations->select("idcatlang = $idcatlang");
+        $allocations->select("`idcatlang` = $categoryLanguageId");
 
         if ($allocations->next() !== false) {
             $this->lasterror = i18n("Category already has a workflow assigned", "workflow");
@@ -218,15 +218,18 @@ class WorkflowAllocation extends Item
         }
 
         $db = cRegistry::getDb();
-        $sql = "SELECT `idcatlang` FROM `%s` WHERE `idcatlang` = %d";
-        $db->query($sql, cRegistry::getDbTableName('cat_lang'), $idcatlang);
+        $db->query(
+            "SELECT `idcatlang` FROM `%s` WHERE `idcatlang` = %d",
+            cDb::getTableName('cat_lang'),
+            $categoryLanguageId
+        );
 
         if (!$db->nextRecord()) {
             $this->lasterror = i18n("Category doesn't exist, assignment failed", "workflow");
             return false;
         }
 
-        parent::setField("idcatlang", $idcatlang);
+        parent::setField('idcatlang', $categoryLanguageId);
         $this->store();
         return true;
     }

@@ -16,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $cfg, $lngAct;
 
-$pluginName = basename(dirname(__DIR__, 1));
+$pluginName = basename(dirname(__DIR__));
 
 $cfg['plugins'][$pluginName] = cRegistry::getBackendPath() . $cfg['path']['plugins'] . "$pluginName/";
 
@@ -52,10 +52,10 @@ plugin_include($pluginName, 'includes/functions.chains.php');
 plugin_include($pluginName, 'includes/functions.content_allocation.php');
 
 // Add chain functions
-$cec = cRegistry::getCecRegistry();
-$cec->addChainFunction('Contenido.Article.RegisterCustomTab', 'pica_RegisterCustomTab');
-$cec->addChainFunction('Contenido.Article.GetCustomTabProperties', 'pica_GetCustomTabProperties');
-$cec->addChainFunction('Contenido.Article.conCopyArtLang_AfterInsert', 'pica_CopyArticleAllocations');
-$cec->addChainFunction('Contenido.Action.con_deleteart.AfterCall', 'pica_DeleteArticleAllocations');
+$cecRegistry = cApiCecRegistry::getInstance();
+$cecRegistry->addChainFunction('Contenido.Article.RegisterCustomTab', 'pica_RegisterCustomTab');
+$cecRegistry->addChainFunction('Contenido.Article.GetCustomTabProperties', 'pica_GetCustomTabProperties');
+$cecRegistry->addChainFunction('Contenido.Article.conCopyArtLang_AfterInsert', 'pica_CopyArticleAllocations');
+$cecRegistry->addChainFunction('Contenido.Action.con_deleteart.AfterCall', 'pica_DeleteArticleAllocations');
 
 unset($pluginName, $pluginTemplatesPath, $pluginClassesPath);

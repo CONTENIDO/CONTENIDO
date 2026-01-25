@@ -28,11 +28,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 $tpl2 = new cTemplate();
 
-$page = new cGuiPage("tpl_edit_form", '', '0');
+$page = new cGuiPage('tpl_edit_form', '', '0');
 
 $action = $action ?? '';
 
-if ($action == "tpl_delete" && $perm->have_perm_area_action_anyitem($area, $action)) {
+if ($action === 'tpl_delete' && $perm->have_perm_area_action_anyitem($area, $action)) {
     $page->displayOk(i18n("Deleted Template successfully!"));
     $page->abortRendering();
     $page->reloadLeftBottomFrame(['idtpl' => null]);
@@ -40,7 +40,7 @@ if ($action == "tpl_delete" && $perm->have_perm_area_action_anyitem($area, $acti
     exit();
 }
 
-if ($action == "tpl_new" && !$perm->have_perm_area_action_anyitem($area, $action)) {
+if ($action === 'tpl_new' && !$perm->have_perm_area_action_anyitem($area, $action)) {
     $page->displayCriticalError(i18n("Permission denied"));
     $page->render();
     return;
@@ -55,7 +55,7 @@ $idlay = cSecurity::toInteger($idlay ?? '0');
 $defaulttemplate = cSecurity::toInteger(!empty($defaulttemplate) ? $defaulttemplate : '0');
 $laydescription = '';
 
-if ($action == "tpl_new") {
+if ($action === 'tpl_new') {
     $tplname = i18n("-- New template --");
 }
 
@@ -94,27 +94,27 @@ $select = $select->toHtml();
 $moduleColl = new cApiModuleCollection();
 $modules = $moduleColl->getAllByIdclient($client);
 
-$form = new cGuiTableForm("tplform");
+$form = new cGuiTableForm('tplform');
 $form->addTableClass('col_sm');
-$form->setVar("area", $area);
-$form->setVar("changelayout", 0);
-$form->setVar("frame", $frame);
-$form->setVar("action", "tpl_edit");
-$form->setVar("idtpl", $idtpl != -1 ? $idtpl : "");
-$form->setVar("oldname", $tplname);
+$form->setVar('area', $area);
+$form->setVar('changelayout', 0);
+$form->setVar('frame', $frame);
+$form->setVar('action', 'tpl_edit');
+$form->setVar('idtpl', $idtpl != -1 ? $idtpl : "");
+$form->setVar('oldname', $tplname);
 
 if (!$idlay) {
-    $form->setVar("createmode", 1);
+    $form->setVar('createmode', 1);
 }
 $form->setHeader(i18n("Edit template"));
 
-$name = new cHTMLTextbox("tplname", conHtmlSpecialChars(stripslashes($tplname)), 35);
+$name = new cHTMLTextbox('tplname', conHtmlSpecialChars(stripslashes($tplname)), 35);
 $form->add(i18n("Name"), $name->render());
 
-$descr = new cHTMLTextarea("description", $description);
+$descr = new cHTMLTextarea('description', $description);
 $form->add(i18n("Description"), $descr->render());
 
-$standardcb = new cHTMLCheckbox("defaulttemplate", 1, "", $defaulttemplate);
+$standardcb = new cHTMLCheckbox('defaulttemplate', 1, "", $defaulttemplate);
 $form->add(i18n("Default"), $standardcb->toHtml(false));
 
 $form->add(i18n("Layout"), $select);
@@ -207,7 +207,7 @@ if ($idlay) {
 
 $href = $sess->url("main.php?area=tpl&frame=2&idtpl=" . $idtpl);
 
-if ($action == 'tpl_delete' || $action == 'tpl_new') {
+if ($action === 'tpl_delete' || $action === 'tpl_new') {
     $page->reloadLeftBottomFrame(['idtpl' => null]);
 } else {
     $page->reloadLeftBottomFrame(['idtpl' => $idtpl]);

@@ -24,12 +24,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cUpgradeJob_0005 extends cUpgradeJobAbstract
 {
 
-    public $maxVersion = "4.9.0-beta1";
+    public $maxVersion = '4.9.0-beta1';
 
     public function _execute()
     {
-        $cfg = cRegistry::getConfig();
-
         $db = $this->_oDb;
 
         if ($this->_setupType == 'upgrade') {
@@ -52,7 +50,7 @@ class cUpgradeJob_0005 extends cUpgradeJobAbstract
             $contentCollection = new cApiContentCollection();
             $contentCollection->setWhere('idtype', $types['CMS_DATE']);
             $contentCollection->query();
-            while (($item = $contentCollection->next()) !== false) {
+            while ($item = $contentCollection->next()) {
                 $oldValue = $item->get('value');
                 // if the value has not the format dd.mm.yyyy, it is possibly the new format, so ignore it
                 $oldValueSplitted = explode('.', $oldValue);
@@ -74,7 +72,7 @@ EOT;
             $contentCollection->resetQuery();
             $contentCollection->setWhere('idtype', $types['CMS_FILELIST']);
             $contentCollection->query();
-            while (($item = $contentCollection->next()) !== false) {
+            while ($item = $contentCollection->next()) {
                 $oldFilelistVal = $item->get('value');
                 // skip CMS_FILELIST w/ empty values
                 if (0 === cString::getStringLength(trim($oldFilelistVal))) {
@@ -90,7 +88,7 @@ EOT;
                 }
 
                 // skip empty filelist array
-                if (true === empty($oldFilelistArray)) {
+                if (empty($oldFilelistArray)) {
                     continue;
                 }
                 // convert the whole entries
@@ -144,7 +142,7 @@ EOT;
              * Since CONTENIDO 4.9, CMS_IMGEDITOR saves the idupl and the description is saved
              * in the con_upl_meta table.
              */
-            $sql = 'SELECT `idcontent`, `idartlang`, `idtype`, `typeid`, `value` FROM `' . cRegistry::getDbTableName('content') . '` WHERE `idtype`=' . $types['CMS_IMG'] . ' OR `idtype`=' . $types['CMS_IMGDESCR'] . ' ORDER BY `typeid` ASC';
+            $sql = 'SELECT `idcontent`, `idartlang`, `idtype`, `typeid`, `value` FROM `' . cDb::getTableName('content') . '` WHERE `idtype` = ' . $types['CMS_IMG'] . ' OR `idtype` = ' . $types['CMS_IMGDESCR'] . ' ORDER BY `typeid` ASC';
             $db->query($sql);
             $result = [];
             while ($db->nextRecord()) {
@@ -180,7 +178,7 @@ EOT;
                 $contentCollection->resetQuery();
                 $contentCollection->create($imageInfo['idartlang'], $types['CMS_IMGEDITOR'], $imageInfo['typeid'], $imageInfo['idupl'], '');
                 // save description in con_upl_meta if it does not already exist
-                $sql = 'SELECT `idlang` FROM `' . cRegistry::getDbTableName('art_lang') . '` WHERE `idartlang`=' . $imageInfo['idartlang'];
+                $sql = 'SELECT `idlang` FROM `' . cDb::getTableName('art_lang') . '` WHERE `idartlang` = ' . $imageInfo['idartlang'];
                 $db->query($sql);
                 if ($db->nextRecord()) {
                     $idlang = $db->f('idlang');
@@ -211,7 +209,7 @@ EOT;
              * New:
              * Since CONTENIDO 4.9, CMS_LINKEDITOR contains an XML structure with all information.
              */
-            $sql = 'SELECT `idcontent`, `idartlang`, `idtype`, `typeid`, `value` FROM `' . cRegistry::getDbTableName('content') . '` WHERE `idtype`=' . $types['CMS_LINK'] . ' OR `idtype`=' . $types['CMS_LINKTARGET'] . ' OR `idtype`=' . $types['CMS_LINKDESCR'] . ' ORDER BY `typeid` ASC';
+            $sql = 'SELECT `idcontent`, `idartlang`, `idtype`, `typeid`, `value` FROM `' . cDb::getTableName('content') . '` WHERE `idtype` = ' . $types['CMS_LINK'] . ' OR `idtype` = ' . $types['CMS_LINKTARGET'] . ' OR `idtype` = ' . $types['CMS_LINKDESCR'] . ' ORDER BY `typeid` ASC';
             $db->query($sql);
             $result = [];
             while ($db->nextRecord()) {
@@ -291,7 +289,7 @@ EOT;
             $contentCollection->resetQuery();
             $contentCollection->setWhere('idtype', $types['CMS_TEASER']);
             $contentCollection->query();
-            while (($item = $contentCollection->next()) !== false) {
+            while ($item = $contentCollection->next()) {
                 $oldTeaserVal = $item->get('value');
 
                 // skip CMS_TEASER w/ invalid XML content

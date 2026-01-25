@@ -14,9 +14,20 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if ($perm->have_perm_area_action("con", "con_changetemplate") || $perm->have_perm_area_action_item("con", "con_changetemplate", $idcat)) {
+/**
+ * @var cGuiNotification $notification
+ * @var int $idtpl
+ */
+
+$idcat = cRegistry::getCategoryId();
+$perm = cRegistry::getPerm();
+
+if (
+    $perm->have_perm_area_action('con', 'con_changetemplate')
+    || $perm->have_perm_area_action_item('con', 'con_changetemplate', $idcat)
+) {
     cInclude('includes', 'functions.con.php');
     conChangeTemplateForCat($idcat, $idtpl);
 } else {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
 }

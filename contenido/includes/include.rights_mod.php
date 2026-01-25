@@ -24,9 +24,9 @@ $action = cRegistry::getAction();
 include_once(cRegistry::getBackendPath() . 'includes/include.rights.php');
 
 // set the areas which are in use fore selecting these
-$possible_area = "'" . implode("','", $area_tree[$perm->showareas("mod")]) . "'";
+$possible_area = "'" . implode("','", $area_tree[$perm->showAreas('mod')]) . "'";
 $sql = "SELECT A.idarea, A.idaction, A.idcat, B.name, C.name
-        FROM " . $cfg['tab']['rights'] . " AS A, " . $cfg['tab']['area'] . " AS B, " . $cfg['tab']['actions'] . " AS C
+        FROM " . cDb::getTableName('rights') . " AS A, " . cDb::getTableName('area') . " AS B, " . cDb::getTableName('actions') . " AS C
         WHERE user_id = '" . $db->escape($userid) . "' AND idclient = " . cSecurity::toInteger($rights_client) . "
         AND A.type = 0 AND idlang = " . cSecurity::toInteger($rights_lang) . " AND B.idarea IN ($possible_area)
         AND idcat != 0 AND A.idaction = C.idaction AND A.idarea = C.idarea AND A.idarea = B.idarea";
@@ -34,11 +34,11 @@ $db->query($sql);
 
 $rights_list_old = [];
 while ($db->nextRecord()) { // set a new rights list for this user
-    $rights_list_old[$db->f(3) . "|" . $db->f(4) . "|" . $db->f("idcat")] = "x";
+    $rights_list_old[$db->f(3) . "|" . $db->f(4) . "|" . $db->f('idcat')] = "x";
 }
 
 $sMessage = '';
-if (($perm->have_perm_area_action("user_overview", $action)) && ($action == "user_edit")) {
+if (($perm->have_perm_area_action("user_overview", $action)) && ($action === 'user_edit')) {
     $ret = cRights::saveRights();
     if ($ret === true) {
         $sMessage = $notification->returnNotification('ok', i18n('Changes saved'));
@@ -89,21 +89,21 @@ $aSecondHeaderRow = [];
 $possible_areas = [];
 
 // look for possible actions in mainarea []
-foreach ($right_list["mod"] as $value2) {
+foreach ($right_list['mod'] as $value2) {
     // if there are some actions
-    if (isset($value2["action"]) && is_array($value2["action"])) {
-        foreach ($value2["action"] as $key3 => $value3) { // set the areas that
+    if (isset($value2['action']) && is_array($value2['action'])) {
+        foreach ($value2['action'] as $key3 => $value3) { // set the areas that
             // are in use
-            $possible_areas[$value2["perm"]] = "";
+            $possible_areas[$value2['perm']] = "";
 
             // set the possible areas and actions for this areas
-            $sJsBefore .= "actareaids[\"$value3|" . $value2["perm"] . "\"]=\"x\";\n";
+            $sJsBefore .= "actareaids[\"$value3|" . $value2['perm'] . "\"]=\"x\";\n";
 
             // checkbox for the whole action
-            $objHeaderItem->setContent($lngAct[$value2["perm"]][$value3] ? $lngAct[$value2["perm"]][$value3] : "&nbsp;");
+            $objHeaderItem->setContent($lngAct[$value2['perm']][$value3] ? $lngAct[$value2['perm']][$value3] : "&nbsp;");
             $items .= $objHeaderItem->render();
             $objHeaderItem->advanceID();
-            $aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "', '$value3', '')\">";
+            $aSecondHeaderRow[] = "<input type=\"checkbox\" name=\"checkall_" . $value2['perm'] . "_$value3\" value=\"\" onClick=\"setRightsFor('" . $value2['perm'] . "', '$value3', '')\">";
         }
     }
 }
@@ -150,7 +150,7 @@ $objHeaderRow->advanceID();
 $output = "";
 
 // Select the itemids
-$sql = "SELECT * FROM " . $cfg['tab']['mod'] . " WHERE idclient='" . cSecurity::toInteger($rights_client) . "' ORDER BY name";
+$sql = "SELECT * FROM " . cDb::getTableName('mod') . " WHERE idclient='" . cSecurity::toInteger($rights_client) . "' ORDER BY name";
 $db->query($sql);
 
 while ($db->nextRecord()) {
@@ -166,15 +166,15 @@ while ($db->nextRecord()) {
     $objItem->advanceID();
 
     // set javascript array for itemids
-    $sJsBefore .= "itemids[\"" . $db->f("idmod") . "\"]=\"x\";\n";
+    $sJsBefore .= "itemids[\"" . $db->f('idmod') . "\"]=\"x\";\n";
 
     // look for possible actions in mainarea[]
-    foreach ($right_list["mod"] as $value2) {
+    foreach ($right_list['mod'] as $value2) {
         // if there area some
-        if (isset($value2["action"]) && is_array($value2["action"])) {
-            foreach ($value2["action"] as $key3 => $value3) {
+        if (isset($value2['action']) && is_array($value2['action'])) {
+            foreach ($value2['action'] as $key3 => $value3) {
                 // does the user have the right
-                if (in_array($value2["perm"] . "|$value3|" . $db->f("idmod"), array_keys($rights_list_old))) {
+                if (in_array($value2['perm'] . "|$value3|" . $db->f('idmod'), array_keys($rights_list_old))) {
                     $checked = "checked=\"checked\"";
                 } else {
                     $checked = "";
@@ -185,7 +185,7 @@ while ($db->nextRecord()) {
                     "class" => "td_rights2",
                     "style" => ""
                 ]);
-                $objItem->setContent("<input type=\"checkbox\" name=\"rights_list[" . $value2["perm"] . "|$value3|" . $db->f("idmod") . "]\" value=\"x\" $checked>");
+                $objItem->setContent("<input type=\"checkbox\" name=\"rights_list[" . $value2['perm'] . "|$value3|" . $db->f('idmod') . "]\" value=\"x\" $checked>");
                 $items .= $objItem->render();
                 $objItem->advanceID();
             }
@@ -196,7 +196,7 @@ while ($db->nextRecord()) {
     $objItem->updateAttributes([
         "class" => "td_rights3"
     ]);
-    $objItem->setContent("<input type=\"checkbox\" name=\"checkall_" . $value2["perm"] . "_" . $value3 . "_" . $db->f("idmod") . "\" value=\"\" onClick=\"setRightsFor('" . $value2["perm"] . "', '$value3', '" . $db->f("idmod") . "')\">");
+    $objItem->setContent("<input type=\"checkbox\" name=\"checkall_" . $value2['perm'] . "_" . $value3 . "_" . $db->f('idmod') . "\" value=\"\" onClick=\"setRightsFor('" . $value2['perm'] . "', '$value3', '" . $db->f('idmod') . "')\">");
     $items .= $objItem->render();
     $objItem->advanceID();
 

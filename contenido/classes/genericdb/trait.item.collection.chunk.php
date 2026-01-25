@@ -22,9 +22,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * This trait is meant only for usage in ItemCollection classes, therefore
  * it requires following methods to be implemented by a ItemCollection class
  * using this trait:
- * @method ItemCollection|string getTable
- * @method ItemCollection|string getPrimaryKeyName
- * @method ItemCollection|void loadByRecordSet(array)
+ * @method ItemCollection|string getTable()
+ * @method ItemCollection|string getPrimaryKeyName()
+ * @method ItemCollection|void loadByRecordSet(array $data)
  *
  * @package    Core
  * @subpackage Database
@@ -33,26 +33,20 @@ trait cItemCollectionChunkTrait
 {
 
     /**
-     * Database instance.
-     *
-     * @var cDb
+     * @var cDb Database instance.
      */
     private static $_db;
 
     /**
-     * Loads chunks of results from the database, fills the results list
-     * with the created Item instances, and calls the provided callback
-     * function with each result block.
+     * Loads chunks of results from the database, fills the results list with the created
+     * Item instances, and calls the provided callback function with each result block.
      *
      * @param array $ids List of ids (primary keys) to load the data
      * @param callable $callback The callback function
-     *                           First parameter: (Item[]) Results
-     *                           Second parameter: (int) page
+     *      First parameter: (Item[]) Results
+     *      Second parameter: (int) page
      * @param int $size The size for each block
-     *
-     * @return bool
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function fetchChunkObjectsByIds(array $ids, callable $callback, int $size = 100): bool
     {
@@ -60,19 +54,15 @@ trait cItemCollectionChunkTrait
     }
 
     /**
-     * Loads chunks of results from the database, fills the results list
-     * with the records, and calls the provided callback
-     * function with each result block.
+     * Loads chunks of results from the database, fills the results list with the records,
+     * and calls the provided callback function with each result block.
      *
      * @param array $ids List of ids (primary keys) to load the data
      * @param callable $callback The callback function
-     *                           First parameter: (array[]) Results
-     *                           Second parameter: (int) page
+     *      First parameter: (array[]) Results
+     *      Second parameter: (int) page
      * @param int $size The size for each block
-     *
-     * @return bool
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function fetchChunkResultsByIds(array $ids, callable $callback, int $size = 100): bool
     {
@@ -80,20 +70,16 @@ trait cItemCollectionChunkTrait
     }
 
     /**
-     * @param array $ids
-     * @param callable $callback
-     * @param int $size
      * @param bool $createObjects Flag to fill the result list with Item instances
-     *                           (true) or to use the records (false).
-     *
-     * @return bool
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     *      (true) or to use the records (false).
+     * @throws cDbException|cInvalidArgumentException
      */
     protected function _fetchChunksByIds(
-        array $ids, callable $callback, int $size, bool $createObjects
-    ): bool
-    {
+        array $ids,
+        callable $callback,
+        int $size,
+        bool $createObjects
+    ): bool {
         $chunks = array_chunk($ids, $size);
 
         $db = $this->getDbInstance();
@@ -135,8 +121,6 @@ trait cItemCollectionChunkTrait
     /**
      * Ensures that ids of type string are properly escaped.
      *
-     * @param array $ids
-     *
      * @return void
      */
     protected function _prepareChunkIds(array &$ids)
@@ -153,8 +137,6 @@ trait cItemCollectionChunkTrait
 
     /**
      * Returns the database instance, creates it once, if not done before.
-     *
-     * @return cDb
      */
     private function getDbInstance(): cDb
     {

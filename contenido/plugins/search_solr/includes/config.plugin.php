@@ -14,7 +14,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $cfg;
 
-$pluginName = basename(dirname(__DIR__, 1));
+$pluginName = basename(dirname(__DIR__));
 plugin_include($pluginName, 'classes/class.solr.php');
 
 $pluginName = Solr::getName();
@@ -38,10 +38,10 @@ cAutoload::addClassmapConfig([
 ]);
 
 // == add chain functions
-$cec = cRegistry::getCecRegistry();
+$cecRegistry = cApiCecRegistry::getInstance();
 // reindex article after article properties are updated
-$cec->addChainFunction('Contenido.Action.con_saveart.AfterCall', 'SolrIndexer::handleStoringOfArticle');
+$cecRegistry->addChainFunction('Contenido.Action.con_saveart.AfterCall', 'SolrIndexer::handleStoringOfArticle');
 // reindex article after any content entry is updated
-$cec->addChainFunction('Contenido.Content.AfterStore', 'SolrIndexer::handleStoringOfContentEntry');
+$cecRegistry->addChainFunction('Contenido.Content.AfterStore', 'SolrIndexer::handleStoringOfContentEntry');
 
 unset($pluginName, $pluginTemplatesPath, $pluginClassesPath);

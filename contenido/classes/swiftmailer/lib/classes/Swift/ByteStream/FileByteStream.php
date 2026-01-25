@@ -111,6 +111,8 @@ class Swift_ByteStream_FileByteStream extends Swift_ByteStream_AbstractFilterabl
             $this->_seekReadStreamToPosition($byteOffset);
         }
         $this->_offset = $byteOffset;
+
+        return true;
     }
 
     /** Just write the bytes to the file */

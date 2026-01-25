@@ -34,33 +34,28 @@ class cException extends Exception
     protected $_log_exception = false;
 
     /**
-     * Saves an instance of the logger class for logging exceptions in the
-     * corresponding log.
+     * Saves an instance of the logger class for logging exceptions in the corresponding log.
      *
      * @var cLog the logger instance
      */
-    protected $_logger = NULL;
+    protected $_logger;
 
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string $message
-     *                            The Exception message to throw.
-     * @param int $code [optional]
-     *                            The Exception code.
-     * @param Exception $previous [optional]
-     *                            The previous exception used for the exception chaining.
-     *
+     * @param string $message The Exception message to throw.
+     * @param int $code The Exception code.
+     * @param ?Exception $previous The previous exception used for the exception chaining.
      * @throws cInvalidArgumentException
      */
-    public function __construct($message, $code = 0, Exception $previous = NULL)
+    public function __construct($message, $code = 0, ?Exception $previous = NULL)
     {
         parent::__construct($message, $code, $previous);
 
         // create a logger class and save it for all logging purposes
         $cfg = cRegistry::getConfig();
         $writer = cLogWriter::factory(
-            "File",
+            'File',
             [
                 'destination' => $cfg['path']['contenido_logs'] . 'exception.txt',
             ]

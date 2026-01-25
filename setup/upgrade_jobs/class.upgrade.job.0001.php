@@ -23,14 +23,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cUpgradeJob_0001 extends cUpgradeJobAbstract
 {
 
-    public $maxVersion = "0"; //this will be executed every time
+    public $maxVersion = '0'; //this will be executed every time
 
     public function _execute()
     {
         $cfg = cRegistry::getConfig();
 
         if ($this->_setupType == 'setup') {
-            switch ($_SESSION['clientmode']) {
+            switch ($_SESSION['clientmode'] ?? '') {
                 case 'CLIENTMODULES':
                 case 'CLIENTEXAMPLES':
                     updateClientPath(1, self::$_rootPath . '/cms/', self::$_rootHttpPath . '/cms/');
@@ -39,7 +39,7 @@ class cUpgradeJob_0001 extends cUpgradeJobAbstract
                     break;
             }
         }
-        if (false === cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
+        if (!cFileHandler::exists($cfg['path']['contenido_config'] . 'config.clients.php')) {
             updateClientPath(0, self::$_rootPath . '/cms/', self::$_rootHttpPath . '/cms/');
         }
     }

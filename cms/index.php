@@ -12,4 +12,4 @@
  * @link       https://www.contenido.org
  */
 
-header("Location: front_content.php");
+header('Location: front_content.php');

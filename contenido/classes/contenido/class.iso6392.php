@@ -19,23 +19,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiIso6392 createNewItem
- * @method cApiIso6392|bool next
+ * @extends ItemCollection<cApiIso6392>
  */
 class cApiIso6392Collection extends ItemCollection
 {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param bool $select [optional]
-     *                     where clause to use for selection (see ItemCollection::select())
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param string|false $select [optional] Where clause to use for selection {@see ItemCollection::select()}
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($select = false)
     {
-        parent::__construct(cRegistry::getDbTableName('iso_639_2'), 'iso');
+        parent::__construct(cDb::getTableName('iso_639_2'), 'iso');
         $this->_setItemClass('cApiIso6392');
 
         if ($select !== false) {
@@ -55,18 +51,15 @@ class cApiIso6392 extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('iso_639_2'), 'iso');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('iso_639_2'), 'iso');
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 }

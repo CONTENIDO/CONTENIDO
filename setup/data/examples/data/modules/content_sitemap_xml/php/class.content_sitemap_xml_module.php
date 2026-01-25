@@ -94,9 +94,7 @@ class ContentSitemapXmlModule
      * @param array $categoryIds
      * @param int $lang
      * @return int
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function addArticlesToSitemap(SimpleXMLElement $sitemap, array $categoryIds, int $lang): int
     {
@@ -104,14 +102,14 @@ class ContentSitemapXmlModule
 
         // check if there are categories
         if (0 < count($categoryIds)) {
-            $tab = $this->cfg['tab'];
-
             $useCategoryUrlsForStartArticles = 'true' == $this->catUrlForStartArt;
 
             $lang = cSecurity::toInteger($lang);
-            $categoryIds = implode(',', array_map(function ($categoryId) {
-                return cSecurity::toInteger($categoryId);
-            }, $categoryIds));
+            $categoryIds = implode(',', array_map('intval', $categoryIds));
+
+            $tabArtLang = cDb::getTableName('art_lang');
+            $tabCatArt = cDb::getTableName('cat_art');
+            $tabCatLang = cDb::getTableName('cat_lang');
 
             // get articles from DB
             $this->db->query("
@@ -124,9 +122,9 @@ class ContentSitemapXmlModule
                 , cat_art.idcat
                 , IF(art_lang.idartlang = cat_lang.startidartlang, 1, 0) AS is_start
             FROM
-                `$tab[art_lang]` AS art_lang
-                , `$tab[cat_art]` AS cat_art
-                , `$tab[cat_lang]` AS cat_lang
+                `$tabArtLang` AS art_lang
+                , `$tabCatArt` AS cat_art
+                , `$tabCatLang` AS cat_lang
             WHERE
                 art_lang.idart = cat_art.idart
                 AND art_lang.idlang = $lang
@@ -249,15 +247,19 @@ class ContentSitemapXmlModule
      * idcat, level, name, name_indented
      *
      * @return array with category information
+     * @throws cDbException
      */
     public static function buildCategoryArray(): array
     {
-        $cfg = cRegistry::getConfig();
         $lang = cRegistry::getLanguageId();
         $db = cRegistry::getDb();
 
-        $query = 'SELECT * FROM ' . $cfg['tab']['cat_lang'] . ' AS a, ' . $cfg['tab']['cat_tree'] . ' as b WHERE (a.idcat = b.idcat) AND (a.visible = 1) AND (a.public = 1) AND (a.idlang = ' . $lang . ') ORDER BY b.idtree';
-        $db->query($query);
+        $db->query(
+            'SELECT * FROM `%s` AS a, `%s` AS b WHERE (a.idcat = b.idcat) AND (a.visible = 1) AND (a.public = 1) AND (a.idlang = %d) ORDER BY b.idtree',
+            cDb::getTableName('cat_lang'),
+            cDb::getTableName('cat_tree'),
+            $lang
+        );
 
         $categories = [];
         while ($db->nextRecord()) {

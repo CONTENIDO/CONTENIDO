@@ -32,7 +32,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 cInclude('includes', 'functions.pathresolver.php');
 
-$oPage = new cGuiPage("contentallocation_article", "content_allocation", "7");
+$oPage = new cGuiPage('contentallocation_article', 'content_allocation', '7');
 
 $this_idartlang = 0;
 $this_locked = 0;
@@ -87,7 +87,7 @@ if (!$result) {
         <input type="hidden" name="idcat" value="' . $idcat . '">';
     $tpl->set('s', 'HIDDENFIELDS', $hiddenfields);
 
-    if (sizeof($loadedAllocations) > 0) {
+    if (count($loadedAllocations) > 0) {
         $tpl->set('s', 'ARRAY_CHECKED_BOXES', 'var checkedBoxes = [' . implode(',', $loadedAllocations) . '];');
     } else {
         $tpl->set('s', 'ARRAY_CHECKED_BOXES', 'var checkedBoxes = [];');

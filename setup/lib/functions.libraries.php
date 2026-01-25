@@ -17,7 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 function checkImageResizer()
 {
-    global $cfg;
+    $cfg = cRegistry::getConfig();
 
     $iGDStatus = isPHPExtensionLoaded('gd');
 

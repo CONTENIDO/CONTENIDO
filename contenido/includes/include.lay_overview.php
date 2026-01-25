@@ -25,9 +25,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 global $lay;
 
 // Display critical error if client does not exist
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getClientId();
 if ($client < 1 || !cRegistry::getClient()->isLoaded()) {
-    $oPage = new cGuiPage("lay_new");
+    $oPage = new cGuiPage('lay_new');
     $oPage->displayCriticalError(i18n('No Client selected'));
     $oPage->render();
     return;
@@ -61,7 +61,7 @@ $inUseLink = $inUseLink->setClass('con_img_button')
     ->setAttribute('data-action', 'inused_layout')
     ->setContent(cHTMLImage::img($cfg['path']['images'] . 'exclamation.gif', i18n('Click for more information about usage')));
 
-while (($layout = $oLayouts->next()) !== false) {
+while ($layout = $oLayouts->next()) {
     $idlay = cSecurity::toInteger($layout->getId());
 
     if (!$perm->have_perm_area_action_item('lay_edit', 'lay_edit', $idlay)) {

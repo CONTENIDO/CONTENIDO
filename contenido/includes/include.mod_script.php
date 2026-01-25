@@ -27,7 +27,7 @@ $frame = cRegistry::getFrame();
 cInclude('external', 'codemirror/class.codemirror.php');
 cInclude('includes', 'functions.file.php');
 
-$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
+$readOnly = getEffectiveSetting('client', 'readonly', 'false') === 'true';
 if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
@@ -55,7 +55,7 @@ if (!$moduleHandler->existFile('js', $moduleHandler->getJsFileName())) {
     }
 }
 
-$page = new cGuiPage("mod_script");
+$page = new cGuiPage('mod_script');
 
 $tpl->reset();
 
@@ -94,8 +94,8 @@ if (stripslashes($file)) {
     $page->reloadLeftBottomFrame(['file' => $sFilename]);
 }
 
-if (true === cFileHandler::exists($path . $sFilename)
-    && false === cFileHandler::writeable($path . $sFilename)) {
+if (cFileHandler::exists($path . $sFilename)
+    && !cFileHandler::writeable($path . $sFilename)) {
     $page->displayWarning(i18n("You have no write permissions for this file"));
 }
 
@@ -109,7 +109,7 @@ $bEdit = false;
 if ((!$readOnly) && $actionRequest == $sActionCreate && $requestStatus == 'send') {
     $sTempFilename = $sFilename;
 
-    if (true === cFileHandler::validateFilename($sFilename)) {
+    if (cFileHandler::validateFilename($sFilename)) {
         cFileHandler::create($path . $sFilename);
         $moduleHandler->createModuleFile('js', $sFilename, $requestCode);
         $bEdit = cFileHandler::read($path . $sFilename);
@@ -145,7 +145,7 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $requestStatus == 'send') 
                 throw new cInvalidArgumentException('The file ' . $sFilename . ' could not be renamed.');
             }
         } catch (Exception $e) {
-            $notification->displayNotification("error", sprintf(i18n("Can not rename file %s"), $path . $sTempFilename));
+            $notification->displayNotification('error', sprintf(i18n("Can not rename file %s"), $path . $sTempFilename));
         }
 
         $page->reloadRightTopFrame(['file' => $sTempFilename]);
@@ -154,7 +154,7 @@ if ((!$readOnly) && $actionRequest == $sActionEdit && $requestStatus == 'send') 
     }
 
     $bEdit = false;
-    if (true === cFileHandler::validateFilename($sFilename)) {
+    if (cFileHandler::validateFilename($sFilename)) {
         $moduleHandler->createModuleFile('js', $sFilename, $requestCode);
         $bEdit = cFileHandler::read($path . $sFilename);
     }
@@ -213,7 +213,7 @@ $form->add(i18n('Code'), $ta_code);
 
 $oCodeMirror = new CodeMirror('code', 'js', cString::getPartOfString(cString::toLowerCase($belang), 0, 2), true, $cfg);
 if ($readOnly) {
-    $oCodeMirror->setProperty("readOnly", "true");
+    $oCodeMirror->setProperty('readOnly', 'true');
     $form->setActionButton('submit', cRegistry::getBackendUrl() . 'images/but_ok_off.gif', i18n('Overwriting files is disabled'), 's');
 }
 
