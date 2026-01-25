@@ -57,6 +57,11 @@ if ($mrController->isError()) {
         exit();
     }
 } else {
+
+    // TODO The code below has no effect. The `front_content_controller.php` runs within a function scope,
+    //      it dosen't modify the global variables, see the import of globals at the top of this file.
+    //      This should be checked and adjusted.
+
     // set some global variables
 
     if ($mrController->getClient()) {

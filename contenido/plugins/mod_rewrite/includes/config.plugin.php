@@ -133,7 +133,7 @@ if (ModRewrite::isEnabled()) {
         // We are not in backend, add cec functions for rewriting
 
         $requestIdArt = cRegistry::getArticleId($_REQUEST['idart'] ?? '0');
-        $requestIdCat = cRegistry::getArticleId($_REQUEST['idcat'] ?? '0');
+        $requestIdCat = cRegistry::getCategoryId($_REQUEST['idcat'] ?? '0');
 
         if ($requestIdArt <= 0 && $requestIdCat <= 0) {
             // Submitted idart and idcat vars have a higher priority than submitted seo url
