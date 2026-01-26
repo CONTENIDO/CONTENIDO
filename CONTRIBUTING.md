@@ -13,13 +13,14 @@ Wir freuen uns über jede Form der Mitwirkung und möchten dir den Einstieg so e
 
 Lass uns gemeinsam CONTENIDO weiterentwickeln und ein starkes Open‑Source‑Ökosystem gestalten.
 
-Die Vorgehensweise ist ähnlich dem von Gitflow oder GitHub Flow und besteht aus folgenden Schritten:
+Der Prozess zur Entwicklung eines Features oder eines Bugfixes ist bei CONTENIDO ähnlich dem von Gitflow oder
+GitHub Flow und besteht aus folgenden Schritten:
 
 - [Ticket erstellen](#Ticket-erstellen)
 - [Git Branch für das Ticket erstellen](#Git-Branch-erstellen)
 - [Änderungen am Quellcode durchführen](#Änderungen-durchführen), [committen](#Committen-der-Änderungen)
   und [pushen](#Änderungen-pushen)
-- Pull-Request erstellen
+- [Pull-Request erstellen](#Pull-Request-erstellen)
 
 
 ## Ticket erstellen
