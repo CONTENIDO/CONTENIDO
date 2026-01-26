@@ -33,19 +33,19 @@ class cXmlReader extends cXmlBase
      */
     public function load(string $filename): bool
     {
-        if (cFileHandler::exists($filename) === false) {
+        if (!cFileHandler::exists($filename)) {
             return false;
         }
 
         // Load document via object method to avoid warning in PHP strict mode.
         $doc = new DOMDocument();
-        if (false === $doc->load($filename)) {
+        if (!$doc->load($filename)) {
             throw new cException('Could not load file "' . $filename . '"');
         }
 
         $this->setDomDocument($doc);
 
-        return $this->_dom instanceof DOMDocument;
+        return $this->dom instanceof DOMDocument;
     }
 
     /**
@@ -59,14 +59,14 @@ class cXmlReader extends cXmlBase
     {
         // Load document via object method to avoid warning in PHP strict mode.
         $oDoc = new DOMDocument();
-        if (false === $oDoc->loadXML($source)) {
+        if (!$oDoc->loadXML($source)) {
             throw new cException('could not load XML');
         }
 
-        $this->_dom = $oDoc;
-        $this->_initXpathInstance();
+        $this->dom = $oDoc;
+        $this->initXpathInstance();
 
-        return $this->_dom instanceof DOMDocument;
+        return $this->dom instanceof DOMDocument;
     }
 
     /**
@@ -78,11 +78,11 @@ class cXmlReader extends cXmlBase
      */
     public function getXpathNodeList(string $path)
     {
-        if ($this->_xpath === NULL) {
+        if (!$this->xpath instanceof DOMXpath) {
             throw new cException('Can not execute XPath string: DOMXpath instance not found.');
         }
 
-        return $this->_xpath->query(parent::resolvePath($path));
+        return $this->xpath->query(parent::resolvePath($path));
     }
 
     /**
@@ -90,10 +90,10 @@ class cXmlReader extends cXmlBase
      *
      * @param string $path XPath string
      * @param int $nodeKey [optional, default: 0] Node key
-     * @return DOMNode|null
+     * @return ?DOMNode
      * @throws cException
      */
-    public function getXpathNode(string $path, int $nodeKey = 0)
+    public function getXpathNode(string $path, int $nodeKey = 0): ?DOMNode
     {
         $path = parent::getLevelXpath($path, $nodeKey);
 
@@ -112,7 +112,7 @@ class cXmlReader extends cXmlBase
     public function getXpathValue(string $path, int $nodeKey = 0): string
     {
         $domNode = $this->getXpathNode($path, $nodeKey);
-        return $this->_decode($domNode->nodeValue);
+        return $this->decode($domNode->nodeValue);
     }
 
     /**
@@ -126,13 +126,7 @@ class cXmlReader extends cXmlBase
     {
         $domNodeList = $this->getXpathNodeList($path);
 
-        if (isset($domNodeList->length)) {
-            $length = (int)$domNodeList->length;
-        } else {
-            $length = 0;
-        }
-
-        return $length;
+        return cSecurity::toInteger($domNodeList->length ?? 0);
     }
 
     /**
@@ -142,7 +136,7 @@ class cXmlReader extends cXmlBase
      * @return string Decoded value
      * @throws cException
      */
-    protected function _decode(string $value): string
+    protected function decode(string $value): string
     {
         if ($this->getEncoding() != 'UTF-8') {
             $value = cString::convertEncoding($value, 'ISO-8859-1');

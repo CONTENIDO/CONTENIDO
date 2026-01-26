@@ -40,14 +40,13 @@ class cXmlWriter extends cXmlBase
      */
     public function __construct(string $version = '', string $encoding = '')
     {
-        $this->_createDocument($version, $encoding);
+        $this->createDocument($version, $encoding);
     }
 
     /**
      * Sets the indentation.
      *
      * @param int $indentation Supported values are 2 or 4.
-     * @return void
      */
     public function setIndentation(int $indentation)
     {
@@ -69,23 +68,27 @@ class cXmlWriter extends cXmlBase
      * @throws DOMException
      */
     public function addElement(
-        string $name, $value = '', ?DOMElement $rootElement = NULL, array $attributes = [], bool $cdata = false
+        string $name,
+        $value = '',
+        ?DOMElement $rootElement = NULL,
+        array $attributes = [],
+        bool $cdata = false
     ): DOMElement
     {
         $isEmptyValue = in_array($value, ['', NULL]);
         if ($isEmptyValue || $cdata) {
-            $element = $this->_dom->createElement($name);
+            $element = $this->dom->createElement($name);
             if (!$isEmptyValue && $cdata) {
-                $element->appendChild($this->_dom->createCDATASection($value));
+                $element->appendChild($this->dom->createCDATASection($value));
             }
         } else {
-            $element = $this->_dom->createElement($name, $value);
+            $element = $this->dom->createElement($name, $value);
         }
 
-        $element = $this->_addElementAttributes($element, $attributes);
+        $this->addElementAttributes($element, $attributes);
 
-        if ($rootElement === NULL) {
-            $this->_dom->appendChild($element);
+        if (!$rootElement instanceof DOMElement) {
+            $this->dom->appendChild($element);
         } else {
             $rootElement->appendChild($element);
         }
@@ -98,19 +101,16 @@ class cXmlWriter extends cXmlBase
      *
      * @param DOMElement $element DOM element to add attributes
      * @param array $attributes [optional] Array of attributes
-     * @return DOMElement DOM element with assigned attributes
      */
-    protected function _addElementAttributes(DOMElement $element, array $attributes = []): DOMElement
+    protected function addElementAttributes(DOMElement $element, array $attributes = [])
     {
         if (count($attributes) == 0) {
-            return $element;
+            return;
         }
 
         foreach ($attributes as $attributeName => $attributeValue) {
             $element->setAttribute($attributeName, $attributeValue);
         }
-
-        return $element;
     }
 
     /**
@@ -120,13 +120,13 @@ class cXmlWriter extends cXmlBase
      */
     public function saveToString(): string
     {
-        $xml = $this->_dom->saveXML();
+        $xml = $this->dom->saveXML();
         if (empty($xml)) {
             return '';
         }
 
         // Modify indentation when the formatOutput is set and indentation is > 2 (default value is 2)
-        if ($this->_dom->formatOutput && $this->indentation > 2) {
+        if ($this->dom->formatOutput && $this->indentation > 2) {
             $xml = preg_replace_callback('/^( +)</m', function ($a) {
                 return str_repeat(' ', intval(strlen($a[1]) / 2) * $this->indentation) . '<';
             }, $xml);
