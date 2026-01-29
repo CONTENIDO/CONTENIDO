@@ -65,45 +65,44 @@ function checkOpenBasedirCompatibility()
     return CON_BASEDIR_INCOMPATIBLE;
 }
 
-function predictCorrectFilepermissions($file)
+function predictCorrectFilePermissions($file)
 {
-    // Check if the system is a windows system. If yes, we can't predict
-    // anything.
+    // Check if the system is a Windows system. If yes, we can't predict anything.
     if (isWindows()) {
         return CON_PREDICT_WINDOWS;
     }
 
-    // Check if the file is read- and writeable. If yes, we don't need to do any
-    // further checks.
+    // Check if the file is read- and writeable. If yes, we don't need to do any further checks.
     if (is_writable($file) && is_readable($file)) {
         return CON_PREDICT_SUFFICIENT;
     }
 
-    // If we can't find out the web server UID, we cannot predict the correct
-    // mask.
+    // If we can't find out the web server UID, we cannot predict the correct mask.
     $iServerUID = getServerUID();
     if ($iServerUID === false) {
         return CON_PREDICT_NOTPREDICTABLE;
     }
 
-    // If we can't find out the web server GID, we cannot predict the correct
-    // mask.
+    // If we can't find out the web server GID, we cannot predict the correct mask.
     $iServerGID = getServerGID();
     if ($iServerGID === false) {
         return CON_PREDICT_NOTPREDICTABLE;
     }
 
     $aFilePermissions = getFileInfo($file);
+    if ($aFilePermissions === false) {
+        return CON_PREDICT_NOTPREDICTABLE;
+    }
 
     if (getSafeModeStatus()) {
         // SAFE-Mode related checks
-        if ($iServerUID == $aFilePermissions["owner"]["id"]) {
+        if ($iServerUID == ($aFilePermissions["owner"]["id"] ?? null)) {
             return CON_PREDICT_CHANGEPERM_SAMEOWNER;
         }
 
         if (getSafeModeGidStatus()) {
-            // SAFE-Mode GID related checks
-            if ($iServerGID == $aFilePermissions["group"]["id"]) {
+            // SAFE-Mode GID-related checks
+            if ($iServerGID == ($aFilePermissions["group"]["id"] ?? null)) {
                 return CON_PREDICT_CHANGEPERM_SAMEGROUP;
             }
 
@@ -111,11 +110,11 @@ function predictCorrectFilepermissions($file)
         }
     } else {
         // Regular checks
-        if ($iServerUID == $aFilePermissions["owner"]["id"]) {
+        if ($iServerUID == ($aFilePermissions["owner"]["id"] ?? null)) {
             return CON_PREDICT_CHANGEPERM_SAMEOWNER;
         }
 
-        if ($iServerGID == $aFilePermissions["group"]["id"]) {
+        if ($iServerGID == ($aFilePermissions["group"]["id"] ?? null)) {
             return CON_PREDICT_CHANGEPERM_SAMEGROUP;
         }
 
