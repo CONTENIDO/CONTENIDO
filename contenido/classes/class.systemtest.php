@@ -595,59 +595,52 @@ class cSystemtest
     }
 
     /**
-     * Returns one of the CON_PREDICT suggestions depending on the permissions
+     * Returns one of the `CON_PREDICT_*` suggestions depending on the permissions
      * of the given file
      *
-     * @param string $file
-     *         The path to the file
-     *
-     * @return int
-     *         CON_PREDICT_
-     *
+     * @param string $file The path to the file
+     * @return int `CON_PREDICT_*` constant.
      * @throws cInvalidArgumentException
      */
-    protected function predictCorrectFilepermissions($file)
+    public function predictCorrectFilePermissions(string $file): int
     {
-        // Check if the system is a windows system. If yes, we can't predict
-        // anything.
+        // Check if the system is a Windows system. If yes, we can't predict anything.
         if ($this->isWindows()) {
             return self::CON_PREDICT_WINDOWS;
         }
 
         // Check if the file is read- and writeable. If yes, we don't need to do
-        // any
-        // further checks.
+        // any further checks.
         if (cFileHandler::writeable($file) && cFileHandler::readable($file)) {
             return self::CON_PREDICT_SUFFICIENT;
         }
 
-        // If we can't find out the web server UID, we cannot predict the
-        // correct
-        // mask.
+        // If we can't find out the web server UID, we cannot predict the correct mask.
         $iServerUID = $this->getServerUID();
         if ($iServerUID === false) {
             return self::CON_PREDICT_NOTPREDICTABLE;
         }
 
-        // If we can't find out the web server GID, we cannot predict the
-        // correct
-        // mask.
+        // If we can't find out the web server GID, we cannot predict the correct mask.
         $iServerGID = $this->getServerGID();
         if ($iServerGID === false) {
             return self::CON_PREDICT_NOTPREDICTABLE;
         }
 
         $aFilePermissions = $this->getFileInfo($file);
+        if ($aFilePermissions === false) {
+            return self::CON_PREDICT_NOTPREDICTABLE;
+        }
 
         if ($this->getSafeModeStatus()) {
             // SAFE-Mode related checks
-            if ($iServerUID == $aFilePermissions["owner"]["id"]) {
+            if ($iServerUID == ($aFilePermissions["owner"]["id"] ?? null)) {
                 return self::CON_PREDICT_CHANGEPERM_SAMEOWNER;
             }
 
             if ($this->getSafeModeGidStatus()) {
-                // SAFE-Mode GID related checks
-                if ($iServerGID == $aFilePermissions["group"]["id"]) {
+                // SAFE-Mode GID-related checks
+                if ($iServerGID == ($aFilePermissions["group"]["id"] ?? null)) {
                     return self::CON_PREDICT_CHANGEPERM_SAMEGROUP;
                 }
 
@@ -655,11 +648,11 @@ class cSystemtest
             }
         } else {
             // Regular checks
-            if ($iServerUID == $aFilePermissions["owner"]["id"]) {
+            if ($iServerUID == ($aFilePermissions["owner"]["id"] ?? null)) {
                 return self::CON_PREDICT_CHANGEPERM_SAMEOWNER;
             }
 
-            if ($iServerGID == $aFilePermissions["group"]["id"]) {
+            if ($iServerGID == ($aFilePermissions["group"]["id"] ?? null)) {
                 return self::CON_PREDICT_CHANGEPERM_SAMEGROUP;
             }
 
@@ -1412,7 +1405,7 @@ class cSystemtest
 
         if ($status == false) {
             if (cFileHandler::exists($filename)) {
-                $perm = $this->predictCorrectFilepermissions($filename);
+                $perm = $this->predictCorrectFilePermissions($filename);
 
                 switch ($perm) {
                     case self::CON_PREDICT_WINDOWS:
@@ -1440,7 +1433,7 @@ class cSystemtest
             } else {
                 $target = dirname($filename);
 
-                $perm = $this->predictCorrectFilepermissions($target);
+                $perm = $this->predictCorrectFilePermissions($target);
 
                 switch ($perm) {
                     case self::CON_PREDICT_WINDOWS:
@@ -1522,12 +1515,9 @@ class cSystemtest
     }
 
     /**
-     * Checks for the open_basedir directive and returns one of the CON_BASEDIR
-     * constants
-     *
-     * @return int
+     * Checks for the open_basedir directive and returns one of the `CON_BASEDIR_*` constants.
      */
-    public function checkOpenBasedirCompatibility()
+    public function checkOpenBasedirCompatibility(): int
     {
         $value = $this->getPHPIniSetting("open_basedir");
 
