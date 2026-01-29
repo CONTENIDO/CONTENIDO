@@ -75,97 +75,66 @@ abstract class PifaAbstractFormModule
      */
     public function __construct(?array $settings = NULL)
     {
-        $this->_settings = $settings;
+        $this->_settings = $settings ?? [];
         $this->_idform = cSecurity::toInteger($this->getSetting('pifaform_idform'));
         $this->_tpl = cSmartyFrontend::getInstance(true);
     }
 
-    /**
-     * @return array
-     */
-    public function getSettings()
+    public function getSettings(): array
     {
         return $this->_settings;
     }
 
     /**
-     * @param string $key
      * @return mixed
      */
-    public function getSetting($key, $default = '')
+    public function getSetting(string $key, $default = '')
     {
         return $this->_settings[$key] ?? $default;
     }
 
-
-    /**
-     * @param array $_settings
-     */
     public function setSettings(array $_settings)
     {
         $this->_settings = $_settings;
     }
 
-    /**
-     * @return int
-     */
-    public function getIdform()
+    public function getIdform(): int
     {
         return $this->_idform;
     }
 
-    /**
-     * @param int $_idform
-     */
-    public function setIdform($_idform)
+    public function setIdform(int $idform)
     {
-        $this->_idform = $_idform;
+        $this->_idform = $idform;
     }
 
-    /**
-     * @return string
-     */
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         return $this->_templateName;
     }
 
-    /**
-     * @param string $_templateName
-     */
-    public function setTemplateName($_templateName)
+    public function setTemplateName(string $templateName)
     {
-        $this->_templateName = $_templateName;
+        $this->_templateName = $templateName;
     }
 
-    /**
-     * @return cSmartyWrapper
-     */
-    public function getTpl()
+    public function getTpl(): cSmartyWrapper
     {
         return $this->_tpl;
     }
 
-    /**
-     * @param cSmartyWrapper $_tpl
-     */
-    public function setTpl(cSmartyWrapper $_tpl)
+    public function setTpl(cSmartyWrapper $tpl)
     {
-        $this->_tpl = $_tpl;
+        $this->_tpl = $tpl;
     }
 
     /**
      * Helper method to determine the current request method.
      * The request method is returned as uppercase string.
-     *
-     * @return string
      */
-    protected function _getRequestMethod()
+    protected function _getRequestMethod(): string
     {
-        $requestMethod = $_SERVER['REQUEST_METHOD'];
-        $requestMethod = cString::toUpperCase($requestMethod);
-
-        return $requestMethod;
+        return cString::toUpperCase($_SERVER['REQUEST_METHOD'] ?? '');
     }
 
     /**
@@ -177,12 +146,9 @@ abstract class PifaAbstractFormModule
         // dispatch request method
         switch ($this->_getRequestMethod()) {
             case self::GET:
-
                 $this->doGet();
                 break;
-
             case self::POST:
-
                 // always handle POST method in backend edit mode as GET action
                 if (cRegistry::isBackendEditMode()) {
                     $this->doGet();
@@ -199,7 +165,6 @@ abstract class PifaAbstractFormModule
                 // handle form as if it were posted
                 $this->doPost();
                 break;
-
             default:
                 $msg = Pifa::i18n('UNKNOWN_REQUEST_METHOD');
                 throw new PifaException($msg);
@@ -218,9 +183,6 @@ abstract class PifaAbstractFormModule
 
     /**
      * Handle GET request.
-     *
-     * @param array $values
-     * @param array $errors
      */
     abstract protected function doGet(array $values = [], array $errors = []);
 

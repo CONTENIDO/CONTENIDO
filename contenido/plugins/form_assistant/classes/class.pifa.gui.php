@@ -78,17 +78,16 @@ class PifaLeftBottomPage extends cGuiPage
     /**
      * Get menu with all forms of current client in current language.
      *
-     * @return string
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    private function _getMenu()
+    private function _getMenu(): string
     {
         $cfg = cRegistry::getConfig();
-        $client = cRegistry::getClientId();
-        $lang = cRegistry::getLanguageId();
+        $clientId = cRegistry::getClientId();
+        $languageId = cRegistry::getLanguageId();
 
         // get all forms of current client in current language
-        $forms = PifaFormCollection::getByClientAndLang($client, $lang);
+        $forms = PifaFormCollection::getByClientAndLang($clientId, $languageId);
         if (false === $forms) {
             return '<!-- no forms for current client/language -->';
         }
@@ -356,7 +355,7 @@ class PifaRightBottomFormPage extends cGuiPage
     /**
      * Build and return form for PIFA forms.
      *
-     * @return string
+     * @return string|false
      * @throws cDbException
      * @throws cException|SmartyException
      */
@@ -423,6 +422,9 @@ class PifaRightBottomFormPage extends cGuiPage
      * Handles a POST request of the first form, showing a forms details.
      *
      * @throws PifaException
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _storeForm()
     {
@@ -527,8 +529,6 @@ class PifaRightBottomFormPage extends cGuiPage
         }
     }
 
-    /**
-     */
     private function _deleteForm()
     {
         $this->_pifaForm->delete();
@@ -662,7 +662,7 @@ class PifaRightBottomFormFieldsPage extends cGuiPage
     }
 
     /**
-     * @return mixed|string
+     * @return string|false
      * @throws cDbException
      * @throws cException|SmartyException
      */
@@ -871,7 +871,7 @@ class PifaRightBottomFormDataPage extends cGuiPage
      *
      * @throws PifaException if the given action is unknown
      * @throws PifaIllegalStateException if permissions are missing
-     * @throws cDbException|cException
+     * @throws cDbException|cException|SmartyException
      */
     protected function _dispatch($action, $notification = '')
     {
@@ -908,7 +908,7 @@ class PifaRightBottomFormDataPage extends cGuiPage
     }
 
     /**
-     * @return mixed|string
+     * @return false|string
      * @throws cException|SmartyException
      */
     private function _showData()
@@ -1038,7 +1038,7 @@ class PifaRightBottomFormExportPage extends cGuiPage
      * and its values are stored in the appropriate model.
      *
      * @throws PifaException if form could not be loaded
-     * @throws cDbException|cException
+     * @throws cDbException|cException|SmartyException
      */
     public function __construct()
     {
@@ -1126,7 +1126,7 @@ class PifaRightBottomFormExportPage extends cGuiPage
     }
 
     /**
-     * @return mixed|string
+     * @return false|string
      * @throws cException|SmartyException
      */
     private function _exportForm()
@@ -1177,11 +1177,10 @@ class PifaRightBottomFormImportPage extends cGuiPage
      * PifaRightBottomFormImportPage constructor.
      * Dispatches the current action and displays a notification.
      *
-     * @throws cDbException|cException
+     * @throws cDbException|cException|SmartyException
      */
     public function __construct()
     {
-
         /**
          * @param string $action to be performed
          */
@@ -1268,8 +1267,7 @@ class PifaRightBottomFormImportPage extends cGuiPage
      * PifaImporter. Eventually a notification is displayed.
      *
      * @param bool $showTableNameField
-     *
-     * @return string
+     * @return string|false
      * @throws cException|SmartyException
      */
     private function _importFormGet($showTableNameField = false)
@@ -1307,7 +1305,7 @@ class PifaRightBottomFormImportPage extends cGuiPage
      * On a POST request the import of the uploaded file is performed via
      * PifaImporter. Eventually a notification is displayed.
      *
-     * @return string
+     * @return string|false
      * @throws cException|SmartyException
      */
     private function _importFormPost()
@@ -1325,7 +1323,6 @@ class PifaRightBottomFormImportPage extends cGuiPage
         }
 
         try {
-
             // perform import process
             $pifaImporter = new PifaImporter();
             $pifaImporter->setTableName($tableName);

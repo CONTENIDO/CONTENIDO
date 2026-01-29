@@ -31,14 +31,14 @@ class MailedFormProcessor extends DefaultFormProcessor
     public const MAIL_MODE_SYSTEM = 'system';
 
     /**
-     * Sends client & system mail independantly.
+     * Sends client & system mail independently.
      * If an error occurs on sending the first mail the second mail is sent
      * nonetheless.
      *
      * @throws PifaMailException if any mail could not be sent
      * @throws cException
-     * @throws cInvalidArgumentException
-     * @see DefaultFormProcessor::_processStoredData()
+     * @throws cInvalidArgumentException|SmartyException
+     * @inheritDoc
      */
     protected function _processStoredData()
     {
@@ -79,8 +79,8 @@ class MailedFormProcessor extends DefaultFormProcessor
      * Sends a mail to the client or configured system address when mail template was selected.
      *
      * @param string $mode mail mode, must be "client" or "system"
-     * @return boolean|array
-     * @throws cException|cInvalidArgumentException
+     * @return false|array
+     * @throws cException|cInvalidArgumentException|SmartyException
      */
     protected function _getMailOptions($mode)
     {
@@ -152,10 +152,8 @@ class MailedFormProcessor extends DefaultFormProcessor
     /**
      * Return all files that were uploaded by the form as names of attachments
      * to be added to the system mail.
-     *
-     * @return array
      */
-    protected function _getAttachmentNames()
+    protected function _getAttachmentNames(): array
     {
         // determine attachment names
         // these are already stored in the FS
@@ -181,10 +179,8 @@ class MailedFormProcessor extends DefaultFormProcessor
     /**
      * Returns an empty array cause there are no attachments that will be
      * created on the fly.
-     *
-     * @return array
      */
-    protected function _getAttachmentStrings()
+    protected function _getAttachmentStrings(): array
     {
         return [];
     }

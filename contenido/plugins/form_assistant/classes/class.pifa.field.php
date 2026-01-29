@@ -348,12 +348,9 @@ class PifaField extends Item
         return $this->_file;
     }
 
-    /**
-     * @param array $_file
-     */
-    public function setFile(array $_file)
+    public function setFile(array $file)
     {
-        $this->_file = $_file;
+        $this->_file = $file;
     }
 
     /**
@@ -380,9 +377,7 @@ class PifaField extends Item
                 // site secret key
                 try {
                     $secret = getEffectiveSetting('pifa-recaptcha', 'secret', '');
-                } catch (cDbException $e) {
-                    $secret = '';
-                } catch (cException $e) {
+                } catch (cDbException|cException $e) {
                     $secret = '';
                 }
 
@@ -806,9 +801,7 @@ class PifaField extends Item
                 // google recaptcha integration
                 try {
                     $sitekey = getEffectiveSetting('pifa-recaptcha', 'sitekey', '');
-                } catch (cDbException $e) {
-                    $sitekey = '';
-                } catch (cException $e) {
+                } catch (cDbException|cException $e) {
                     $sitekey = '';
                 }
 
@@ -925,10 +918,8 @@ class PifaField extends Item
 
     /**
      * Returns an array containing all field type ids.
-     *
-     * @return array
      */
-    public static function getFieldTypeIds()
+    public static function getFieldTypeIds(): array
     {
         return array_keys(self::getFieldTypeNames());
     }
@@ -938,10 +929,8 @@ class PifaField extends Item
      *
      * The order of field types in this array influences the order of icons
      * displayed in the backend for selection!
-     *
-     * @return array
      */
-    public static function getFieldTypeNames()
+    public static function getFieldTypeNames(): array
     {
         return [
             self::INPUTTEXT => Pifa::i18n('INPUTTEXT'),
@@ -972,28 +961,19 @@ class PifaField extends Item
      * Return the field type name for the given field type id.
      *
      * @param int $fieldTypeId
-     * @return string
      */
     public static function getFieldTypeName($fieldTypeId)
     {
         $fieldTypeId = cSecurity::toInteger($fieldTypeId);
         $fieldTypeNames = self::getFieldTypeNames();
 
-        if (array_key_exists($fieldTypeId, $fieldTypeNames)) {
-            $fieldTypeName = $fieldTypeNames[$fieldTypeId];
-        } else {
-            $fieldTypeName = Pifa::i18n('UNKNOWN');
-        }
-
-        return $fieldTypeName;
+        return $fieldTypeNames[$fieldTypeId] ?? Pifa::i18n('UNKNOWN');
     }
 
     /**
      * Return this fields type name.
-     *
-     * @return string
      */
-    public function getMyFieldTypeName()
+    public function getMyFieldTypeName(): string
     {
         return self::getFieldTypeName($this->get('field_type'));
     }
@@ -1005,7 +985,7 @@ class PifaField extends Item
      * @throws PifaException if field is not loaded
      * @throws PifaException if field type is not implemented
      */
-    public function getDbDataType()
+    public function getDbDataType(): ?string
     {
         if (!$this->isLoaded()) {
             $msg = Pifa::i18n('FIELD_LOAD_ERROR');
@@ -1153,16 +1133,12 @@ class PifaField extends Item
     }
 
     /**
-     * Determines for which form field types which data should be editable in
-     * backend.
+     * Determines for which form field types which data should be editable in backend.
      *
      * @param string $columnName for data to edit
-     *
-     * @return bool
-     *
      * @throws PifaException
      */
-    public function showField($columnName)
+    public function showField($columnName): bool
     {
         $fieldType = $this->get('field_type');
         $fieldType = cSecurity::toInteger($fieldType);
@@ -1401,10 +1377,7 @@ class PifaField extends Item
         }
     }
 
-    /**
-     * @return array
-     */
-    public function getOptions()
+    public function getOptions(): array
     {
         $option_labels = $this->get('option_labels');
         $option_values = $this->get('option_values');

@@ -731,7 +731,7 @@ class PifaAjaxHandler
     /**
      * @param int $index
      *
-     * @throws cException
+     * @throws cException|SmartyException
      */
     private function _getOptionRow($index)
     {

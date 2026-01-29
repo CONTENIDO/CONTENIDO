@@ -33,7 +33,7 @@ class DefaultFormModule extends PifaAbstractFormModule
     {
 
         // set template to use
-        $this->setTemplateName($this->getSetting('pifaform_template_get'));
+        $this->setTemplateName(cSecurity::toString($this->getSetting('pifaform_template_get')));
 
         // create and load form
         $pifaForm = new PifaForm($this->getIdform());
@@ -74,12 +74,10 @@ class DefaultFormModule extends PifaAbstractFormModule
      */
     protected function doPost()
     {
-
         // set template to use
-        $this->setTemplateName($this->getSetting('pifaform_template_post'));
+        $this->setTemplateName(cSecurity::toString($this->getSetting('pifaform_template_post')));
 
         try {
-
             // get name of processor class
             $processorClass = $this->getSetting('pifaform_processor');
 

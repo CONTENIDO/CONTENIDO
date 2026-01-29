@@ -240,7 +240,7 @@ class Pifa
      * Returns array of client templates that adhere to the naming convention cms_pifaform_FOOBAR.tpl
      * where FOOBAR is any character but a dot.
      *
-     * @return string[]
+     * @return array<int, array{value: string, label: string}>
      * @throws PifaException
      */
     public static function getTemplates(string $re = '/cms_pifaform_[^\.]+\.tpl/'): array

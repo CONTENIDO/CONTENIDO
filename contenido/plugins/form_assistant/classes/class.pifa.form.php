@@ -56,27 +56,27 @@ class PifaFormCollection extends ItemCollection
     /**
      * Get forms according to given params.
      *
-     * @param int $client
-     * @param int $lang
+     * @param int $clientId
+     * @param int $languageId
      *
      * @return PifaFormCollection|bool
      * @throws cDbException
      */
-    private static function _getBy($client, $lang)
+    private static function _getBy($clientId, $languageId)
     {
         // conditions to be used for reading items
         $conditions = [];
 
-        // consider $client
-        $client = cSecurity::toInteger($client);
-        if (0 < $client) {
-            $conditions[] = '`idclient`=' . $client;
+        // consider $clientId
+        $clientId = cSecurity::toInteger($clientId);
+        if (0 < $clientId) {
+            $conditions[] = '`idclient`=' . $clientId;
         }
 
-        // consider $lang
-        $lang = cSecurity::toInteger($lang);
-        if (0 < $lang) {
-            $conditions[] = '`idlang`=' . $lang;
+        // consider $languageId
+        $languageId = cSecurity::toInteger($languageId);
+        if (0 < $languageId) {
+            $conditions[] = '`idlang`=' . $languageId;
         }
 
         // get items
@@ -121,13 +121,13 @@ class PifaFormCollection extends ItemCollection
      * @throws PifaException if forms could not be read
      * @throws cDbException
      */
-    public static function getByLang(int $langId)
+    public static function getByLang(int $languageId)
     {
-        if ($langId <= 0) {
+        if ($languageId <= 0) {
             throw new PifaException(Pifa::i18n('MISSING_LANG'));
         }
 
-        return self::_getBy(0, $langId);
+        return self::_getBy(0, $languageId);
     }
 
     /**
@@ -137,16 +137,16 @@ class PifaFormCollection extends ItemCollection
      * @throws PifaException if forms could not be read
      * @throws cDbException
      */
-    public static function getByClientAndLang(int $clientId, int $langId)
+    public static function getByClientAndLang(int $clientId, int $languageId)
     {
         if ($clientId <= 0) {
             throw new PifaException(Pifa::i18n('MISSING_CLIENT'));
         }
-        if ($langId <= 0) {
+        if ($languageId <= 0) {
             throw new PifaException(Pifa::i18n('MISSING_LANG'));
         }
 
-        return self::_getBy($clientId, $langId);
+        return self::_getBy($clientId, $languageId);
     }
 
 }

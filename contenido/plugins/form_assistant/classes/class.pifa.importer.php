@@ -52,7 +52,7 @@ class PifaImporter
     /**
      * Name of data table to create
      *
-     * @var string
+     * @var ?string
      */
     private $_tableName;
 
@@ -68,11 +68,11 @@ class PifaImporter
     }
 
     /**
-     * @param string $_tableName
+     * @param ?string $tableName
      */
-    public function setTableName($_tableName)
+    public function setTableName($tableName)
     {
-        $this->_tableName = $_tableName;
+        $this->_tableName = $tableName;
     }
 
     /**
@@ -84,9 +84,8 @@ class PifaImporter
      * @throws PifaException if table could not be created
      * @throws cDbException|cException
      */
-    public function import($xml)
+    public function import(string $xml)
     {
-
         // load XML
         if (!$this->_reader->loadXML($xml)) {
             throw new PifaException('XML could not be loaded');
@@ -261,10 +260,9 @@ class PifaImporter
      * appropriate database record.
      *
      * @param string $fieldTypeName to map
-     *
      * @return mixed
      */
-    private function _getPifaFieldTypeId($fieldTypeName)
+    private function _getPifaFieldTypeId(string $fieldTypeName)
     {
         $fieldTypeName = cString::toUpperCase($fieldTypeName);
         $fieldTypeIds = [
@@ -292,8 +290,8 @@ class PifaImporter
             'FIELDSET_END' => PifaField::FIELDSET_END,
             'BUTTONIMAGE' => PifaField::BUTTONIMAGE,
         ];
-        $fieldTypeId = $fieldTypeIds[$fieldTypeName];
-        return $fieldTypeId;
+
+        return $fieldTypeIds[$fieldTypeName];
     }
 
     /**
@@ -303,7 +301,7 @@ class PifaImporter
      * @return string
      * @throws PifaException
      */
-    private function _unCdata($str)
+    private function _unCdata(string $str): string
     {
         $regex = '/<\!\[CDATA\[(.*)\]\]>/is';
         $match = preg_replace($regex, '$1', $str);
