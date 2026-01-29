@@ -10,7 +10,7 @@
         <copyright>Murat Purc</copyright>
         <mail>murat@purc.de</mail>
         <website>https://www.purc.de</website>
-        <version>2.0.1</version>
+        <version>2.1.0</version>
     </general>
 
     <requirements php="7.1">

@@ -208,7 +208,7 @@ class SearchResultModule
 
         // determine action & method for search form
         // depends upon if plugin mod_rewrite is enabled
-        if (class_exists('ModRewrite') && ModRewrite::isEnabled()) {
+        if (class_exists('PiModRewrite') && PiModRewrite::isEnabled()) {
             $tpl->assign('action', cUri::getInstance()->build([
                 'idart' => cRegistry::getArticleId(),
                 'lang' => cRegistry::getLanguageId()

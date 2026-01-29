@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AMR Mod Rewrite helper class
+ * Advanced Mod Rewrite plugin helper class.
  *
  * @package    Plugin
  * @subpackage ModRewrite
@@ -17,14 +17,14 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Class to create websafe names, it also provides several helper functions
+ * Class to create web-safe names; it also provides several helper functions.
  *
  * @author     Stefan Seifarth / stese
  * @author     Murat Purc <murat@purc.de>
  * @package    Plugin
  * @subpackage ModRewrite
  */
-class ModRewrite extends ModRewriteBase
+class PiModRewrite extends PiModRewriteBase
 {
 
     /**
@@ -35,30 +35,22 @@ class ModRewrite extends ModRewriteBase
     private static $db;
 
     /**
-     * Lookup table to cache some internal data such as db query results
-     *
-     * @var array
-     */
-    protected static $lookupTable;
-
-    /**
-     * Initialization, is to call at least once, also possible to call multiple times,
+     * The initialization method, it is to call at least once, it is also possible to call multiple times
      * if different client configuration is to load.
-     * Loads configuration of passed client and sets some properties.
+     * Loads configuration of the passed client and sets some properties.
      *
      * @param int $clientId Client id
      * @throws cInvalidArgumentException
      */
     public static function initialize(int $clientId)
     {
-        mr_loadConfiguration($clientId, true);
+        PiModRewriteConfigurationService::getInstance()->loadConfiguration($clientId, true);
         self::$db = cRegistry::getDb();
-        self::$lookupTable = [];
     }
 
     /**
-     * Check categories on websafe name.
-     * Check all categories in the main parent category on existing same websafe name.
+     * Check categories on web-safe name.
+     * Check all categories in the main parent category on existing same web-safe name.
      *
      * @param string $urlName Websafe name to check
      * @param int $categoryId Current category id
@@ -74,11 +66,11 @@ class ModRewrite extends ModRewriteBase
             cDb::getTableName('cat'),
             $categoryId
         );
-        if ($record = mr_queryAndNextRecord($sql)) {
+        if ($record = PiModRewriteDatabaseUtil::queryAndNextRecord($sql)) {
             $parentId = $record['parentid'] > 0 ? cSecurity::toInteger($record['parentid']) : 0;
         }
 
-        // check if websafe name is in this category
+        // check if a web-safe name is in this category
         $sql = self::$db->prepare(
             "SELECT COUNT(cl.idcat) AS `numcats` "
             . "FROM `%s` cl "
@@ -91,9 +83,9 @@ class ModRewrite extends ModRewriteBase
             $urlName,
             $categoryId
         );
-        ModRewriteDebugger::log($sql, 'ModRewrite::isInCategories $sql');
+        PiModRewriteDebugger::log($sql, __METHOD__ . ' $sql');
 
-        if ($record = mr_queryAndNextRecord($sql)) {
+        if ($record = PiModRewriteDatabaseUtil::queryAndNextRecord($sql)) {
             return $record['numcats'] > 0;
         }
 
@@ -101,8 +93,8 @@ class ModRewrite extends ModRewriteBase
     }
 
     /**
-     * Check articles on websafe name.
-     * Check all articles in the current category on existing same websafe name.
+     * Check articles on web-safe name.
+     * Check all articles in the current category on existing same web-safe name.
      *
      * @param string $urlName Websafe name to check
      * @param int $articleId Current article id
@@ -118,7 +110,7 @@ class ModRewrite extends ModRewriteBase
         int $languageId = 0,
         int $categoryId = 0
     ): bool {
-        // handle multipages
+        // handle multi-pages
         if ($categoryId == 0) {
             // get category id if not set
             $sql = self::$db->prepare(
@@ -126,12 +118,12 @@ class ModRewrite extends ModRewriteBase
                 cDb::getTableName('cat_art'),
                 $articleId
             );
-            if ($record = mr_queryAndNextRecord($sql)) {
+            if ($record = PiModRewriteDatabaseUtil::queryAndNextRecord($sql)) {
                 $categoryId = ($record['idcat'] > 0) ? cSecurity::toInteger($record['idcat']) : 0;
             }
         }
 
-        // check if websafe name is in this category
+        // check if the web-safe name is in this category
         $sql = self::$db->prepare(
             "SELECT COUNT(al.idart) AS `numcats` "
             . "FROM `%s` al "
@@ -144,7 +136,7 @@ class ModRewrite extends ModRewriteBase
             $urlName,
             $articleId
         );
-        if ($record = mr_queryAndNextRecord($sql)) {
+        if ($record = PiModRewriteDatabaseUtil::queryAndNextRecord($sql)) {
             return $record['numcats'] > 0;
         }
 
@@ -152,14 +144,14 @@ class ModRewrite extends ModRewriteBase
     }
 
     /**
-     * Set websafe name in article list.
-     * Insert new websafe name in article list
+     * Set the web-safe name in the article list.
+     * Insert the new web-safe name in the article list
      *
      * @param string $urlName Original name (will be converted)
      * @param int $articleId Current article id
      * @param int $languageId Current language id
      * @param int $categoryId Category id
-     * @return bool True if insert was successfully
+     * @return bool True if insert was successful
      * @throws cDbException
      */
     public static function setArtWebsafeName(
@@ -168,21 +160,21 @@ class ModRewrite extends ModRewriteBase
         int $languageId = 0,
         int $categoryId = 0
     ): bool {
-        // get websafe name
+        // get the web-safe name
         $newName = cString::cleanURLCharacters(conHtmlEntityDecode($urlName));
 
         // remove double or more separators
-        $newName = mr_removeMultipleChars('-', $newName);
+        $newName = PiModRewriteUtil::removeMultipleChars('-', $newName);
 
-        // check if websafe name already exists
+        // check if the web-safe name already exists
         if (self::isInCatArticles($newName, $articleId, $languageId, $categoryId)) {
-            // create new websafe name if exists
+            // create new web-safe name if exists
             $newName = $newName . $articleId;
         }
 
-        // check again - and set name
+        // check again - and set the name
         if (!self::isInCatArticles($newName, $articleId, $languageId, $categoryId)) {
-            // insert websafe name in article list
+            // insert the web-safe name in the article list
             $sql = self::$db->prepare(
                 "UPDATE `%s` SET `urlname` = '%s' WHERE `idart` = %d AND `idlang` = %d",
                 cDb::getTableName('art_lang'),
@@ -197,30 +189,30 @@ class ModRewrite extends ModRewriteBase
     }
 
     /**
-     * Set websafe name in category list.
-     * Insert new websafe name in category list.
+     * Set the web-safe name in the category list.
+     * Insert the new web-safe name in the category list.
      *
      * @param string $urlName Original name (will be converted) or alias
      * @param int $categoryId Category id
      * @param int $languageId Language id
-     * @return bool True if insert was successfully
+     * @return bool True if insert was successful
      * @throws cInvalidArgumentException|cDbException
      */
     public static function setCatWebsafeName(string $urlName = '', int $categoryId = 0, int $languageId = 0): bool
     {
-        // create websafe name
+        // create the web-safe name
         $newName = cString::cleanURLCharacters(conHtmlEntityDecode($urlName));
 
         // remove double or more separators
-        $newName = mr_removeMultipleChars('-', $newName);
+        $newName = PiModRewriteUtil::removeMultipleChars('-', $newName);
 
-        // check if websafe name already exists
+        // check if the web-safe name already exists
         if (self::isInCategories($newName, $categoryId, $languageId)) {
-            // create new websafe name if exists
+            // create new web-safe name if exists
             $newName = $newName . $categoryId;
         }
 
-        // check again - and set name
+        // check again - and set the name
         if (!self::isInCategories($newName, $categoryId, $languageId)) {
             // update urlname
             $sql = self::$db->prepare(
@@ -231,12 +223,12 @@ class ModRewrite extends ModRewriteBase
                 $languageId
             );
 
-            ModRewriteDebugger::log([
+            PiModRewriteDebugger::log([
                 'sName' => $urlName,
                 'iCatId' => $categoryId,
                 'iLangId' => $languageId,
                 'sNewName' => $newName
-            ], 'ModRewrite::setCatWebsafeName $data');
+            ], __METHOD__ . ' $data');
 
             return cSecurity::toBoolean(self::$db->query($sql));
         } else {
@@ -249,12 +241,12 @@ class ModRewrite extends ModRewriteBase
      *
      * @param int $categoryId Category id
      * @param int $languageId Language id
-     * @return bool True if insert was successfully
+     * @return bool True if insert was successful
      * @throws cDbException|cInvalidArgumentException
      */
     public static function setCatUrlPath(int $categoryId = 0, int $languageId = 0): bool
     {
-        $path = self::buildRecursivPath($categoryId, $languageId);
+        $path = self::buildRecursivePath($categoryId, $languageId);
 
         // update urlpath
         $sql = self::$db->prepare(
@@ -265,11 +257,11 @@ class ModRewrite extends ModRewriteBase
             $languageId
         );
 
-        ModRewriteDebugger::log([
+        PiModRewriteDebugger::log([
             'categoryId' => $categoryId,
             'languageId' => $languageId,
             'path' => $path
-        ], 'ModRewrite::setCatUrlPath $data');
+        ], __METHOD__ . ' $data');
 
         return cSecurity::toBoolean(self::$db->query($sql));
     }
@@ -288,29 +280,36 @@ class ModRewrite extends ModRewriteBase
             cDb::getTableName('art_lang'),
             $articleLanguageId
         );
-        if ($record = mr_queryAndNextRecord($sql)) {
+        if ($record = PiModRewriteDatabaseUtil::queryAndNextRecord($sql)) {
             return $record;
         }
         return [];
     }
 
     /**
-     * Get article id by article websafe name
+     * Get article id by article web-safe name
      *
      * @param string $articleName Websafe name
-     * @param int $categoryId Category id
-     * @param int $languageId Language id
+     * @param ?int $categoryId Category id
+     * @param ?int $languageId Language id
      * @return ?int Recent article id or NULL
      * @throws cDbException
      */
-    public static function getArtIdByWebsafeName(string $articleName = '', int $categoryId = 0, int $languageId = 0): ?int
+    public static function getArtIdByWebsafeName(
+        string $articleName = '',
+        ?int $categoryId = null,
+        ?int $languageId = null
+    ): ?int
     {
+        if (!$languageId) {
+            $languageId = cRegistry::getLanguageId();
+        }
         $where = '';
-        if ($languageId > 0) {
+        if (($languageId ?? 0) > 0) {
             $where = ' AND al.idlang = ' . $languageId;
         }
-        // only article name were given
-        if ($categoryId == 0) {
+        // only article name was given
+        if (!$categoryId) {
             // get all basic category ids with parentid=0
             $categoryIds = [];
             self::$db->query(
@@ -334,7 +333,7 @@ class ModRewrite extends ModRewriteBase
             cDb::getTableName('cat_art'),
             $articleName
         );
-        if ($record = mr_queryAndNextRecord($sql)) {
+        if ($record = PiModRewriteDatabaseUtil::queryAndNextRecord($sql)) {
             return cSecurity::toInteger($record['idart']);
         } else {
             return NULL;
@@ -351,10 +350,11 @@ class ModRewrite extends ModRewriteBase
      */
     public static function getCatName(int $categoryId = 0, int $languageId = 0): string
     {
-        $key = 'catname_by_catid_idlang_' . $categoryId . '_' . $languageId;
+        $cacheKey = sprintf('pluginModRewrite_getCatName_%d_%d', $categoryId, $languageId);
 
-        if (isset(self::$lookupTable[$key])) {
-            return self::$lookupTable[$key];
+        $categoryName = cRegistry::getAppVar($cacheKey);
+        if (isset($categoryName)) {
+            return $categoryName;
         }
 
         $sql = self::$db->prepare(
@@ -363,13 +363,13 @@ class ModRewrite extends ModRewriteBase
             $categoryId,
             $languageId
         );
-        if ($record = mr_queryAndNextRecord($sql)) {
+        if ($record = PiModRewriteDatabaseUtil::queryAndNextRecord($sql)) {
             $catName = $record['name'];
         } else {
             $catName = '';
         }
 
-        self::$lookupTable[$key] = $catName;
+        cRegistry::setAppVar($cacheKey, $catName);
 
         return $catName;
     }
@@ -377,7 +377,7 @@ class ModRewrite extends ModRewriteBase
     /**
      * Function to return cat id by path.
      *
-     * Caches the paths at first call to provide faster processing at further calls.
+     * Caches the paths at the first call to provide faster processing at further calls.
      *
      * @param string $path Category path
      * @return int Category id
@@ -401,11 +401,11 @@ class ModRewrite extends ModRewriteBase
 
         $path = str_replace('/', parent::getConfig('category_seperator'), $path);
 
-        $key = 'cat_ids_and_urlpath_' . $clientId . '_' . $languageId;
+        $cacheKey = sprintf('pluginModRewrite_getCatIdByUrlPath_%d_%d', $clientId, $languageId);
 
-        $aPathsCache = self::$lookupTable[$key] ?? [];
+        $pathsCache = cRegistry::getAppVar($cacheKey, []);
 
-        if (count($aPathsCache) == 0) {
+        if (count($pathsCache) == 0) {
             self::$db->query(
                 "SELECT cl.idcat, cl.urlpath "
                 . "FROM `%s` AS cl, `%s` AS c "
@@ -418,7 +418,7 @@ class ModRewrite extends ModRewriteBase
             while (self::$db->nextRecord()) {
                 $urlPath = self::$db->f('urlpath');
                 if ($startFromRoot == 0 && cString::findFirstPos($urlPath, $catSeparator) > 0) {
-                    // paths are stored with prefixed main category, but created
+                    // paths are stored with the prefixed main category, but created
                     // urls doesn't contain the main cat, remove it...
                     $urlPath = cString::getPartOfString(
                         $urlPath,
@@ -430,24 +430,24 @@ class ModRewrite extends ModRewriteBase
                 }
 
                 // store path
-                $aPathsCache[cSecurity::toInteger(self::$db->f('idcat'))] = $urlPath;
+                $pathsCache[cSecurity::toInteger(self::$db->f('idcat'))] = $urlPath;
             }
         }
-        self::$lookupTable[$key] = $aPathsCache;
+        cRegistry::setAppVar($cacheKey, $pathsCache);
 
         // compare paths using the similar_text algorithm
         $fPercent = 0;
         $aResults = [];
-        foreach ($aPathsCache as $id => $pathItem) {
+        foreach ($pathsCache as $id => $pathItem) {
             similar_text($path, $pathItem, $fPercent);
             $aResults[$id] = $fPercent;
         }
 
         arsort($aResults, SORT_NUMERIC);
 
-        ModRewriteDebugger::add($path, 'ModRewrite::getCatIdByUrlPath() $path');
-        ModRewriteDebugger::add($aPathsCache, 'ModRewrite::getCatIdByUrlPath() $aPathsCache');
-        ModRewriteDebugger::add($aResults, 'ModRewrite::getCatIdByUrlPath() $aResults');
+        PiModRewriteDebugger::add($path, __METHOD__ . ' $path');
+        PiModRewriteDebugger::add($pathsCache, __METHOD__ . ' $pathsCache');
+        PiModRewriteDebugger::add($aResults, __METHOD__ . ' $aResults');
 
         $iMinPercentage = cSecurity::toInteger(parent::getConfig('category_resolve_min_percentage', 0));
         $catId = key($aResults);
@@ -470,7 +470,7 @@ class ModRewrite extends ModRewriteBase
      */
     public static function getArtTitle(int $articleId = 0, int $languageId = 0): string
     {
-        $record = mr_queryAndNextRecord(self::$db->prepare(
+        $record = PiModRewriteDatabaseUtil::queryAndNextRecord(self::$db->prepare(
             "SELECT `title` FROM `%s` WHERE `idart` = %s AND `idlang` = %d",
             cDb::getTableName('art_lang'),
             $articleId,
@@ -489,10 +489,11 @@ class ModRewrite extends ModRewriteBase
      */
     public static function getCatLanguages(int $categoryId = 0): array
     {
-        $key = 'cat_idlang_by_catid_' . $categoryId;
+        $cacheKey = sprintf('pluginModRewrite_getCatLanguages_%d', $categoryId);
 
-        if (isset(self::$lookupTable[$key])) {
-            return self::$lookupTable[$key];
+        $languageIds = cRegistry::getAppVar($cacheKey);
+        if (isset($languageIds)) {
+            return $languageIds;
         }
 
         $languageIds = [];
@@ -506,9 +507,9 @@ class ModRewrite extends ModRewriteBase
             $languageIds[] = cSecurity::toInteger(self::$db->f('idlang'));
         }
 
-        self::$lookupTable[$key] = $languageIds;
+        cRegistry::setAppVar($cacheKey, $languageIds);
 
-        return self::$lookupTable[$key];
+        return $languageIds;
     }
 
     /**
@@ -520,7 +521,7 @@ class ModRewrite extends ModRewriteBase
      */
     public static function getArtIds(int $articleLanguageId = 0): array
     {
-        $record = mr_queryAndNextRecord(self::$db->prepare(
+        $record = PiModRewriteDatabaseUtil::queryAndNextRecord(self::$db->prepare(
             "SELECT `urlname`, `idlang` FROM `%s` WHERE `idartlang` = %d",
             cDb::getTableName('art_lang'),
             $articleLanguageId
@@ -542,7 +543,7 @@ class ModRewrite extends ModRewriteBase
      * @return string Link path with correct uri
      * @throws cDbException
      */
-    public static function buildRecursivPath(int $categoryId = 0, int $languageId = 0, int $lastCategoryId = 0): string
+    public static function buildRecursivePath(int $categoryId = 0, int $languageId = 0, int $lastCategoryId = 0): string
     {
         $aDirectories = [];
         $isFinished = false;
@@ -559,7 +560,7 @@ class ModRewrite extends ModRewriteBase
                 $actCategoryId,
                 $languageId
             );
-            if ($record = mr_queryAndNextRecord($sql)) {
+            if ($record = PiModRewriteDatabaseUtil::queryAndNextRecord($sql)) {
                 $aDirectories[] = $record['urlname'];
                 $actCategoryId = cSecurity::toInteger($record['parentid']);
 
@@ -571,8 +572,17 @@ class ModRewrite extends ModRewriteBase
             }
         }
 
-        // reverse array entries and create directory string
+        // reverse array entries and create the directory string
         return join('/', array_reverse($aDirectories));
+    }
+
+    /**
+     * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewrite::buildRecursivePath()} instead.
+     */
+    public static function buildRecursivPath(int $categoryId = 0, int $languageId = 0, int $lastCategoryId = 0): string
+    {
+        cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewrite::buildRecursivePath() instead.');
+        return self::buildRecursivePath($categoryId, $languageId, $lastCategoryId);
     }
 
     /**
@@ -647,16 +657,16 @@ class ModRewrite extends ModRewriteBase
     }
 
     /**
-     * Get article websafe name from article id and language id.
+     * Get the article web-safe name from article id and language id.
      *
      * @param int $articleId Article id
      * @param int $languageId Language id
-     * @return ?string Article websafe name
+     * @return ?string Article web-safe name
      * @throws cDbException
      */
     public static function getArtWebsafeName(int $articleId = 0, int $languageId = 0): ?string
     {
-        $record = mr_queryAndNextRecord(self::$db->prepare(
+        $record = PiModRewriteDatabaseUtil::queryAndNextRecord(self::$db->prepare(
             "SELECT `urlname` FROM `%s` WHERE `idart` = %s AND `idlang` = %d",
             cDb::getTableName('art_lang'),
             $articleId,
@@ -667,15 +677,15 @@ class ModRewrite extends ModRewriteBase
     }
 
     /**
-     * Get article websafe name from idartlang.
+     * Get the article web-safe name from idartlang.
      *
      * @param int $articleLanguageId idartlang
-     * @return ?string Article websafe name
+     * @return ?string Article web-safe name
      * @throws cDbException
      */
     public static function getArtLangWebsafeName(int $articleLanguageId = 0): ?string
     {
-        $record = mr_queryAndNextRecord(self::$db->prepare(
+        $record = PiModRewriteDatabaseUtil::queryAndNextRecord(self::$db->prepare(
             "SELECT `urlname` FROM `%s` WHERE `idartlang` = %d",
             cDb::getTableName('art_lang'),
             $articleLanguageId
@@ -685,7 +695,7 @@ class ModRewrite extends ModRewriteBase
     }
 
     /**
-     * Get name of client by id.
+     * Get the name of the client by id.
      *
      * @param int $clientId Client id
      * @return string Client name
@@ -693,25 +703,27 @@ class ModRewrite extends ModRewriteBase
      */
     public static function getClientName(int $clientId = 0): string
     {
-        $key = 'clientname_by_clientid_' . $clientId;
+        $cacheKey = sprintf('pluginModRewrite_getClientName_%d', $clientId);
 
-        if (isset(self::$lookupTable[$key])) {
-            return self::$lookupTable[$key];
+        $clientName = cRegistry::getAppVar($cacheKey);
+        if (isset($clientName)) {
+            return $clientName;
         }
 
-        $record = mr_queryAndNextRecord(self::$db->prepare(
+        $record = PiModRewriteDatabaseUtil::queryAndNextRecord(self::$db->prepare(
             "SELECT `name` FROM `%s` WHERE `idclient` = %d",
             cDb::getTableName('clients'),
             $clientId
         ));
 
-        self::$lookupTable[$key] = $record ? $record['name'] : '';
+        $clientName = $record ? $record['name'] : '';
+        cRegistry::setAppVar($cacheKey, $clientName);
 
-        return self::$lookupTable[$key];
+        return $clientName;
     }
 
     /**
-     * Get client id from client name
+     * Get the client id by the client name
      *
      * @param string $clientName Client name
      * @return int Client id
@@ -720,44 +732,50 @@ class ModRewrite extends ModRewriteBase
     public static function getClientId(string $clientName = ''): int
     {
         $clientName = cString::toLowerCase($clientName);
-        $key = 'clientid_by_name_' . $clientName;
 
-        if (isset(self::$lookupTable[$key])) {
-            return self::$lookupTable[$key];
+        $cacheKey = sprintf('pluginModRewrite_getClientId_%s', $clientName);
+
+        $clientId = cRegistry::getAppVar($cacheKey);
+        if (isset($clientId)) {
+            return $clientId;
         }
 
-        $record = mr_queryAndNextRecord(self::$db->prepare(
+        $record = PiModRewriteDatabaseUtil::queryAndNextRecord(self::$db->prepare(
             "SELECT `idclient` FROM `%s` WHERE LOWER(`name`) = '%s' OR LOWER(`name`) = '%s'",
             cDb::getTableName('clients'),
             $clientName,
             urldecode($clientName)
         ));
 
-        self::$lookupTable[$key] = $record ? cSecurity::toInteger($record['idclient']) : 0;
+        $clientId = $record ? cSecurity::toInteger($record['idclient']) : 0;
+        cRegistry::setAppVar($cacheKey, $clientId);
 
-        return self::$lookupTable[$key];
+        return $clientId;
     }
 
     /**
-     * Checks if client id exists
+     * Checks if the client id exists
      *
      * @throws cDbException
      */
     public static function clientIdExists(int $clientId): bool
     {
-        $key = 'clientid_exists_' . $clientId;
+        $cacheKey = sprintf('pluginModRewrite_clientIdExists_%d', $clientId);
 
-        if (isset(self::$lookupTable[$key])) {
-            return self::$lookupTable[$key];
+        $clientExists = cRegistry::getAppVar($cacheKey);
+        if (isset($clientExists)) {
+            return $clientExists;
         }
 
-        self::$lookupTable[$key] = cSecurity::toBoolean(mr_queryAndNextRecord(self::$db->prepare(
+        $clientExists = cSecurity::toBoolean(PiModRewriteDatabaseUtil::queryAndNextRecord(self::$db->prepare(
             "SELECT `idclient` FROM `%s` WHERE `idclient` = %d",
             cDb::getTableName('clients'),
             $clientId
         )));
 
-        return self::$lookupTable[$key];
+        cRegistry::setAppVar($cacheKey, $clientExists);
+
+        return $clientExists;
     }
 
     /**
@@ -769,21 +787,23 @@ class ModRewrite extends ModRewriteBase
      */
     public static function getLanguageName(int $languageId = 0): string
     {
-        $key = 'languagename_by_id_' . $languageId;
+        $cacheKey = sprintf('pluginModRewrite_getLanguageName_%d', $languageId);
 
-        if (isset(self::$lookupTable[$key])) {
-            return self::$lookupTable[$key];
+        $languageName = cRegistry::getAppVar($cacheKey);
+        if (isset($languageName)) {
+            return $languageName;
         }
 
-        $record = mr_queryAndNextRecord(self::$db->prepare(
+        $record = PiModRewriteDatabaseUtil::queryAndNextRecord(self::$db->prepare(
             "SELECT `name` FROM `%s` WHERE `idlang` = %d",
             cDb::getTableName('lang'),
             $languageId
         ));
 
-        self::$lookupTable[$key] = $record ? $record['name'] : '';
+        $languageName = $record ? $record['name'] : '';
+        cRegistry::setAppVar($cacheKey, $languageName);
 
-        return self::$lookupTable[$key];
+        return $languageName;
     }
 
     /**
@@ -794,19 +814,22 @@ class ModRewrite extends ModRewriteBase
      */
     public static function languageIdExists(int $languageId): bool
     {
-        $key = 'languageid_exists_' . $languageId;
+        $cacheKey = sprintf('pluginModRewrite_languageIdExists_%d', $languageId);
 
-        if (isset(self::$lookupTable[$key])) {
-            return self::$lookupTable[$key];
+        $languageIdExists = cRegistry::getAppVar($cacheKey);
+        if (isset($languageIdExists)) {
+            return $languageIdExists;
         }
 
-        self::$lookupTable[$key] = cSecurity::toBoolean(mr_queryAndNextRecord(self::$db->prepare(
+        $languageIdExists = cSecurity::toBoolean(PiModRewriteDatabaseUtil::queryAndNextRecord(self::$db->prepare(
             "SELECT `idlang` FROM `%s` WHERE `idlang` = %d",
             cDb::getTableName('lang'),
             $languageId
         )));
 
-        return self::$lookupTable[$key];
+        cRegistry::setAppVar($cacheKey, $languageIdExists);
+
+        return $languageIdExists;
     }
 
     /**
@@ -819,11 +842,12 @@ class ModRewrite extends ModRewriteBase
     public static function getLanguageId(string $sLanguageName = '', int $clientId = 1): int
     {
         $sLanguageName = cString::toLowerCase($sLanguageName);
-        $clientId = cSecurity::toInteger($clientId);
-        $key = 'langid_by_langname_clientid_' . $sLanguageName . '_' . $clientId;
 
-        if (isset(self::$lookupTable[$key])) {
-            return self::$lookupTable[$key];
+        $cacheKey = sprintf('pluginModRewrite_getLanguageId_%s_%d', $sLanguageName, $clientId);
+
+        $languageId = cRegistry::getAppVar($cacheKey);
+        if (isset($languageId)) {
+            return $languageId;
         }
 
         $sql = self::$db->prepare(
@@ -836,13 +860,13 @@ class ModRewrite extends ModRewriteBase
             $sLanguageName,
             urldecode($sLanguageName)
         );
-        if ($record = mr_queryAndNextRecord($sql)) {
+        if ($record = PiModRewriteDatabaseUtil::queryAndNextRecord($sql)) {
             $languageId = cSecurity::toInteger($record['idlang']);
         } else {
             $languageId = 0;
         }
 
-        self::$lookupTable[$key] = $languageId;
+        cRegistry::setAppVar($cacheKey, $languageId);
 
         return $languageId;
     }
@@ -863,7 +887,7 @@ class ModRewrite extends ModRewriteBase
         $clientPath = cRegistry::getFrontendUrl();
 
         if (cString::findFirstOccurrenceCI($url, $clientPath) !== false) {
-            // url includes full html path (scheme host path, etc.)
+            // url includes the full HTML path (scheme host path, etc.)
             $url = str_replace($clientPath, '', $url);
             $htmlPath = $clientPath;
             $aComp = parse_url($htmlPath);
@@ -885,7 +909,7 @@ class ModRewrite extends ModRewriteBase
     }
 
     /**
-     * Function to preclean an url.
+     * Function to preclean the url.
      *
      * Removes absolute path declaration '/front_content.php' or relative path definition to actual
      * dir './front_content.php', ampersand entities '&amp;'
@@ -907,7 +931,7 @@ class ModRewrite extends ModRewriteBase
     }
 
     /**
-     * Recreates all or only empty aliases in categories table.
+     * Recreates all or only empty aliases in the category table.
      *
      * @param bool $onlyEmpty Flag to reset only empty items
      * @throws cDbException|cInvalidArgumentException
@@ -943,7 +967,7 @@ class ModRewrite extends ModRewriteBase
     }
 
     /**
-     * Returns list of all empty category aliases
+     * Returns the list of all empty category aliases
      *
      * @param bool $bOnlyNumber
      * @return array|int
@@ -972,7 +996,7 @@ class ModRewrite extends ModRewriteBase
     }
 
     /**
-     * Recreates all or only empty urlname entries in art_lang table.
+     * Recreates all or only empty urlname entries in the article language table.
      *
      * @param bool $onlyEmpty Flag to reset only empty items
      * @throws cDbException
@@ -1077,3 +1101,9 @@ class ModRewrite extends ModRewriteBase
     }
 
 }
+
+/**
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewrite} instead
+ */
+class ModRewrite extends PiModRewrite
+{}

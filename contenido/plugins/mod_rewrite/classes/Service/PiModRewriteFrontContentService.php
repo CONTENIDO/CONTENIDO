@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Mod Rewrite controller class. Extracts url parts and sets some necessary globals like:
+ * Advanced Mod Rewrite plugin controller class. Extracts url parts and sets some necessary globals like:
  * - $idart
  * - $idcat
  * - $client
@@ -27,7 +27,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage ModRewrite
  */
-class ModRewriteController extends ModRewriteBase
+class PiModRewriteFrontContentService extends PiModRewriteBase
 {
     // Error constants
 
@@ -37,6 +37,11 @@ class ModRewriteController extends ModRewriteBase
     public const ERROR_ARTICLE = 4;
     public const ERROR_POST_VALIDATION = 5;
     public const FRONT_CONTENT = 'front_content.php';
+
+    /**
+     * @var PiModRewriteConfigurationService
+     */
+    private $mrConfigurationService;
 
     /**
      * @var array Extracted request uri path parts by path separator '/'
@@ -49,7 +54,7 @@ class ModRewriteController extends ModRewriteBase
     private $articleName = '';
 
     /**
-     * @var string Remaining path for path resolver (see $GLOBALS['path'])
+     * @var string The remaining path for path resolver (see $GLOBALS['path'])
      */
     private $path = '';
 
@@ -89,8 +94,6 @@ class ModRewriteController extends ModRewriteBase
     private $isRoutingFound = false;
 
     /**
-     * Constructor, sets several properties.
-     *
      * @param string $incomingUrl Incoming URL via request, e.g. `$_SERVER['REQUEST_URI']`.
      */
     public function __construct(string $incomingUrl)
@@ -101,11 +104,12 @@ class ModRewriteController extends ModRewriteBase
             $incomingUrl = cString::toLowerCase($incomingUrl);
         }
 
+        $this->mrConfigurationService = PiModRewriteConfigurationService::getInstance();
         $this->incomingUrl = $incomingUrl;
     }
 
     /**
-     * Getter for overwritten client id ({@see cRegistry::getClientId()})
+     * Getter for the overwritten client id ({@see cRegistry::getClientId()})
      */
     public function getClient(): int
     {
@@ -113,7 +117,7 @@ class ModRewriteController extends ModRewriteBase
     }
 
     /**
-     * Getter for overwritten change client id (see $GLOBALS['changeclient'])
+     * Getter for the overwritten change client id (see $GLOBALS['changeclient'])
      *
      * @return ?int Change client id
      */
@@ -123,7 +127,7 @@ class ModRewriteController extends ModRewriteBase
     }
 
     /**
-     * Getter for article id ({@see cRegistry::getArticleId()})
+     * Getter for the article id ({@see cRegistry::getArticleId()})
      */
     public function getIdArt(): int
     {
@@ -131,7 +135,7 @@ class ModRewriteController extends ModRewriteBase
     }
 
     /**
-     * Getter for category id ({@see cRegistry::getCategoryId()})
+     * Getter for the category id ({@see cRegistry::getCategoryId()})
      */
     public function getIdCat(): int
     {
@@ -139,7 +143,7 @@ class ModRewriteController extends ModRewriteBase
     }
 
     /**
-     * Getter for language id ({@see cRegistry::getLanguageId()})
+     * Getter for the language id ({@see cRegistry::getLanguageId()})
      */
     public function getLang(): int
     {
@@ -155,7 +159,7 @@ class ModRewriteController extends ModRewriteBase
     }
 
     /**
-     * Getter for path (see $GLOBALS['path'])
+     * Getter for the path (see $GLOBALS['path'])
      *
      * @return string Path, used by path resolver
      */
@@ -173,8 +177,8 @@ class ModRewriteController extends ModRewriteBase
     }
 
     /**
-     * @deprecated Use {@see ModRewriteController::isRoutingFound()}.
-     * @since 2.0.1
+     * @deprecated Use {@see PiModRewriteFrontContentService::isRoutingFound()}.
+     * @since 2.1.0
      */
     public function getRoutingFoundState(): bool
     {
@@ -190,8 +194,8 @@ class ModRewriteController extends ModRewriteBase
     }
 
     /**
-     * @deprecated Use {@see ModRewriteController::isError()}.
-     * @since 2.0.1
+     * @deprecated Use {@see PiModRewriteFrontContentService::isError()}.
+     * @since 2.1.0
      */
     public function errorOccured(): bool
     {
@@ -207,7 +211,7 @@ class ModRewriteController extends ModRewriteBase
     }
 
     /**
-     * Getter for occurred error code, see ModRewriteController::ERROR_* constants.
+     * Getter for occurred error code, see PiModRewriteFrontContentService::ERROR_* constants.
      */
     public function getError(): int
     {
@@ -215,9 +219,9 @@ class ModRewriteController extends ModRewriteBase
     }
 
     /**
-     * Main function to call for mod rewrite related preprocessing jobs.
+     * Main function to call for mod-rewrite-related preprocessing jobs.
      *
-     * Executes some private functions to extract request URI and to set needed member variables
+     * Executes some private functions to extract request URI and to set necessary member variables
      * (client, language, article id, category id, etc.)
      *
      * @throws cDbException|cException|cInvalidArgumentException
@@ -228,38 +232,38 @@ class ModRewriteController extends ModRewriteBase
             return;
         }
 
-        $this->_extractRequestUri();
+        $this->extractRequestUri();
 
         $this->initializeClientId();
 
         $this->detectClientId();
 
-        mr_loadConfiguration($this->mrClientId);
+        $this->mrConfigurationService->loadConfiguration($this->mrClientId);
 
         $this->detectLanguageId();
 
         // second call after setting client and language
-        $this->_extractRequestUri(true);
+        $this->extractRequestUri(true);
 
         $this->detectPathResolverSetting();
 
-        $this->_setIdart();
+        $this->initializeArticleId();
 
-        ModRewriteDebugger::add($this->urlComponents, 'ModRewriteController::execute() _setIdart');
+        PiModRewriteDebugger::add($this->urlComponents, __METHOD__ . ' initializeArticleId');
 
         $this->postValidation();
     }
 
     /**
-     * Extracts request URI and sets member variables $this->articleName and $this->urlComponents
+     * Extracts request URI and sets the member variables $this->articleName and $this->urlComponents
      *
-     * @param bool $secondCall Flag about second call of this function, is needed to re-extract
-     *      url if a routing definition was found
+     * @param bool $secondCall Flag about the second call of this function. This is needed to re-extract
+     *      the URL if a routing definition was found.
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    private function _extractRequestUri(bool $secondCall = false)
+    private function extractRequestUri(bool $secondCall = false)
     {
-        $client = cRegistry::getClientId();
+        $clientId = cRegistry::getClientId();
 
         // get REQUEST_URI
         $requestUri = $_SERVER['REQUEST_URI'] ?? '';
@@ -272,7 +276,7 @@ class ModRewriteController extends ModRewriteBase
         $rootDir = parent::getConfig('rootdir');
 
         // check for defined rootdir
-        // allows for root dir being alternatively defined as path of setting client/%frontendpath%
+        // allows for root dir being alternatively defined as the path of setting client/%frontendpath%
         $rootdir = cUriBuilderMR::getMultiClientRootDir($rootDir ?? '');
         if ('/' !== $rootdir && 0 === cString::findFirstPos($requestUri, $this->incomingUrl)) {
             $this->incomingUrl = str_replace($rootdir, '/', $this->incomingUrl);
@@ -296,10 +300,10 @@ class ModRewriteController extends ModRewriteBase
                         $this->isRoutingFound = true;
 
                         // set client language, if not set before
-                        mr_setClientLanguageId($client);
+                        PiModRewriteUtil::setClientLanguageId($clientId);
 
                         //rebuild URL
-                        $url = mr_buildNewUrl($urlComponents['path']);
+                        $url = PiModRewriteUtil::buildNewUrl($urlComponents['path']);
 
                         $urlComponents = $this->parseUrl($url);
 
@@ -334,14 +338,11 @@ class ModRewriteController extends ModRewriteBase
             if ($secondCall) {
                 // reprocess extracting client and language
                 $this->detectClientId();
-                mr_loadConfiguration($this->mrClientId);
+                $this->mrConfigurationService->loadConfiguration($this->mrClientId);
                 $this->detectLanguageId();
             }
         }
-        ModRewriteDebugger::add(
-            $this->urlComponents,
-            'ModRewriteController::_extractRequestUri() $this->urlComponents'
-        );
+        PiModRewriteDebugger::add($this->urlComponents, __METHOD__ . ' $this->urlComponents');
 
         // loop parts array and remove existing 'front_content.php'
         if ($this->hasUrlComponents()) {
@@ -355,7 +356,7 @@ class ModRewriteController extends ModRewriteBase
 
     /**
      * Tries to initialize the client id.
-     * This is required to load the proper plugin configuration for current client.
+     * This is required to load the proper plugin configuration for the current client.
      */
     private function initializeClientId()
     {
@@ -386,7 +387,7 @@ class ModRewriteController extends ModRewriteBase
         // Use global here, the variable will be updated!
         global $lang;
 
-        $actLanguageId = cSecurity::isInteger($lang ?? '0');
+        $actLanguageId = cSecurity::toInteger($lang ?? '0');
 
         if ($actLanguageId > 0 && !cRegistry::getChangeLang() == 0) {
             $this->mrLanguageId = $actLanguageId;
@@ -422,10 +423,10 @@ class ModRewriteController extends ModRewriteBase
         }
 
         if (parent::getConfig('use_client_name') == 1) {
-            $detectedClientId = ModRewrite::getClientId(array_shift($this->urlComponents));
+            $detectedClientId = PiModRewrite::getClientId(array_shift($this->urlComponents));
         } else {
             $detectedClientId = cSecurity::toInteger(array_shift($this->urlComponents));
-            if ($detectedClientId > 0 && !ModRewrite::languageIdExists($detectedClientId)) {
+            if ($detectedClientId > 0 && !PiModRewrite::languageIdExists($detectedClientId)) {
                 $detectedClientId = 0;
             }
         }
@@ -461,10 +462,10 @@ class ModRewriteController extends ModRewriteBase
         if (parent::getConfig('use_language_name') == 1) {
             // thanks to Nicolas Dickinson for multi Client/Language BugFix
             $languageName = cSecurity::toString(array_shift($this->urlComponents));
-            $detectedLanguageId = ModRewrite::getLanguageId($languageName, $this->mrClientId);
+            $detectedLanguageId = PiModRewrite::getLanguageId($languageName, $this->mrClientId);
         } else {
             $detectedLanguageId = cSecurity::toInteger(array_shift($this->urlComponents));
-            if ($detectedLanguageId > 0 && !ModRewrite::clientIdExists($detectedLanguageId)) {
+            if ($detectedLanguageId > 0 && !PiModRewrite::clientIdExists($detectedLanguageId)) {
                 $detectedLanguageId = 0;
             }
         }
@@ -486,7 +487,7 @@ class ModRewriteController extends ModRewriteBase
     private function detectPathResolverSetting()
     {
         // NOTE: Use globals here!
-        global $client, $lang, $idcat;
+        global $lang, $idcat;
 
         if ($this->isError()) {
             return;
@@ -494,24 +495,24 @@ class ModRewriteController extends ModRewriteBase
             return;
         }
 
-        $this->path = '/' . implode('/', $this->urlComponents) . '/';
+        $this->path = sprintf('/%s/', implode('/', $this->urlComponents));
 
-        if (!isset($lang) || cSecurity::isInteger($lang) <= 0) {
+        if (!isset($lang) || cSecurity::toInteger($lang) <= 0) {
             if (cRegistry::getLoadLanguageId()) {
                 // load_client is set in __FRONTEND_PATH__/data/config/config.php
-                $lang = cSecurity::isInteger(cRegistry::getLoadLanguageId());
+                $lang = cSecurity::toInteger(cRegistry::getLoadLanguageId());
             } else {
-                // get client id from table
+                // get client id from the table
                 $clientLanguageCollection = new cApiClientLanguageCollection();
-                $clientLanguageCollection->setWhere('idclient', $client);
+                $clientLanguageCollection->setWhere('idclient', cRegistry::getClientId());
                 $clientLanguageCollection->query();
                 if (($item = $clientLanguageCollection->next()) !== false) {
-                    $lang = cSecurity::isInteger($item->get('idlang'));
+                    $lang = cSecurity::toInteger($item->get('idlang'));
                 }
             }
         }
 
-        $idcat = ModRewrite::getCatIdByUrlPath($this->path);
+        $idcat = PiModRewrite::getCatIdByUrlPath($this->path);
 
         if ($idcat == 0) {
             // category couldn't resolve
@@ -522,8 +523,8 @@ class ModRewriteController extends ModRewriteBase
             $this->path = '';
         }
 
-        ModRewriteDebugger::add($idcat, 'ModRewriteController->detectPathResolverSetting $idcat');
-        ModRewriteDebugger::add($this->path, 'ModRewriteController->detectPathResolverSetting $this->path');
+        PiModRewriteDebugger::add($idcat, __METHOD__ . ' $idcat');
+        PiModRewriteDebugger::add($this->path, __METHOD__ . ' $this->path');
     }
 
     /**
@@ -531,10 +532,10 @@ class ModRewriteController extends ModRewriteBase
      *
      * @throws cDbException|cInvalidArgumentException
      */
-    private function _setIdart()
+    private function initializeArticleId()
     {
         // NOTE: Use globals here!
-        global $idcat, $idart, $lang;
+        global $idcat, $idart;
 
         if ($this->isError()) {
             return;
@@ -542,16 +543,16 @@ class ModRewriteController extends ModRewriteBase
             return;
         }
 
-        $actCategoryId = isset($idcat) && cSecurity::isInteger($idcat) > 0 ? cSecurity::isInteger($idcat) : NULL;
-        $actArticleId = isset($idart) && cSecurity::isInteger($idart) > 0 ? cSecurity::isInteger($idart) : NULL;
+        $actCategoryId = cSecurity::toInteger($idcat ?? 0) > 0 ? cSecurity::toInteger($idcat) : NULL;
+        $actArticleId = cSecurity::toInteger($idart ?? 0) > 0 ? cSecurity::toInteger($idart) : NULL;
         $detectedIdart = 0;
         $defaultStartArtName = parent::getConfig('default_startart_name');
         $currArtName = $this->articleName;
 
-        // start article name in url
+        // start article the name in url
         if (parent::getConfig('add_startart_name_to_url') && !empty($currArtName)) {
             if ($currArtName == $defaultStartArtName) {
-                // stored article name is the default one, remove it ModRewrite::getArtIdByWebsafeName()
+                // The stored article name is the default one, remove it PiModRewrite::getArtIdByWebsafeName()
                 // will find the real article name
                 $currArtName = '';
             }
@@ -566,8 +567,8 @@ class ModRewriteController extends ModRewriteBase
 
         if ($actCategoryId > 0 && $actArticleId == 0 && !empty($currArtName)) {
             // existing idcat with no idart and with article name
-            $detectedIdart = cSecurity::isInteger(
-                ModRewrite::getArtIdByWebsafeName($currArtName, $actCategoryId, $lang)
+            $detectedIdart = cSecurity::toInteger(
+                PiModRewrite::getArtIdByWebsafeName($currArtName, $actCategoryId, $this->getLang())
             );
         } elseif ($actCategoryId > 0 && $actArticleId == 0 && empty($currArtName)) {
             if (
@@ -576,12 +577,12 @@ class ModRewriteController extends ModRewriteBase
             ) {
                 // existing idcat without idart and without article name or with default start article name
                 $catLangColl = new cApiCategoryLanguageCollection();
-                $detectedIdart = $catLangColl->getStartIdartByIdcatAndIdlang($actCategoryId, $lang);
+                $detectedIdart = $catLangColl->getStartIdartByIdcatAndIdlang($actCategoryId, $this->getLang());
             }
         } elseif ($actCategoryId == 0 && $actArticleId == 0 && !empty($currArtName)) {
             // no idcat and idart but article name
-            $detectedIdart = cSecurity::isInteger(
-                ModRewrite::getArtIdByWebsafeName($currArtName, $actCategoryId, $lang)
+            $detectedIdart = cSecurity::toInteger(
+                PiModRewrite::getArtIdByWebsafeName($currArtName, $actCategoryId, $this->getLang())
             );
         }
 
@@ -591,13 +592,13 @@ class ModRewriteController extends ModRewriteBase
             $this->setError(self::ERROR_ARTICLE);
         }
 
-        ModRewriteDebugger::add($detectedIdart, 'ModRewriteController->_setIdart $detectedIdart');
+        PiModRewriteDebugger::add($detectedIdart, __METHOD__ . ' $detectedIdart');
     }
 
     /**
      * Does post validation of the extracted data.
      *
-     * One main goal of this function is to prevent duplicated content, which could happen, if
+     * One main goal of this function is to prevent duplicated content, which could happen if
      * the configuration 'startfromroot' is activated.
      *
      * @throws cDbException|cInvalidArgumentException|cException
@@ -605,7 +606,7 @@ class ModRewriteController extends ModRewriteBase
     private function postValidation()
     {
         // NOTE: Use globals here!
-        global $idcat, $idart, $client;
+        global $idcat, $idart;
 
         if ($this->isError()|| $this->isRoutingFound() || !$this->hasUrlComponents()) {
             return;
@@ -614,8 +615,8 @@ class ModRewriteController extends ModRewriteBase
         if (parent::getConfig('startfromroot') == 1 && parent::getConfig('prevent_duplicated_content') == 1) {
             // prevention of duplicated content if '/firstcat/' is directly requested!
 
-            $idcat = isset($idcat) && cSecurity::isInteger($idcat) > 0 ? cSecurity::isInteger($idcat) : NULL;
-            $idart = isset($idart) && cSecurity::isInteger($idart) > 0 ? cSecurity::isInteger($idart) : NULL;
+            $idcat = cSecurity::toInteger($idcat ?? 0) > 0 ? cSecurity::toInteger($idcat) : NULL;
+            $idart = cSecurity::toInteger($idart ?? 0) > 0 ? cSecurity::toInteger($idart) : NULL;
 
             // compose new parameter
             $params = [];
@@ -631,16 +632,16 @@ class ModRewriteController extends ModRewriteBase
             }
 
             // set client language, if not set before
-            mr_setClientLanguageId(cSecurity::toInteger($client));
+            PiModRewriteUtil::setClientLanguageId(cRegistry::getClientId());
 
             //rebuild url
-            $url = mr_buildNewUrl(self::FRONT_CONTENT . '?' . http_build_query($params));
+            $url = PiModRewriteUtil::buildNewUrl(self::FRONT_CONTENT . '?' . http_build_query($params));
 
             $urlComponents = @parse_url($this->incomingUrl);
             $incomingUrl = $urlComponents['path'] ?? '';
 
-            ModRewriteDebugger::add($url, 'ModRewriteController->postValidation validate url');
-            ModRewriteDebugger::add($incomingUrl, 'ModRewriteController->postValidation incomingUrl');
+            PiModRewriteDebugger::add($url, __METHOD__ . ' validate url');
+            PiModRewriteDebugger::add($incomingUrl, __METHOD__ . ' incomingUrl');
 
             // now the new generated uri should be identical with the request uri
             if ($incomingUrl !== $url) {
@@ -658,9 +659,9 @@ class ModRewriteController extends ModRewriteBase
     private function parseUrl(string $url)
     {
         $this->resolvedUrl = $url;
-        $url = ModRewriteUrlUtil::getInstance()->toContenidoUrl($url);
+        $url = PiModRewriteUrlUtil::getInstance()->toContenidoUrl($url);
 
-        return @parse_url(ModRewriteUrlUtil::getInstance()->toContenidoUrl($url));
+        return @parse_url(PiModRewriteUrlUtil::getInstance()->toContenidoUrl($url));
     }
 
     /**
@@ -672,7 +673,7 @@ class ModRewriteController extends ModRewriteBase
     }
 
     /**
-     * Checks if current request was a root request.
+     * Checks if the current request was a root request.
      */
     private function isRootRequest(): bool
     {
@@ -689,3 +690,9 @@ class ModRewriteController extends ModRewriteBase
     }
 
 }
+
+/**
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteFrontContentService} instead.
+ */
+class ModRewriteController extends PiModRewriteFrontContentService
+{}

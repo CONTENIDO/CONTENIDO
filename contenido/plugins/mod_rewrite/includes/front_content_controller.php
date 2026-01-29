@@ -1,9 +1,8 @@
 <?php
 
 /**
- * Mod Rewrite front_content.php controller. Does some preprocessing jobs, tries
- * to set following variables, depending on mod rewrite configuration and if
- * request part exists:
+ * Advanced Mod Rewrite front_content.php controller. Does some preprocessing jobs, tries to set the
+ * following variables, depending on mod rewrite configuration and if the request part exists:
  * - $client
  * - $changeclient
  * - $lang
@@ -22,7 +21,8 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-global $changeclient, $changelang, $path, $mr_preprocessedPageError;
+// NOTE: Use global here, the will be updated with the values from the `PiModRewriteFrontContentService`.
+global $client, $changeclient, $lang, $changelang, $idart, $idcat, $path;
 
 $client = cRegistry::getClientId();
 $cfgClient = cRegistry::getClientConfig();
@@ -30,19 +30,16 @@ $lang = cRegistry::getLanguageId();
 $idart = cRegistry::getArticleId();
 $idcat = cRegistry::getCategoryId();
 
-ModRewriteDebugger::add(ModRewrite::getConfig(), 'front_content_controller.php mod rewrite config');
+PiModRewriteDebugger::add(PiModRewrite::getConfig(), basename(__FILE__) . ' mod rewrite config');
 
-// get REQUEST_URI
-$requestUri = $_SERVER['REQUEST_URI'] ?? '';
+// Run the URL resolving process
+$mrFcService = new PiModRewriteFrontContentService($_SERVER['REQUEST_URI'] ?? '');
+$mrFcService->execute();
 
-// create a mod rewrite controller instance and execute processing
-$mrController = new ModRewriteController($requestUri);
-$mrController->execute();
+if ($mrFcService->isError()) {
+    // Some error occurred (idcat and or idart couldn't be resolved)
 
-if ($mrController->isError()) {
-    // an error occurred (idcat and or idart couldn't catch by controller)
-
-    $redirectToErrorPage = ModRewrite::getConfig('redirect_invalid_article_to_errorsite', 0);
+    $redirectToErrorPage = PiModRewrite::getConfig('redirect_invalid_article_to_errorsite', 0);
     // try to redirect to the error page if desired
     if ($redirectToErrorPage == 1 && $client > 0 && $lang > 0) {
         // error page
@@ -53,53 +50,47 @@ if ($mrController->isError()) {
             'lang' => $lang,
             'error' => '1'
         ]);
-        mr_header($errsite);
+        PiModRewriteUtil::responseHeader($errsite);
         exit();
     }
 } else {
+    // Set some global variables
 
-    // TODO The code below has no effect. The `front_content_controller.php` runs within a function scope,
-    //      it dosen't modify the global variables, see the import of globals at the top of this file.
-    //      This should be checked and adjusted.
-
-    // set some global variables
-
-    if ($mrController->getClient()) {
-        $client = $mrController->getClient();
+    if ($mrFcService->getClient()) {
+        $client = $mrFcService->getClient();
     }
 
-    if ($mrController->getChangeClient()) {
-        $changeclient = $mrController->getChangeClient();
+    if ($mrFcService->getChangeClient()) {
+        $changeclient = $mrFcService->getChangeClient();
     }
 
-    if ($mrController->getLang()) {
-        $lang = $mrController->getLang();
+    if ($mrFcService->getLang()) {
+        $lang = $mrFcService->getLang();
     }
 
-    if ($mrController->getChangeLang()) {
-        $changelang = $mrController->getChangeLang();
+    if ($mrFcService->getChangeLang()) {
+        $changelang = $mrFcService->getChangeLang();
     }
 
-    if ($mrController->getIdArt()) {
-        $idart = $mrController->getIdArt();
+    if ($mrFcService->getIdArt()) {
+        $idart = $mrFcService->getIdArt();
     }
 
-    if ($mrController->getIdCat()) {
-        $idcat = $mrController->getIdCat();
+    if ($mrFcService->getIdCat()) {
+        $idcat = $mrFcService->getIdCat();
     }
 
-    if ($mrController->getPath()) {
-        $path = $mrController->getPath();
+    if ($mrFcService->getPath()) {
+        $path = $mrFcService->getPath();
     }
 }
 
-// some debugs
-ModRewriteDebugger::add($mr_preprocessedPageError, 'mr $mr_preprocessedPageError');
-if ($mrController->getError()) {
-    ModRewriteDebugger::add($mrController->getError(), 'mr error');
+// Debug stuff
+if ($mrFcService->getError()) {
+    PiModRewriteDebugger::add($mrFcService->getError(), basename(__FILE__). ' error');
 }
-ModRewriteDebugger::add($idart, 'mr $idart');
-ModRewriteDebugger::add($idcat, 'mr $idcat');
-ModRewriteDebugger::add($lang, 'mr $lang');
-ModRewriteDebugger::add($client, 'mr $client');
+PiModRewriteDebugger::add($idart, basename(__FILE__) . ' $idart');
+PiModRewriteDebugger::add($idcat, basename(__FILE__) . ' $idcat');
+PiModRewriteDebugger::add($lang, basename(__FILE__) . ' $lang');
+PiModRewriteDebugger::add($client, basename(__FILE__) . ' $client');
 

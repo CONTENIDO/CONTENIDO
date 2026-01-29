@@ -18,10 +18,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 ##### Initialization
 
 $cfg = cRegistry::getConfig();
-$client = cRegistry::getClientId();
+$clientId = cRegistry::getClientId();
 $pluginName = $cfg['pi_mod_rewrite']['pluginName'];
 
-if ($client <= 0) {
+if ($clientId <= 0) {
     // if there is no client selected, display an empty page
     $page = new cGuiPage('mod_rewrite_contentexpert', 'mod_rewrite');
     $page->displayCriticalError(i18n("No Client selected"));
@@ -35,11 +35,11 @@ $debug = false;
 ################################################################################
 ##### Some variables
 
-$mrController = new ModRewrite_ContentExpertController();
+$mrController = new PiModRewriteExpertController();
 
-$aMrCfg = ModRewrite::getConfig();
+$aMrCfg = PiModRewrite::getConfig();
 
-$aHtaccessInfo = ModRewrite::getHtaccessInfo();
+$aHtaccessInfo = PiModRewrite::getHtaccessInfo();
 
 // define basic data contents (used for template)
 $view = $mrController->getView();
@@ -77,13 +77,13 @@ $view->lng_or = i18n('or', $pluginName);
 $view->lng_download = i18n('Download', $pluginName);
 $view->lng_download_info = i18n('Download selected .htaccess template to copy it to the destination folder<br>or to take over the settings manually.', $pluginName);
 
-$view->lng_resetaliases = i18n('Reset category-/ and article aliases', $pluginName);
+$view->lng_reset_aliases = i18n('Reset category-/ and article aliases', $pluginName);
 $view->lng_reset_empty_link = i18n('Reset only empty aliases', $pluginName);
 $view->lng_reset_empty_info = i18n('Only empty aliases will be reset, existing aliases, e. g. manually set aliases, will not be changed.', $pluginName);
-$view->lng_resetall_link = i18n('Reset all aliases', $pluginName);
-$view->lng_resetall_info = i18n('Reset all category-/article aliases. Existing aliases will be overwritten.', $pluginName);
+$view->lng_reset_all_link = i18n('Reset all aliases', $pluginName);
+$view->lng_reset_all_info = i18n('Reset all category-/article aliases. Existing aliases will be overwritten.', $pluginName);
 $view->lng_note = i18n('Note', $pluginName);
-$view->lng_resetaliases_note = i18n('This process could require some time depending on amount of categories/articles.<br>The aliases will not contain the configured plugin separators, but the CONTENIDO default separators \'/\' und \'-\', e. g. \'/category-word/article-word\'.<br>Execution of this function ma be helpful to prepare all or empty aliases for the usage by the plugin.', $pluginName);
+$view->lng_reset_aliases_note = i18n('This process could require some time depending on amount of categories/articles.<br>The aliases will not contain the configured plugin separators, but the CONTENIDO default separators \'/\' und \'-\', e. g. \'/category-word/article-word\'.<br>Execution of this function ma be helpful to prepare all or empty aliases for the usage by the plugin.', $pluginName);
 
 $view->lng_discard_changes = i18n('Discard changes', $pluginName);
 $view->lng_save_changes = i18n('Save changes', $pluginName);

@@ -1,15 +1,14 @@
 <?php
 
 /**
- * Mod Rewrite front_content.php controller. Does some preprocessing jobs, tries
- * to set following variables, depending on mod rewrite configuration and if
- * request part exists:
- * - $client
- * - $changeclient
- * - $lang
- * - $changelang
- * - $idart
- * - $idcat
+ * NOTE:
+ * Functions in this file are deprecated since Advanced Mod Rewrite 2.1.0.
+ * They are split into separate classes in the new version as follows.
+ * - @see PiModRewriteConfigurationService
+ * - @see PiModRewriteDatabaseUtil
+ * - @see PiModRewriteDebugger
+ * - @see PiModRewriteRequestUtil
+ * - @see PiModRewriteUtil
  *
  * @package    Plugin
  * @subpackage ModRewrite
@@ -25,747 +24,196 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Processes the mod_rewrite related job for a new created tree.
- * Will be called by the chain 'Contenido.Action.str_newtree.AfterCall'.
- *
- * @param array $data Associative array with some values
- * @return array Passed parameter
- * @throws cDbException|cInvalidArgumentException
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUtil::strNewTree()} instead.
  */
 function mr_strNewTree(array $data): array
 {
-    $lang = cRegistry::getLanguageId();
-
-    ModRewriteDebugger::log($data, 'mr_strNewTree $data');
-
-    if (cSecurity::toInteger($data['newcategoryid']) > 0) {
-        $mrCatAlias = trim($data['categoryalias']) !== '' ? trim($data['categoryalias']) : trim($data['categoryname']);
-        // set new urlname - because original set urlname isn't validated for double entries in the same parent category
-        ModRewrite::setCatWebsafeName($mrCatAlias, cSecurity::toInteger($data['newcategoryid']), $lang);
-        ModRewrite::setCatUrlPath(cSecurity::toInteger($data['newcategoryid']), $lang);
-    }
-
-    return $data;
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteUtil::strNewTree() instead.');
+    return PiModRewriteUtil::strNewTree($data);
 }
 
 /**
- * Processes the mod_rewrite related job for created new category.
- * Will be called by the chain 'Contenido.Action.str_newcat.AfterCall'.
- *
- * @param array $data Associative array with some values
- * @return array Passed parameter
- * @throws cDbException|cInvalidArgumentException
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUtil::strNewCategory()} instead.
  */
 function mr_strNewCategory(array $data): array
 {
-    $lang = cRegistry::getLanguageId();
-
-    ModRewriteDebugger::log($data, 'mr_strNewCategory $data');
-
-    if (cSecurity::toInteger($data['newcategoryid']) > 0) {
-        $mrCatAlias = trim($data['categoryalias']) !== '' ? trim($data['categoryalias']) : trim($data['categoryname']);
-        // set new urlname - because original set urlname isn't validated for double entries in the same parent category
-        ModRewrite::setCatWebsafeName($mrCatAlias, cSecurity::toInteger($data['newcategoryid']), $lang);
-        ModRewrite::setCatUrlPath(cSecurity::toInteger($data['newcategoryid']), $lang);
-    }
-
-    return $data;
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteUtil::strNewTree() instead.');
+    return PiModRewriteUtil::strNewCategory($data);
 }
 
 /**
- * Processes the mod_rewrite related job for renamed category
- * 2010-02-01: and now all existing subcategories and modify their paths too...
- * 2010-02-01: max 50 recursion levels
- *
- * Will be called by the chain 'Contenido.Action.str_renamecat.AfterCall'.
- *
- * @param array $data Associative array with some values
- * @return array Passed parameter
- * @throws cDbException|cException|cInvalidArgumentException
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUtil::strRenameCategory()} instead.
  */
 function mr_strRenameCategory(array $data): array
 {
-    ModRewriteDebugger::log($data, 'mr_strRenameCategory $data');
-
-    // hes 20100102
-    // maximal 50 recursion level
-    $recursion = cSecurity::toInteger($data['recursion'] ?? '1');
-    if ($recursion > 50) {
-        exit("#20100201-1503: sorry - maximum function nesting level of " . $recursion . " reached");
-    }
-
-    $mrCatAlias = trim($data['newcategoryalias']) !== '' ? trim($data['newcategoryalias']) : trim($data['newcategoryname']);
-    if ($mrCatAlias != '') {
-        // set new urlname - because original set urlname isn't validated for double entries in the same parent category
-        ModRewrite::setCatWebsafeName($mrCatAlias, cSecurity::toInteger($data['idcat']), cSecurity::toInteger($data['lang']));
-        ModRewrite::setCatUrlPath(cSecurity::toInteger($data['idcat']), cSecurity::toInteger($data['lang']));
-    }
-
-    // hes 20100102
-    // now dive into all existing subcategories and modify their paths too...
-    $oCatColl = new cApiCategoryCollection('`parentid` = ' . $data['idcat']);
-
-    while ($oCat = $oCatColl->next()) {
-        // hes 20100102
-        $oCatLanColl = new cApiCategoryLanguageCollection(
-            '`idcat` = ' . $oCat->get('idcat') . ' AND `idlang` = ' . cSecurity::toInteger($data['lang'])
-        );
-        if ($oCatLan = $oCatLanColl->next()) {
-            // hes 20100102
-            $childData = [
-                'idcat' => $oCat->get('idcat'),
-                'lang' => cSecurity::toInteger($data['lang']),
-                'newcategoryname' => $oCatLan->get('name'),
-                'newcategoryalias' => $oCatLan->get('urlname'),
-                'recursion' => $recursion + 1
-            ];
-
-            $resData = mr_strRenameCategory($childData);
-        }
-    }
-
-    return $data;
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteUtil::strRenameCategory() instead.');
+    return PiModRewriteUtil::strRenameCategory($data);
 }
 
 /**
- * Processes the mod_rewrite related job after moving a category up.
- * Will be called by the chain 'Contenido.Action.str_moveupcat.AfterCall'.
- *
- * @param int $categoryId Category id
- * @return int|void Category id
- * @throws cDbException|cInvalidArgumentException|cException
- * @todo  do we really need processing of the category? there is no mr relevant data
- *        changes while moving the category on same level, level and name won't change
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUtil::strMoveUpCategory()} instead.
  */
 function mr_strMoveUpCategory($categoryId)
 {
-    $categoryId = cSecurity::toInteger($categoryId);
-
-    ModRewriteDebugger::log($categoryId, 'mr_strMoveUpCategory $categoryId');
-
-    // category check
-    $cat = new cApiCategory($categoryId);
-    if (!$cat->get('preid')) {
-        return;
-    }
-
-    // get all cat languages
-    $aIdLang = ModRewrite::getCatLanguages($categoryId);
-
-    // update ...
-    foreach ($aIdLang as $iIdLang) {
-        $iIdLang = cSecurity::toInteger($iIdLang);
-        // get urlname
-        $categoryName = ModRewrite::getCatName($categoryId, $iIdLang);
-        // set new urlname - because original set urlname isn't validated for double entries in the same parent category
-        ModRewrite::setCatWebsafeName($categoryName, $categoryId, $iIdLang);
-    }
-
-    return $categoryId;
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteUtil::strMoveUpCategory() instead.');
+    return PiModRewriteUtil::strMoveUpCategory($categoryId);
 }
 
 /**
- * Processes the mod_rewrite related job after moving a category down.
- *
- * Will be called by the chain 'Contenido.Action.str_movedowncat.AfterCall'.
- *
- * @param int $categoryId Id of category being moved down
- * @return int|void Category id
- * @throws cDbException|cInvalidArgumentException|cException
- * @todo  do we really need processing of the category? there is no mr relevant data
- *        changes while moving the category on same level, level and name won't change
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUtil::strMovedownCategory()} instead.
  */
 function mr_strMovedownCategory($categoryId)
 {
-    $categoryId = cSecurity::toInteger($categoryId);
-
-    ModRewriteDebugger::log($categoryId, 'mr_strMovedownCategory $categoryId');
-
-    // category check
-    $cat = new cApiCategory($categoryId);
-    if (!$cat->get('id')) {
-        return;
-    }
-
-    // get all cat languages
-    $languageIds = ModRewrite::getCatLanguages($categoryId);
-
-    // update ...
-    foreach ($languageIds as $languageId) {
-        // get urlname
-        $categoryName = ModRewrite::getCatName($categoryId, $languageId);
-        // set new urlname - because original set urlname isn't validated for double entries in the same parent category
-        ModRewrite::setCatWebsafeName($categoryName, $categoryId, $languageId);
-    }
-
-    return $categoryId;
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteUtil::strMovedownCategory() instead.');
+    return PiModRewriteUtil::strMovedownCategory($categoryId);
 }
 
 /**
- * Processes the mod_rewrite related job after moving a category subtree.
- * Will be called by the chain 'Contenido.Action.str_movesubtree.AfterCall'.
- *
- * @param array $data Associative array with some values
- * @return array|void Passed parameter
- * @throws cDbException|cException|cInvalidArgumentException
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUtil::strMoveSubtree()} instead.
  */
 function mr_strMoveSubtree(array $data)
 {
-    ModRewriteDebugger::log($data, 'mr_strMoveSubtree $data');
-
-    // category check
-    if (cSecurity::toInteger($data['idcat']) <= 0) {
-        return;
-    }
-
-    // next category check
-    $cat = new cApiCategory($data['idcat']);
-    if (!$cat->get('idcat')) {
-        return;
-    }
-
-    // get all cat languages
-    $languageIds = ModRewrite::getCatLanguages($data['idcat']);
-
-    // update all languages
-    foreach ($languageIds as $languageId) {
-        // get urlname
-        $categoryName = ModRewrite::getCatName(cSecurity::toInteger($data['idcat']), $languageId);
-        // set new urlname - because original set urlname isn't validated for double entries in the same parent category
-        ModRewrite::setCatWebsafeName($categoryName, cSecurity::toInteger($data['idcat']), $languageId);
-        ModRewrite::setCatUrlPath(cSecurity::toInteger($data['idcat']), $languageId);
-    }
-
-    // now dive into all existing subcategories and modify their paths too...
-    $categoryCollection = new cApiCategoryCollection('`parentid` = ' . $data['idcat']);
-    while ($item = $categoryCollection->next()) {
-        mr_strMoveSubtree(['idcat' => cSecurity::toInteger($item->get('idcat'))]);
-    }
-
-    return $data;
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteUtil::strMoveSubtree() instead.');
+    return PiModRewriteUtil::strMoveSubtree($data);
 }
 
 /**
- * Processes the mod_rewrite related job after copying a category subtree.
- * Will be called by the chain 'Contenido.Category.strCopyCategory'.
- *
- * @param array $data Associative array with some values
- * @return array|void  Passed parameter
- * @throws cDbException|cInvalidArgumentException
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUtil::strCopyCategory()} instead.
  */
 function mr_strCopyCategory(array $data)
 {
-    ModRewriteDebugger::log($data, 'mr_strCopyCategory $data');
-
-    $categoryId = (int)$data['newcat']->get('idcat');
-    if ($categoryId <= 0) {
-        return $data;
-    }
-
-    // get all cat languages
-    $languageIds = ModRewrite::getCatLanguages($categoryId);
-
-    // update ...
-    foreach ($languageIds as $languageId) {
-        // get urlname
-        $categoryName = ModRewrite::getCatName($categoryId, $languageId);
-        // set new urlname - because original set urlname isn't validated for double entries in the same parent category
-        ModRewrite::setCatWebsafeName($categoryName, $categoryId, $languageId);
-        ModRewrite::setCatUrlPath($categoryId, $languageId);
-    }
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteUtil::strCopyCategory() instead.');
+    return PiModRewriteUtil::strCopyCategory($data);
 }
 
 /**
- * Processes the mod_rewrite related job during the structure synchronization process,
- * sets the urlpath of the current category.
- * Will be called by the chain 'Contenido.Category.strSyncCategory_Loop'.
- *
- * @param array $data Associative array with some values
- * @return array Passed parameter
- * @throws cDbException|cInvalidArgumentException
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUtil::strSyncCategory()} instead.
  */
 function mr_strSyncCategory(array $data): array
 {
-    ModRewriteDebugger::log($data, 'mr_strSyncCategory $data');
-    ModRewrite::setCatUrlPath(cSecurity::toInteger($data['idcat']), cSecurity::toInteger($data['idlang']));
-
-    return $data;
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteUtil::strSyncCategory() instead.');
+    return PiModRewriteUtil::strSyncCategory($data);
 }
 
 /**
- * Processes the mod_rewrite related job for saved articles (new or modified article).
- * Will be called by the chain 'Contenido.Action.con_saveart.AfterCall'.
- *
- * @param array $data Associative array with some article properties
- * @return array Passed parameter
- * @throws cDbException|cInvalidArgumentException
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUtil::conSaveArticle()} instead.
  */
 function mr_conSaveArticle(array $data): array
 {
-    global $tmp_firstedit;
-
-    ModRewriteDebugger::log($data, 'mr_conSaveArticle $data');
-
-    if (cSecurity::toInteger($data['idart']) == 0) {
-        return $data;
-    }
-
-    if (cString::getStringLength(trim($data['urlname'])) == 0) {
-        $data['urlname'] = $data['title'];
-    }
-
-    if ($tmp_firstedit == 1) {
-        // new article
-        $aLanguages = getLanguagesByClient(cRegistry::getClientId());
-
-        foreach ($aLanguages as $iLang) {
-            ModRewrite::setArtWebsafeName(
-                cSecurity::toString($data['urlname']),
-                cSecurity::toInteger($data['idart']),
-                cSecurity::toInteger($iLang),
-                cSecurity::toInteger($data['idcat'])
-            );
-        }
-    } else {
-        // modified article
-        $aArticle = ModRewrite::getArtIdByArtlangId(cSecurity::toInteger($data['idartlang']));
-
-        if (isset($aArticle['idart']) && isset($aArticle['idlang'])) {
-            ModRewrite::setArtWebsafeName(
-                cSecurity::toString($data['urlname']),
-                cSecurity::toInteger($aArticle['idart']),
-                cSecurity::toInteger($aArticle['idlang']),
-                cSecurity::toInteger($data['idcat'])
-            );
-        }
-    }
-
-    return $data;
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteUtil::conSaveArticle() instead.');
+    return PiModRewriteUtil::conSaveArticle($data);
 }
 
 /**
- * Processes the mod_rewrite related job for articles being moved.
- * Will be called by the chain 'Contenido.Article.conMoveArticles_Loop'.
- *
- * @param array|mixed $data Associative array with record entries
- * @return array|mixed Loop through of arguments
- * @throws cDbException|cInvalidArgumentException
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUtil::conMoveArticles()} instead.
  */
 function mr_conMoveArticles($data)
 {
-    ModRewriteDebugger::log($data, 'mr_conMoveArticles $data');
-
-    // too defensive but secure way
-    if (!is_array($data)) {
-        return $data;
-    } elseif (!isset($data['idartlang'])) {
-        return $data;
-    } elseif (!isset($data['idart'])) {
-        return $data;
-    }
-
-    $articleData = ModRewrite::getArtIds(cSecurity::toString($data['idartlang']));
-    if (count($articleData) == 2) {
-        ModRewrite::setArtWebsafeName(
-            cSecurity::toString($articleData['urlname']),
-            cSecurity::toInteger($data['idart']),
-            cSecurity::toInteger($articleData['idlang'])
-        );
-    }
-
-    return $data;
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteUtil::conMoveArticles() instead.');
+    return PiModRewriteUtil::conMoveArticles($data);
 }
 
 /**
- * Processes the mod_rewrite related job for duplicated articles.
- * Will be called by the chain 'Contenido.Article.conCopyArtLang_AfterInsert'.
- *
- * @param array|mixed $data Associative array with record entries
- * @return array|mixed Loop through of arguments
- * @throws cDbException|cInvalidArgumentException
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUtil::conCopyArtLang()} instead.
  */
 function mr_conCopyArtLang($data)
 {
-    ModRewriteDebugger::log($data, 'mr_conCopyArtLang $data');
-
-    // too defensive but secure way
-    if (!is_array($data)) {
-        return $data;
-    } elseif (!isset($data['title'])) {
-        return $data;
-    } elseif (!isset($data['idart'])) {
-        return $data;
-    } elseif (!isset($data['idlang'])) {
-        return $data;
-    }
-
-    ModRewrite::setArtWebsafeName(
-        cSecurity::toString($data['title']),
-        cSecurity::toInteger($data['idart']),
-        cSecurity::toInteger($data['idlang'])
-    );
-
-    return $data;
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteUtil::conCopyArtLang() instead.');
+    return PiModRewriteUtil::conCopyArtLang($data);
 }
 
 /**
- * Processes the mod_rewrite related job for synchronized articles.
- * Will be called by the chain 'Contenido.Article.conSyncArticle_AfterInsert'.
- *
- * @param array|mixed $data Associative array with record entries as follows:
- *      <code>
- *      [
- *          'src_art_lang' => Recordset (associative array) of source item from con_art_lang table
- *          'dest_art_lang' => Recordset (associative array) of inserted destination item from con_art_lang table
- *      ]
- *      </code>
- * @return array|mixed Loop through of argument
- * @throws cDbException|cInvalidArgumentException|cException
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUtil::conSyncArticle()} instead.
  */
 function mr_conSyncArticle($data)
 {
-    ModRewriteDebugger::log($data, 'mr_conSyncArticle $data');
-
-    // too defensive but secure way
-    if (!is_array($data)) {
-        return $data;
-    } elseif (!isset($data['src_art_lang']) || !is_array($data['src_art_lang'])) {
-        return $data;
-    } elseif (!isset($data['dest_art_lang']) || !is_array($data['dest_art_lang'])) {
-        return $data;
-    } elseif (!isset($data['dest_art_lang']['idart'])) {
-        return $data;
-    } elseif (!isset($data['dest_art_lang']['idlang'])) {
-        return $data;
-    }
-
-    if (!isset($data['src_art_lang']['urlname'])) {
-        $artLang = new cApiArticleLanguage($data['src_art_lang']['idartlang']);
-        $urlname = $artLang->get('urlname');
-    } else {
-        $urlname = $data['src_art_lang']['urlname'];
-    }
-
-    if ($urlname) {
-        ModRewrite::setArtWebsafeName(
-            $urlname,
-            cSecurity::toInteger($data['dest_art_lang']['idart']),
-            cSecurity::toInteger($data['dest_art_lang']['idlang'])
-        );
-    }
-
-    return $data;
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteUtil::conSyncArticle() instead.');
+    return PiModRewriteUtil::conSyncArticle($data);
 }
 
 /**
- * Works as a wrapper for Contenido_Url.
- * Will also be called by the chain 'Contenido.Frontend.CreateURL'.
- *
- * @param string $url URL to rebuild
- * @return string New URL
- * @throws cInvalidArgumentException|cException|cDbException
- * @todo: Still exists because of downwards compatibility (some other modules/plugins are using it)
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUtil::buildNewUrl()} instead.
  */
 function mr_buildNewUrl(string $url): string
 {
-    ModRewriteDebugger::add($url, 'mr_buildNewUrl() in -> $url');
-
-    $lang = cRegistry::getLanguageId();
-    $oUrl = cUri::getInstance();
-    $aUrl = $oUrl->parse($url);
-
-    // add language, if not exists
-    if (!isset($aUrl['params']['lang'])) {
-        $aUrl['params']['lang'] = $lang;
-    }
-
-    // build url
-    $newUrl = $oUrl->build($aUrl['params']);
-
-    // add existing fragment
-    if (isset($aUrl['fragment'])) {
-        $newUrl .= '#' . $aUrl['fragment'];
-    }
-
-    $arr = [
-        'in' => $url,
-        'out' => $newUrl,
-    ];
-    ModRewriteDebugger::add($arr, 'mr_buildNewUrl() in -> out');
-
-    return $newUrl;
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteUtil::buildNewUrl() instead.');
+    return PiModRewriteUtil::buildNewUrl($url);
 }
 
 /**
- * Replaces existing anchors inside the passed code while rebuilding the urls.
- * Will be called by the chain 'Contenido.Content.conGenerateCode' or
- * 'Contenido.Frontend.HTMLCodeOutput' depending on mod_rewrite settings.
- *
- * @param string $code Code to prepare
- * @return string New code
- * @throws cInvalidArgumentException|cException|cDbException
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUtil::buildGeneratedCode()} instead.
  */
 function mr_buildGeneratedCode(string $code): string
 {
-    ModRewriteDebugger::add($code, 'mr_buildGeneratedCode() in');
-
-    $sseStartTime = getmicrotime();
-
-    // mod rewrite is activated
-    if (ModRewrite::isEnabled()) {
-        // anchor hack
-        $code = preg_replace_callback("/<a([^>]*)href\s*=\s*[\"|\'][\/]#(.?|.+?)[\"|\']([^>]*)>/i", function ($match) {
-            return ModRewrite::rewriteHtmlAnchor($match);
-        }, $code);
-
-        // remove fucking tinymce single quote entities:
-        $code = str_replace("&#39;", "'", $code);
-
-        // == IE hack with wrong base href interpretation
-        // get base uri
-        // $sBaseUri = cRegistry::getFrontendUrl();
-        // $sBaseUri = cApiCecHook::execute('Contenido.Frontend.BaseHrefGeneration', $sBaseUri);
-        // $code = preg_replace("/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/ie", "stripslashes('\\1{$sBaseUri}upload/\\2\\3')", $code);
-
-        $baseUri = cRegistry::getFrontendUrl();
-        $baseUri = cApiCecHook::executeAndReturn('Contenido.Frontend.BaseHrefGeneration', $baseUri);
-
-        // CON-1389 modifier /e is deprecated as of PHP 5.5
-        $code = preg_replace_callback("/([\"|\'|=])upload\/(.?|.+?)([\"|\'|>])/i", function ($match) use ($baseUri) {
-            return stripslashes($match[1] . $baseUri . 'upload/' . $match[2] . $match[3]);
-        }, $code);
-
-        // define some preparations to replace /front_content.php & ./front_content.php
-        // against front_content.php, because urls should start with front_content.php
-        $aPattern = [
-            '/([\"|\'|=])\/front_content\.php(.?|.+?)([\"|\'|>])/i',
-            '/([\"|\'|=])\.\/front_content\.php(.?|.+?)([\"|\'|>])/i'
-        ];
-
-        $aReplace = [
-            '\1front_content.php\2\3',
-            '\1front_content.php\2\3'
-        ];
-
-        // perform the pre-replacements
-        $code = preg_replace($aPattern, $aReplace, $code);
-
-        // create url stack object and fill it with found urls...
-        $oMRUrlStack = ModRewriteUrlStack::getInstance();
-        $oMRUrlStack->add('front_content.php');
-
-        $matches = NULL;
-        preg_match_all("/([\"|\'|=])front_content\.php(.?|.+?)([\"|\'|>])/i", $code, $matches, PREG_SET_ORDER);
-        foreach ($matches as $val) {
-            $oMRUrlStack->add('front_content.php' . $val[2]);
-        }
-
-        // ok let it beginn, start mod rewrite class
-        $code = str_replace('"front_content.php"', '"' . mr_buildNewUrl('front_content.php') . '"', $code);
-        $code = str_replace("'front_content.php'", "'" . mr_buildNewUrl('front_content.php') . "'", $code);
-        $code = preg_replace_callback("/([\"|\'|=])front_content\.php(.?|.+?)([\"|\'|>])/i", function ($match) {
-            return $match[1] . mr_buildNewUrl('front_content.php' . $match[2]) . $match[3];
-        }, $code);
-
-        ModRewriteDebugger::add($code, 'mr_buildGeneratedCode() out');
-
-    } else {
-        // anchor hack for non mod_rewrite websites
-        $code = preg_replace_callback("/<a([^>]*)href\s*=\s*[\"|\'][\/]#(.?|.+?)[\"|\']([^>]*)>/i", function ($match) {
-            return ModRewrite::contenidoHtmlAnchor($match, cSecurity::toBoolean($GLOBALS['is_XHTML']));
-        }, $code);
-    }
-
-    $sseEndTime = getmicrotime();
-
-    ModRewriteDebugger::add(($sseEndTime - $sseStartTime), 'mr_buildGeneratedCode() total spend time');
-
-    if ($debug = mr_debugOutput(false)) {
-        $code = cString::iReplaceOnce("</body>", $debug . "\n</body>", $code);
-    }
-
-    return $code;
-    // print "\n\n<!-- modr_ewrite generation time: " . ($sseEndTime - $sseStartTime) . " seconds -->";
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteUtil::buildGeneratedCode() instead.');
+    return PiModRewriteUtil::buildGeneratedCode($code);
 }
 
 /**
- * Sets language of the client, like done in front_content.php
- *
- * @param int $clientId Client id
- * @throws cDbException
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUtil::setClientLanguageId()} instead.
  */
 function mr_setClientLanguageId(int $clientId)
 {
-    // NOTE: Use globals here!
-    global $lang, $load_lang;
-
-    if (cSecurity::toInteger($lang) > 0) {
-        // there is nothing to do
-        return;
-    } elseif (cRegistry::getLoadLanguageId()) {
-        // use the first language of this client
-        $lang = cRegistry::getLoadLanguageId();
-        return;
-    }
-
-    // Search for the first language of this client
-    $languageId = (new cApiClientLanguageCollection())->getFirstLanguageIdByClient($clientId);
-    if ($languageId) {
-        $lang = $languageId;
-    }
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteUtil::setClientLanguageId() instead.');
+    PiModRewriteUtil::setClientLanguageId($clientId);
 }
 
 /**
- * Loads Advanced Mod Rewrite configuration for the passed client using the serialized
- * file containing the settings.
- *
- * File is placed in /contenido/mod_rewrite/includes/and is named like
- * config.mod_rewrite_{client_id}.php.
- *
- * @param int $clientId Id of client
- * @param bool $forceReload Flag to force to reload configuration, e.g. after done changes on it
- * @throws cInvalidArgumentException
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteConfigurationService::loadConfiguration()} instead.
  */
 function mr_loadConfiguration(int $clientId, bool $forceReload = false)
 {
-    // NOTE: Use global here!
-    global $cfg;
-    static $loadedConfigs;
-
-    if (!isset($loadedConfigs)) {
-        $loadedConfigs = [];
-    } elseif (isset($loadedConfigs[$clientId]) && !$forceReload) {
-        return;
-    }
-
-    $mrConfig = mr_getConfiguration($clientId);
-
-    if (is_array($mrConfig)) {
-        // merge mod rewrite configuration with the global cfg array
-        $cfg = array_merge($cfg, $mrConfig);
-    } else {
-        // couldn't load configuration, set defaults
-        $backendPath = cRegistry::getBackendPath();
-        include_once($backendPath . $cfg['path']['plugins'] . 'mod_rewrite/includes/config.mod_rewrite_default.php');
-    }
-
-    $loadedConfigs[$clientId] = true;
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteConfigurationService::loadConfiguration() instead.');
+    PiModRewriteConfigurationService::getInstance()->loadConfiguration($clientId, $forceReload);
 }
 
 /**
- * Returns the path to the mod rewrite configuration file of a client.
- * File is placed within the client frontend path in the directory "data/config/{ENVIRONMENT}/"
- * and has the name "config.mod_rewrite.php"
- *
- * @param int $clientId Id of client
- * @return string File name and path
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteConfigurationService::getConfigurationFilePath()} instead.
  */
-function mr_getConfigurationFilePath($clientId): string
+function mr_getConfigurationFilePath(int $clientId): string
 {
-    $clientConfig = cRegistry::getClientConfig(cSecurity::toInteger($clientId));
-    $fePath = $clientConfig['path']['frontend'];
-
-    return $fePath . 'data/config/' . CON_ENVIRONMENT . '/config.mod_rewrite.php';
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteConfigurationService::getConfigurationFilePath() instead.');
+    return PiModRewriteConfigurationService::getInstance()->getConfigurationFilePath($clientId);
 }
 
 /**
- * Returns the mod rewrite configuration array of an client.
- * File is placed in /contenido/mod_rewrite/includes/and is named like
- * config.mod_rewrite_{client_id}.php.
- *
- * @param int $clientId Id of client
- * @return ?array
- * @throws cInvalidArgumentException
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteConfigurationService::getConfiguration()} instead.
  */
-function mr_getConfiguration($clientId): ?array
+function mr_getConfiguration(int $clientId): ?array
 {
-    $clientId = cSecurity::toInteger($clientId);
-    $cfg = cRegistry::getConfig();
-    $file = mr_getConfigurationFilePath($clientId);
-
-    if (!is_file($file) || !is_readable($file)) {
-        $backendPath = cRegistry::getBackendPath();
-        $file = $backendPath . $cfg['path']['plugins'] . 'mod_rewrite/includes/config.mod_rewrite_' . $clientId . '.php';
-    }
-
-    if (!is_file($file) || !is_readable($file)) {
-        return NULL;
-    }
-    if ($content = cFileHandler::read($file)) {
-        return unserialize($content);
-    } else {
-        return NULL;
-    }
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteConfigurationService::getConfiguration() instead.');
+    return PiModRewriteConfigurationService::getInstance()->getConfiguration($clientId);
 }
 
 /**
- * Saves the mod rewrite configuration array of a client.
- * File is placed in /contenido/mod_rewrite/includes/and is named like
- * config.mod_rewrite_{client_id}.php.
- *
- * @param int $clientId Id of client
- * @param array $config Configuration to save
- * @throws cInvalidArgumentException
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteConfigurationService::setConfiguration()} instead.
  */
-function mr_setConfiguration($clientId, array $config): bool
+function mr_setConfiguration(int $clientId, array $config): bool
 {
-    $clientId = cSecurity::toInteger($clientId);
-    $cfg = cRegistry::getConfig();
-    $file = mr_getConfigurationFilePath($clientId);
-    $result = cFileHandler::write($file, serialize($config));
-
-    // Remove old configuration within plugin folder.
-    $backendPath = cRegistry::getBackendPath();
-    $file = $backendPath . $cfg['path']['plugins'] . 'mod_rewrite/includes/config.mod_rewrite_' . $clientId . '.php';
-    if (is_file($file) && is_writeable($file)) {
-        cFileHandler::remove($file);
-    }
-
-    return $result;
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteConfigurationService::setConfiguration() instead.');
+    return PiModRewriteConfigurationService::getInstance()->setConfiguration($clientId, $config);
 }
 
 /**
- * Includes the frontend controller script which parses the url and extracts
- * the necessary data like idcat, idart, lang and client from it.
- * Will be called by the chain 'Contenido.Frontend.AfterLoadPlugins' at front_content.php.
- *
- * @return bool Just a return value
- * @throws cInvalidArgumentException
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUtil::runFrontendController()} instead.
  */
 function mr_runFrontendController(): bool
 {
-    $startTime = getmicrotime();
-
-    plugin_include('mod_rewrite', 'includes/config.plugin.php');
-
-    if (ModRewrite::isEnabled()) {
-        plugin_include('mod_rewrite', 'includes/front_content_controller.php');
-
-        $totalTime = sprintf('%.4f', (getmicrotime() - $startTime));
-        ModRewriteDebugger::add($totalTime, 'mr_runFrontendController() total time');
-    }
-
-    return true;
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteUtil::runFrontendController() instead.');
+    return PiModRewriteUtil::runFrontendController();
 }
 
 /**
- * Cleanups passed string from characters being repeated two or more times
- *
- * @param string $char Character to remove
- * @param string $string String to clean from character
- * @return string Cleaned string
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUtil::removeMultipleChars()} instead.
  */
 function mr_removeMultipleChars(string $char, string $string): string
 {
-    while (cString::findFirstPos($string, $char . $char) !== false) {
-        $string = str_replace($char . $char, $char, $string);
-    }
-
-    return $string;
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteUtil::removeMultipleChars() instead.');
+    return PiModRewriteUtil::removeMultipleChars($char, $string);
 }
 
 /**
- * @deprecated [2023-01-20] Since CONTENIDO 4.10.2, is not used anymore
+ * @deprecated [2023-01-20] Since CONTENIDO 4.10.2, is not used anymore.
  */
 function mr_i18n($key)
 {
@@ -773,209 +221,56 @@ function mr_i18n($key)
     return is_array($lngAMR) && isset($lngAMR[$key]) ? $lngAMR[$key] : 'n. a.';
 }
 
-################################################################################
-### Some helper functions, which are not plugin specific
-
 /**
- * Database query helper. Used to execute a select statement and to return the
- * result of the first recordset.
- *
- * Minimizes the following code:
- * <code>
- * // default way
- * $db = cRegistry::getDb();
- * $sql = "SELECT * FROM foo WHERE bar='foobar'";
- * $db->query($sql);
- * $db->nextRecord();
- * $data = $db->getRecord();
- *
- * // new way
- * $sql = "SELECT * FROM foo WHERE bar='foobar'";
- * $data = mr_queryAndNextRecord($sql);
- * </code>
- *
- * @param string $query Query to execute
- * @return array|false|null Associative array including recordset or `null`.
- * @throws cDbException
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteDatabaseUtil::queryAndNextRecord()} instead
  */
 function mr_queryAndNextRecord(string $query)
 {
-    static $db;
-    if (!isset($db)) {
-        $db = cRegistry::getDb();
-    }
-    if (!$db->query($query)) {
-        return null;
-    }
-    return $db->nextRecord() ? $db->getRecord() : null;
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteDatabaseUtil::queryAndNextRecord() instead');
+    return PiModRewriteDatabaseUtil::queryAndNextRecord($query);
 }
 
 /**
- * Returns the value of an array key (associative or indexed).
- *
- * Shortcut function for some ways to access to arrays:
- * <code>
- * // old way
- * if (is_array($foo) && isset($foo['bar']) && $foo['bar'] == 'yieeha') {
- *     // do something
- * }
- *
- * // new, more readable way:
- * if (mr_arrayValue($foo, 'bar') == 'yieeha') {
- *     // do something
- * }
- *
- * // old way
- * if (is_array($foo) && isset($foo['bar'])) {
- *     $jep = $foo['bar'];
- * } else {
- *     $jep = 'yummy';
- * }
- *
- * // new way
- * $jep = mr_arrayValue($foo, 'bar', 'yummy');
- * </code>
- *
- * @param array|mixed $array The array
- * @param mixed $key Position of an indexed array or key of an associative array
- * @param mixed $default Default value to return
- * @return mixed Either the found value or the default value
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUtil::arrayValue()} instead
  */
 function mr_arrayValue($array, $key, $default = NULL)
 {
-    if (!is_array($array)) {
-        return $default;
-    } elseif (!isset($array[$key])) {
-        return $default;
-    } else {
-        return $array[$key];
-    }
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteUtil::arrayValue() instead');
+    return PiModRewriteUtil::arrayValue($array, $key, $default);
 }
 
 /**
- * A request cleanup function. Request data is always tainted and must be filtered.
- * Pass the array to clean up using several options.
- * Emulates array_walk_recursive().
- *
- * @param array|string|mixed $data Data to cleanup
- * @param ?array $options The default options array provides only the 'filter' key with several
- *      filter functions which are to execute as follows:
- *      <code>
- *      $options['filter'] = ['trim', 'myFilterFunc'];
- *      </code>
- *      If no filter functions are set, 'trim', 'strip_tags' and 'stripslashes'
- *      will be used by default.
- *      A user-defined function must accept the value as a parameter and must return
- *      the filtered parameter, e.g.
- * <code>
- * function myFilter($data) {
- *    // do what you want with the data, e.g. the cleanup of xss content
- *    return $data;
- * }
- * </code>
- * @return mixed Cleaned data
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteRequestUtil::cleanup()} instead
  */
 function mr_requestCleanup(&$data, ?array $options = NULL)
 {
-    if (!mr_arrayValue($options, 'filter')) {
-        $options['filter'] = ['trim', 'strip_tags', 'stripslashes'];
-    }
-
-    if (is_array($data)) {
-        foreach ($data as $p => $v) {
-            $data[$p] = mr_requestCleanup($v, $options);
-        }
-    } else {
-        foreach ($options['filter'] as $filter) {
-            if ($filter == 'trim') {
-                $data = trim($data);
-            } elseif ($filter == 'strip_tags') {
-                $data = strip_tags($data);
-            } elseif ($filter == 'stripslashes') {
-                $data = stripslashes($data);
-            } elseif (function_exists($filter)) {
-                $data = call_user_func($filter, $data);
-            }
-        }
-    }
-    return $data;
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteRequestUtil::cleanup() instead');
+    return PiModRewriteRequestUtil::cleanup($data, $options);
 }
 
 /**
- * Minimalistic and simple way to get request variables.
- * Checks occurrence in $_GET, then in $_POST. Uses trim() and strip_tags() to pre clean data.
- *
- * @param string $key Name of var to get
- * @param mixed $default Default value to return
- * @return mixed The value
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteRequestUtil::getRequest()} instead
  */
 function mr_getRequest(string $key, $default = NULL)
 {
-    static $cache;
-    if (!isset($cache)) {
-        $cache = [];
-    }
-    if (isset($cache[$key])) {
-        return $cache[$key];
-    }
-    if (isset($_GET[$key])) {
-        $val = $_GET[$key];
-    } elseif (isset($_POST[$key])) {
-        $val = $_POST[$key];
-    } else {
-        $val = $default;
-    }
-    $cache[$key] = is_string($val) ? strip_tags(trim($val)) : '';
-
-    return $cache[$key];
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteRequestUtil::getRequest() instead');
+    return PiModRewriteRequestUtil::getRequest($key, $default);
 }
 
 /**
- * Replaces calling of the header method for redirects in front_content.php,
- * used during development.
- *
- * @param string $header Header value for redirect
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUtil::responseHeader()} instead
  */
 function mr_header(string $header)
 {
-    header($header);
-
-    // $header = str_replace('Location: ', '', $header);
-    // echo '<html>
-    //     <head></head>
-    //     <body>
-    //     <p><a href="' . $header . '">' . $header . '</a></p>';
-    // mr_debugOutput();
-    // echo '</body></html>';
-    // exit();
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteUtil::responseHeader() instead');
+    PiModRewriteUtil::responseHeader($header);
 }
 
 /**
- * Debug output only during development
- *
- * @param bool $print Flag to echo the debug data
- * @return ?string Either the debug data, if parameter $print is set to true, or `null`
- * @throws cInvalidArgumentException
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteDebugger::output()} instead
  */
 function mr_debugOutput(bool $print = true): ?string
 {
-    $profileData = cDb::getProfileData();
-    if (count($profileData) > 0) {
-        ModRewriteDebugger::add($profileData, 'sql statements');
-
-        // Calculate total time consumption of queries
-        $timeTotal = 0;
-        foreach ($profileData as $pos => $item) {
-            $timeTotal += $item['time'];
-        }
-        ModRewriteDebugger::add($timeTotal, 'sql total time');
-    }
-
-    $sOutput = ModRewriteDebugger::getAll();
-    if ($print) {
-        echo $sOutput;
-        return null;
-    } else {
-        return $sOutput;
-    }
+    cDeprecated(__FUNCTION__ . ' is deprecated since Advanced Mod Rewrite 2.1.0, use PiModRewriteDebugger::output() instead');
+    return PiModRewriteDebugger::output($print);
 }

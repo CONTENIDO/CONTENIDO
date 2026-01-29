@@ -25,10 +25,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 ##### Initialization
 
 $cfg = cRegistry::getConfig();
-$client = cRegistry::getClientId();
+$clientId = cRegistry::getClientId();
 $pluginName = $cfg['pi_mod_rewrite']['pluginName'];
 
-if ($client <= 0) {
+if ($clientId <= 0) {
     // if there is no client selected, display an empty page
     $page = new cGuiPage('mod_rewrite_contenttest', 'mod_rewrite');
     $page->displayCriticalError(i18n("No Client selected"));
@@ -40,11 +40,15 @@ if ($client <= 0) {
 ##### Processing
 
 $mrTestNoOptionSelected = false;
-if (!mr_getRequest('idart') && !mr_getRequest('idcat') && !mr_getRequest('idcatart') && !mr_getRequest('idartlang')) {
+if (
+    !PiModRewriteRequestUtil::getRequest('idart')
+    && !PiModRewriteRequestUtil::getRequest('idcat')
+    && !PiModRewriteRequestUtil::getRequest('idcatart')
+    && !PiModRewriteRequestUtil::getRequest('idartlang')) {
     $mrTestNoOptionSelected = true;
 }
 
-$oMrTestController = new ModRewrite_ContentTestController();
+$oMrTestController = new PiModRewriteTestController();
 
 // view language variables
 $view = $oMrTestController->getView();
@@ -67,7 +71,7 @@ if ($mrTestNoOptionSelected) {
 }
 
 $view = $oMrTestController->getView();
-$view->content .= mr_debugOutput(false);
+$view->content .= PiModRewriteDebugger::output(false);
 
 ################################################################################
 ##### Output

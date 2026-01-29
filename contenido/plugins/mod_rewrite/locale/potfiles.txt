@@ -1,10 +1,10 @@
 ./classes/class.modrewrite.php
-./classes/class.modrewritebase.php
-./classes/class.modrewritecontroller.php
-./classes/class.modrewritedebugger.php
-./classes/class.modrewritetest.php
-./classes/class.modrewriteurlstack.php
-./classes/class.modrewriteurlutil.php
+./classes/class.PiModRewriteBase.php
+./classes/class.PiModRewriteFrontContentService.php
+./classes/class.PiModRewriteDebugger.php
+./classes/class.PiModRewriteTestService.php
+./classes/class.PiModRewriteUrlStackService.php
+./classes/class.PiModRewriteUrlUtil.php
 ./classes/controller/class.modrewrite_contentexpert_controller.php
 ./classes/controller/class.modrewrite_contenttest_controller.php
 ./classes/controller/class.modrewrite_content_controller.php

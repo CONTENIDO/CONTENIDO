@@ -21,7 +21,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage ModRewrite
  */
-class ModRewriteTest
+class PiModRewriteTestService
 {
 
     /**
@@ -64,7 +64,7 @@ class ModRewriteTest
     }
 
     /**
-     * Fetches the full structure of the installation (categories and articles) and returns it back.
+     * Fetches the full structure of the installation (categories and articles) and returns it.
      *
      * @param ?int $clientId Client id
      * @param ?int $languageId Language id
@@ -75,7 +75,7 @@ class ModRewriteTest
      * </code>
      * @throws cDbException
      */
-    public function fetchFullStructure(?int $clientId = NULL, ?int $languageId = NULL): array
+    public function fetchFullStructure(?int $clientId = null, ?int $languageId = null): array
     {
         $db = cRegistry::getDb();
         $db2 = cRegistry::getDb();
@@ -115,9 +115,9 @@ class ModRewriteTest
                 break; // break this loop
             }
 
-            $idcat = $db->f('idcat');
-            $structure[$idcat] = $db->getRecord();
-            $structure[$idcat]['articles'] = [];
+            $categoryId = $db->f('idcat');
+            $structure[$categoryId] = $db->getRecord();
+            $structure[$categoryId]['articles'] = [];
 
             $sql2 = "SELECT
                          *
@@ -139,14 +139,14 @@ class ModRewriteTest
                 cDb::getTableName('cat_art'),
                 cDb::getTableName('art'),
                 cDb::getTableName('art_lang'),
-                $idcat,
+                $categoryId,
                 $languageId,
                 $clientId
             );
 
             while ($db2->nextRecord()) {
-                $idart = $db2->f('idart');
-                $structure[$idcat]['articles'][$idart] = $db2->getRecord();
+                $articleId = $db2->f('idart');
+                $structure[$categoryId]['articles'][$articleId] = $db2->getRecord();
                 if (++$counter == $this->maxItems) {
                     break 2; // break this and also superior loop
                 }
@@ -180,16 +180,16 @@ class ModRewriteTest
         if ($type == 'c') {
             $param[] = 'idcat=' . $arr['idcat'];
         } else {
-            if (mr_getRequest('idart')) {
+            if (PiModRewriteRequestUtil::getRequest('idart')) {
                 $param[] = 'idart=' . $arr['idart'];
             }
-            if (mr_getRequest('idcat')) {
+            if (PiModRewriteRequestUtil::getRequest('idcat')) {
                 $param[] = 'idcat=' . $arr['idcat'];
             }
-            if (mr_getRequest('idcatart')) {
+            if (PiModRewriteRequestUtil::getRequest('idcatart')) {
                 $param[] = 'idcatart=' . $arr['idcatart'];
             }
-            if (mr_getRequest('idartlang')) {
+            if (PiModRewriteRequestUtil::getRequest('idartlang')) {
                 $param[] = 'idartlang=' . $arr['idartlang'];
             }
         }
@@ -200,19 +200,16 @@ class ModRewriteTest
 
     /**
      * Resolves variables of a page (idcat, idart, idclient, idlang, etc.) by
-     * processing passed url using ModRewriteController
+     * processing passed url using PiModRewriteFrontContentService
      *
      * @param string $url Url to resolve
-     * @return array Associative array with resolved data
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function resolveUrl(string $url): array
+    public function resolveUrl(string $url): PiModRewriteResolvedUrlDto
     {
-        // some globals to reset
-        $aGlobs = [
-            'mr_preprocessedPageError', 'idart', 'idcat'
-        ];
-        foreach ($aGlobs as $k) {
+        // Reset some globals. The URL resolving relies on the value of these globals,
+        // any pre-set value could fail the resolving process.
+        foreach (['idart', 'idcat'] as $k) {
             if (isset($GLOBALS[$k])) {
                 unset($GLOBALS[$k]);
             }
@@ -221,51 +218,31 @@ class ModRewriteTest
         $aReturn = [];
 
         // create a mod rewrite controller instance and execute processing
-        $oMRController = new ModRewriteController($url);
+        $oMRController = new PiModRewriteFrontContentService($url);
         $oMRController->execute();
 
         if ($oMRController->isError()) {
-            // an error occurred (idcat and or idart couldn't caught by controller)
-            $aReturn['mr_preprocessedPageError'] = 1;
-            $aReturn['error'] = $oMRController->getError();
-
+            // En error occurred (idcat and or idart couldn't detected by controller)
             $this->resolvedUrl = '';
             $this->routingFound = false;
+
+            return new PiModRewriteResolvedUrlDto($oMRController->getError());
         } else {
-            // set some global variables
+            // Resolving was successful
             $this->resolvedUrl = $oMRController->getResolvedUrl();
             $this->routingFound = $oMRController->isRoutingFound();
 
-            if ($oMRController->getClient()) {
-                $aReturn['client'] = $oMRController->getClient();
-            }
-
-            if ($oMRController->getChangeClient()) {
-                $aReturn['changeclient'] = $oMRController->getChangeClient();
-            }
-
-            if ($oMRController->getLang()) {
-                $aReturn['lang'] = $oMRController->getLang();
-            }
-
-            if ($oMRController->getChangeLang()) {
-                $aReturn['changelang'] = $oMRController->getChangeLang();
-            }
-
-            if ($oMRController->getIdArt()) {
-                $aReturn['idart'] = $oMRController->getIdArt();
-            }
-
-            if ($oMRController->getIdCat()) {
-                $aReturn['idcat'] = $oMRController->getIdCat();
-            }
-
-            if ($oMRController->getPath()) {
-                $aReturn['path'] = $oMRController->getPath();
-            }
+            return new PiModRewriteResolvedUrlDto(
+                null,
+                $oMRController->getClient() ? $oMRController->getClient() : null,
+                $oMRController->getChangeClient() ? $oMRController->getChangeClient() : null,
+                $oMRController->getLang() ? $oMRController->getLang() : null,
+                $oMRController->getChangeLang() ? $oMRController->getChangeLang() : null,
+                $oMRController->getIdArt() ? $oMRController->getIdArt() : null,
+                $oMRController->getIdCat() ? $oMRController->getIdCat() : null,
+                !empty($oMRController->getPath()) ? $oMRController->getPath() : null
+            );
         }
-
-        return $aReturn;
     }
 
     /**

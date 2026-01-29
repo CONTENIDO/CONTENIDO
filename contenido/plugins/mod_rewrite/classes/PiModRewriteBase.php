@@ -1,7 +1,7 @@
 <?php
 
 /**
- * AMR base Mod Rewrite class
+ * Advanced Mod Rewrite plugin base Mod Rewrite class
  *
  * @package    Plugin
  * @subpackage ModRewrite
@@ -24,7 +24,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage ModRewrite
  */
-abstract class ModRewriteBase
+abstract class PiModRewriteBase
 {
 
     /**
@@ -77,3 +77,9 @@ abstract class ModRewriteBase
     }
 
 }
+
+/**
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteBase} instead.
+ */
+class ModRewriteBase extends PiModRewriteBase
+{}

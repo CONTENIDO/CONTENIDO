@@ -15,18 +15,18 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Mod Rewrite url utility class. Handles conversion of Urls from CONTENIDO core based url composition
- * pattern to AMR (Advanced Mod Rewrite) url composition pattern and vice versa.
+ * Advanced Mod Rewrite plugin url utility class. Handles conversion of Urls from CONTENIDO core-based
+ * url composition pattern to AMR (Advanced Mod Rewrite) url composition pattern and vice versa.
  *
  * @author     Murat Purc <murat@purc.de>
  * @package    Plugin
  * @subpackage ModRewrite
  */
-class ModRewriteUrlUtil extends ModRewriteBase
+class PiModRewriteUrlUtil extends PiModRewriteBase
 {
 
     /**
-     * @var ModRewriteUrlUtil Self instance (singleton implementation)
+     * @var PiModRewriteUrlUtil Self-instance
      */
     private static $instance;
 
@@ -96,25 +96,25 @@ class ModRewriteUrlUtil extends ModRewriteBase
     }
 
     /**
-     * Returns self instance (singleton pattern)
+     * Returns self-instance
      */
     public static function getInstance(): self
     {
         if (self::$instance == NULL) {
-            self::$instance = new ModRewriteUrlUtil();
+            self::$instance = new PiModRewriteUrlUtil();
         }
         return self::$instance;
     }
 
     /**
-     * Converts passed AMR url path to CONTENIDO url path.
+     * Converts the passed AMR url path to the CONTENIDO url path.
      *
      * @param string $urlPath AMR url path
      * @return string CONTENIDO url path
      */
     public function toContenidoUrlPath(string $urlPath): string
     {
-        return $this->_toUrlPath(
+        return $this->toUrlPath(
             $urlPath, $this->mrCatSep,
             $this->catSeparator,
             $this->mrCatWordSep,
@@ -125,14 +125,14 @@ class ModRewriteUrlUtil extends ModRewriteBase
     }
 
     /**
-     * Converts passed CONTENIDO url path to AMR url path.
+     * Converts the passed CONTENIDO url path to the AMR url path.
      *
      * @param string $urlPath CONTENIDO url path
      * @return string AMR url path
      */
     public function toModRewriteUrlPath(string $urlPath): string
     {
-        return $this->_toUrlPath(
+        return $this->toUrlPath(
             $urlPath,
             $this->catSeparator,
             $this->mrCatSep,
@@ -155,7 +155,7 @@ class ModRewriteUrlUtil extends ModRewriteBase
      * @param string $toArtSep Destination article separator
      * @return string Destination url path
      */
-    private function _toUrlPath(
+    private function toUrlPath(
         string $urlPath,
         string $fromCatSep,
         string $toCatSep,
@@ -191,7 +191,7 @@ class ModRewriteUrlUtil extends ModRewriteBase
      */
     public function toContenidoUrlName(string $urlName): string
     {
-        return $this->_toUrlName($urlName, $this->mrArtWordSep, $this->artWordSep);
+        return $this->toUrlName($urlName, $this->mrArtWordSep, $this->artWordSep);
     }
 
     /**
@@ -202,7 +202,7 @@ class ModRewriteUrlUtil extends ModRewriteBase
      */
     public function toModRewriteUrlName(string $urlName): string
     {
-        return $this->_toUrlName($urlName, $this->artWordSep, $this->mrArtWordSep);
+        return $this->toUrlName($urlName, $this->artWordSep, $this->mrArtWordSep);
     }
 
     /**
@@ -213,7 +213,7 @@ class ModRewriteUrlUtil extends ModRewriteBase
      * @param string $toArtWordSep Destination article word separator
      * @return string Destination url name
      */
-    private function _toUrlName(string $urlName, string $fromArtWordSep, string $toArtWordSep): string
+    private function toUrlName(string $urlName, string $fromArtWordSep, string $toArtWordSep): string
     {
         if ($urlName == '') {
             return $urlName;
@@ -265,3 +265,9 @@ class ModRewriteUrlUtil extends ModRewriteBase
         return $newUrl;
     }
 }
+
+/**
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUrlUtil} instead.
+ */
+class ModRewriteUrlUtil extends PiModRewriteUrlUtil
+{}

@@ -21,7 +21,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage ModRewrite
  */
-class ModRewriteDebugger
+class PiModRewriteDebugger
 {
 
     /**
@@ -87,4 +87,40 @@ class ModRewriteDebugger
         cDebug::getDebugger(cDebug::DEBUGGER_FILE)->show($value, $label);
     }
 
+    /**
+     * Debug output only during development
+     *
+     * @param bool $print Flag to echo the debug data
+     * @return ?string Either the debug data, if parameter $print is set to true, or `null`
+     * @throws cInvalidArgumentException
+     */
+    public static function output(bool $print = true): ?string
+    {
+        $profileData = cDb::getProfileData();
+        if (count($profileData) > 0) {
+            self::add($profileData, 'sql statements');
+
+            // Calculate total time consumption of queries
+            $timeTotal = 0;
+            foreach ($profileData as $item) {
+                $timeTotal += $item['time'];
+            }
+            self::add($timeTotal, 'sql total time');
+        }
+
+        $sOutput = self::getAll();
+        if ($print) {
+            echo $sOutput;
+            return null;
+        } else {
+            return $sOutput;
+        }
+    }
+
 }
+
+/**
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteDebugger} instead.
+ */
+class ModRewriteDebugger extends PiModRewriteDebugger
+{}

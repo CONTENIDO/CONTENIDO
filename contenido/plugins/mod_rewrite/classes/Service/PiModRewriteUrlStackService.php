@@ -27,7 +27,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Usage:
  * <code>
  * // get the instance
- * $oMRUrlStack = ModRewriteUrlStack::getInstance();
+ * $oMRUrlStack = PiModRewriteUrlStackService::getInstance();
  *
  * // add several urls to fill the stack
  * $oMRUrlStack->add('front_content.php?idcat=123');
@@ -37,20 +37,20 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * $oMRUrlStack->add('front_content.php?idartlang=312');
  *
  * // now the first call will get the pretty path and names from the database at one go
- * $aPrettyParts = $oMRUrlStack->getPrettyUrlParts('front_content.php?idcat=123');
- * echo $aPrettyParts['urlpath']; // something like 'Main-category-name/Category-name/Another-category-name/'
- * echo $aPrettyParts['urlname']; // something like 'Name-of-an-article'
+ * $urlPathsDto = $oMRUrlStack->getPrettyUrlDto('front_content.php?idcat=123');
+ * echo $urlPathsDto->getUrlPath(); // something like 'Main-category-name/Category-name/Another-category-name/'
+ * echo $urlPathsDto->getUrlName(); // something like 'Name-of-an-article'
  * </code>
  *
  * @author     Murat Purc <murat@purc.de>
  * @package    Plugin
  * @subpackage ModRewrite
  */
-class ModRewriteUrlStack
+class PiModRewriteUrlStackService
 {
 
     /**
-     * @var ModRewriteUrlStack Self instance
+     * @var PiModRewriteUrlStackService Self-instance
      */
     private static $instance;
 
@@ -96,7 +96,7 @@ class ModRewriteUrlStack
     }
 
     /**
-     * Returns an instance of ModRewriteUrlStack (singleton implementation)
+     * Returns an instance of PiModRewriteUrlStackService (singleton implementation)
      */
     public static function getInstance(): self
     {
@@ -113,12 +113,12 @@ class ModRewriteUrlStack
      */
     public function add(string $url)
     {
-        $url = ModRewrite::urlPreClean($url);
+        $url = PiModRewrite::urlPreClean($url);
         if (isset($this->urls[$url])) {
             return;
         }
 
-        $urlComponents = $this->_extractUrl($url);
+        $urlComponents = $this->extractUrl($url);
 
         // cleanup parameter
         foreach ($urlComponents['params'] as $p => $v) {
@@ -130,11 +130,11 @@ class ModRewriteUrlStack
         }
 
         // add language id, if not available
-        if (cSecurity::toInteger(mr_arrayValue($urlComponents['params'], 'lang')) == 0) {
+        if (cSecurity::toInteger(PiModRewriteUtil::arrayValue($urlComponents['params'], 'lang')) == 0) {
             $urlComponents['params']['lang'] = $this->languageId;
         }
 
-        $stackId = $this->_makeStackId($urlComponents['params']);
+        $stackId = $this->makeStackId($urlComponents['params']);
         $this->urls[$url] = $stackId;
         $this->urlStack[$stackId] = ['params' => $urlComponents['params']];
     }
@@ -143,12 +143,27 @@ class ModRewriteUrlStack
      * Returns the pretty url-parts (only category path an article name) of the desired url.
      *
      * @param string $url Url, like front_content.php?idcat=123...
-     * @return array{urlpath: string, urlname: string  Associative pretty url array
+     * @return array{urlpath: string, urlname: string} Associative pretty url array
      * @throws cDbException|cInvalidArgumentException
      */
     public function getPrettyUrlParts(string $url): array
     {
-        $url = ModRewrite::urlPreClean($url);
+        $dto = $this->getPrettyUrlDto($url);
+        return [
+            'urlpath' => $dto->getUrlPath(),
+            'urlname' => $dto->getUrlName(),
+        ];
+    }
+
+    /**
+     * Returns the pretty url-parts DTO (only category path an article name) of the desired url.
+     *
+     * @param string $url Url, like front_content.php?idcat=123...
+     * @throws cDbException|cInvalidArgumentException
+     */
+    public function getPrettyUrlDto(string $url): PiModRewritePrettyUrlDto
+    {
+        $url = PiModRewrite::urlPreClean($url);
         if (!isset($this->urls[$url])) {
             $this->add($url);
         }
@@ -157,19 +172,20 @@ class ModRewriteUrlStack
         if (!isset($this->urlStack[$stackId]['urlpath'])) {
             $this->chunkSetPrettyUrlParts($stackId);
         }
-        return [
-            'urlpath' => $this->urlStack[$stackId]['urlpath'] ?? '',
-            'urlname' => $this->urlStack[$stackId]['urlname'] ?? ''
-        ];
+
+        return new PiModRewritePrettyUrlDto(
+            $this->urlStack[$stackId]['urlpath'] ?? '',
+            $this->urlStack[$stackId]['urlname'] ?? ''
+        );
     }
 
     /**
-     * Extracts passed url using parse_url and also adds the 'params' array to it
+     * Extracts the passed url using parse_url and adds the 'params' array to it.
      *
      * @param string $url Url, like front_content.php?idcat=123...
      * @return array Components containing the result of parse_url with additional 'params' array
      */
-    private function _extractUrl(string $url): array
+    private function extractUrl(string $url): array
     {
         return cUri::getInstance()->parse($url);
     }
@@ -181,18 +197,18 @@ class ModRewriteUrlStack
      * @param array $params Parameter array
      * @return string Composed stack id
      */
-    private function _makeStackId(array $params): string
+    private function makeStackId(array $params): string
     {
         // idcatart
-        if (cSecurity::toInteger(mr_arrayValue($params, 'idart')) > 0) {
+        if (cSecurity::toInteger(PiModRewriteUtil::arrayValue($params, 'idart')) > 0) {
             $stackId = 'idart_' . $params['idart'] . '_lang_' . $params['lang'];
-        } elseif (cSecurity::toInteger(mr_arrayValue($params, 'idartlang')) > 0) {
+        } elseif (cSecurity::toInteger(PiModRewriteUtil::arrayValue($params, 'idartlang')) > 0) {
             $stackId = 'idartlang_' . $params['idartlang'];
-        } elseif (cSecurity::toInteger(mr_arrayValue($params, 'idcatart')) > 0) {
+        } elseif (cSecurity::toInteger(PiModRewriteUtil::arrayValue($params, 'idcatart')) > 0) {
             $stackId = 'idcatart_' . $params['idcatart'] . '_lang_' . $params['lang'];
-        } elseif (cSecurity::toInteger(mr_arrayValue($params, 'idcat')) > 0) {
+        } elseif (cSecurity::toInteger(PiModRewriteUtil::arrayValue($params, 'idcat')) > 0) {
             $stackId = 'idcat_' . $params['idcat'] . '_lang_' . $params['lang'];
-        } elseif (cSecurity::toInteger(mr_arrayValue($params, 'idcatlang')) > 0) {
+        } elseif (cSecurity::toInteger(PiModRewriteUtil::arrayValue($params, 'idcatlang')) > 0) {
             $stackId = 'idcatlang_' . $params['idcatlang'];
         } else {
             $stackId = 'lang_' . $params['lang'];
@@ -221,23 +237,23 @@ class ModRewriteUrlStack
         foreach ($stack as $_stackId => $item) {
             if ($_stackId === $stackId) {
                 $params = $item['params'];
-                if (cSecurity::toInteger(mr_arrayValue($params, 'idart')) > 0) {
+                if (cSecurity::toInteger(PiModRewriteUtil::arrayValue($params, 'idart')) > 0) {
                     $where .= sprintf('(al.idart = %d AND al.idlang = %d) OR ', $params['idart'], $params['lang']);
-                } elseif (cSecurity::toInteger(mr_arrayValue($params, 'idartlang')) > 0) {
+                } elseif (cSecurity::toInteger(PiModRewriteUtil::arrayValue($params, 'idartlang')) > 0) {
                     $where .= sprintf('(al.idartlang = %d) OR ', $params['idartlang']);
-                } elseif (cSecurity::toInteger(mr_arrayValue($params, 'idcat')) > 0) {
+                } elseif (cSecurity::toInteger(PiModRewriteUtil::arrayValue($params, 'idcat')) > 0) {
                     $where .= sprintf(
                         '(cl.idcat = %d AND cl.idlang = %d AND cl.startidartlang = al.idartlang) OR ',
                         $params['idcat'],
                         $params['lang']
                     );
-                } elseif (cSecurity::toInteger(mr_arrayValue($params, 'idcatart')) > 0) {
+                } elseif (cSecurity::toInteger(PiModRewriteUtil::arrayValue($params, 'idcatart')) > 0) {
                     $where .= sprintf(
                         '(ca.idcatart = %d AND ca.idart = al.idart AND al.idlang = %d) OR ',
                         $params['idcatart'],
                         $params['lang']
                     );
-                } elseif (cSecurity::toInteger(mr_arrayValue($params, 'idcatlang')) > 0) {
+                } elseif (cSecurity::toInteger(PiModRewriteUtil::arrayValue($params, 'idcatlang')) > 0) {
                     $where .= sprintf(
                         '(cl.idcatlang = %d AND cl.startidartlang = al.idartlang) OR ',
                         $params['idcatlang']
@@ -268,7 +284,7 @@ WHERE
         al.idlang = cl.idlang AND
         ($where)
 SQL;
-        ModRewriteDebugger::add($sql, 'ModRewriteUrlStack->chunkSetPrettyUrlParts() $sql');
+        PiModRewriteDebugger::add($sql, __METHOD__ . ' $sql');
 
         $newStack = [];
 
@@ -283,7 +299,7 @@ SQL;
                     // reduce existing field
                     unset($records[$field]);
                 }
-                $rsStackID = $this->_makeStackId($records);
+                $rsStackID = $this->makeStackId($records);
                 if (isset($stack[$rsStackID])) {
                     // matching stack entry found, add urlpath and urlname to the new stack
                     $newStack[$rsStackID]['urlpath'] = $records['urlpath'];
@@ -292,10 +308,16 @@ SQL;
                 }
             }
         }
-        ModRewriteDebugger::add($newStack, 'ModRewriteUrlStack->chunkSetPrettyUrlParts() $newStack');
+        PiModRewriteDebugger::add($newStack, __METHOD__ . ' $newStack');
 
         // merge stack data
         $this->urlStack = array_merge($this->urlStack, $newStack);
     }
 
 }
+
+/**
+ * @deprecated Since Advanced Mod Rewrite 2.1.0, use {@see PiModRewriteUrlStackService} instead.
+ */
+class ModRewriteUrlStack extends PiModRewriteUrlStackService
+{}

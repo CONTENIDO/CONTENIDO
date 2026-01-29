@@ -18,10 +18,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 ##### Initialization
 
 $cfg = cRegistry::getConfig();
-$client = cRegistry::getClientId();
+$clientId = cRegistry::getClientId();
 $pluginName = $cfg['pi_mod_rewrite']['pluginName'];
 
-if ($client <= 0) {
+if ($clientId <= 0) {
     // if there is no client selected, display an empty page
     $page = new cGuiPage('mod_rewrite_content', 'mod_rewrite');
     $page->displayCriticalError(i18n("No Client selected"));
@@ -35,21 +35,21 @@ $bDebug = false;
 ################################################################################
 ##### Some variables
 
-$mrController = new ModRewrite_ContentController();
+$mrController = new PiModRewriteContentController();
 
-$aMrCfg = ModRewrite::getConfig();
+$aMrCfg = PiModRewrite::getConfig();
 
 // downwards compatibility to previous plugin versions
-if (mr_arrayValue($aMrCfg, 'category_seperator', '') == '') {
+if (PiModRewriteUtil::arrayValue($aMrCfg, 'category_seperator', '') == '') {
     $aMrCfg['category_seperator'] = '/';
 }
-if (mr_arrayValue($aMrCfg, 'category_word_seperator', '') == '') {
+if (PiModRewriteUtil::arrayValue($aMrCfg, 'category_word_seperator', '') == '') {
     $aMrCfg['category_word_seperator'] = '-';
 }
-if (mr_arrayValue($aMrCfg, 'article_seperator', '') == '') {
+if (PiModRewriteUtil::arrayValue($aMrCfg, 'article_seperator', '') == '') {
     $aMrCfg['article_seperator'] = '/';
 }
-if (mr_arrayValue($aMrCfg, 'article_word_seperator', '') == '') {
+if (PiModRewriteUtil::arrayValue($aMrCfg, 'article_word_seperator', '') == '') {
     $aMrCfg['article_word_seperator'] = '-';
 }
 
@@ -73,12 +73,12 @@ $mrController->setProperty('routingSeparator', $routingSeparator);
 // define basic data contents (used for template)
 $view = $mrController->getView();
 $view->content_before = '';
-$view->idclient = $client;
-$view->use_chk = (ModRewrite::isEnabled()) ? ' checked="checked"' : '';
+$view->idclient = $clientId;
+$view->use_chk = (PiModRewrite::isEnabled()) ? ' checked="checked"' : '';
 $view->header_notes_css = 'display:none;';
 
 // mr copy .htaccess
-$aHtaccessInfo = ModRewrite::getHtaccessInfo();
+$aHtaccessInfo = PiModRewrite::getHtaccessInfo();
 if ($aHtaccessInfo['has_htaccess']) {
     $view->htaccess_info_css = 'display:none;';
 } else {
@@ -87,8 +87,8 @@ if ($aHtaccessInfo['has_htaccess']) {
 }
 
 // empty aliases
-$emptyArticleAliasesCount = ModRewrite::getEmptyArticlesAliases();
-$emptyCategoryAliasesCount = ModRewrite::getEmptyCategoriesAliases();
+$emptyArticleAliasesCount = PiModRewrite::getEmptyArticlesAliases();
+$emptyCategoryAliasesCount = PiModRewrite::getEmptyCategoriesAliases();
 if ($emptyArticleAliasesCount > 0 || $emptyCategoryAliasesCount > 0) {
     $view->header_notes_css = 'display:table-row;';
     $view->emptyaliases_info_css = 'display:block;';
@@ -119,7 +119,7 @@ $view->use_client_chk = ($aMrCfg['use_client'] == 1) ? ' checked="checked"' : ''
 $view->use_client_name_chk = ($aMrCfg['use_client_name'] == 1) ? ' checked="checked"' : '';
 $view->use_client_name_disabled = ($aMrCfg['use_client'] == 1) ? '' : ' disabled="disabled"';
 
-// mr lowecase uri
+// mr lowercase uri
 $view->use_lowercase_uri_chk = ($aMrCfg['use_lowercase_uri'] == 1) ? ' checked="checked"' : '';
 
 // mr category/category word separator
@@ -180,10 +180,10 @@ $view->lng_plugin_settings = i18n('Plugin settings', $pluginName);
 $view->lng_note = i18n('Note', $pluginName);
 
 $sMsg = i18n('The .htaccess file could not be found either in CONTENIDO installation directory nor in client directory.<br>It should set up in %sFunctions%s area, if needed.', $pluginName);
-$view->lng_msg_no_htaccess_found = sprintf($sMsg, '<a href="main.php?area=mod_rewrite_expert&frame=4&contenido=' . $view->sessid . '&idclient=' . $client . '" onclick="Con.markSubmenuItem(\'mod_rewrite_expert\');">', '</a>');
+$view->lng_msg_no_htaccess_found = sprintf($sMsg, '<a href="main.php?area=mod_rewrite_expert&frame=4&contenido=' . $view->sessid . '&idclient=' . $clientId . '" onclick="Con.markSubmenuItem(\'mod_rewrite_expert\');">', '</a>');
 
 $sMsg = i18n('Found some category and/or article aliases. It is recommended to run the reset function in %sFunctions%s area, if needed.', $pluginName);
-$view->lng_msg_no_emptyaliases_found = sprintf($sMsg, '<a href="main.php?area=mod_rewrite_expert&frame=4&contenido=' . $view->sessid . '&idclient=' . $client . '" onclick="Con.markSubmenuItem(\'mod_rewrite_expert\');">', '</a>');
+$view->lng_msg_no_emptyaliases_found = sprintf($sMsg, '<a href="main.php?area=mod_rewrite_expert&frame=4&contenido=' . $view->sessid . '&idclient=' . $clientId . '" onclick="Con.markSubmenuItem(\'mod_rewrite_expert\');">', '</a>');
 
 $view->lng_enable_amr = i18n('Enable Advanced Mod Rewrite', $pluginName);
 
@@ -194,7 +194,7 @@ $view->lng_example = i18n('Example', $pluginName);
 $view->lng_msg_enable_amr_info_example = i18n("# enable apache mod rewrite module\nRewriteEngine on\n\n# disable apache mod rewrite module\nRewriteEngine off", $pluginName);
 
 $view->lng_rootdir = i18n('Path to .htaccess from DocumentRoot', $pluginName);
-$view->lng_rootdir_info = i18n("Type '/' if the .htaccess file lies inside the wwwroot (DocumentRoot) folder.<br>Type the path to the subfolder fromm wwwroot, if CONTENIDO is installed in a subfolder within the wwwroot<br>(e. g. https://domain/mycontenido -&gt; path = '/mycontenido/')", $pluginName);
+$view->lng_rootdir_info = i18n("Type '/' if the .htaccess file lies inside the www-root (DocumentRoot) folder.<br>Type the path to the subfolder fromm www-root, if CONTENIDO is installed in a subfolder within the www-root<br>(e. g. https://domain/mycontenido -&gt; path = '/mycontenido/')", $pluginName);
 
 $view->lng_checkrootdir = i18n('Check path to .htaccess', $pluginName);
 $view->lng_checkrootdir_info = i18n('The path will be checked, if this option is enabled.<br>But this could result in an error in some cases, even if the specified path is valid and<br>clients DocumentRoot differs from CONTENIDO backend DocumentRoot.', $pluginName);
@@ -272,7 +272,7 @@ $view->lng_rewrite_urls_at_congeneratecode_info3 = '<li>' . str_replace("\n", '<
 $view->lng_rewrite_routing = i18n('Routing', $pluginName);
 $view->lng_rewrite_routing_info = i18n('Routing definitions for incoming URLs', $pluginName);
 $view->lng_rewrite_routing_info2 = i18n('Type one routing definition per line as follows:', $pluginName);
-$view->lng_rewrite_routing_example = i18n("# {incoming_url}>>>{new_url}\n/incoming_url/name.html>>>new_url/new_name.html\n\n# route a specific incoming url to a new page\n/campaign/20_percent_on_everything_except_animal_food.html>>>front_content.php?idcat=23\n\n# route request to wwwroot to a specific page\n/>>>front_content.php?idart=16", $pluginName);
+$view->lng_rewrite_routing_example = i18n("# {incoming_url}>>>{new_url}\n/incoming_url/name.html>>>new_url/new_name.html\n\n# route a specific incoming url to a new page\n/campaign/20_percent_on_everything_except_animal_food.html>>>front_content.php?idcat=23\n\n# route request to www-root to a specific page\n/>>>front_content.php?idart=16", $pluginName);
 $view->lng_rewrite_routing_info3 = i18n("The routing does not send a HTTP header redirection to the destination URL, the redirection will happen internally by<br>replacing the detected incoming URL against the new destination URL (overwriting of article- categoryid)\nIncoming URLs can point to non-existing resources (category/article), but the destination URLs should point<br>to valid CONTENIDO articles/categories\nDestination URLs should point to real URLs to categories/articles,<br>e. g.front_content.php?idcat=23 or front_content.php?idart=34\nThe language id should be attached to the URL on multi-language sites<br>e. g. front_content.php?idcat=23&amp;lang=1\nThe client id should be attached to the URL in multi client sites sharing the same folder<br>e. g. front_content.php?idcat=23&amp;client=2\nThe destination URL should not start with '/' or './' (wrong: /front_content.php, correct: front_content.php)", $pluginName);
 $view->lng_rewrite_routing_info3 = '<li>' . str_replace("\n", '</li><li>', $view->lng_rewrite_routing_info3) . '</li>';
 
