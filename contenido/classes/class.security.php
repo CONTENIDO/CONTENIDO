@@ -23,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cSecurity
 {
     /**
-     * Checks some CONTENIDO core related request parameters against XSS.
+     * Checks some CONTENIDO core-related request parameters against XSS.
      *
      * @return bool True on success otherwise nothing.
      * @throws cFileNotFoundException|cInvalidArgumentException
@@ -76,7 +76,7 @@ class cSecurity
      *
      * @param mixed $value Input value
      * @param bool $strict Strict check
-     *      - true: Ccheck if the valus is of type integer.
+     *      - true: Check if the value is of type integer.
      *      - false: Check if the value is numeric.
      * @return bool Check state
      */
@@ -110,7 +110,7 @@ class cSecurity
     }
 
     /**
-     * Convert an string to an bool.
+     * Convert a string to a bool.
      *
      * @param mixed $value Input value, e.g. a string
      * @return bool Type casted input string
@@ -121,7 +121,7 @@ class cSecurity
     }
 
     /**
-     * Convert an string to an integer.
+     * Convert a string to an integer.
      *
      * @param mixed $value Input value, e.g. a string
      * @return int Type casted input string
@@ -149,7 +149,7 @@ class cSecurity
     }
 
     /**
-     * Escaped an query-string with mysql_real_escape_string.
+     * Escaped a query-string with mysql_real_escape_string.
      *
      * @param mixed $value Input value, e.g. a string
      * @param ?cDb $db CONTENIDO database object

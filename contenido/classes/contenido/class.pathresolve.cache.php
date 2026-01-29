@@ -130,7 +130,7 @@ class cApiPathresolveCacheCollection extends ItemCollection
     {
         $where = $this->db->prepare("path LIKE '%s' AND idlang = %d", $path, $languageId);
         $this->select($where, '', 'lastcached DESC', '1');
-        return $this->next();
+        return (($item = $this->next()) instanceof cApiPathresolveCache) ? $item : null;
     }
 
     /**
