@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class contains function for the update notifier.
+ * This class contains the function for the update notifier.
  *
  * @package    Core
  * @subpackage Security
