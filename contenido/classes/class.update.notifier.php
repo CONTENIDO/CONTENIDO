@@ -35,7 +35,7 @@ class cUpdateNotifier
      *
      * @var string
      */
-    protected $sVendorHost = "www.contenido.org";
+    protected $sVendorHost = "https://www.contenido.org";
 
     /**
      * Path to files
