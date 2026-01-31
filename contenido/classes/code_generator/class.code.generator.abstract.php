@@ -343,8 +343,7 @@ abstract class cCodeGeneratorAbstract
 
         $keycode = [];
 
-        // NOTE: $a_content is used by included/evaluated content type codes
-        // below
+        // NOTE: $a_content is used by included/evaluated content type codes below
         $a_content = $contentList;
 
         // select all cms_type entries
@@ -355,40 +354,41 @@ abstract class cCodeGeneratorAbstract
             $_typeList[] = $oType->toObject();
         }
 
-        // replace all CMS_TAGS[]
+        // Find all Content Types and the Content-IDs
+        $allContentTypes = [];
         foreach ($_typeList as $_typeItem) {
             $key = cString::toLowerCase($_typeItem->type);
             $type = $_typeItem->type;
-            // Find all CMS_{type}[{number}] values, e.g. CMS_HTML[1]
+            // Find all Content Types and the Content-IDs CMS_{type}[{number}] values, e.g. CMS_HTML[1]
             $tmp = preg_match_all(
                 sprintf('/(%s\[(\d+)\])/', preg_quote($type, '/')),
                 $this->_layoutCode,
                 $matches
             );
 
-            // We need the numbers, `$matches[2]` contains them
-            $a_[$key] = $matches[2] ?? [];
+            // We need the content IDs, `$matches[2]` contains them
+            $allContentTypes[$_typeItem->type] = array_unique($matches[2]) ?? [];
+        }
 
+        // Replace all Content Types by their values.
+        foreach ($allContentTypes as $contentType => $contentIds) {
             $search = [];
             $replacements = [];
 
-            $typeClassName = $this->_getContentTypeClassName($type);
-            $typeCodeFile = $this->_getContentTypeCodeFilePathName($type);
+            $typeClassName = $this->_getContentTypeClassName($contentType);
+            $typeCodeFile = $this->_getContentTypeCodeFilePathName($contentType);
+            $tmp = '';
 
-            foreach ($a_[$key] as $val) {
+            foreach ($contentIds as $contentId) {
                 if (class_exists($typeClassName)) {
                     // we have a class for the content type, use it
-                    $tmp = !empty($a_content[$_typeItem->type][$val]) ? $a_content[$_typeItem->type][$val] : '';
+                    $tmp = !empty($a_content[$contentType][$contentId]) ? $a_content[$contentType][$contentId] : '';
                     /** @var cContentTypeAbstract $cTypeObject */
-                    $cTypeObject = new $typeClassName($tmp, $val, $a_content);
+                    $cTypeObject = new $typeClassName($tmp, $contentId, $a_content);
                     global $edit;
 
                     if (cRegistry::isBackendEditMode()) {
-                        //if ($editable) {
                         $tmp = $cTypeObject->generateEditCode();
-                        //} elseif ($typeClassName !== 'cContentTypeImgeditor') {
-                        //    $tmp = $cTypeObject->generateViewCode();
-                        //}
                     } else {
                         $tmp = $cTypeObject->generateViewCode();
                     }
@@ -397,10 +397,11 @@ abstract class cCodeGeneratorAbstract
                     include($typeCodeFile);
                 }
 
-                $search[$val] = sprintf('%s[%s]', $type, $val);
-                $replacements[$val] = $tmp;
-                $keycode[$type][$val] = $tmp;
+                $search[$contentId] = sprintf('%s[%s]', $contentType, $contentId);
+                $replacements[$contentId] = $tmp;
+                $keycode[$contentType][$contentId] = $tmp;
             }
+
             $this->_layoutCode = str_ireplace($search, $replacements, $this->_layoutCode);
         }
     }
