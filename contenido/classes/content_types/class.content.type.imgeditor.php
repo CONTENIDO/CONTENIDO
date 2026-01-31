@@ -346,7 +346,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
      */
     protected function _updateUploadMeta()
     {
-        if (!$this->_upload instanceof cApiUpload || $this->_upload->isLoaded()) {
+        if (!$this->_upload instanceof cApiUpload || !$this->_upload->isLoaded()) {
             return;
         }
 
