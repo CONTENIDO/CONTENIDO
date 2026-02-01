@@ -679,6 +679,18 @@ abstract class cContentTypeAbstract
 
         return "'" . implode("','", $formFields) . "'";
     }
+
+    /**
+     * Wraps passed content in a form row div element.
+     *
+     * @see cHTMLDiv::__construct()
+     * @since CONTENIDO 4.10.2
+     */
+    protected function makeFormRow($content): cHTMLDiv
+    {
+        return new cHTMLDiv($content, 'con_form_row clearfix');
+    }
+
     /**
      * This functions able to use a content type object directly for output
      * See also CON-2587

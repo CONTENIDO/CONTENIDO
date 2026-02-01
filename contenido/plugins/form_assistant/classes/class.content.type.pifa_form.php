@@ -194,8 +194,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
                 $this->_getInputMailSystemRecipientEmail(),
                 $this->_getInputMailSystemSubject()
             ])
-        ], $this->_prefix . '_panel_base', $this->_prefix . '_panel_base_' . $this->_id);
-        $wrapper->setStyle('clear:both');
+        ], $this->_prefix . '_panel_base clearfix', $this->_prefix . '_panel_base_' . $this->_id);
 
         return $wrapper->render();
     }
@@ -241,7 +240,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         }
 
         // build div element as wrapper
-        return new cHTMLDiv([
+        return $this->makeFormRow([
             $label,
             $select
         ]);
@@ -261,7 +260,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $input = new cHTMLTextbox('pifaform_headline', $value, '', '', $id);
 
         // build div element as wrapper
-        return new cHTMLDiv([
+        return $this->makeFormRow([
             $label,
             $input
         ]);
@@ -304,7 +303,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         }
 
         // build div element as wrapper
-        return new cHTMLDiv([
+        return $this->makeFormRow([
             $label,
             $select
         ]);
@@ -347,7 +346,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         }
 
         // build div element as wrapper
-        return new cHTMLDiv([
+        return $this->makeFormRow([
             $label,
             $select
         ]);
@@ -390,7 +389,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         }
 
         // build div element as wrapper
-        return new cHTMLDiv([
+        return $this->makeFormRow([
             $label,
             $select
         ]);
@@ -433,7 +432,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         }
 
         // build div element as wrapper
-        return new cHTMLDiv([
+        return $this->makeFormRow([
             $label,
             $select
         ]);
@@ -475,7 +474,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         }
 
         // build div element as wrapper
-        return new cHTMLDiv([
+        return $this->makeFormRow([
             $label,
             $select
         ]);
@@ -492,7 +491,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $value = $this->getSetting('pifaform_mail_client_from_email');
 
         // build label element, input element & div element as wrapper
-        return new cHTMLDiv([
+        return $this->makeFormRow([
             new cHTMLLabel($label, $id),
             new cHTMLTextbox('pifaform_mail_client_from_email', $value, '', '', $id)
         ]);
@@ -509,7 +508,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $value = $this->getSetting('pifaform_mail_client_from_name');
 
         // build label element, input element & div element as wrapper
-        return new cHTMLDiv([
+        return $this->makeFormRow([
             new cHTMLLabel($label, $id),
             new cHTMLTextbox('pifaform_mail_client_from_name', $value, '', '', $id)
         ]);
@@ -540,7 +539,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         }
 
         // build label element, select element & div element as wrapper
-        return new cHTMLDiv([
+        return $this->makeFormRow([
             new cHTMLLabel($label, $id),
             $select
         ]);
@@ -560,7 +559,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $value = str_replace('$', '&#36;', $value);
 
         // build label element, input element & div element as wrapper
-        return new cHTMLDiv([
+        return $this->makeFormRow([
             new cHTMLLabel($label, $id),
             new cHTMLTextbox('pifaform_mail_client_subject', $value, '', '', $id)
         ]);
@@ -602,7 +601,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         }
 
         // build div element as wrapper
-        return new cHTMLDiv([
+        return $this->makeFormRow([
             $label,
             $select
         ]);
@@ -619,7 +618,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $value = $this->getSetting('pifaform_mail_system_from_email');
 
         // build label element, input element & div element as wrapper
-        return new cHTMLDiv([
+        return $this->makeFormRow([
             new cHTMLLabel($label, $id),
             new cHTMLTextbox('pifaform_mail_system_from_email', $value, '', '', $id)
         ]);
@@ -636,7 +635,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $value = $this->getSetting('pifaform_mail_system_from_name');
 
         // build label element, input element & div element as wrapper
-        return new cHTMLDiv([
+        return $this->makeFormRow([
             new cHTMLLabel($label, $id),
             new cHTMLTextbox('pifaform_mail_system_from_name', $value, '', '', $id)
         ]);
@@ -653,7 +652,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $value = $this->getSetting('pifaform_mail_system_recipient_email');
 
         // build label element, input element & div element as wrapper
-        return new cHTMLDiv([
+        return $this->makeFormRow([
             new cHTMLLabel($label, $id),
             new cHTMLTextbox('pifaform_mail_system_recipient_email', $value, '', '', $id)
         ]);
@@ -685,7 +684,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         }
 
         // build label element, select element & div element as wrapper
-        return new cHTMLDiv([
+        return $this->makeFormRow([
             new cHTMLLabel($label, $id),
             $select
         ]);
@@ -705,7 +704,7 @@ class cContentTypePifaForm extends cContentTypeAbstractTabbed
         $value = str_replace('$', '&#36;', $value);
 
         // build label element, input element & div element as wrapper
-        return new cHTMLDiv([
+        return $this->makeFormRow([
             new cHTMLLabel($label, $id),
             new cHTMLTextbox('pifaform_mail_system_subject', $value, '', '', $id)
         ]);

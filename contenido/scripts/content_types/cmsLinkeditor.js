@@ -120,18 +120,11 @@
      */
     cContentTypeLinkeditor.prototype.addFrameShowEvent = function () {
         var self = this;
-        $(this.imageId).css('cursor', 'pointer');
-        $(this.imageId).click(function () {
-            var top = $(document).scrollTop() + ($(window).height() / 2);
-            self.$frame.fadeIn('normal');
-            self.$frame.css({
-                position: 'absolute',
-                top: top,
-                left: '50%'
-            });
-
-            // refresh tabs
-            self.refreshTabs();
+        Con.cContentTypeAbstractTabbed.prototype.addFrameShowEvent.call(this, {
+            clickEndCallback: function () {
+                // refresh tabs
+                self.refreshTabs();
+            },
         });
     };
 
@@ -535,8 +528,8 @@
             self.$frame.find('.con_tab_menu li').each(function() {
                 // if this is the active tab, extract the tab name
                 if ($(this).hasClass('active')) {
-                    var cssClass = $(this).attr('class');
-                    type = $.trim(cssClass.replace('active', ''));
+                    var match = $(this).data('tabContent').match(/con_tab_(.*)_content/);
+                    type = match ? match[1] : null;
                 }
             });
             self.appendFormField('linkeditor_type', type);

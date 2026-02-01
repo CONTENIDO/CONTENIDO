@@ -13,12 +13,10 @@
     border: 1px solid #B3B3B3;
     display: none;
     font-size: 12px;
-    /*left: 50% !important;*/
-    padding: 5px;
-    /*top: 50% !important;*/
-    margin: -160px 0 0 -161px;
-    /*position: fixed !important;*/
+    padding: 0;
+    margin: -180px 0 0 -180px;
     z-index: 20000;
+    width: 360px;
 }
 
 .cms_abstract * {
@@ -34,25 +32,35 @@
     font-size: 12px !important;
 }
 
-.cms_abstract .close {
-    float: right;
-    margin-right: 6px;
-    margin-top: 5px;
+.cms_abstract .cms_abstract_header {
+    padding: 7px 10px;
+}
+
+.cms_abstract .cms_abstract_header .head {
+    font-weight: bold;
+    line-height: 16px;
+}
+
+.cms_abstract .cms_abstract_header .close {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
 
 .cms_abstract .con_tab_content {
-    padding-top: 10px;
+    padding: 10px 10px 36px 10px;
 }
 
-.cms_abstract .head {
+.cms_abstract .con_tab_content fieldset legend {
     font-weight: bold;
-    margin: 5px 0;
+    margin-bottom: 5px;
 }
 
 .cms_abstract .head_sub {
     clear: both;
     font-style: italic;
-    padding: 10px 0 5px;
+    padding: 5px 0;
     font-weight: bold;
 }
 .cms_abstract div + .head_sub {
@@ -60,6 +68,8 @@
 }
 
 .cms_abstract label {
+    margin-bottom: 5px;
+    line-height: 18px;
     display: block;
     float: left;
     width: 48%;
@@ -71,8 +81,13 @@
     width: 50%;
 }
 
-.cms_abstract input {
-    width: 50%;
+.cms_abstract .con_form_row {
+    margin-bottom: 5px;
+}
+.cms_abstract .con_form_row label,
+.cms_abstract .con_form_row input,
+.cms_abstract .con_form_row select {
+    margin-bottom: 0;
 }
 
 .cms_abstract input.file {
@@ -84,19 +99,19 @@
 }
 
 .cms_abstract select {
-    width: 51%;
+    width: 50%;
 }
 
-.cms_abstract .toolbar {
-    clear: both;
-    float: right;
-    margin: 5px 6px 5px 0;
+.cms_abstract .cms_abstract_footer {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
 }
 
 .cms_abstract .con_tab_menu {
     clear: both;
     list-style-type: none;
-    margin: 10px 0 0;
+    margin: 3px 0 0;
     border-bottom: 1px solid #B3B3B3;
     height: 22px;
 }
@@ -120,4 +135,16 @@
 .cms_abstract .checkbox_wrapper {
     float: left;
     width: 120px;
+}
+
+.cms_abstract .clearfix:before,
+.cms_abstract .clearfix:after {
+    content: "";
+    display: table;
+}
+.cms_abstract .clearfix:after {
+    clear: both;
+}
+.cms_abstract .clearfix {
+    zoom: 1;
 }

@@ -20,34 +20,12 @@
     width: 410px;
 }
 
-.cms_filelist .con_tab_manual_content .con_directory_list {
-    height: 135px;
-}
-
 .cms_filelist .filelist_manual_filelist_setting {
     clear: both;
 }
 
-.cms_filelist label {
-    width: 220px;
-}
-.cms_filelist label.filelist_filename_label {
-    width: 100px;
-}
-
-.cms_filelist select.filelist_filename {
-    width: 300px;
-}
-
 .cms_filelist .filelist_add_file {
     margin: 2px 0 0 5px;
-}
-
-.cms_filelist input,
-.cms_filelist select {
-    border: 1px solid #CCC;
-    display: block;
-    float: left;
 }
 
 .cms_filelist .filelist_meta_data_list {
@@ -58,33 +36,19 @@
     list-style: none;
 }
 
-.cms_filelist .filelist_meta_data_list input {
-    width: 30px;
-}
-
-.con_tab_filter_content span,
-.filelist_meta_data_list span,
-.con_tab_manual_content span {
-    float: left;
-}
-
 .cms_filelist .con_tab_filter_content .manual {
     width: 420px;
 }
 
-.cms_filelist .con_tab_filter_content input {
+.cms_filelist .con_tab_filter_content input:not([type="checkbox"]) {
     font-size: 10px;
     width: 75px;
 }
 
 .cms_filelist .con_tab_filter_content .filelist_all_extensions {
     display: block;
+    line-height: 18px;
     margin: 5px 0;
-}
-
-.cms_filelist .con_tab_filter_content label.filelist_ignore_extensions {
-    margin: 5px 0;
-    width: 230px;
 }
 
 .cms_filelist .con_tab_manual_content .manual {

@@ -179,13 +179,19 @@
     };
 
     /**
-     * Adds event which fades in the edit form when edit button is clicked.
+     * Adds the event which fades in the edit form when the edit button is clicked.
      * @method addFrameShowEvent
+     * @param {Object} options - Options like
+     * <pre>
+     * - options.clickEndCallback (Callback) Optional callback function to call at the end of the
+     *      edit button click handler.
+     * </pre>
      */
-    cContentTypeAbstractTabbed.prototype.addFrameShowEvent = function() {
+    cContentTypeAbstractTabbed.prototype.addFrameShowEvent = function(options) {
+        var _options = typeof options !== 'undefined' ? options : {};
         var self = this;
         $(this.imageId).click(function() {
-            var top = $(document).scrollTop()+($(window).height()/2);
+            var top = $(document).scrollTop() + ($(window).height()/2);
             $('body').addClass('cms_has_overlay');
             self.$frame.fadeIn('normal');
             self.$frame.css({
@@ -193,6 +199,10 @@
                 top: top,
                 left: '50%'
             });
+            if (typeof _options.clickEndCallback === 'function') {
+                _options.clickEndCallback();
+            }
+            self.$frame[0].offsetHeight; // force reflow
         });
     };
 
