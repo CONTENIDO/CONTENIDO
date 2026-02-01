@@ -391,7 +391,7 @@ abstract class cCodeGeneratorAbstract
             $replacements = [];
 
             $typeClassName = $this->_getContentTypeClassName($contentType);
-            $typeCodeFile = $this->_getContentTypeCodeFilePathName($contentType);
+            $typeCodeFile = $this->_getContentTypeCodeFilePathName(cString::toLowerCase($contentType));
             $tmp = '';
 
             foreach ($contentIds as $contentId) {
