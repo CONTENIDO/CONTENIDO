@@ -14,7 +14,7 @@
 
 (function (Con, $) {
 
-    var NAME = 'content-type-pifa-form';
+    var NAME = 'content-type-cms-user-form';
 
     /**
      * Creates a new cContentTypePifaForm with the given properties. You most

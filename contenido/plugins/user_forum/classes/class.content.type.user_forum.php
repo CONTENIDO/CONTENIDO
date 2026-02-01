@@ -105,10 +105,6 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed
         $code .= $this->_encodeForOutput($codeBottom);
         $code .= $this->generateViewCode();
 
-        $code = "\n\n<!-- CODE (class.content.type.user_forum.php) -->
-$code
-<!-- /CODE -->\n\n";
-
         return $code;
     }
 
@@ -138,11 +134,11 @@ $code
 
         // build html elements
         $labelModMode = new cHTMLLabel(UserForum::i18n('ACTIVATEMOD'), $id);
-        $checkBoxMod = new cHTMLCheckbox($id, '', $id);
+        $checkBoxMod = new cHTMLCheckbox('userforum_modactive', '', $id);
         $checkBoxMod->setID($id);
 
         // check state
-        $checkBoxMod->setChecked($this->getSetting('userforum_modactive', 'false') === 'false');
+        $checkBoxMod->setChecked($this->getSetting('userforum_modactive') === 'true');
 
         // build div element as wrapper
         $div = new cHTMLDiv([
@@ -165,11 +161,11 @@ $code
 
         // build html elements
         $labelModMode = new cHTMLLabel(UserForum::i18n('EDITABLE'), $id);
-        $checkBoxMod = new cHTMLCheckbox($id, '', $id);
+        $checkBoxMod = new cHTMLCheckbox('userforum_subcomments', '', $id);
         $checkBoxMod->setID($id);
 
         // check state
-        $checkBoxMod->setChecked($this->getSetting('userforum_subcomments', 'false') === 'false');
+        $checkBoxMod->setChecked($this->getSetting('userforum_subcomments') === 'true');
 
         // build div element as wrapper
         $div = new cHTMLDiv([
@@ -195,9 +191,8 @@ $code
         $infoLabel = new cHTMLLabel(UserForum::i18n('MODSETTINGS'), $id);
         $labelEmail = new cHTMLLabel(UserForum::i18n('MODEMAIL'), $id);
 
-        $inputEmail = new cHTMLTextbox($id);
-        $inputEmail->setID($id);
-        $inputEmail->setValue($this->getSetting('userforum_email', ''));
+        $value = $this->getSetting('userforum_email', '');
+        $inputEmail = new cHTMLTextbox('userforum_email', $value, '', '', $id);
 
         // build div element as wrapper
         $div = new cHTMLDiv([
