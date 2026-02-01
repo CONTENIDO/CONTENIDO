@@ -504,7 +504,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
     private function _generateTabDirectories(): string
     {
         // define a wrapper which contains the whole content of the directories tab
-        $wrapper = new cHTMLDiv();
+        $wrapper = new cHTMLDiv('', 'clearfix');
         $wrapperContent = [];
 
         $directoryList = new cHTMLDiv('', 'con_directory_list', 'con_directory_list' . '_' . $this->_id);
@@ -541,7 +541,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
     private function _generateTabMeta(): string
     {
         // define a wrapper which contains the whole content of the meta tab
-        $wrapper = new cHTMLDiv();
+        $wrapper = new cHTMLDiv('', 'clearfix');
         $wrapperContent = [];
 
         $imageMetaUrl = new cHTMLSpan();
@@ -575,7 +575,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
     private function _generateTabUpload(): string
     {
         // define a wrapper which contains the whole content of the upload tab
-        $wrapper = new cHTMLDiv();
+        $wrapper = new cHTMLDiv('', 'clearfix');
         $wrapperContent = [];
 
         // create a new directory form
@@ -584,9 +584,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         $newDirForm->setAttribute('method', 'post');
         $newDirForm->setAttribute('action', cRegistry::getBackendUrl() . 'main.php');
         $caption1Span = new cHTMLSpan('', 'con_caption con_caption1');
-        $newDirHead = new cHTMLDiv([
+        $newDirHead = $this->makeFormRow([
             '<b>' . i18n('Create a directory in') . '</b>',
-            $caption1Span
+            '<code>' . $caption1Span . '</code>'
         ]);
         $area = new cHTMLHiddenField('area', 'upl');
         $action = new cHTMLHiddenField('action', 'upl_mkdir');
@@ -597,7 +597,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         $foldername = new cHTMLTextbox('foldername');
         $button = new cHTMLButton('', '', '', false, null, '', 'image');
         $button->setAttribute('src', cRegistry::getBackendUrl() . 'images/submit.gif');
-        $newDirContent = new cHTMLDiv([
+        $newDirContent = $this->makeFormRow([
             $area,
             $action,
             $frame,
@@ -628,9 +628,9 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
         $appendparameters = new cHTMLHiddenField('appendparameters');
         $contenido = new cHTMLHiddenField('contenido', cRegistry::getBackendSessionId());
         $caption2Span = new cHTMLSpan('', 'con_caption con_caption2');
-        $propertiesHead = new cHTMLDiv([
+        $propertiesHead = $this->makeFormRow([
             '<b>' . i18n('Path') . '</b>',
-            $caption2Span
+            '<code>' . $caption2Span . '</code>'
         ]);
         $imageUpload = new cHTMLUpload('file[]', '', '', $this->_getElementId('file'), false, null, '', 'file');
         $imageUpload->setClass('jqueryAjaxUpload');
@@ -645,7 +645,7 @@ class cContentTypeImgeditor extends cContentTypeAbstractTabbed
             $propertiesHead,
             $imageUpload
         ]);
-        $wrapperContent[] = $propertiesForm;
+        $wrapperContent[] = $this->makeFormRow($propertiesForm);
 
         $wrapperContent[] = new cHTMLImage(cRegistry::getBackendUrl() . 'images/ajax-loader.gif', 'loading');
 

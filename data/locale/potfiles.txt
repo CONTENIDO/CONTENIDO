@@ -537,7 +537,6 @@
 ./templates/standard/template.mod_history.html
 ./templates/standard/template.cms_text_js.html
 ./templates/standard/template.generic_list.html
-./templates/standard/template.cms_filelist_edit.html
 ./templates/standard/frameset_content_left.html
 ./templates/standard/template.client_left_top.html
 ./templates/standard/template.rights_left_top_filter.html
