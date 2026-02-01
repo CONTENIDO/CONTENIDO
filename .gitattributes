@@ -2036,7 +2036,6 @@ contenido/templates/standard/template.cms_abstract_tabbed_edit_tabs.html -text s
 contenido/templates/standard/template.cms_abstract_tabbed_edit_top.html -text svneol=unset#text/plain
 contenido/templates/standard/template.cms_date.html -text svneol=unset#text/plain
 contenido/templates/standard/template.cms_filelist_dirlistitem.html -text
-contenido/templates/standard/template.cms_filelist_edit.html -text
 contenido/templates/standard/template.cms_filelist_metadata_limititem.html -text
 contenido/templates/standard/template.cms_text_js.html -text svneol=unset#text/plain
 contenido/templates/standard/template.con_art_overview.html -text

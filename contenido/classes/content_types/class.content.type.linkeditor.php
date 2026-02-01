@@ -202,8 +202,12 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
             case 'external':
                 // make sure that link starts with http://
                 $link = $this->getSetting('linkeditor_externallink');
-                if (cString::findFirstPos($link, 'http://') !== 0 && cString::findFirstPos($link, 'www.') === 0) {
-                    $link = 'http://' . $link;
+                if (
+                    cString::findFirstPos($link, 'https://') !== 0
+                    && cString::findFirstPos($link, 'http://') !== 0
+                    && cString::findFirstPos($link, 'www.') === 0
+                ) {
+                    $link = 'https://' . $link;
                 }
                 break;
             case 'internal':
@@ -337,12 +341,12 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
     private function _generateTabExternal(): string
     {
         // define a wrapper which contains the whole content of the general tab
-        $wrapper = new cHTMLDiv();
+        $wrapper = new cHTMLDiv('', 'clearfix');
         $wrapperContent = [];
 
         $id = $this->_getElementId('linkeditor_externallink');
         $wrapperContent[] = new cHTMLLabel(i18n('Href'), $id);
-        $wrapperContent[] = new cHTMLTextbox('linkeditor_externallink_' . $this->_id, $this->getSetting('linkeditor_externallink'), '', '', $id);
+        $wrapperContent[] = new cHTMLTextbox('linkeditor_externallink', $this->getSetting('linkeditor_externallink'), '', '', $id);
 
         $wrapper->setContent($wrapperContent);
 
@@ -362,17 +366,21 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
     {
         // define a wrapper which contains the whole content of the basic
         // settings section
-        $wrapper = new cHTMLDiv();
+        $wrapper = new cHTMLDiv('', 'clearfix');
         $wrapperContent = [];
 
         $id = $this->_getElementId('linkeditor_title');
-        $wrapperContent[] = new cHTMLLabel(i18n('Title'), $id);
         $title = conHtmlEntityDecode($this->getSetting('linkeditor_title'));
-        $wrapperContent[] = new cHTMLTextbox('linkeditor_title_' . $this->_id, $title, '', '', $id);
+        $wrapperContent[] = $this->makeFormRow([
+            new cHTMLLabel(i18n('Title'), $id),
+            new cHTMLTextbox('linkeditor_title', $title, '', '', $id),
+        ]);
 
         $id = $this->_getElementId('linkeditor_newwindow');
-        $wrapperContent[] = new cHTMLCheckbox('linkeditor_newwindow_' . $this->_id, '', $id, ($this->getSetting('linkeditor_newwindow') === 'true'));
-        $wrapperContent[] = new cHTMLLabel(i18n('Open in a new window'), $id);
+        $wrapperContent[] = $this->makeFormRow([
+            new cHTMLCheckbox('linkeditor_newwindow', '', $id, ($this->getSetting('linkeditor_newwindow') === 'true')),
+            new cHTMLLabel(i18n('Open in a new window'), $id),
+        ]);
 
         $wrapper->setContent($wrapperContent);
 
@@ -390,7 +398,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
     private function _generateTabInternal(): string
     {
         // define a wrapper which contains the whole content of the general tab
-        $wrapper = new cHTMLDiv();
+        $wrapper = new cHTMLDiv('', 'clearfix');
         $wrapperContent = [];
 
         $id = $this->_getElementId('linkeditor_title');
@@ -668,7 +676,7 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
     private function _generateTabFile(): string
     {
         // define a wrapper which contains the whole content of the general tab
-        $wrapper = new cHTMLDiv();
+        $wrapper = new cHTMLDiv('', 'clearfix');
         $wrapperContent = [];
 
         // create a new directory form
@@ -677,9 +685,9 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
         $newDirForm->setAttribute('method', 'post');
         $newDirForm->setAttribute('action', cRegistry::getBackendUrl() . 'main.php');
         $caption1Span = new cHTMLSpan('', 'con_caption con_caption1');
-        $newDirHead = new cHTMLDiv([
+        $newDirHead = $this->makeFormRow([
             '<b>' . i18n('Create a directory in') . '</b>',
-            $caption1Span
+            '<code>' . $caption1Span . '</code>'
         ]);
         $area = new cHTMLHiddenField('area', 'upl');
         $action = new cHTMLHiddenField('action', 'upl_mkdir');
@@ -721,9 +729,9 @@ class cContentTypeLinkeditor extends cContentTypeAbstractTabbed
         $appendparameters = new cHTMLHiddenField('appendparameters');
         $contenido = new cHTMLHiddenField('contenido', $_REQUEST['contenido']);
         $caption2Span = new cHTMLSpan('', 'con_caption con_caption2');
-        $propertiesHead = new cHTMLDiv([
+        $propertiesHead = $this->makeFormRow([
             '<b>' . i18n('Path') . '</b>',
-            $caption2Span
+            '<code>' . $caption2Span . '</code>'
         ]);
         $imageUpload = new cHTMLUpload('file[]', '', '', 'cms_image_m' . $this->_id, false, null, '', 'file');
         $imageUpload->setClass('jqueryAjaxUpload');

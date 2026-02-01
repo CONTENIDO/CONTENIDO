@@ -771,7 +771,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
     private function _generateTabGeneral(): string
     {
         // define a wrapper which contains the whole content of the general tab
-        $wrapper = new cHTMLDiv();
+        $wrapper = new cHTMLDiv('', 'clearfix');
         $wrapperContent = [];
 
         // $wrapperContent[] = new cHTMLParagraph(i18n('General settings'),
@@ -915,7 +915,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
     private function _generateTabAdvanced(): string
     {
         // define a wrapper which contains the whole content of the advanced tab
-        $wrapper = new cHTMLDiv();
+        $wrapper = new cHTMLDiv('', 'clearfix');
         $wrapperContent = [];
 
         // $wrapperContent[] = new cHTMLParagraph(i18n('Manual teaser settings'), 'head_sub');
@@ -960,6 +960,10 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
                 $selectElement->addOptionElement(0, $option);
             }
         }
+
+        $label = new cHTMLLabel(i18n('Included articles'), $this->_getElementId('teaser_manual_art'));
+        $label->setStyle('opacity: 0.0');
+        $wrapperContent[] = $label;
         $wrapperContent[] = $selectElement;
 
         $wrapperContent[] = new cHTMLLabel(i18n("Delete"), $this->_getElementId('del_art'));
@@ -1074,78 +1078,97 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
     private function _generateTabManual(): string
     {
         // define a wrapper which contains the whole content of the manual tab
-        $wrapper = new cHTMLDiv();
+        $wrapper = new cHTMLDiv('', 'clearfix');
         $wrapperContent = [];
 
         $wrapperContent[] = new cHTMLParagraph(i18n("Content visualisation"), 'head_sub');
-        $wrapperContent[] = new cHTMLLabel(i18n("Teaser visualisation"), $this->_getElementId('teaser_style'));
-        $wrapperContent[] = $this->_generateStyleSelect();
-        $wrapperContent[] = new cHTMLLabel(i18n("Teaser filter"), $this->_getElementId('teaser_filter'));
-        $wrapperContent[] = new cHTMLTextbox(
-            'teaser_filter', $this->getSetting('teaser_filter'), '', '', $this->_getElementId('teaser_filter')
-        );
-        $wrapperContent[] = new cHTMLLabel(i18n('Character length'), $this->_getElementId('teaser_character_limit'));
-        $wrapperContent[] = new cHTMLTextbox(
-            'teaser_character_limit',
-            $this->getSetting('teaser_character_limit'),
-            '',
-            '',
-            $this->_getElementId('teaser_character_limit')
-        );
+
+        $wrapperContent[] = $this->makeFormRow([
+            new cHTMLLabel(i18n("Teaser visualisation"), $this->_getElementId('teaser_style')),
+            $this->_generateStyleSelect(),
+        ]);
+
+        $wrapperContent[] = $this->makeFormRow([
+            new cHTMLLabel(i18n("Teaser filter"), $this->_getElementId('teaser_filter')),
+            new cHTMLTextbox(
+                'teaser_filter', $this->getSetting('teaser_filter'), '', '', $this->_getElementId('teaser_filter')
+            ),
+        ]);
+
+        $wrapperContent[] = $this->makeFormRow([
+            new cHTMLLabel(i18n('Character length'), $this->_getElementId('teaser_character_limit')),
+            new cHTMLTextbox(
+                'teaser_character_limit',
+                $this->getSetting('teaser_character_limit'),
+                '',
+                '',
+                $this->_getElementId('teaser_character_limit')
+            ),
+        ]);
 
         $wrapperContent[] = new cHTMLParagraph(i18n("Pictures"), 'head_sub');
-        $wrapperContent[] = new cHTMLLabel(i18n('Image width'), $this->_getElementId('teaser_image_width'));
-        $wrapperContent[] = new cHTMLTextbox(
-            'teaser_image_width',
-            $this->getSetting('teaser_image_width'),
-            '',
-            '',
-            $this->_getElementId('teaser_image_width')
-        );
-        $wrapperContent[] = new cHTMLLabel(i18n('Image height'), $this->_getElementId('teaser_image_height'));
-        $wrapperContent[] = new cHTMLTextbox(
-            'teaser_image_height',
-            $this->getSetting('teaser_image_height'),
-            '',
-            '',
-            $this->_getElementId('teaser_image_height')
-        );
-        $wrapperContent[] = new cHTMLLabel(i18n('Image scale'), $this->_getElementId('teaser_image_crop'));
-        $wrapperContent[] = $this->_generateCropSelect();
+        $wrapperContent[] = $this->makeFormRow([
+            new cHTMLLabel(i18n('Image height'), $this->_getElementId('teaser_image_height')),
+            new cHTMLTextbox(
+                'teaser_image_height',
+                $this->getSetting('teaser_image_height'),
+                '',
+                '',
+                $this->_getElementId('teaser_image_height')
+            ),
+        ]);
 
-        $wrapperContent[] = new cHTMLLabel(i18n("Use original image"), $this->_getElementId('teaser_image_original'));
-        $wrapperContent[] = new cHTMLCheckbox(
-            'teaser_image_original',
-            '',
-            $this->_getElementId('teaser_image_original'),
-            ($this->getSetting('teaser_image_original') == 'true')
-        );
+        $this->makeFormRow([
+            new cHTMLLabel(i18n('Image scale'), $this->_getElementId('teaser_image_crop')),
+            $this->_generateCropSelect(),
+        ]);
+
+        $this->makeFormRow([
+            new cHTMLLabel(i18n("Use original image"), $this->_getElementId('teaser_image_original')),
+            new cHTMLCheckbox(
+                'teaser_image_original',
+                '',
+                $this->_getElementId('teaser_image_original'),
+                ($this->getSetting('teaser_image_original') == 'true')
+            ),
+        ]);
 
         $wrapperContent[] = new cHTMLParagraph(i18n("Content types"), 'head_sub');
-        $wrapperContent[] = new cHTMLLabel(i18n("Headline source"), $this->_getElementId('teaser_source_head'));
-        $wrapperContent[] = $this->_generateTypeSelect(
-            'teaser_source_head',
-            $this->getSetting('teaser_source_head'),
-            $this->getSetting('teaser_source_head_count')
-        );
-        $wrapperContent[] = new cHTMLLabel(i18n("Text source"), $this->_getElementId('teaser_source_text'));
-        $wrapperContent[] = $this->_generateTypeSelect(
-            'teaser_source_text',
-            $this->getSetting('teaser_source_text'),
-            $this->getSetting('teaser_source_text_count')
-        );
-        $wrapperContent[] = new cHTMLLabel(i18n('Image source'), $this->_getElementId('teaser_source_image'));
-        $wrapperContent[] = $this->_generateTypeSelect(
-            'teaser_source_image',
-            $this->getSetting('teaser_source_image'),
-            $this->getSetting('teaser_source_image_count')
-        );
-        $wrapperContent[] = new cHTMLLabel(i18n('Date source'), $this->_getElementId('teaser_source_date'));
-        $wrapperContent[] = $this->_generateTypeSelect(
-            'teaser_source_date',
-            $this->getSetting('teaser_source_date'),
-            $this->getSetting('teaser_source_date_count')
-        );
+        $this->makeFormRow([
+            new cHTMLLabel(i18n("Headline source"), $this->_getElementId('teaser_source_head')),
+            $this->_generateTypeSelect(
+                'teaser_source_head',
+                $this->getSetting('teaser_source_head'),
+                $this->getSetting('teaser_source_head_count')
+            ),
+        ]);
+
+        $this->makeFormRow([
+            $wrapperContent[] = new cHTMLLabel(i18n("Text source"), $this->_getElementId('teaser_source_text')),
+            $wrapperContent[] = $this->_generateTypeSelect(
+                'teaser_source_text',
+                $this->getSetting('teaser_source_text'),
+                $this->getSetting('teaser_source_text_count')
+            ),
+        ]);
+
+        $this->makeFormRow([
+            new cHTMLLabel(i18n('Image source'), $this->_getElementId('teaser_source_image')),
+            $this->_generateTypeSelect(
+                'teaser_source_image',
+                $this->getSetting('teaser_source_image'),
+                $this->getSetting('teaser_source_image_count')
+            ),
+        ]);
+
+        $this->makeFormRow([
+            new cHTMLLabel(i18n('Date source'), $this->_getElementId('teaser_source_date')),
+            $this->_generateTypeSelect(
+                'teaser_source_date',
+                $this->getSetting('teaser_source_date'),
+                $this->getSetting('teaser_source_date_count')
+            ),
+        ]);
 
         $wrapper->setContent($wrapperContent);
 

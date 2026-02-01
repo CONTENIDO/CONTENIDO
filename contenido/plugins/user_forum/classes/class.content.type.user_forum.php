@@ -126,8 +126,7 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed
             $this->_getModEmail(),
             $this->_getModMode(),
             $this->_getEditMode()
-        ], $this->_prefix . '_panel_base', $this->_prefix . '_panel_base_' . $this->_id);
-        $wrapper->setStyle('clear:both');
+        ], $this->_prefix . '_panel_base clearfix', $this->_prefix . '_panel_base_' . $this->_id);
 
         return $wrapper->render();
     }
@@ -148,12 +147,11 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed
         $checkBoxMod->setChecked($this->getSetting('userforum_modactive') === 'true');
 
         // build div element as wrapper
-        $div = new cHTMLDiv([
-            '<br />',
+        $div = $this->makeFormRow([
             $labelModMode,
             $checkBoxMod
         ]);
-        $div->setClass('modMode');
+        $div->appendClass('modMode');
 
         // return div element
         return $div;
@@ -175,11 +173,11 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed
         $checkBoxMod->setChecked($this->getSetting('userforum_subcomments') === 'true');
 
         // build div element as wrapper
-        $div = new cHTMLDiv([
+        $div = $this->makeFormRow([
             $labelModMode,
             $checkBoxMod
         ]);
-        $div->setClass('editMode');
+        $div->appendClass('editMode');
 
         // return div element
         return $div;
@@ -203,11 +201,11 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed
         $inputEmail = new cHTMLTextbox('userforum_email', $value, '', '', $id);
 
         // build div element as wrapper
-        $div = new cHTMLDiv([
+        $div = $this->makeFormRow([
             $labelEmail,
             $inputEmail
         ]);
-        $div->setClass('mail');
+        $div->appendClass('mail');
 
         // return div element
         return $div;
