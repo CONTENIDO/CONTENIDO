@@ -31,10 +31,6 @@ if (!defined('SMARTY_DIR')) {
 
 require_once(SMARTY_DIR . 'Smarty.class.php');
 
-plugin_include('smarty', 'classes/class.smarty.wrapper.php');
-plugin_include('smarty', 'classes/class.smarty.frontend.php');
-plugin_include('smarty', 'classes/class.smarty.backend.php');
-
 try {
     new cSmartyFrontend($cfg, $cfgClient[$client], true);
 } catch (Exception $e) {
