@@ -99,6 +99,8 @@ class Swift_Mime_Headers_IdentificationHeader extends Swift_Mime_Headers_Abstrac
         if (count($this->_ids) > 0) {
             return $this->_ids[0];
         }
+
+        return '';
     }
 
     /**

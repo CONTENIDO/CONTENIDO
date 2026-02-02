@@ -40,8 +40,7 @@ class PifaLeftBottomPage extends cGuiPage
     /**
      * Create an instance.
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct()
     {
@@ -79,19 +78,16 @@ class PifaLeftBottomPage extends cGuiPage
     /**
      * Get menu with all forms of current client in current language.
      *
-     * @return string
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    private function _getMenu()
+    private function _getMenu(): string
     {
         $cfg = cRegistry::getConfig();
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $clientId = cRegistry::getClientId();
+        $languageId = cRegistry::getLanguageId();
 
         // get all forms of current client in current language
-        $forms = PifaFormCollection::getByClientAndLang($client, $lang);
+        $forms = PifaFormCollection::getByClientAndLang($clientId, $languageId);
         if (false === $forms) {
             return '<!-- no forms for current client/language -->';
         }
@@ -104,13 +100,12 @@ class PifaLeftBottomPage extends cGuiPage
         $formContent = $contentCollection->getFieldsByWhereClause([
             'idartlang',
             'value',
-        ], 'idtype = "' . $this->typeId . '"');
+        ], '`idtype` = "' . $this->typeId . '"');
         // get the idform and the related cApiArticleLanguage object and save them in an array
         $assignedForms = [];
         foreach ($formContent as $formRow) {
             // read settings
-            $formRow['value'] = conHtmlEntityDecode($formRow['value']);
-            $formRow['value'] = @utf8_encode($formRow['value']);
+            $formRow['value'] = cString::convertEncoding(conHtmlEntityDecode($formRow['value']));
             $settings = cXmlBase::xmlStringToArray($formRow['value']);
             // if it was successful append the array of articles using this form
             if ($settings['idform'] != '') {
@@ -126,7 +121,7 @@ class PifaLeftBottomPage extends cGuiPage
 
         // create menu
         $menu = new cGuiMenu();
-        while (false !== $form = $forms->next()) {
+        while ($form = $forms->next()) {
             $formIsInUse = false;
             $idform = cSecurity::toInteger($form->get('idform'));
             $formName = $form->get('name');
@@ -201,7 +196,7 @@ class PifaRightBottomFormPage extends cGuiPage
      *
      * @var string
      */
-    const SHOW_FORM = 'pifa_show_form';
+    public const SHOW_FORM = 'pifa_show_form';
 
     /**
      * Action constant.
@@ -232,8 +227,7 @@ class PifaRightBottomFormPage extends cGuiPage
      * and its values are stored in the appropriate model.
      *
      * @throws PifaException if form could not be loaded
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct()
     {
@@ -258,7 +252,7 @@ class PifaRightBottomFormPage extends cGuiPage
         // load models
         $idform = cSecurity::toInteger($idform);
         if (0 < $idform) {
-            if (false === $this->_pifaForm->loadByPrimaryKey($idform)) {
+            if (!$this->_pifaForm->loadByPrimaryKey($idform)) {
                 $msg = Pifa::i18n('FORM_LOAD_ERROR');
                 throw new PifaException($msg);
             }
@@ -361,7 +355,7 @@ class PifaRightBottomFormPage extends cGuiPage
     /**
      * Build and return form for PIFA forms.
      *
-     * @return string
+     * @return string|false
      * @throws cDbException
      * @throws cException|SmartyException
      */
@@ -428,6 +422,9 @@ class PifaRightBottomFormPage extends cGuiPage
      * Handles a POST request of the first form, showing a forms details.
      *
      * @throws PifaException
+     * @throws cDbException
+     * @throws cException
+     * @throws cInvalidArgumentException
      */
     private function _storeForm()
     {
@@ -525,15 +522,13 @@ class PifaRightBottomFormPage extends cGuiPage
         }
 
         // store item
-        if (false === $this->_pifaForm->store()) {
+        if (!$this->_pifaForm->store()) {
             $msg = Pifa::i18n('FORM_STORE_ERROR');
             $msg = sprintf($msg, $this->_pifaForm->getLastError());
             throw new PifaException($msg);
         }
     }
 
-    /**
-     */
     private function _deleteForm()
     {
         $this->_pifaForm->delete();
@@ -572,8 +567,7 @@ class PifaRightBottomFormFieldsPage extends cGuiPage
      * and its values are stored in the appropriate model.
      *
      * @throws PifaException if form could not be loaded
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct()
     {
@@ -631,8 +625,7 @@ class PifaRightBottomFormFieldsPage extends cGuiPage
      *
      * @throws PifaException if the given action is unknown
      * @throws PifaIllegalStateException if permissions are missing
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     protected function _dispatch($action, $notification = '')
     {
@@ -669,7 +662,7 @@ class PifaRightBottomFormFieldsPage extends cGuiPage
     }
 
     /**
-     * @return mixed|string
+     * @return string|false
      * @throws cDbException
      * @throws cException|SmartyException
      */
@@ -822,8 +815,7 @@ class PifaRightBottomFormDataPage extends cGuiPage
      * and its values are stored in the appropriate model.
      *
      * @throws PifaException if form could not be loaded
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct()
     {
@@ -848,7 +840,7 @@ class PifaRightBottomFormDataPage extends cGuiPage
         // load models
         $idform = cSecurity::toInteger($idform);
         if (0 < $idform) {
-            if (false === $this->_pifaForm->loadByPrimaryKey($idform)) {
+            if (!$this->_pifaForm->loadByPrimaryKey($idform)) {
                 $msg = Pifa::i18n('FORM_LOAD_ERROR');
                 throw new PifaException($msg);
             }
@@ -879,8 +871,7 @@ class PifaRightBottomFormDataPage extends cGuiPage
      *
      * @throws PifaException if the given action is unknown
      * @throws PifaIllegalStateException if permissions are missing
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException|SmartyException
      */
     protected function _dispatch($action, $notification = '')
     {
@@ -917,7 +908,7 @@ class PifaRightBottomFormDataPage extends cGuiPage
     }
 
     /**
-     * @return mixed|string
+     * @return false|string
      * @throws cException|SmartyException
      */
     private function _showData()
@@ -1047,8 +1038,7 @@ class PifaRightBottomFormExportPage extends cGuiPage
      * and its values are stored in the appropriate model.
      *
      * @throws PifaException if form could not be loaded
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException|SmartyException
      */
     public function __construct()
     {
@@ -1082,7 +1072,7 @@ class PifaRightBottomFormExportPage extends cGuiPage
         // load models
         $idform = cSecurity::toInteger($idform);
         if (0 < $idform) {
-            if (false === $this->_pifaForm->loadByPrimaryKey($idform)) {
+            if (!$this->_pifaForm->loadByPrimaryKey($idform)) {
                 $msg = Pifa::i18n('FORM_LOAD_ERROR');
                 throw new PifaException($msg);
             }
@@ -1136,7 +1126,7 @@ class PifaRightBottomFormExportPage extends cGuiPage
     }
 
     /**
-     * @return mixed|string
+     * @return false|string
      * @throws cException|SmartyException
      */
     private function _exportForm()
@@ -1187,12 +1177,10 @@ class PifaRightBottomFormImportPage extends cGuiPage
      * PifaRightBottomFormImportPage constructor.
      * Dispatches the current action and displays a notification.
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException|SmartyException
      */
     public function __construct()
     {
-
         /**
          * @param string $action to be performed
          */
@@ -1279,8 +1267,7 @@ class PifaRightBottomFormImportPage extends cGuiPage
      * PifaImporter. Eventually a notification is displayed.
      *
      * @param bool $showTableNameField
-     *
-     * @return string
+     * @return string|false
      * @throws cException|SmartyException
      */
     private function _importFormGet($showTableNameField = false)
@@ -1318,7 +1305,7 @@ class PifaRightBottomFormImportPage extends cGuiPage
      * On a POST request the import of the uploaded file is performed via
      * PifaImporter. Eventually a notification is displayed.
      *
-     * @return string
+     * @return string|false
      * @throws cException|SmartyException
      */
     private function _importFormPost()
@@ -1336,7 +1323,6 @@ class PifaRightBottomFormImportPage extends cGuiPage
         }
 
         try {
-
             // perform import process
             $pifaImporter = new PifaImporter();
             $pifaImporter->setTableName($tableName);

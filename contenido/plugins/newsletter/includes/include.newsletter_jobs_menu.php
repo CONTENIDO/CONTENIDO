@@ -28,10 +28,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // ################################
 // Initialization
 // ################################
-$oPage = new cGuiPage("newsletter_jobs_menu", "newsletter");
+$oPage = new cGuiPage('newsletter_jobs_menu', 'newsletter');
 $oMenu = new cGuiMenu();
 $oJobs = new NewsletterJobCollection();
-$oUser = new cApiUser($auth->auth["uid"]);
+$oUser = new cApiUser($auth->getUserId());
 
 // Specify fields for search, sort and validation. Design makes enhancements
 // using plugins possible (currently not implemented). If you are changing
@@ -59,7 +59,7 @@ $aFields = [
         "type" => "base,sort"
     ],
 ];
-// Not needed, as no sort/search, but keep as memo: $aFields["cronjob"] =
+// Not needed, as no sort/search, but keep as memo: $aFields['cronjob'] =
 // ["field" => "use_cronjob", "caption" => i18n("Use cronjob",
 // 'newsletter'), "type" => "base"];
 
@@ -79,7 +79,7 @@ $requestRestrictGroup = $_REQUEST['restrictgroup'] ?? '';
 
 // Items per page (value stored per area in user property)
 if (!is_numeric($requestElemPerPage) || $requestElemPerPage < 0) {
-    $requestElemPerPage = $oUser->getProperty("itemsperpage", $area);
+    $requestElemPerPage = $oUser->getProperty('itemsperpage', $area);
 }
 if (!is_numeric($requestElemPerPage)) {
     // This is the case, if the user property has never been set (first time
@@ -89,7 +89,7 @@ if (!is_numeric($requestElemPerPage)) {
 if ($requestElemPerPage > 0) {
     // -- All -- will not be stored, as it may be impossible to change this back
     // to something more useful
-    $oUser->setProperty("itemsperpage", $area, $requestElemPerPage);
+    $oUser->setProperty('itemsperpage', $area, $requestElemPerPage);
 }
 unset($oUser);
 
@@ -101,10 +101,10 @@ if ($requestPage <= 0 || $requestElemPerPage == 0) {
 $bSortByFound = false;
 $bSearchInFound = false;
 foreach ($aFields as $sKey => $aData) {
-    if ($aData["field"] == $requestSortBy && cString::findFirstPos($aData["type"], "sort") !== false) {
+    if ($aData['field'] == $requestSortBy && cString::findFirstPos($aData['type'], "sort") !== false) {
         $bSortByFound = true;
     }
-    if ($aData["field"] == $requestSearchIn && cString::findFirstPos($aData["type"], "search") !== false) {
+    if ($aData['field'] == $requestSearchIn && cString::findFirstPos($aData['type'], "search") !== false) {
         $bSearchInFound = true;
     }
 }
@@ -117,7 +117,7 @@ if (!$bSearchInFound) {
 
 // Author
 if (empty($requestSelAuthor)) {
-    $requestSelAuthor = $auth->auth["uid"];
+    $requestSelAuthor = $auth->getUserId();
 }
 
 // Free memory
@@ -127,18 +127,18 @@ unset($oUser);
 // Get data
 // ################################
 
-$oJobs->setWhere("idclient", $client);
-$oJobs->setWhere("idlang", $lang);
-$oJobs->setWhere("author", $requestSelAuthor);
+$oJobs->setWhere('idclient', $client);
+$oJobs->setWhere('idlang', $lang);
+$oJobs->setWhere('author', $requestSelAuthor);
 
-if ($requestFilter != "") {
-    if ($requestSearchIn == "--all--" || $requestSearchIn == "") {
+if ($requestFilter != '') {
+    if ($requestSearchIn == "--all--" || $requestSearchIn == '') {
         foreach ($aFields as $sKey => $aData) {
-            if (cString::findFirstPos($aData["type"], "search") !== false) {
-                $oJobs->setWhereGroup("filter", $aData["field"], $requestFilter, "LIKE");
+            if (cString::findFirstPos($aData['type'], "search") !== false) {
+                $oJobs->setWhereGroup("filter", $aData['field'], $requestFilter, "LIKE");
             }
         }
-        $oJobs->setInnerGroupCondition("filter", "OR");
+        $oJobs->setInnerGroupCondition('filter', 'OR');
     } else {
         $oJobs->setWhere($requestSearchIn, $requestFilter, "LIKE");
     }
@@ -165,7 +165,7 @@ $oJobs->query();
 // Output data
 $oMenu = new cGuiMenu();
 $iMenu = 0;
-$sDateFormat = getEffectiveSetting("dateformat", "full", "d.m.Y H:i");
+$sDateFormat = getEffectiveSetting('dateformat', 'full', 'd.m.Y H:i');
 
 // Store messages for repeated use (speeds performance, as i18n translation is
 // only needed once)
@@ -179,8 +179,8 @@ $aMsg = [
 
 while ($oJob = $oJobs->next()) {
     $iMenu++;
-    $iID = cSecurity::toInteger($oJob->get("idnewsjob"));
-    $sName = $oJob->get("name") . " (" . date($sDateFormat, strtotime($oJob->get("created"))) . ")";
+    $iID = $oJob->get('idnewsjob');
+    $name = $oJob->get('name') . " (" . date($sDateFormat, strtotime($oJob->get('created'))) . ")";
 
     // Create the link to show the newsletter job
     $oLnk = new cHTMLLink();
@@ -191,39 +191,39 @@ while ($oJob = $oJobs->next()) {
     $oMenu->setLink($iMenu, $oLnk);
 
     $oMenu->setId($iMenu, $iID);
-    $oMenu->setTitle($iMenu, $sName);
+    $oMenu->setTitle($iMenu, $name);
 
-    switch ($oJob->get("status")) {
+    switch ($oJob->get('status')) {
         case 1:
             // Pending
-            if ($oJob->get("use_cronjob") == 0) {
+            if ($oJob->get('use_cronjob') == 0) {
                 // Standard job can be run if user has the right to do so
-                if ($perm->have_perm_area_action($area, "news_job_run")) {
+                if ($perm->have_perm_area_action($area, 'news_job_run')) {
                     $oImage = new cHTMLImage($cfg['path']['images'] . 'newsletter_16.gif');
-                    $oImage->setAlt($aMsg["SendTitle"]);
+                    $oImage->setAlt($aMsg['SendTitle']);
                     $oSend = new cHTMLLink();
                     $oSend->setLink('javascript:void(0)')
                         ->setClass('con_img_button')
-                        ->setAlt($aMsg["SendTitle"])
+                        ->setAlt($aMsg['SendTitle'])
                         ->setAttribute('data-action', 'news_job_run')
                         ->setContent($oImage->render());
                     $oMenu->setActions($iMenu, 'send', $oSend->render());
                 }
-            } elseif ($oJob->get("use_cronjob") == 1) {
+            } elseif ($oJob->get('use_cronjob') == 1) {
                 // It's a cronjob job - no manual sending, show it blue
                 $oLnk->updateAttributes([
                     "style" => "color:#0000FF"
                 ]);
             }
 
-            if ($perm->have_perm_area_action($area, "news_job_delete")) {
+            if ($perm->have_perm_area_action($area, 'news_job_delete')) {
                 // Job may be deleted, if user has the right to do so
                 $oImage = new cHTMLImage($cfg['path']['images'] . 'delete.gif');
-                $oImage->setAlt($aMsg["DelTitle"]);
+                $oImage->setAlt($aMsg['DelTitle']);
                 $oDelete = new cHTMLLink();
                 $oDelete->setLink('javascript:void(0)')
                     ->setClass('con_img_button')
-                    ->setAlt($aMsg["DelTitle"])
+                    ->setAlt($aMsg['DelTitle'])
                     ->setAttribute('data-action', 'news_job_delete')
                     ->setContent($oImage->render());
                 $oMenu->setActions($iMenu, 'delete', $oDelete->render());
@@ -231,15 +231,15 @@ while ($oJob = $oJobs->next()) {
             break;
         case 2:
             // Sending job
-            if ($perm->have_perm_area_action($area, "news_job_run")) {
+            if ($perm->have_perm_area_action($area, 'news_job_run')) {
                 // User may try to start sending, again - if he has the right to
                 // do so
                 $oImage = new cHTMLImage($cfg['path']['images'] . 'newsletter_16.gif');
-                $oImage->setAlt($aMsg["SendTitle"]);
+                $oImage->setAlt($aMsg['SendTitle']);
                 $oSend = new cHTMLLink();
                 $oSend->setLink('javascript:void(0)')
                     ->setClass('con_img_button')
-                    ->setAlt($aMsg["SendTitle"])
+                    ->setAlt($aMsg['SendTitle'])
                     ->setAttribute('data-action', 'news_job_run')
                     ->setContent($oImage->render());
                 $oMenu->setActions($iMenu, 'send', $oSend->render());
@@ -260,7 +260,7 @@ while ($oJob = $oJobs->next()) {
                 "style" => "color:#808080"
             ]);
 
-            if ($perm->have_perm_area_action($area, "news_job_delete")) {
+            if ($perm->have_perm_area_action($area, 'news_job_delete')) {
                 // You have the right, but you can't delete the job after
                 // sending
                 $oImage = new cHTMLImage($cfg['path']['images'] . 'delete_inact.gif', 'con_img_button_off');
@@ -280,17 +280,17 @@ $sPagerId = '0ed6d632-6adf-4f09-a0c6-1e38ab60e303';
 $oPagerLink = new cHTMLLink();
 $oPagerLink->setLink("main.php");
 $oPagerLink->setTargetFrame('left_bottom');
-$oPagerLink->setCustom("selAuthor", $requestSelAuthor);
-$oPagerLink->setCustom("elemperpage", $requestElemPerPage);
-$oPagerLink->setCustom("filter", $requestFilter);
-$oPagerLink->setCustom("restrictgroup", $requestRestrictGroup);
-$oPagerLink->setCustom("sortby", $requestSortBy);
-$oPagerLink->setCustom("sortorder", $requestSortOrder);
-$oPagerLink->setCustom("searchin", $requestSearchIn);
-$oPagerLink->setCustom("frame", $frame);
-$oPagerLink->setCustom("area", $area);
+$oPagerLink->setCustom('selAuthor', $requestSelAuthor);
+$oPagerLink->setCustom('elemperpage', $requestElemPerPage);
+$oPagerLink->setCustom('filter', $requestFilter);
+$oPagerLink->setCustom('restrictgroup', $requestRestrictGroup);
+$oPagerLink->setCustom('sortby', $requestSortBy);
+$oPagerLink->setCustom('sortorder', $requestSortOrder);
+$oPagerLink->setCustom('searchin', $requestSearchIn);
+$oPagerLink->setCustom('frame', $frame);
+$oPagerLink->setCustom('area', $area);
 $oPagerLink->enableAutomaticParameterAppend();
-$oPagerLink->setCustom("contenido", $sess->id);
+$oPagerLink->setCustom('contenido', $sess->id);
 // Note, that after the "page" parameter no "pagerlink" parameter is specified -
 // it is not used, as the JS below only uses the INNER html and the "pagerlink"
 // parameter is
@@ -319,8 +319,8 @@ $oPage->addScript($sRefreshPager);
 
 // Generate template
 $oTpl = new cTemplate();
-$oTpl->set('s', 'SEND_MESSAGE', $aMsg["SendDescr"]);
-$oTpl->set('s', 'DELETE_MESSAGE', $aMsg["DelDescr"]);
+$oTpl->set('s', 'SEND_MESSAGE', $aMsg['SendDescr']);
+$oTpl->set('s', 'DELETE_MESSAGE', $aMsg['DelDescr']);
 $sTemplate = $oTpl->generate($cfg['templates']['newsletter_newsletter_jobs_menu'], true);
 
 $oPage->setContent([$oMenu, $sTemplate]);

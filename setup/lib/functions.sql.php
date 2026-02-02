@@ -59,10 +59,8 @@ function injectSQL(cDb $db, string $prefix, string $file, array $replacements = 
 
 /**
  * Adds the autoincrement property to all primary keys in CONTENIDO tables
- * @param cDB $db
- * @param array $cfg
- * @throws cDbException
- * @throws cInvalidArgumentException
+ * @param array $cfg The CONTENIDO configuration array
+ * @throws cDbException|cInvalidArgumentException
  */
 function addAutoIncrementToTables(cDB $db, array $cfg)
 {
@@ -107,47 +105,50 @@ function addAutoIncrementToTables(cDB $db, array $cfg)
 
 /**
  * Adds salts to the passwords of the backend and frontend users. Converts old passwords into new ones
- * @param cDb $db The database object
  * @throws cDbException
  */
 function addSaltsToTables(cDb $db)
 {
-    global $cfg;
-
     $db2 = getSetupMySQLDBConnection();
 
-    $db->query("SHOW COLUMNS FROM `%s` LIKE 'salt'", $cfg['tab']['user']);
+    $db->query("SHOW COLUMNS FROM `%s` LIKE 'salt'", cDb::getTableName('user'));
     if ($db->numRows() == 0) {
-        $db2->query("ALTER TABLE `%s` CHANGE password password VARCHAR(64)", $cfg['tab']['user']);
-        $db2->query("ALTER TABLE `%s` ADD salt VARCHAR(32) AFTER password", $cfg['tab']['user']);
+        $db2->query("ALTER TABLE `%s` CHANGE password password VARCHAR(64)", cDb::getTableName('user'));
+        $db2->query("ALTER TABLE `%s` ADD salt VARCHAR(32) AFTER password", cDb::getTableName('user'));
     }
 
-    $db->query("SELECT * FROM `%s`", $cfg['tab']['user']);
+    $db->query("SELECT * FROM `%s`", cDb::getTableName('user'));
     while ($db->nextRecord()) {
-        if ($db->f("salt") == "") {
-            $salt = md5($db->f("username") . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999));
-            $hash = hash("sha256", $db->f("password") . $salt);
+        if ($db->f('salt') == '') {
+            $salt = md5($db->f('username') . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999));
+            $hash = hash('sha256', $db->f('password') . $salt);
             $db2->query(
-                "UPDATE `%s` SET salt='%s', password='%s' WHERE user_id='%s'",
-                $cfg['tab']['user'], $salt, $hash, $db->f("user_id")
+                "UPDATE `%s` SET `salt` = '%s', `password` = '%s' WHERE `user_id` = '%s'",
+                cDb::getTableName('user'),
+                $salt,
+                $hash,
+                $db->f('user_id')
             );
         }
     }
 
-    $db->query("SHOW COLUMNS FROM `%s` LIKE 'salt'", $cfg['tab']['frontendusers']);
+    $db->query("SHOW COLUMNS FROM `%s` LIKE 'salt'", cDb::getTableName('frontendusers'));
     if ($db->numRows() == 0) {
-        $db2->query("ALTER TABLE `%s` CHANGE password password VARCHAR(64)", $cfg['tab']['frontendusers']);
-        $db2->query("ALTER TABLE `%s` ADD salt VARCHAR(32) AFTER password", $cfg['tab']['frontendusers']);
+        $db2->query("ALTER TABLE `%s` CHANGE password password VARCHAR(64)", cDb::getTableName('frontendusers'));
+        $db2->query("ALTER TABLE `%s` ADD salt VARCHAR(32) AFTER password", cDb::getTableName('frontendusers'));
     }
 
-    $db->query("SELECT * FROM `%s`", $cfg['tab']['frontendusers']);
+    $db->query("SELECT * FROM `%s`", cDb::getTableName('frontendusers'));
     while ($db->nextRecord()) {
-        if ($db->f("salt") == "") {
-            $salt = md5($db->f("username") . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999));
-            $hash = hash("sha256", $db->f("password") . $salt);
+        if ($db->f('salt') == '') {
+            $salt = md5($db->f('username') . rand(1000, 9999) . rand(1000, 9999) . rand(1000, 9999));
+            $hash = hash('sha256', $db->f('password') . $salt);
             $db2->query(
-                "UPDATE `%s` SET salt='%s', password='%s' WHERE idfrontenduser='%s'",
-                $cfg['tab']['frontendusers'], $salt, $hash, $db->f("idfrontenduser")
+                "UPDATE `%s` SET salt='%s', `password` = '%s' WHERE `idfrontenduser` = '%s'",
+                cDb::getTableName('frontendusers'),
+                $salt,
+                $hash,
+                $db->f('idfrontenduser')
             );
         }
     }
@@ -155,20 +156,18 @@ function addSaltsToTables(cDb $db)
 
 function urlDecodeTables(cDb $db)
 {
-    global $cfg;
-
-    urlDecodeTable($db, $cfg['tab']['frontendusers']);
-    urlDecodeTable($db, $cfg['tab']['content']);
-    urlDecodeTable($db, $cfg['tab']['properties']);
-    urlDecodeTable($db, $cfg['tab']['upl_meta']);
-    urlDecodeTable($db, $cfg['tab']['container']);
-    urlDecodeTable($db, $cfg['sql']['sqlprefix'] . '_pica_lang', true);
-    urlDecodeTable($db, $cfg['sql']['sqlprefix'] . '_pi_news_rcp', true);
-    urlDecodeTable($db, $cfg['tab']['art_lang']);
-    urlDecodeTable($db, $cfg['tab']['user_prop']);
-    urlDecodeTable($db, $cfg['tab']['system_prop']);
-    urlDecodeTable($db, $cfg['tab']['art_spec']);
-    urlDecodeTable($db, $cfg['sql']['sqlprefix'] . '_pi_news_jobs', true);
+    urlDecodeTable($db, cDb::getTableName('frontendusers'));
+    urlDecodeTable($db, cDb::getTableName('content'));
+    urlDecodeTable($db, cDb::getTableName('properties'));
+    urlDecodeTable($db, cDb::getTableName('upl_meta'));
+    urlDecodeTable($db, cDb::getTableName('container'));
+    urlDecodeTable($db, cDb::getTableName('pica_lang'), true);
+    urlDecodeTable($db, cDb::getTableName('pi_news_rcp'), true);
+    urlDecodeTable($db, cDb::getTableName('art_lang'));
+    urlDecodeTable($db, cDb::getTableName('user_prop'));
+    urlDecodeTable($db, cDb::getTableName('system_prop'));
+    urlDecodeTable($db, cDb::getTableName('art_spec'));
+    urlDecodeTable($db, cDb::getTableName('pi_news_jobs'), true);
 }
 
 function urlDecodeTable(cDb $db, string $table, bool $checkTableExists = false)
@@ -219,9 +218,6 @@ function convertToDatetime(cDb $db, array $cfg)
  * Converts a table field value of type date to a datetime format ('YYYY-MM-DD HH:MM:SS'),
  * if the value has the date format ('YYYY-MM-DD').
  *
- * @param cDb $db
- * @param string $table
- * @param string $field
  * @param string $defaultTime - Format has to be 'HH:MM:SS'
  * @throws cDbException
  */
@@ -236,9 +232,6 @@ function convertDateValuesToDateTimeValue(cDb $db, string $table, string $field,
  * Converts a table field value of type date to a datetime format ('YYYY-MM-DD HH:MM:SS'),
  * if the value is null (null or empty string).
  *
- * @param cDb $db
- * @param string $table
- * @param string $field
  * @param string $defaultDateTime - Format has to be 'YYYY-MM-DD HH:MM:SS'.
  *     You can also use 'CURRENT_TIMESTAMP' or 'NOW()' to update the field to current timestamp.
  * @throws cDbException
@@ -258,9 +251,7 @@ function convertNullDateValuesToDateTimeValue(
 
 /**
  * Changes the primary key of the given table to an auto increment type
- * @param string $tableName
- * @throws cDbException
- * @throws cInvalidArgumentException
+ * @throws cDbException|cInvalidArgumentException
  */
 function alterTableHandling(string $tableName)
 {
@@ -283,9 +274,7 @@ function alterTableHandling(string $tableName)
 
 /**
  * Will strip the sql comment lines out of an uploaded sql file
- * specifically for mssql and postgres type files in the install....
- * @param string $output
- * @return  string
+ * specifically for mssql and postgres type files in the install.
  */
 function removeComments(string &$output): string
 {
@@ -314,8 +303,6 @@ function removeComments(string &$output): string
 
 /**
  * Will strip the sql comment lines out of an uploaded sql file
- * @param string $sql
- * @return  string
  */
 function removeRemarks(string $sql): string
 {
@@ -341,10 +328,6 @@ function removeRemarks(string $sql): string
 /**
  * Will split an uploaded sql file into single sql statements.
  * Note: expects trim() to have already been run on $sql.
- *
- * @param string $sql
- * @param string $delimiter
- * @return  array
  */
 function splitSqlFile(string $sql, string $delimiter): array
 {

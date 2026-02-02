@@ -24,19 +24,18 @@ class cLinkcheckerHelper
     /**
      * Regular expression for image types
      */
-    const IMAGE_TYPES_REGEX = '/^.*\.(bmp|gif|jpeg|jpg|png|psd|svg|tif|tiff|webp)$/i';
+    public const IMAGE_TYPES_REGEX = '/^.*\.(bmp|gif|jpeg|jpg|png|psd|svg|tif|tiff|webp)$/i';
 
     /**
      * Regular expression for uri types
      */
-    const URI_TYPES_REGEX = '#^(file://|ftp://|http://|https://|www.).*$#i';
+    public const URI_TYPES_REGEX = '#^(file://|ftp://|http://|https://|www.).*$#i';
 
     /**
      * Sorts passed error list by sort type.
      *
      * @param array $errors List of link checker errors
      * @param string $sortBy Sort type
-     *
      * @return array Sorted link checker errors
      */
     public static function sortErrors(array $errors, string $sortBy): array
@@ -71,27 +70,25 @@ class cLinkcheckerHelper
     }
 
     /**
-     * Checks whether the passed url references an image resource.
+     * Checks whether the provided url references an image resource.
      * Note, it checks for limited image types, see {@see cLinkcheckerHelper::IMAGE_TYPES_REGEX}.
      *
      * @param string $url The url to check
-     * @return bool
      */
     public static function urlIsImage(string $url): bool
     {
-        return (bool)preg_match(self::IMAGE_TYPES_REGEX, $url);
+        return cSecurity::toBoolean(preg_match(self::IMAGE_TYPES_REGEX, $url));
     }
 
     /**
-     * Checks whether the passed url matches an uri.
+     * Checks whether the provided url matches an uri.
      * Note, it checks for limited uri formats, see {@see cLinkcheckerHelper::URI_TYPES_REGEX}.
      *
      * @param string $url The url to check
-     * @return bool
      */
     public static function urlIsUri(string $url): bool
     {
-        return (bool)preg_match(self::URI_TYPES_REGEX, $url);
+        return cSecurity::toBoolean(preg_match(self::URI_TYPES_REGEX, $url));
     }
 
 }

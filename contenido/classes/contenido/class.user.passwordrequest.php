@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiUserPasswordRequest|bool next
+ * @extends ItemCollection<cApiUserPasswordRequest>
  */
 class cApiUserPasswordRequestCollection extends ItemCollection
 {
@@ -26,16 +26,13 @@ class cApiUserPasswordRequestCollection extends ItemCollection
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string|bool $where [optional]
-     *                           The where clause in the select, usable to run select by creating
-     *                           the instance.
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param string|bool $where [optional] The where clause in the select, usable to run select by creating
+     *      the instance.
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($where = false)
     {
-        parent::__construct(cRegistry::getDbTableName('user_pw_request'), 'id_pwreq');
+        parent::__construct(cDb::getTableName('user_pw_request'), 'id_pwreq');
         $this->_setItemClass('cApiUserPasswordRequest');
         if ($where !== false) {
             $this->select($where);
@@ -43,29 +40,16 @@ class cApiUserPasswordRequestCollection extends ItemCollection
     }
 
     /**
-     * @deprecated [2023-02-02] Since 4.10.2, use {@see cApiUserPasswordRequestCollection::create} instead
-     */
-    public function createNewItem($data = NULL)
-    {
-        cDeprecated("The function createNewItem() is deprecated since CONTENIDO 4.10.2, use cApiUserPasswordRequestCollection::create() instead.");
-        return $this->create($data);
-    }
-
-    /**
      * Create a user password request by user id.
      *
-     * @param string|array $data [optional]
-     *                           optional parameter for direct input of primary key value
-     *                           (string) or multiple column name - value pairs
-     *
-     * @return cApiUserPasswordRequest|Item
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param string|array $data [optional] optional parameter for direct input of primary key value
+     *      (string) or multiple column name - value pairs
+     * @return cApiUserPasswordRequest
+     * @throws cDbException|cException|cInvalidArgumentException|Exception
      */
     public function create($data = NULL)
     {
-        $item = parent::createNewItem($data);
+        $item = $this->createNewItem($data);
 
         $expiration = cPasswordRequest::getExpirationSetting();
         $time = new DateTime($expiration, new DateTimeZone('UTC'));
@@ -77,48 +61,34 @@ class cApiUserPasswordRequestCollection extends ItemCollection
     /**
      * Removes the specified entries from the database by user's id.
      *
-     * @param int $userid
-     *         Specifies the user id
-     *
-     * @return bool
-     *         True if the deletion was successful
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param string $userId Specifies the user id
+     * @return bool True if the deletion was successful
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function deleteByUserId($userid)
+    public function deleteByUserId(string $userId): bool
     {
-        $result = $this->deleteBy('user_id', $userid);
-        return $result > 0;
+        return $this->deleteBy('user_id', $userId) > 0;
     }
 
     /**
      * Removes the specified entries from the database by token.
      *
-     * @param $token
-     *
-     * @return bool
-     *         True if the deletion was successful
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param string $token
+     * @return bool True if the deletion was successful
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function deleteByToken($token)
+    public function deleteByToken(string $token): bool
     {
-        $result = $this->deleteBy('validation_token', $token);
-        return $result > 0;
+        return $this->deleteBy('validation_token', $token) > 0;
     }
 
     /**
      * Deletes expired password requests from the corresponding table.
-     * the outdated threshold setting for password requests is one day
-     * by default (see setting 'pw_request' > 'outdated_threshold'),
-     * older password requests will be deleted.
+     * the outdated threshold setting for password requests is one day by default
+     * (see setting 'pw_request' > 'outdated_threshold'), older password requests will be deleted.
      *
      * @return int The number of deleted records
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException|Exception
      */
     public function deleteExpired(): int
     {
@@ -142,25 +112,26 @@ class cApiUserPasswordRequestCollection extends ItemCollection
     /**
      * Returns all password requests available in the system
      *
-     * @param string|int|bool $userid [optional]
-     *                        search for a specific user id
-     * @param string $orderBy [optional]
-     *                        SQL order by part
+     * @param string|false $userId [optional] Search for a specific user id
+     * @param string $orderBy [optional] SQL order by part
      * @return cApiUserPasswordRequest[]
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
-    public function fetchAvailableRequests($userid = false, $orderBy = '`id_pwreq` ASC')
+    public function fetchAvailableRequests($userId = false, string $orderBy = '`id_pwreq` ASC'): array
     {
-        if (false === $userid) {
+        if (!$userId) {
             $this->select('', '', $this->escape($orderBy));
         } else {
-            $this->select('user_id = \'' . $this->escape($userid) . '\'', '', $this->escape($orderBy));
+            $this->select(
+                sprintf("user_id = '%s'", $this->escape($userId)),
+                '',
+                $this->escape($orderBy)
+            );
         }
 
         $requests = [];
-        while (($oItem = $this->next()) !== false) {
-            $requests[] = clone $oItem;
+        while ($item = $this->next()) {
+            $requests[] = clone $item;
         }
 
         return $requests;
@@ -169,23 +140,21 @@ class cApiUserPasswordRequestCollection extends ItemCollection
     /**
      * Returns all non expired password requests
      *
-     * @param string|int|bool $userid [optional]
-     *                     search for a specific user id
-     * @return array
-     * @throws cDbException
-     * @throws cException
+     * @param string|false $userId [optional] Search for a specific user id
+     * @return cApiUserPasswordRequest[]
+     * @throws cDbException|cException|DateMalformedStringException
      */
-    public function fetchCurrentRequests($userid = false)
+    public function fetchCurrentRequests($userId = false): array
     {
         $now = new DateTime('now', new DateTimeZone('UTC'));
-        $this->select('`expiration` > \'' . $this->escape($now->format('Y-m-d H:i:s')) . '\'');
+        $this->select(sprintf("`expiration` > '%s'", $now->format('Y-m-d H:i:s')));
 
         $requests = [];
-        while (($oItem = $this->next()) !== false) {
-            if (false === $userid) {
-                $requests[] = clone $oItem;
-            } elseif ($oItem->get('user_id') === $userid) {
-                $requests[] = clone $oItem;
+        while ($item = $this->next()) {
+            if (!$userId) {
+                $requests[] = clone $item;
+            } elseif ($item->get('user_id') === $userId) {
+                $requests[] = clone $item;
             }
         }
 
@@ -195,43 +164,43 @@ class cApiUserPasswordRequestCollection extends ItemCollection
     /**
      * Returns the last (newest) password request time of a specific user.
      *
-     * @param string|int $userid
+     * @param string $userId
      * @return string The time in string format, empty string if no entry could found.
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      * @since CONTENIDO 4.10.2
      */
-    public function getLastPasswordRequestTimeByUserIId($userid): string
+    public function getLastPasswordRequestTimeByUserIId(string $userId): string
     {
         // Get the last (newest) password request of the user
         $oUserPwRequestCol = new self();
         $oUserPwRequestCol->addResultField('request');
-        $oUserPwRequestCol->setWhere('user_id', $userid);
+        $oUserPwRequestCol->setWhere('user_id', $userId);
         $oUserPwRequestCol->setOrder('`request` DESC');
         $oUserPwRequestCol->setLimit(0, 1);
         $oUserPwRequestCol->query();
         $data = $oUserPwRequestCol->fetchTable(['request']);
+
         return !empty($data) ? cSecurity::toString($data[1]['request']) : '';
     }
 
     /**
      * Returns the number of made password request for a specific user.
      *
-     * @param string|int $userid
      * @return int The number of password requests
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      * @since CONTENIDO 4.10.2
      */
-    public function getPasswordRequestsCountByUserIId($userid): int
+    public function getPasswordRequestsCountByUserIId(string $userId): int
     {
         // Get the last (newest) password request of the user
-        $sql = "SELECT COUNT(*) AS `count` FROM `%s` WHERE `user_id` = '%s'";
-        $sql = $this->prepare($sql, $this->getTable(), $userid);
-        $this->db->query($sql, $this->getTable(), $userid);
-        return ($this->db->nextRecord()) ? cSecurity::toInteger($this->db->f('count')) : 0;
-    }
+        $this->db->query(
+            "SELECT COUNT(*) AS `count` FROM `%s` WHERE `user_id` = '%s'",
+            $this->getTable(),
+            $this->escape($userId)
+        );
 
+        return $this->db->nextRecord() ? cSecurity::toInteger($this->db->f('count')) : 0;
+    }
 }
 
 /**
@@ -245,18 +214,15 @@ class cApiUserPasswordRequest extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('user_pw_request'), 'id_pwreq');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('user_pw_request'), 'id_pwreq');
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 

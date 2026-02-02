@@ -17,19 +17,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Clears CONTENIDO standard errorlog.txt
  *
- * @return string
- *         Message if clearing was successful or not
- *
- * @throws cException
- * @throws cInvalidArgumentException
+ * @return string Message if clearing was successful or not
+ * @throws cException|cInvalidArgumentException
  */
-function emptyLogFile()
+function emptyLogFile(): string
 {
     global $notification;
 
     $perm = cRegistry::getPerm();
     if (!$perm->isSysadmin()) {
-        return $notification->returnNotification("error", i18n("Can't clear error log : Access is denied!"));
+        return $notification->returnNotification('error', i18n("Can't clear error log : Access is denied!"));
     }
 
     $tmp_notification = '';
@@ -40,17 +37,16 @@ function emptyLogFile()
 
     if (cFileHandler::exists($filename) && is_writeable($filename)) {
         cFileHandler::truncate($filename);
-        $tmp_notification = $notification->returnNotification("ok", i18n("Error log successfully cleared!"));
+        $tmp_notification = $notification->returnNotification('ok', i18n("Error log successfully cleared!"));
     } elseif (cFileHandler::exists($filename) && !is_writeable($filename)) {
-        $tmp_notification = $notification->returnNotification("error", i18n("Can't clear error log : Access is denied!"));
+        $tmp_notification = $notification->returnNotification('error', i18n("Can't clear error log : Access is denied!"));
     }
 
     return $tmp_notification;
 }
 
 /**
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  */
 function phpInfoToHtml()
 {
@@ -68,11 +64,9 @@ function phpInfoToHtml()
 /**
  * Check if the current user has a right for a defined client.
  *
- * @param int $client
- *         client id
- * @return bool
- *         Weather user has access or not
- * @throws cInvalidArgumentException
+ * @param int $client client id
+ * @return bool Weather user has access or not
+ * @throws cDbException|cException|cInvalidArgumentException
  */
 function systemHavePerm($client): bool
 {
@@ -96,10 +90,8 @@ function systemHavePerm($client): bool
 /**
  * Check for valid ip address
  *
- * @param string $strHostAddress
- *         IP address
- * @return bool
- *         If string is a valid ip or not
+ * @param string $strHostAddress IP address
+ * @return bool If string is a valid ip or not
  */
 function isIPv4($strHostAddress): bool
 {
@@ -166,8 +158,7 @@ function checkPathInformation($strConUrl, $strBrowserUrl)
 }
 
 /**
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  */
 function compareUrlStrings($arrConUrl, $arrBrowserUrl, $isIP = false)
 {

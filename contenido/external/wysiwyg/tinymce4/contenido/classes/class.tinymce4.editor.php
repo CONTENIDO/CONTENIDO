@@ -74,6 +74,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
      *
      * @param string $editorName
      * @param string $editorContent
+     * @throws cDbException|cException
      */
     public function __construct(string $editorName, string $editorContent)
     {
@@ -92,7 +93,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
             $curType = $typeEntry->get('type');
 
             $contentTypeClassName = cTypeGenerator::getContentTypeClassName($curType);
-            if (false === class_exists($contentTypeClassName)) {
+            if (!class_exists($contentTypeClassName)) {
                 continue;
             }
             $cContentType = new $contentTypeClassName('', 0, []);
@@ -100,7 +101,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
                 continue;
             }
 
-            if (false === isset($this->_aSettings[$curType])) {
+            if (!isset($this->_aSettings[$curType])) {
                 $this->_aSettings[$curType] = [];
             }
             // cache allowed cms types
@@ -110,14 +111,14 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
         // apply global settings to all cms-types
         foreach ($this->_aSettings as $curSettingKey => $curSetting) {
             // if current setting is not a cms type
-            if (false === array_key_exists($curSettingKey, $this->_cmsTypes)) {
+            if (!array_key_exists($curSettingKey, $this->_cmsTypes)) {
                 // copy current setting into all cms types
                 // if there is such setting already set for the cms type
                 // (already set cms type specific values override global config values)
                 foreach ($this->_cmsTypes as $curTypeKey => $curType) {
-                    if (false === isset($this->_aSettings[$curType])) {
+                    if (!isset($this->_aSettings[$curType])) {
                         $this->_aSettings[$curTypeKey][$curSettingKey] = $curSetting;
-                   }
+                    }
                 }
                 // remove global setting for further processing in con_tiny.js
                 // that js-code assumes each setting key maps a cms type
@@ -134,7 +135,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
         // process settings for each cms type
         foreach ($this->_aSettings as $cmsType => $setting) {
             // ignore any non cms type (do not process global settings)
-            if (false === isset($this->_cmsTypes[$cmsType])) {
+            if (!isset($this->_cmsTypes[$cmsType])) {
                 continue;
             }
             $this->setSetting($cmsType, 'article_url_suffix', 'front_content.php?idart=' . $this->_idart, true);
@@ -175,13 +176,13 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
 
             // XHTML
             if (getEffectiveSetting('generator', 'xhtml', false) == 'true') {
-                $this->setXHTMLMode($cmsType, true);
+                $this->setXHTMLMode($cmsType);
             } else {
                 $this->setXHTMLMode($cmsType, false);
             }
 
             // GZIP
-            if (false === isset($this->_aSettings[$cmsType]['contenido_gzip'])
+            if (!isset($this->_aSettings[$cmsType]['contenido_gzip'])
                 || 'true' !== $this->_aSettings[$cmsType]['contenido_gzip']) {
                 $this->setGZIPMode(false);
             } else {
@@ -214,7 +215,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
             $this->setToolbar($cmsType, trim(cString::toLowerCase($sMode)));
 
             $autoFullElements = $this->_aSettings[$cmsType]['auto_full_elements'] ?? false;
-            if (true === isset($this->_aSettings[$cmsType]['auto_full_elements'])) {
+            if (isset($this->_aSettings[$cmsType]['auto_full_elements'])) {
                 unset($this->_aSettings[$cmsType]['auto_full_elements']);
             }
 
@@ -269,8 +270,8 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
     {
         // convert tinymce's style formats from string to required JSON value
         // https://www.tinymce.com/wiki.php/Configuration:style_formats
-        if (true === isset($this->_aSettings[$sType])
-            && true === isset($this->_aSettings[$sType][$sType])) {
+        if (isset($this->_aSettings[$sType])
+            && isset($this->_aSettings[$sType][$sType])) {
             if (array_key_exists('style_formats', $this->_aSettings[$sType][$sType])) {
                 $sStyles = $this->_aSettings[$sType]['style_formats'];
                 if (cString::getStringLength($sStyles) > 0) {
@@ -297,11 +298,11 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
         }
 
         // check if link list is activated
-        if (true === isset($aLists['link'])) {
+        if (isset($aLists['link'])) {
             $this->setSetting($sType, 'link_list', $this->_baseURL . 'contenido/ajax/class.tinymce_list.php?mode=link&lang=' . $this->_lang . '&client=' . $this->_client . '#', true);
         }
         // check if image list is activated
-        if (true === isset($aLists['image'])) {
+        if (isset($aLists['image'])) {
             $this->setSetting($sType, 'image_list', $this->_baseURL . 'contenido/ajax/class.tinymce_list.php?mode=image&lang=' . $this->_lang . '&client=' . $this->_client . '#', true);
         }
         // media list does not exist in tinymce 4, media plugin still available though
@@ -586,16 +587,12 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
      * Overwriting defined setting can be achieved with
      * $bForceSetting = true.
      *
-     * @param string $type
-     *        CMS type where setting should apply
-     * @param string $key
-     *        of setting to set
-     * @param string|mixed $value
-     *        of setting to set
-     * @param bool $forceSetting
-     *      to overwrite defined setting
+     * @param string $type CMS type where setting should apply
+     * @param ?string $key Key of setting to set
+     * @param string|mixed $value Value of setting to set
+     * @param bool $forceSetting To overwrite defined setting
      */
-    public function setSetting($type = null, string $key = null, $value = '', bool $forceSetting = false)
+    public function setSetting($type = null, ?string $key = null, $value = '', bool $forceSetting = false)
     {
         if ($type === null || $key === null) {
             cWarning(__FILE__, __LINE__, 'Type and key can not be null');
@@ -622,7 +619,7 @@ class cTinyMCE4Editor extends cWYSIWYGEditor
         $result = &$this->_aSettings;
         for ($i = 0; $i < $numargs -1; $i++) {
             // if key does not exist there is nothing to unset
-            if (false === in_array(func_get_arg(1 + $i), $this->_aSettings)) {
+            if (!in_array(func_get_arg(1 + $i), $this->_aSettings)) {
                 return;
             }
             // jump one array level deeper into the result

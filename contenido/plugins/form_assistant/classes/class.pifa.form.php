@@ -18,8 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * It's a kind of model.
  *
  * @author Marcus Gnaß <marcus.gnass@4fb.de>
- * @method PifaForm createNewItem($data)
- * @method PifaForm|bool next
+ * @extends ItemCollection<PifaForm>
  */
 class PifaFormCollection extends ItemCollection
 {
@@ -43,12 +42,11 @@ class PifaFormCollection extends ItemCollection
      *
      * @param mixed $where clause to be used to load items or false
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($where = false)
     {
-        parent::__construct(cRegistry::getDbTableName('pifa_form'), 'idform');
+        parent::__construct(cDb::getTableName('pifa_form'), 'idform');
         $this->_setItemClass('PifaForm');
         if (false !== $where) {
             $this->select($where);
@@ -58,36 +56,36 @@ class PifaFormCollection extends ItemCollection
     /**
      * Get forms according to given params.
      *
-     * @param int $client
-     * @param int $lang
+     * @param int $clientId
+     * @param int $languageId
      *
      * @return PifaFormCollection|bool
      * @throws cDbException
      */
-    private static function _getBy($client, $lang)
+    private static function _getBy($clientId, $languageId)
     {
         // conditions to be used for reading items
         $conditions = [];
 
-        // consider $client
-        $client = cSecurity::toInteger($client);
-        if (0 < $client) {
-            $conditions[] = '`idclient`=' . $client;
+        // consider $clientId
+        $clientId = cSecurity::toInteger($clientId);
+        if (0 < $clientId) {
+            $conditions[] = '`idclient`=' . $clientId;
         }
 
-        // consider $lang
-        $lang = cSecurity::toInteger($lang);
-        if (0 < $lang) {
-            $conditions[] = '`idlang`=' . $lang;
+        // consider $languageId
+        $languageId = cSecurity::toInteger($languageId);
+        if (0 < $languageId) {
+            $conditions[] = '`idlang`=' . $languageId;
         }
 
         // get items
         $forms = new PifaFormCollection();
         $succ = $forms->select(implode(' AND ', $conditions));
 
-        // throw exception if forms coud not be read
-        // Its not a good idea to throw an exception in this case,
-        // cause this would lead to an error message if no forms
+        // throw exception if forms could not be read
+        // It's not a good idea to throw an exception in this case,
+        // because this would lead to an error message if no forms
         // were created yet.
         // if (false === $succ) {
         // throw new PifaException('forms could not be read');
@@ -103,64 +101,52 @@ class PifaFormCollection extends ItemCollection
     /**
      * Get forms of given client in any language.
      *
-     * @param int $client
-     *
      * @return PifaFormCollection
      * @throws PifaException if forms could not be read
      * @throws cDbException
      */
-    public static function getByClient($client)
+    public static function getByClient(int $clientId)
     {
-        if (0 >= cSecurity::toInteger($client)) {
-            $msg = Pifa::i18n('MISSING_CLIENT');
-            throw new PifaException($msg);
+        if ($clientId <= 0) {
+            throw new PifaException(Pifa::i18n('MISSING_CLIENT'));
         }
 
-        return self::_getBy($client, 0);
+        return self::_getBy($clientId, 0);
     }
 
     /**
      * Get forms of any client in given language.
      *
-     * @param int $lang
-     *
      * @return PifaFormCollection
      * @throws PifaException if forms could not be read
      * @throws cDbException
      */
-    public static function getByLang($lang)
+    public static function getByLang(int $languageId)
     {
-        if (0 >= cSecurity::toInteger($lang)) {
-            $msg = Pifa::i18n('MISSING_LANG');
-            throw new PifaException($msg);
+        if ($languageId <= 0) {
+            throw new PifaException(Pifa::i18n('MISSING_LANG'));
         }
 
-        return self::_getBy(0, $lang);
+        return self::_getBy(0, $languageId);
     }
 
     /**
      * Get forms of given client in given language.
      *
-     * @param int $client
-     * @param int $lang
-     *
      * @return PifaFormCollection
      * @throws PifaException if forms could not be read
      * @throws cDbException
      */
-    public static function getByClientAndLang($client, $lang)
+    public static function getByClientAndLang(int $clientId, int $languageId)
     {
-        if (0 >= cSecurity::toInteger($client)) {
-            $msg = Pifa::i18n('MISSING_CLIENT');
-            throw new PifaException($msg);
+        if ($clientId <= 0) {
+            throw new PifaException(Pifa::i18n('MISSING_CLIENT'));
+        }
+        if ($languageId <= 0) {
+            throw new PifaException(Pifa::i18n('MISSING_LANG'));
         }
 
-        if (0 >= cSecurity::toInteger($lang)) {
-            $msg = Pifa::i18n('MISSING_LANG');
-            throw new PifaException($msg);
-        }
-
-        return self::_getBy($client, $lang);
+        return self::_getBy($clientId, $languageId);
     }
 
 }
@@ -197,14 +183,12 @@ class PifaForm extends Item
      * Create an instance.
      *
      * @param mixed $id ID of item to be loaded or false
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('pifa_form'), 'idform');
-        $this->setFilters([], []);
+        parent::__construct(cDb::getTableName('pifa_form'), 'idform');
+        $this->setFilters();
         if (false !== $id) {
             $this->loadByPrimaryKey($id);
         }
@@ -236,7 +220,7 @@ class PifaForm extends Item
         $col->setOrder('PifaFieldCollection.field_rank');
         $col->query();
         $this->_fields = [];
-        while (false !== $pifaField = $col->next()) {
+        while ($pifaField = $col->next()) {
             $this->_fields[] = clone $pifaField;
         }
     }
@@ -306,10 +290,10 @@ class PifaForm extends Item
      * with the $_GET or $_POST superglobal variables. Validation is performed
      * according to the specifications defined for each form field.
      *
-     * @param array|null $values
+     * @param ?array $values
      * @param bool $clear if missing values should be interpreted as NULL
      */
-    public function setValues(array $values = NULL, $clear = false)
+    public function setValues(?array $values = NULL, bool $clear = false)
     {
         if (NULL === $values) {
             return;
@@ -349,9 +333,9 @@ class PifaForm extends Item
     /**
      * Sets uploaded file(s) for appropriate form fields.
      *
-     * @param array $files super global files array
+     * @param ?array $files super global files array
      */
-    public function setFiles(array $files = NULL)
+    public function setFiles(?array $files = NULL)
     {
         if (NULL === $files) {
             return;
@@ -403,10 +387,10 @@ class PifaForm extends Item
     /**
      * Returns HTML for this form that should be displayed in frontend.
      *
-     * @param array|null $opt to determine form attributes
-     * @return string|null
+     * @param ?array $opt to determine form attributes
+     * @throws PifaException
      */
-    public function toHtml(array $opt = NULL)
+    public function toHtml(?array $opt = NULL): ?string
     {
         // get form attribute values
         $opt = array_merge([
@@ -485,10 +469,9 @@ class PifaForm extends Item
      * there were no modified values and thus no statement was executed. This
      * helps in handling database errors.
      *
-     * @return bool
-     * @todo Check if method store() should be implemented for PifaField too.
+     * @inheritDoc
      */
-    public function store(): bool
+    public function store()
     {
         if (is_null($this->modifiedValues)) {
             return true;
@@ -536,7 +519,7 @@ class PifaForm extends Item
         }
 
         // insert new row
-        if (false === $db->query($sql)) {
+        if (!$db->query($sql)) {
             $msg = Pifa::i18n('VALUE_STORE_ERROR');
             throw new PifaDatabaseException($msg);
         }
@@ -565,7 +548,7 @@ class PifaForm extends Item
             }
             $destName = $this->get('data_table') . '_' . $lastInsertedId . '_' . $column;
             $destName = preg_replace('/[^a-z0-9_]+/i', '_', $destName);
-            if (false === move_uploaded_file($tmpName, $destPath . $destName)) {
+            if (!move_uploaded_file($tmpName, $destPath . $destName)) {
                 $msg = Pifa::i18n('FILE_STORE_ERROR');
                 throw new PifaException($msg);
             }
@@ -577,9 +560,7 @@ class PifaForm extends Item
      *
      * @throws PifaException
      * @throws PifaMailException
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function toMailRecipient(array $opt)
     {
@@ -755,8 +736,7 @@ class PifaForm extends Item
      *
      * @return bool|string
      * @throws PifaException if table does not exist
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     private function _getCsvFromLocalDatabaseServer($optionally = 'OPTIONALLY')
     {
@@ -826,7 +806,7 @@ class PifaForm extends Item
         // always append the records ID
         array_push($columns, 'id');
         // append the records timestamp if defined for form
-        if (true === (bool)$this->get('with_timestamp')) {
+        if ((bool)$this->get('with_timestamp')) {
             array_push($columns, 'pifa_timestamp');
         }
         foreach ($this->getFields() as $index => $pifaField) {
@@ -877,12 +857,8 @@ class PifaForm extends Item
      * to the current values of this form.
      * (CON-1648)The CSV is created using a temporary file in the systems (not
      * CONTENIDOs) TEMP folder.
-     *
-     * @param bool $oneRowPerField
-     * @param array $additionalFields
-     * @return string
      */
-    public function getCsv($oneRowPerField = false, array $additionalFields = NULL): string
+    public function getCsv(bool $oneRowPerField = false, ?array $additionalFields = NULL): string
     {
         // get values to be converted into CSV
         $data = $this->getValues();
@@ -897,7 +873,7 @@ class PifaForm extends Item
 
         // convert array values to CSV values
         $data = array_map(function ($in) {
-            return implode(',', $in);;
+            return implode(',', $in);
         }, $data);
 
         // optionally rearrange/mirror array
@@ -914,7 +890,7 @@ class PifaForm extends Item
         $total = 0;
         if (false !== $tmpfile = tmpfile()) {
             foreach ($data as $line) {
-                $length = fputcsv($tmpfile, $data, ';', '"');
+                $length = fputcsv($tmpfile, $data, ';', '"', '\\');
                 if (false !== $length) {
                     $total += $length;
                 }
@@ -965,7 +941,7 @@ class PifaForm extends Item
 
         // check table
         $db = cRegistry::getDb();
-        if (false === $db->query($sql)) {
+        if (!$db->query($sql)) {
             $msg = Pifa::i18n('TABLE_CHECK_ERROR');
             $msg = sprintf($msg, $db->getErrorMessage());
             throw new PifaException($msg);
@@ -1037,7 +1013,7 @@ class PifaForm extends Item
 
         // create table
         $db = cRegistry::getDb();
-        if (false === $db->query($sql)) {
+        if (!$db->query($sql)) {
             $msg = Pifa::i18n('TABLE_CREATE_ERROR');
             throw new PifaException($msg);
         }
@@ -1162,7 +1138,7 @@ class PifaForm extends Item
         if ($oldColumnName === $columnName) {
             return;
         }
-        if (true === $this->_existsColumn($columnName)) {
+        if ($this->_existsColumn($columnName)) {
             $msg = Pifa::i18n('COLUMN_EXISTS_ERROR');
             $msg = sprintf($msg, $columnName);
             throw new PifaException($msg);
@@ -1180,7 +1156,7 @@ class PifaForm extends Item
             ;";
 
         $db = cRegistry::getDb();
-        if (false === $db->query($sql)) {
+        if (!$db->query($sql)) {
             $msg = Pifa::i18n('COLUMN_ALTER_ERROR');
             throw new PifaException($msg);
         }
@@ -1197,7 +1173,7 @@ class PifaForm extends Item
     public function dropColumn($columnName)
     {
         $tableName = $this->get('data_table');
-        if (false === $this->_existsColumn($columnName)) {
+        if (!$this->_existsColumn($columnName)) {
             $msg = Pifa::i18n('COLUMN_EXISTS_ERROR');
             $msg = sprintf($msg, $columnName);
             throw new PifaException($msg);
@@ -1211,7 +1187,7 @@ class PifaForm extends Item
             ;";
 
         $db = cRegistry::getDb();
-        if (false === $db->query($sql)) {
+        if (!$db->query($sql)) {
             $msg = Pifa::i18n('COLUMN_DROP_ERROR');
             throw new PifaException($msg);
         }
@@ -1229,7 +1205,7 @@ class PifaForm extends Item
     public function addColumn($columnName, $dataType)
     {
         $tableName = $this->get('data_table');
-        if (true === $this->_existsColumn($columnName)) {
+        if ($this->_existsColumn($columnName)) {
             $msg = Pifa::i18n('COLUMN_EXISTS_ERROR');
             $msg = sprintf($msg, $columnName);
             throw new PifaException($msg);
@@ -1246,7 +1222,7 @@ class PifaForm extends Item
             ;";
 
         $db = cRegistry::getDb();
-        if (false === $db->query($sql)) {
+        if (!$db->query($sql)) {
             $msg = Pifa::i18n('COLUMN_ADD_ERROR');
             throw new PifaException($msg);
         }
@@ -1268,7 +1244,7 @@ class PifaForm extends Item
             ;";
 
         $db = cRegistry::getDb();
-        if (false === $db->query($sql)) {
+        if (!$db->query($sql)) {
             $msg = Pifa::i18n('COLUMNS_LOAD_ERROR');
             throw new PifaException($msg);
         }
@@ -1288,8 +1264,7 @@ class PifaForm extends Item
      * Deletes this form with all its fields and stored data.
      * The forms data table is also dropped.
      *
-     * @throws PifaException
-     * @throws cDbException
+     * @throws cDbException|PifaException
      */
     public function delete()
     {
@@ -1303,11 +1278,11 @@ class PifaForm extends Item
         // delete form
         $sql = "-- PifaForm->delete()
             DELETE FROM
-                `" . cRegistry::getDbTableName('pifa_form') . "`
+                `" . cDb::getTableName('pifa_form') . "`
             WHERE
                 idform = " . cSecurity::toInteger($this->get('idform')) . "
             ;";
-        if (false === $db->query($sql)) {
+        if (!$db->query($sql)) {
             $msg = Pifa::i18n('FORM_DELETE_ERROR');
             throw new PifaException($msg);
         }
@@ -1315,11 +1290,11 @@ class PifaForm extends Item
         // delete fields
         $sql = "-- PifaForm->delete()
             DELETE FROM
-                `" . cRegistry::getDbTableName('pifa_field') . "`
+                `" . cDb::getTableName('pifa_field') . "`
             WHERE
                 idform = " . cSecurity::toInteger($this->get('idform')) . "
             ;";
-        if (false === $db->query($sql)) {
+        if (!$db->query($sql)) {
             $msg = Pifa::i18n('FIELDS_DELETE_ERROR');
             throw new PifaException($msg);
         }
@@ -1330,7 +1305,7 @@ class PifaForm extends Item
                 DROP TABLE IF EXISTS
                     `" . cSecurity::toString($this->get('data_table')) . "`
                 ;";
-            if (false === $db->query($sql)) {
+            if (!$db->query($sql)) {
                 $msg = Pifa::i18n('TABLE_DROP_ERROR');
                 throw new PifaException($msg);
             }

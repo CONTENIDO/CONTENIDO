@@ -25,15 +25,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cUpgradeJob_0018 extends cUpgradeJobAbstract
 {
 
-    public $maxVersion = "4.9.12";
+    public $maxVersion = '4.9.12';
 
     public function _execute()
     {
-        if ($_SESSION['setuptype'] == 'upgrade') {
-
+        if ($this->_setupType == 'upgrade') {
             // Delete old statistic client configurations
-            $sql = "DELETE FROM " . cRegistry::getDbTableName('properties') . " WHERE type = 'stats' AND name = 'tracking'";
-            $this->_oDb->query($sql);
+            $this->_oDb->query(sprintf(
+                "DELETE FROM `%s` WHERE `type` = 'stats' AND `name` = 'tracking'",
+                cDb::getTableName('properties')
+            ));
         }
 
         // Create a system configuration and turn the statistic off (default)

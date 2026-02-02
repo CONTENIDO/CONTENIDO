@@ -14,9 +14,20 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if ($perm->have_perm_area_action("tpl", "tpl_delete") || $perm->have_perm_area_action_item("tpl", "tpl_delete", $idtpl)) {
+/**
+ * @var cGuiNotification $notification
+ * @var int $idtpl
+ */
+
+$perm = cRegistry::getPerm();
+
+if (
+    $perm->have_perm_area_action('tpl', 'tpl_delete')
+    || $perm->have_perm_area_action_item('tpl', 'tpl_delete', $idtpl)
+) {
     cInclude('includes', 'functions.tpl.php');
-    $tmp_notification = tplDeleteTemplate($idtpl);
+    tplDeleteTemplate($idtpl);
+    $tmp_notification = '';
 } else {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
 }

@@ -19,23 +19,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiCategoryTree createNewItem
- * @method cApiCategoryTree|bool next
+ * @extends ItemCollection<cApiCategoryTree>
  */
 class cApiCategoryTreeCollection extends ItemCollection
 {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param bool $select [optional]
-     *                     where clause to use for selection (see ItemCollection::select())
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param string|false $select [optional] Where clause to use for selection {@see ItemCollection::select()}
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($select = false)
     {
-        parent::__construct(cRegistry::getDbTableName('cat_tree'), 'idtree');
+        parent::__construct(cDb::getTableName('cat_tree'), 'idtree');
 
         // set the join partners so that joins can be used via link() method
         $this->_setJoinPartner('cApiCategoryCollection');
@@ -47,53 +43,49 @@ class cApiCategoryTreeCollection extends ItemCollection
     }
 
     /**
-     * Returns category tree structure by selecting the data from several tables
-     * ().
+     * Returns category tree structure by selecting the data from several tables.
      *
-     * @param int $client
-     *         Client id
-     * @param int $lang
-     *         Language id
+     * @param int $clientId Client id
+     * @param int $languageId Language id
      *
      * @return array
-     *         Category tree structure as follows:
-     *         <pre>
-     *         $arr[n] (int) idtree value
-     *         $arr[n]['idcat'] (int)
-     *         $arr[n]['level'] (int)
-     *         $arr[n]['idtplcfg'] (int)
-     *         $arr[n]['visible'] (int)
-     *         $arr[n]['name'] (string)
-     *         $arr[n]['public'] (int)
-     *         $arr[n]['urlname'] (string)
-     *         $arr[n]['is_start'] (int)
-     *         </pre>
-     *
+     *      Category tree structure as follows:
+     *      <pre>
+     *      $arr[n] (int) idtree value
+     *      $arr[n]['idcat'] (int)
+     *      $arr[n]['level'] (int)
+     *      $arr[n]['idtplcfg'] (int)
+     *      $arr[n]['visible'] (int)
+     *      $arr[n]['name'] (string)
+     *      $arr[n]['public'] (int)
+     *      $arr[n]['urlname'] (string)
+     *      $arr[n]['is_start'] (int)
+     *      </pre>
      * @throws cDbException
      */
-    function getCategoryTreeStructureByClientIdAndLanguageId($client, $lang)
+    public function getCategoryTreeStructureByClientIdAndLanguageId($clientId, $languageId): array
     {
-        $aCatTree = [];
-
-        $sql = 'SELECT * FROM `:cat_tree` AS A, `:cat` AS B, `:cat_lang` AS C ' . 'WHERE A.idcat = B.idcat AND B.idcat = C.idcat AND C.idlang = :idlang AND idclient = :idclient ' . 'ORDER BY idtree';
+        $categoryTree = [];
 
         $sql = $this->db->prepare(
-            $sql,
+            'SELECT * FROM `:cat_tree` AS A, `:cat` AS B, `:cat_lang` AS C
+            WHERE A.idcat = B.idcat AND B.idcat = C.idcat AND C.idlang = :idlang
+              AND idclient = :idclient ORDER BY idtree',
             [
                 'cat_tree' => $this->table,
-                'cat' => cRegistry::getDbTableName('cat'),
-                'cat_lang' => cRegistry::getDbTableName('cat_lang'),
-                'idlang' => (int)$lang,
-                'idclient' => (int)$client,
+                'cat' => cDb::getTableName('cat'),
+                'cat_lang' => cDb::getTableName('cat_lang'),
+                'idlang' => cSecurity::toInteger($languageId),
+                'idclient' => cSecurity::toInteger($clientId),
             ]
         );
         $this->db->query($sql);
 
         while ($this->db->nextRecord()) {
-            $aCatTree[$this->db->f('idtree')] = [
-                'idcat' => $this->db->f('idcat'),
-                'level' => $this->db->f('level'),
-                'idtplcfg' => $this->db->f('idtplcfg'),
+            $categoryTree[cSecurity::toInteger($this->db->f('idtree'))] = [
+                'idcat' => cSecurity::toInteger($this->db->f('idcat')),
+                'level' => cSecurity::toInteger($this->db->f('level')),
+                'idtplcfg' => cSecurity::toInteger($this->db->f('idtplcfg')),
                 'visible' => $this->db->f('visible'),
                 'name' => $this->db->f('name'),
                 'public' => $this->db->f('public'),
@@ -102,7 +94,7 @@ class cApiCategoryTreeCollection extends ItemCollection
             ];
         }
 
-        return $aCatTree;
+        return $categoryTree;
     }
 }
 
@@ -117,18 +109,15 @@ class cApiCategoryTree extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('cat_tree'), 'idtree');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('cat_tree'), 'idtree');
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 }

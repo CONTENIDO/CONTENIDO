@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiArticleSpecification createNewItem
- * @method cApiArticleSpecification|bool next
+ * @extends ItemCollection<cApiArticleSpecification>
  */
 class cApiArticleSpecificationCollection extends ItemCollection
 {
@@ -46,25 +45,23 @@ class cApiArticleSpecificationCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('art_spec'), 'idartspec');
+        parent::__construct(cDb::getTableName('art_spec'), 'idartspec');
         $this->_setItemClass('cApiArticleSpecification');
     }
 
     /**
      * Returns all article specifications by client and language.
      *
-     * @param int $client
-     * @param int $lang
-     * @param string $orderBy
-     * @return array
-     * @throws cDbException
-     * @throws cException
+     * @return cApiArticleSpecification[]
+     * @throws cDbException|cException
      */
-    public function fetchByClientLang(int $client, int $lang, string $orderBy = ''): array
+    public function fetchByClientLang(int $clientId, int $languageId, string $orderBy = ''): array
     {
-        $this->select("`client` = " . $client . " AND `lang` = " . $lang, '', $this->escape($orderBy));
+        $this->select(sprintf(
+            "`client` = %d AND `lang` = %d", $clientId, $languageId
+        ), '', $this->escape($orderBy));
         $entries = [];
-        while (($entry = $this->next()) !== false) {
+        while ($entry = $this->next()) {
             $entries[] = clone $entry;
         }
         return $entries;
@@ -73,37 +70,34 @@ class cApiArticleSpecificationCollection extends ItemCollection
     /**
      * Sets the online status of an article specification.
      *
-     * @param int $idArtSpec
      * @param int $online The online status `0` or `1`, default is `0`.
-     * @return bool
      * @throws cDbException
      * @since CONTENIDO 4.10.2
      */
-    public function setOnline(int $idArtSpec, int $online): bool
+    public function setOnline(int $artSpecId, int $online): bool
     {
-        $online = $online === 1 ? 1 : 0;
-        $sql = 'UPDATE `%s` SET `online` = %d WHERE `idartspec` = %d';
-        return (bool) $this->db->query($sql, $this->getTable(), $online, $idArtSpec);
+        return cSecurity::toBoolean($this->db->query(
+            'UPDATE `%s` SET `online` = %d WHERE `idartspec` = %d',
+            $this->getTable(),
+            $online === 1 ? 1 : 0,
+            $artSpecId
+        ));
     }
 
     /**
      * Sets default article specification for a specific client and language.
      *
-     * @param int $idArtSpec
-     * @param int $idClient
-     * @param int $idLang
-     * @return bool
      * @throws cDbException
      * @since CONTENIDO 4.10.2
      */
-    public function setDefaultArtSpec(int $idArtSpec, int $idClient, int $idLang): bool
+    public function setDefaultArtSpec(int $artSpecId, int $clientId, int $languageId): bool
     {
         // First reset the current default article specification for client and language.
         $sql = 'UPDATE `%s` SET `artspecdefault` = 0 WHERE `client` = %d AND `lang` = %d';
-        if ($this->db->query($sql, $this->table, $idClient, $idLang)) {
+        if ($this->db->query($sql, $this->table, $clientId, $languageId)) {
             // Then set the new default article specification
             $sql = 'UPDATE `%s` SET `artspecdefault` = 1 WHERE `idartspec` = %d';
-            return (bool) $this->db->query($sql, $this->table, $idArtSpec);
+            return cSecurity::toBoolean($this->db->query($sql, $this->table, $artSpecId));
         }
 
         return false;
@@ -121,18 +115,15 @@ class cApiArticleSpecification extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('art_spec'), 'idartspec');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('art_spec'), 'idartspec');
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 

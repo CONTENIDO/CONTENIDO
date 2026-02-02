@@ -26,7 +26,7 @@ class cGuiObjectPager extends cGuiFoldingRow
     /**
      * @var string Spacer as replacement for first-/prev-/next-/last-page
      */
-    const PAGER_SPACER = '<img src="images/spacer.gif" alt="" width="18">';
+    public const PAGER_SPACER = '<img src="images/spacer.gif" alt="" width="18">';
 
     /**
      *
@@ -49,16 +49,12 @@ class cGuiObjectPager extends cGuiFoldingRow
      * Constructor to create an instance of this class.
      *
      * @param string $uuid
-     * @param int $items
-     *                      Amount of items
-     * @param int $itemsperpage
-     *                      Items displayed per page
-     * @param int $currentpage
-     *                      Defines the current page
+     * @param int $items Amount of items
+     * @param int $itemsperpage Items displayed per page
+     * @param int $currentpage Defines the current page
      * @param cHTMLLink $link
      * @param string $parameterToAdd
      * @param string $id [optional]
-     *
      * @throws cException if the given link is not an object
      */
     public function __construct($uuid, $items, $itemsperpage, $currentpage, $link, $parameterToAdd, $id = '')
@@ -83,13 +79,9 @@ class cGuiObjectPager extends cGuiFoldingRow
     }
 
     /**
-     *
      * @inheritdoc
-     * @param bool $bContentOnly [optional]
-     * @return string
-     *         Generated markup
      */
-    public function render($bContentOnly = false): string
+    public function render(bool $contentOnly = false): string
     {
         // Do not display page navigation if there is only one page,
         // and we are not in newsletter section.
@@ -168,7 +160,7 @@ class cGuiObjectPager extends cGuiFoldingRow
         }
 
         $this->_contentData->setAlignment("center");
-        $this->_contentData->setClass("foldingrow_content");
+        $this->_contentData->setClass('foldingrow_content');
 
         // Do not display page navigation if there is only one page,
         // and we are not in newsletter section.
@@ -178,7 +170,7 @@ class cGuiObjectPager extends cGuiFoldingRow
 
         $this->_contentData->setContent($output);
 
-        if ($bContentOnly) {
+        if ($contentOnly) {
             return $output;
         } else {
             return parent::render();

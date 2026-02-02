@@ -24,8 +24,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 // initializing classes
 $page = new cGuiPage('pim_overview', 'pim');
 
-$client = cSecurity::toInteger(cRegistry::getClientId());
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
+$client = cRegistry::getClientId();
+$lang = cRegistry::getLanguageId();
 
 // Display critical error if no valid client/language is selected
 if ($client < 1 || $lang < 1) {
@@ -62,12 +62,12 @@ $viewAction = $_REQUEST['pim_view'] ?? 'overview';
 switch ($viewAction) {
     case 'activestatus':
         $status = new PimPluginSetupStatus();
-        $status->changeActiveStatus($_GET['pluginId']);
+        $status->changeActiveStatus(cSecurity::toInteger($_GET['pluginId']));
         break;
     case 'update':
         // Set mode to update
-        $setup->setMode('update');
-        $setup->setPluginId($_POST['pluginId']);
+        $setup->setMode($setup::MODE_UPDATE);
+        $setup->setPluginId(cSecurity::toInteger($_POST['pluginId']));
 
         // Check Xml
         if ($setup->checkXml()) {
@@ -76,23 +76,23 @@ switch ($viewAction) {
 
         break;
     case 'uninstall':
-        $setup->setMode('uninstall');
-        $setup->setPluginId($_GET['pluginId']);
+        $setup->setMode($setup::MODE_UNINSTALL);
+        $setup->setPluginId(cSecurity::toInteger($_GET['pluginId']));
         $delete = new PimPluginSetupUninstall();
         if ($_GET['uninstallsql'] == '1') {
-            $delete->uninstall(true);
+            $delete->uninstall();
         } else {
             $delete->uninstall(false);
         }
         break;
     case 'uninstall-extracted':
-        $setup->setMode('uninstall');
+        $setup->setMode($setup::MODE_UNINSTALL);
         $delete = new PimPluginSetupUninstall();
         $delete->setPluginFoldername($_GET['pluginFoldername']);
         $delete->uninstallDir();
         break;
     case 'install':
-        $setup->setMode('uploaded');
+        $setup->setMode($setup::MODE_UPLOADED);
 
         if ($setup->checkXml()) {
             $new = new PimPluginSetupInstall();
@@ -100,7 +100,7 @@ switch ($viewAction) {
         }
         break;
     case 'install-extracted':
-        $setup->setMode('extracted');
+        $setup->setMode($setup::MODE_EXTRACTED);
         if ($setup->checkXml()) {
             $new = new PimPluginSetupInstall();
             $new->install();
@@ -109,7 +109,7 @@ switch ($viewAction) {
 }
 
 // path to pim template files
-$tempTplPath = cRegistry::getBackendPath() . $cfg['path']['plugins'] . 'pim/templates';
+$tempTplPath = PimPluginHelper::getPluginsFolderPath() . 'pim/templates';
 
 // initializing array for installed plugins
 $installedPluginFoldernames = [];
@@ -119,7 +119,7 @@ $oItem = new PimPluginCollection();
 $oItem->select(NULL, NULL, 'executionorder');
 $pluginsInstalled = '';
 
-while (($plugin = $oItem->next()) !== false) {
+while ($plugin = $oItem->next()) {
 
     // initialization new template class
     $pagePlugins = new cTemplate();
@@ -149,7 +149,7 @@ while (($plugin = $oItem->next()) !== false) {
     $pagePlugins->set('s', 'WEBSITE', $plugin->get('website'));
     $pagePlugins->set('s', 'COPYRIGHT', $plugin->get('copyright'));
     $pagePlugins->set('s', 'INSTALLED', $date);
-    $pagePlugins->set('s', 'EXECUTIONORDER', $plugin->get("executionorder"));
+    $pagePlugins->set('s', 'EXECUTIONORDER', $plugin->get('executionorder'));
 
     $pagePlugins->set('s', 'LANG_SORT_DOWN', i18n('Set execution order down', 'pim'));
     $pagePlugins->set('s', 'LANG_SORT_UP', i18n('Set execution order up', 'pim'));
@@ -183,26 +183,30 @@ while (($plugin = $oItem->next()) !== false) {
     // put foldername into array installedPluginFoldernames
     $installedPluginFoldernames[] = $plugin->get('folder');
 
-    $pluginsInstalled .= $pagePlugins->generate($tempTplPath . '/template.pim_plugins_installed.html', true, false);
+    $pluginsInstalled .= $pagePlugins->generate($tempTplPath . '/template.pim_plugins_installed.html', true);
 }
 
 $pluginsExtracted = '';
 
 // get extracted plugins
-if (is_dir($cfg['path']['plugins'])) {
+if (cDirHandler::exists($cfg['path']['plugins'])) {
     if (false !== ($handle = cDirHandler::read($cfg['path']['plugins']))) {
 
         $i = 0;
         foreach ($handle as $pluginFoldername) {
-            $pluginPath = cRegistry::getBackendPath() . $cfg['path']['plugins'] . $pluginFoldername;
-            $tempPath = $pluginPath . '/plugin.xml';
+            $pluginPath = PimPluginHelper::getPluginFolderPath($pluginFoldername);
+            $pluginConfigFile = PimPluginHelper::getPluginConfigFile($pluginFoldername);
 
-            if (is_dir($pluginPath) && cFileHandler::exists($tempPath) && !in_array($pluginFoldername, $installedPluginFoldernames)) {
+            if (
+                cDirHandler::exists($pluginPath)
+                && cFileHandler::exists($pluginConfigFile)
+                && !in_array($pluginFoldername, $installedPluginFoldernames)
+            ) {
                 // initialization of a new template class
                 $pagePlugins = new cTemplate();
 
                 // Read plugin.xml
-                $tempXmlContent = cFileHandler::read($tempPath);
+                $tempXmlContent = cFileHandler::read($pluginConfigFile);
 
                 // Write plugin.xml content into temporary variable
                 $tempXml = simplexml_load_string($tempXmlContent);
@@ -230,7 +234,7 @@ if (is_dir($cfg['path']['plugins'])) {
                 $pagePlugins->set('s', 'DEPENDENCIES', $pluginDependenciesView->getPluginDependenciesExtracted($tempXml));
 
                 // uninstall link
-                if (is_writable(cRegistry::getBackendPath() . $cfg['path']['plugins'] . $pluginFoldername)) {
+                if (cFileHandler::writeable(PimPluginHelper::getPluginsFolderPath() . $pluginFoldername)) {
                     $pagePlugins->set('s', 'REMOVE_LINK', $sess->url('main.php?area=pim&frame=4&pim_view=uninstall-extracted&pluginFoldername=' . $pluginFoldername));
                     $pagePlugins->set('s', 'WRITEABLE', i18n('Everything looks fine', 'pim'));
                 } else {
@@ -239,7 +243,7 @@ if (is_dir($cfg['path']['plugins'])) {
                 }
 
                 $pagePlugins->set('s', 'IDPLUGIN', $i++);
-                $pluginsExtracted .= $pagePlugins->generate($tempTplPath . '/template.pim_plugins_extracted.html', true, false);
+                $pluginsExtracted .= $pagePlugins->generate($tempTplPath . '/template.pim_plugins_extracted.html', true);
             }
         }
     }

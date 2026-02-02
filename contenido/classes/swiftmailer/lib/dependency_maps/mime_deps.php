@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @var array $swift_mime_types
+ */
 require __DIR__.'/../mime_types.php';
 
 Swift_DependencyContainer::getInstance()

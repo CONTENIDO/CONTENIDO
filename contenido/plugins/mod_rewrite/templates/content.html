@@ -216,7 +216,7 @@
             </td>
         </tr>
 
-        <!-- add start article name to url -->
+        <!-- add start article name to the url -->
         <tr>
             <td>{LNG_ADD_STARTART_NAME_TO_URL}</td>
             <td class="text_left">
@@ -408,11 +408,11 @@
 
 {CONTENT_AFTER}
 
-<script type="text/javascript" src="plugins/mod_rewrite/scripts/mod_rewrite.js"></script>
+<script type="text/javascript" src="{_ASSET(plugins/mod_rewrite/scripts/mod_rewrite.js)_}"></script>
 <script type="text/javascript">
     (function (Con, $) {
         $(function () {
-            new Con.Plugin.ModRewrite('settings', {lng: {more_information: "{LNG_MORE_INFORMATIONS}"}});
+            new Con.Plugin.PiModRewrite('settings', {lng: {more_information: "{LNG_MORE_INFORMATIONS}"}});
         });
     })(Con, Con.$);
 </script>

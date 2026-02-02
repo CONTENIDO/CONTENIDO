@@ -23,18 +23,18 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var cSession $sess
  * @var array $cfgClient
  * @var int $client
- *
- * @var bool $cronjob
  */
 
 $cfg = cRegistry::getConfig();
 $pluginName = $cfg['pi_linkchecker']['pluginName'];
 
-$cronjob = $cronjob ?? false;
+if (cRegistry::getAppVar('pluginLinkcheckerIsCronjob') === null) {
+    cRegistry::setAppVar('pluginLinkcheckerIsCronjob', false);
+}
 
-if (!$cronjob) {
+if (!cRegistry::getAppVar('pluginLinkcheckerIsCronjob')) {
     // Check permissions for linkchecker action
-    if (!$perm->have_perm_area_action($pluginName, "linkchecker")) {
+    if (!$perm->have_perm_area_action($pluginName, 'linkchecker')) {
         cRegistry::addErrorMessage(i18n("No permissions"));
         $page = new cGuiPage('generic_page');
         $page->abortRendering();
@@ -43,7 +43,7 @@ if (!$cronjob) {
     }
 
     if (cRegistry::getClientId() == 0) {
-        $notification->displayNotification("error", i18n("No Client selected"));
+        $notification->displayNotification('error', i18n("No Client selected"));
         exit();
     }
 }
@@ -74,7 +74,7 @@ if (!isset($aCacheName['errors'])) {
 }
 $aCacheName = [
     'errors' => $sess->id,
-    'errorscount' => $aCacheName['errors'] . "ErrorsCountChecked"
+    'errorsCount' => $aCacheName['errors'] . 'ErrorsCountChecked'
 ];
 $oCache = new cFileCache([
     'cacheDir' => $cfgClient[$client]['cache']['path'],
@@ -86,7 +86,7 @@ $oCache = new cFileCache([
  */
 
 /**
- * @deprecated [2023-01-25] Since 4.10.2, use cLinkcheckerHelper::sortErrors() instead
+ * @deprecated [2023-01-25] Since CONTENIDO 4.10.2, use cLinkcheckerHelper::sortErrors() instead
  */
 function linksort($sErrors, $requestSort)
 {
@@ -95,7 +95,7 @@ function linksort($sErrors, $requestSort)
 }
 
 /**
- * @deprecated [2023-01-25] Since 4.10.2, use cLinkcheckerHelper::urlIsImage() instead
+ * @deprecated [2023-01-25] Since CONTENIDO 4.10.2, use cLinkcheckerHelper::urlIsImage() instead
  */
 function url_is_image($sUrl)
 {
@@ -104,7 +104,7 @@ function url_is_image($sUrl)
 }
 
 /**
- * @deprecated [2023-01-25] Since 4.10.2, use cLinkcheckerHelper::urlIsUri() instead
+ * @deprecated [2023-01-25] Since CONTENIDO 4.10.2, use cLinkcheckerHelper::urlIsUri() instead
  */
 function url_is_uri($sUrl)
 {
@@ -114,12 +114,15 @@ function url_is_uri($sUrl)
 
 /// Repair some selected link
 if (!empty($_GET['idcontent']) && !empty($_GET['idartlang']) && !empty($_GET['oldlink']) && !empty($_GET['repairedlink'])) {
-
     $requestIdArtLang = cSecurity::toInteger($_GET['idartlang']);
 
-    if ($_GET['redirect'] == true) {
+    if ($_GET['redirect']) {
         // Update redirect
-        $sql = $db->buildUpdate(cRegistry::getDbTableName('art_lang'), ['redirect_url' => base64_decode($_GET['repairedlink'])], ['idartlang' => $requestIdArtLang]);
+        $sql = $db->buildUpdate(
+            cDb::getTableName('art_lang'),
+            ['redirect_url' => base64_decode($_GET['repairedlink'])],
+            ['idartlang' => $requestIdArtLang])
+        ;
         $db->query($sql);
     } else {
         // Update content
@@ -127,15 +130,23 @@ if (!empty($_GET['idcontent']) && !empty($_GET['idartlang']) && !empty($_GET['ol
         $requestIdContent = cSecurity::toInteger($_GET['idcontent']);
 
         // Get old value
-        $sql = "SELECT `value` FROM `%s` WHERE `idcontent` = %d AND `idartlang` = %d";
-        $db->query($sql, cRegistry::getDbTableName('content'), $requestIdContent, $requestIdArtLang);
+        $db->query(
+            "SELECT `value` FROM `%s` WHERE `idcontent` = %d AND `idartlang` = %d",
+            cDb::getTableName('content'),
+            $requestIdContent,
+            $requestIdArtLang)
+        ;
         $db->nextRecord();
 
         // Generate new value
-        $newValue = str_replace(base64_decode($_GET['oldlink']), base64_decode($_GET['repairedlink']), $db->f("value"));
+        $newValue = str_replace(base64_decode($_GET['oldlink']), base64_decode($_GET['repairedlink']), $db->f('value'));
 
         // Update database table with new value
-        $sql = $db->buildUpdate(cRegistry::getDbTableName('content'), ['value' => $newValue], ['idcontent' => $requestIdContent, 'idartlang' => $requestIdArtLang]);
+        $sql = $db->buildUpdate(
+            cDb::getTableName('content'),
+            ['value' => $newValue],
+            ['idcontent' => $requestIdContent, 'idartlang' => $requestIdArtLang]
+        );
 
         $db->query($sql);
     }
@@ -146,25 +157,31 @@ if (!empty($_GET['idcontent']) && !empty($_GET['idartlang']) && !empty($_GET['ol
 
 /* Whitelist: Add */
 if (!empty($_GET['whitelist'])) {
-    $sql = "REPLACE INTO `:tab_whitelist` VALUES (':url', ':lastview')";
-    $db->query($sql, [
-        'tab_whitelist' => cRegistry::getDbTableName('whitelist'),
-        'url' => base64_decode($_GET['whitelist']),
-        'lastview' => time()
-    ]);
+    $db->query(
+        "REPLACE INTO `:tab_whitelist` VALUES (':url', ':lastview')",
+        [
+            'tab_whitelist' => cDb::getTableName('whitelist'),
+            'url' => base64_decode($_GET['whitelist']),
+            'lastview' => time()
+        ]
+    );
 
     $oCache->remove($aCacheName['errors'], $requestMode);
 }
 
 /* Whitelist: Get */
 $whitelistTimeout = $cfg['pi_linkchecker']['whitelistTimeout'];
-$sql = "SELECT `url` FROM `%s` WHERE `lastview` < %d AND `lastview` > %d";
-$db->query($sql, cRegistry::getDbTableName('whitelist'), time() + $whitelistTimeout, time() - $whitelistTimeout);
-
-$aWhitelist = [];
+$db->query(
+    "SELECT `url` FROM `%s` WHERE `lastview` < %d AND `lastview` > %d",
+    cDb::getTableName('whitelist'),
+    time() + $whitelistTimeout,
+    time() - $whitelistTimeout
+);
+$whitelist = [];
 while ($db->nextRecord()) {
-    $aWhitelist[] = $db->f("url");
+    $whitelist[] = $db->f('url');
 }
+cRegistry::setAppVar('pluginLinkcheckerWhitelist', $whitelist);
 
 /* Get all links */
 // Cache errors
@@ -183,10 +200,20 @@ if ($sCache_errors && $requestLive != 1) {
 
     // Select all categories
     // Check user-rights, if no cronjob
-    $db->query("SELECT `idcat` FROM `%s` GROUP BY `idcat`", cRegistry::getDbTableName('cat'));
-    while ($db->nextRecord()) {
-        if ($cronjob || cLinkcheckerCategoryHelper::checkPermission($db->f("idcat"), $db2)) {
-            $aCats[] = cSecurity::toInteger($db->f("idcat"));
+    $categoryColl = new cApiCategoryCollection();
+    $aCats = $categoryColl->getIdsByWhereClause(
+        '',
+        '',
+        sprintf('`%s`', $categoryColl->getPrimaryKeyName())
+
+    );
+    $aCats = array_map('intval', $aCats);
+    foreach ($aCats as $_categoryId) {
+        if (
+            cRegistry::getAppVar('pluginLinkcheckerIsCronjob')
+            || cLinkcheckerCategoryHelper::checkPermission($_categoryId, $db2)
+        ) {
+            $aCats[] = $_categoryId;
         }
     }
 
@@ -201,10 +228,11 @@ if ($sCache_errors && $requestLive != 1) {
     $languageId = cRegistry::getLanguageId();
 
     // How many articles exist? [Text]
-    $sql = "SELECT art.title, art.idartlang, art.idlang, cat.idart, cat.idcat, catName.name AS namecat, con.idcontent, con.value FROM " . cRegistry::getDbTableName('cat_art') . " cat
-            LEFT JOIN " . cRegistry::getDbTableName('art_lang') . " art ON (art.idart = cat.idart)
-            LEFT JOIN " . cRegistry::getDbTableName('cat_lang') . " catName ON (catName.idcat = cat.idcat)
-            LEFT JOIN " . cRegistry::getDbTableName('content') . " con ON (con.idartlang = art.idartlang)
+    $sql = "SELECT art.title, art.idartlang, art.idlang, cat.idart, cat.idcat, catName.name AS namecat, con.idcontent, con.value
+            FROM " . cDb::getTableName('cat_art') . " cat
+            LEFT JOIN " . cDb::getTableName('art_lang') . " art ON (art.idart = cat.idart)
+            LEFT JOIN " . cDb::getTableName('cat_lang') . " catName ON (catName.idcat = cat.idcat)
+            LEFT JOIN " . cDb::getTableName('content') . " con ON (con.idartlang = art.idartlang)
             WHERE (
                 con.value LIKE '%action%'
                 OR con.value LIKE '%data%'
@@ -212,49 +240,79 @@ if ($sCache_errors && $requestLive != 1) {
                 OR con.value LIKE '%src%'
             )
                 " . $aCats_Sql . "
-                AND cat.idcat != '0'
-                AND art.idlang = '" . cSecurity::toInteger($languageId) . "'
-                AND catName.idlang = '" . cSecurity::toInteger($languageId) . "'
-                AND art.online = '1'
-                AND art.redirect = '0'";
+                AND cat.idcat != 0
+                AND art.idlang = " . $languageId . "
+                AND catName.idlang = " . $languageId . "
+                AND art.online = 1
+                AND art.redirect = 0";
 
     $db->query($sql);
 
     while ($db->nextRecord()) {
         // Text decode
-        $value = $db->f("value");
+        $value = $db->f('value', '');
 
         // Search the text
-        $aSearchIDInfosNonID = $searchLinks->search($value, $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"), $db->f("idartlang"), $db->f("idcontent"));
+        $aSearchIDInfosNonID = $searchLinks->search(
+            $value,
+            $db->f('idart'),
+            $db->f('title'),
+            $db->f('idcat'),
+            $db->f('namecat'),
+            $db->f('idlang'),
+            $db->f('idartlang'),
+            $db->f('idcontent')
+        );
 
         // Search front_content.php-links
         if ($requestMode != 2) {
-            cLinkcheckerTester::searchFrontContentLinks($value, $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"));
+            cLinkcheckerTester::searchFrontContentLinks(
+                $value,
+                $db->f('idart'),
+                $db->f('title'),
+                $db->f('idcat'),
+                $db->f('namecat')
+            );
         }
     }
 
     // How many articles exist? [Redirects]
-    $sql = "SELECT art.title, art.redirect_url, art.idartlang, art.idlang, cat.idart, cat.idcat, catName.name AS namecat FROM " . cRegistry::getDbTableName('cat_art') . " cat
-            LEFT JOIN " . cRegistry::getDbTableName('art_lang') . " art ON (art.idart = cat.idart)
-            LEFT JOIN " . cRegistry::getDbTableName('cat_lang') . " catName ON (catName.idcat = cat.idcat)
-            WHERE art.online = '1'
-                AND art.redirect = '1'
+    $sql = "SELECT art.title, art.redirect_url, art.idartlang, art.idlang, cat.idart, cat.idcat, catName.name AS namecat
+            FROM " . cDb::getTableName('cat_art') . " cat
+            LEFT JOIN " . cDb::getTableName('art_lang') . " art ON (art.idart = cat.idart)
+            LEFT JOIN " . cDb::getTableName('cat_lang') . " catName ON (catName.idcat = cat.idcat)
+            WHERE art.online = 1
+                AND art.redirect = 1
                 " . $aCats_Sql . "
-                AND art.idlang = '" . cSecurity::toInteger($languageId) . "'
-                AND catName.idlang = '" . cSecurity::toInteger($languageId) . "'
-                AND cat.idcat != '0'";
+                AND art.idlang = " . $languageId . "
+                AND catName.idlang = " . $languageId . "
+                AND cat.idcat != 0";
     $db->query($sql);
 
-    // Set mode to "redirect"
-    $searchLinks->setMode("redirect");
+    // Set mode to 'redirect'
+    $searchLinks->setMode('redirect');
 
     while ($db->nextRecord()) {
         // Search the text
-        $aSearchIDInfosNonID = $searchLinks->search($db->f("redirect_url"), $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"), $db->f("idlang"), $db->f("idartlang"));
+        $aSearchIDInfosNonID = $searchLinks->search(
+            $db->f('redirect_url'),
+            $db->f('idart'),
+            $db->f('title'),
+            $db->f('idcat'),
+            $db->f('namecat'),
+            $db->f('idlang'),
+            $db->f('idartlang')
+        );
 
         // Search front_content.php-links
         if ($requestMode != 2) {
-            cLinkcheckerTester::searchFrontContentLinks($db->f("redirect_url"), $db->f("idart"), $db->f("title"), $db->f("idcat"), $db->f("namecat"));
+            cLinkcheckerTester::searchFrontContentLinks(
+                $db->f('redirect_url'),
+                $db->f('idart'),
+                $db->f('title'),
+                $db->f('idcat'),
+                $db->f('namecat')
+            );
         }
     }
 
@@ -264,7 +322,7 @@ if ($sCache_errors && $requestLive != 1) {
 
 /* Analysis of the errors */
 
-if (!$cronjob) {
+if (!cRegistry::getAppVar('pluginLinkcheckerIsCronjob')) {
     // Fill and render the template
 
     $tpl->set('s', 'MODE', $requestMode);
@@ -292,8 +350,7 @@ if (!$cronjob) {
 
         $tpl->set('s', 'NO_ERRORS', i18n("<strong>No errors</strong> were found.", $pluginName));
         $tpl->generate($cfg['templates']['linkchecker_noerrors']);
-    } elseif (!empty($aErrors)) {
-
+    } else {
         $tpl->set('s', 'ERRORS_HEADLINE', i18n("Total checked links", $pluginName));
         $tpl->set('s', 'ERRORS_HEADLINE_ARTID', i18n("idart", $pluginName));
         $tpl->set('s', 'ERRORS_HEADLINE_ARTICLE', i18n("Article", $pluginName));
@@ -401,7 +458,7 @@ if (!$cronjob) {
         }
 
         // Counter
-        if ($iCounter = $oCache->get($aCacheName['errorscount'], $requestMode)) {
+        if ($iCounter = $oCache->get($aCacheName['errorsCount'], $requestMode)) {
             // Cache exists?
             $iErrorsCountChecked = $iCounter;
         } else {
@@ -444,7 +501,7 @@ if (!$cronjob) {
 
         // Build new cache
         $oCache->save(serialize($aErrors), $aCacheName['errors'], $requestMode);
-        $oCache->save($iErrorsCountChecked, $aCacheName['errorscount'], $requestMode);
+        $oCache->save($iErrorsCountChecked, $aCacheName['errorsCount'], $requestMode);
     }
 
     // Log

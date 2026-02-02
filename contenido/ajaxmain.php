@@ -24,11 +24,12 @@ if (!defined('CON_FRAMEWORK')) {
  * @var string $belang
  * @var array $cfg
  * @var cSession $sess
- * @var int $idcat
+ * @var ?int $idcat
+ * @var ?int $client
  */
 
 // CONTENIDO startup process
-include_once('./includes/startup.php');
+include_once(__DIR__ . '/includes/startup.php');
 
 $backendPath = cRegistry::getBackendPath();
 
@@ -56,7 +57,7 @@ $classarea = new cApiAreaCollection();
 $classlayout = new cApiLayout();
 $classclient = new cApiClientCollection();
 
-$currentuser = new cApiUser($auth->auth['uid']);
+$currentuser = new cApiUser($auth->getUserId());
 
 // Change client
 if (isset($changeclient) && is_numeric($changeclient)) {
@@ -71,14 +72,16 @@ if (isset($changelang) && is_numeric($changelang)) {
     $lang = $changelang;
 }
 
-if (!cSecurity::isPositiveInteger($client ?? 0)
-    || !cApiClientCollection::isClientAccessible(cSecurity::toInteger($client))) {
+if (
+    !cSecurity::isPositiveInteger($client ?? 0)
+    || !cApiClientCollection::isClientAccessible(cSecurity::toInteger($client))
+) {
     // use first client which is accessible
     $sess->register('client');
     $oClientColl = new cApiClientCollection();
     if ($oClient = $oClientColl->getFirstAccessibleClient()) {
         unset($lang);
-        $client = $oClient->get('idclient');
+        $client = cSecurity::toInteger($oClient->get('idclient'));
     }
 } else {
     $sess->register('client');
@@ -94,7 +97,7 @@ if (!cSecurity::isPositiveInteger($lang ?? 0)) {
 }
 
 // send right encoding http header
-sendEncodingHeader($db, $cfg, $lang);
+sendEncodingHeader($db, $cfg, $lang ?? 0);
 
 $perm->load_permissions();
 
@@ -113,8 +116,8 @@ if (isset($area)) {
 
 // Initialize CONTENIDO_Backend.
 // Load all actions from the DB and check if permission is granted.
-if ($cfg['debug']['rendering'] == true) {
-    $oldmemusage = memory_get_usage();
+if ($cfg['debug']['rendering']) {
+    $oldMemUsage = memory_get_usage();
 }
 
 // Select area
@@ -128,7 +131,7 @@ if (isset($action) && $action != '') {
     if (!isset($idart)) {
         $idart = 0;
     }
-    $backend->log($idcat, $idart, $client, $lang, $action);
+    $backend->log($idcat, $idart, $client, $lang ?? 0, $action);
 }
 
 // Include action file if exists
@@ -144,7 +147,7 @@ if (isset($action)) {
 
 // Include the main ajax request handler or for the selected area.
 $sFilename = '';
-if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
+if (!empty($_REQUEST['ajax'])) {
     $oAjax = new cAjaxRequest();
     $sReturn = $oAjax->handle($_REQUEST['ajax']);
     echo $sReturn;
@@ -154,8 +157,8 @@ if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 }
 
 // Finalize debug of backend rendering
-if ($cfg['debug']['rendering'] == true) {
-    cDebug::out(cBuildBackendRenderDebugInfo($cfg, $oldmemusage, $sFilename));
+if ($cfg['debug']['rendering']) {
+    cDebug::out(cBuildBackendRenderDebugInfo($cfg, $oldMemUsage ?? 0, $sFilename));
 }
 
 // User Tracking (who is online)

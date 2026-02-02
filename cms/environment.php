@@ -1,7 +1,7 @@
 <?php
 
 // Load environment config file
-$configEnv = str_replace('\\', '/', realpath(dirname(__FILE__) . '/')) . '/data/config/config.environment.php';
+$configEnv = str_replace('\\', '/', realpath(__DIR__ . '/')) . '/data/config/config.environment.php';
 if (file_exists($configEnv)) {
     include_once($configEnv);
 }

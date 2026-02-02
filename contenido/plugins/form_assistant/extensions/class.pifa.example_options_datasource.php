@@ -25,32 +25,27 @@ class ExampleOptionsDatasource extends PifaExternalOptionsDatasourceInterface
     /**
      * Stores the options as associative array which maps values to labels.
      *
-     * @var array
+     * @var ?array
      */
     protected $_options = NULL;
 
     /**
      * Gets options from an external data source and return them as associative
      * array which maps values to labels.
-     *
-     * @return array
      */
-    protected function _getData()
+    protected function _getData(): array
     {
-        $options = [
+        return [
             'n/a' => mi18n("CHOOSE_OPTION"),
             'foo' => mi18n("FOO"),
             'bar' => mi18n("BAR")
         ];
-
-        return $options;
     }
 
     /**
-     * @return array
-     * @see ExternalOptionsDatasourceInterface::getOptionLabels()
+     * @inheritDoc
      */
-    public function getOptionLabels()
+    public function getOptionLabels(): array
     {
         if (NULL === $this->_options) {
             $this->_options = $this->_getData();
@@ -59,10 +54,9 @@ class ExampleOptionsDatasource extends PifaExternalOptionsDatasourceInterface
     }
 
     /**
-     * @return array
-     * @see ExternalOptionsDatasourceInterface::getOptionValues()
+     * @inheritDoc
      */
-    public function getOptionValues()
+    public function getOptionValues(): array
     {
         if (NULL === $this->_options) {
             $this->_options = $this->_getData();

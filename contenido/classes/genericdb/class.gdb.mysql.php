@@ -24,15 +24,15 @@ class cGenericDbDriverMysql extends cGenericDbDriver
 {
 
     /**
-     * @param string $destinationTable
-     * @param string $destinationClass
-     * @param string $destinationPrimaryKey
-     * @param string $sourceClass
-     * @param string $primaryKey
-     * @return array
-     * @see cGenericDbDriver::buildJoinQuery()
+     * @inheritDoc
      */
-    public function buildJoinQuery($destinationTable, $destinationClass, $destinationPrimaryKey, $sourceClass, $primaryKey)
+    public function buildJoinQuery(
+        string $destinationTable,
+        string $destinationClass,
+        string $destinationPrimaryKey,
+        string $sourceClass,
+        string $primaryKey
+    ): array
     {
         // Build a regular LEFT JOIN
         $field = "$destinationClass.$destinationPrimaryKey";
@@ -49,72 +49,71 @@ class cGenericDbDriverMysql extends cGenericDbDriver
     }
 
     /**
-     * @param string $sField
-     * @param string $sOperator
-     * @param string $sRestriction
-     * @return string
-     * @see cGenericDbDriver::buildOperator()
+     * @inheritDoc
+     * @throws cInvalidArgumentException
      */
-    public function buildOperator($sField, $sOperator, $sRestriction)
-    {
-        $sOperator = cString::toLowerCase($sOperator);
-        $sField = cSecurity::toString($sField);
+    public function buildOperator(
+        string $field,
+        string $operator,
+        $restriction
+    ): string {
+        $operator = cString::toLowerCase($operator);
+        $field = cSecurity::toString($field);
 
-        $sWhereStatement = "";
+        $whereStatement = "";
 
-        switch ($sOperator) {
+        switch ($operator) {
             case "matchbool":
                 $sqlStatement = "MATCH (%s) AGAINST ('%s' IN BOOLEAN MODE)";
-                $sWhereStatement = sprintf($sqlStatement, $sField, $this->_prepareValue($sRestriction));
+                $whereStatement = sprintf($sqlStatement, $field, $this->_prepareValue($restriction));
                 break;
             case "match":
                 $sqlStatement = "MATCH (%s) AGAINST ('%s')";
-                $sWhereStatement = sprintf($sqlStatement, $sField, $this->_prepareValue($sRestriction));
+                $whereStatement = sprintf($sqlStatement, $field, $this->_prepareValue($restriction));
                 break;
             case "like":
                 $sqlStatement = "%s LIKE '%%%s%%'";
-                $sWhereStatement = sprintf($sqlStatement, $sField, $this->_prepareValue($sRestriction));
+                $whereStatement = sprintf($sqlStatement, $field, $this->_prepareValue($restriction));
                 break;
             case "likeleft":
                 $sqlStatement = "%s LIKE '%s%%'";
-                $sWhereStatement = sprintf($sqlStatement, $sField, $this->_prepareValue($sRestriction));
+                $whereStatement = sprintf($sqlStatement, $field, $this->_prepareValue($restriction));
                 break;
             case "likeright":
                 $sqlStatement = "%s LIKE '%%%s'";
-                $sWhereStatement = sprintf($sqlStatement, $sField, $this->_prepareValue($sRestriction));
+                $whereStatement = sprintf($sqlStatement, $field, $this->_prepareValue($restriction));
                 break;
             case "notlike":
                 $sqlStatement = "%s NOT LIKE '%%%s%%'";
-                $sWhereStatement = sprintf($sqlStatement, $sField, $this->_prepareValue($sRestriction));
+                $whereStatement = sprintf($sqlStatement, $field, $this->_prepareValue($restriction));
                 break;
             case "notlikeleft":
                 $sqlStatement = "%s NOT LIKE '%s%%'";
-                $sWhereStatement = sprintf($sqlStatement, $sField, $this->_prepareValue($sRestriction));
+                $whereStatement = sprintf($sqlStatement, $field, $this->_prepareValue($restriction));
                 break;
             case "notlikeright":
                 $sqlStatement = "%s NOT LIKE '%%%s'";
-                $sWhereStatement = sprintf($sqlStatement, $sField, $this->_prepareValue($sRestriction));
+                $whereStatement = sprintf($sqlStatement, $field, $this->_prepareValue($restriction));
                 break;
             case "fulltext":
-
                 break;
             case "in":
-                if (is_array($sRestriction)) {
+                if (is_array($restriction)) {
                     $items = [];
-                    foreach ($sRestriction as $key => $sRestrictionItem) {
+                    foreach ($restriction as $sRestrictionItem) {
                         $items[] = $this->_prepareInConditionValue($sRestrictionItem);
                     }
-                    $sRestriction = implode(", ", $items);
+                    $restriction = implode(", ", $items);
                 } else {
-                    $sRestriction = $this->_prepareInConditionValue($sRestriction);
+                    $restriction = $this->_prepareInConditionValue($restriction);
                 }
 
-                $sWhereStatement = implode(" ", [$sField, "IN (" . $sRestriction . ")"]);
+                $whereStatement = implode(" ", [$field, "IN (" . $restriction . ")"]);
                 break;
             case "is":
-                if (is_null($sRestriction)) {
+                if (is_null($restriction)) {
                     $sqlStatement = '%s IS NULL';
-                    $sWhereStatement = sprintf($sqlStatement, $sField);
+                    $whereStatement = sprintf($sqlStatement, $field);
                 } else {
                     throw new cInvalidArgumentException(
                         'Only restriction `NULL` is allowed for the `IS` operator.'
@@ -122,9 +121,9 @@ class cGenericDbDriverMysql extends cGenericDbDriver
                 }
                 break;
             case "isnot":
-                if (is_null($sRestriction)) {
+                if (is_null($restriction)) {
                     $sqlStatement = '%s IS NOT NULL';
-                    $sWhereStatement = sprintf($sqlStatement, $sField);
+                    $whereStatement = sprintf($sqlStatement, $field);
                 } else {
                     throw new cInvalidArgumentException(
                         'Only restriction `NULL` is allowed for the `IS NOT` operator.'
@@ -132,18 +131,18 @@ class cGenericDbDriverMysql extends cGenericDbDriver
                 }
                 break;
             default:
-                if (!is_int($sRestriction) && !is_float($sRestriction)) {
-                    $sRestriction = "'" . $this->_prepareValue($sRestriction) . "'";
+                if (!is_int($restriction) && !is_float($restriction)) {
+                    $restriction = "'" . $this->_prepareValue($restriction) . "'";
                 }
 
-                $sWhereStatement = implode(" ", [$sField, $sOperator, $sRestriction]);
+                $whereStatement = implode(" ", [$field, $operator, $restriction]);
         }
 
-        return $sWhereStatement;
+        return $whereStatement;
     }
 
     /**
-     * Prepares a value for the usage in a 'IN' condition. Integer and float
+     * Prepares a value for the usage in an 'IN' condition. Integer and float
      * will be returned as it is, NULL will be returned as 'NULL',  everything
      * else will be converted to a string.
      *
@@ -158,12 +157,12 @@ class cGenericDbDriverMysql extends cGenericDbDriver
         } elseif (is_int($value) || is_float($value)) {
             return $value;
         } else {
-            return "'" . $this->_prepareString($value) . "'";
+            return "'" . $this->_prepareString((string) $value) . "'";
         }
     }
 
     /**
-     * Prepares a value, a integer and float will be returned as it is,
+     * Prepares a value, an integer and float will be returned as it is,
      * everything else will be converted to a string (e.g. NULL to '').
      *
      * @param string|int|float|null|mixed $value
@@ -172,22 +171,19 @@ class cGenericDbDriverMysql extends cGenericDbDriver
      */
     private function _prepareValue($value)
     {
-        // It should return 'NULL' for a NULL value but we should stay downwards
+        // It should return 'NULL' for a NULL value, but we should stay downwards
         // compatible for now.
         if (is_int($value) || is_float($value)) {
             return $value;
         } else {
-            return $this->_prepareString($value);
+            return $this->_prepareString((string) $value);
         }
     }
 
     /**
      * Prepares a string value, filters and escapes it.
-     *
-     * @param string $value
-     * @return string
      */
-    private function _prepareString($value)
+    private function _prepareString(string $value): string
     {
         $value = $this->_oItemClassInstance->inFilter($value);
         return $this->_oItemClassInstance->escape($value);

@@ -47,16 +47,11 @@ class cHTMLForm extends cHTMLContentElement
      *
      * Creates an HTML form element.
      *
-     * @param string $name [optional]
-     *         the name of the form
-     * @param string $action [optional]
-     *         the action which should be performed when this form is submitted
-     * @param string $method [optional]
-     *         the method to use - post or get
-     * @param string $class [optional]
-     *         the class of this element
-     * @param string $id [optional]
-     *         the ID of this element
+     * @param string $name [optional] The name of the form
+     * @param string $action [optional] The action which should be performed when this form is submitted
+     * @param string $method [optional] The method to use - post or get
+     * @param string $class [optional] The class of this element
+     * @param string $id [optional] The ID of this element
      */
     public function __construct($name = '', $action = 'main.php', $method = 'post', $class = '', $id = '')
     {
@@ -72,10 +67,8 @@ class cHTMLForm extends cHTMLContentElement
      *
      * @param string $var
      * @param string $value
-     * @return cHTMLForm
-     *         $this for chaining
      */
-    public function setVar($var, $value): cHTMLForm
+    public function setVar($var, $value): self
     {
         $this->_vars[$var] = $value;
 
@@ -85,8 +78,7 @@ class cHTMLForm extends cHTMLContentElement
     /**
      * Renders the form element
      *
-     * @return string
-     *         Rendered HTML
+     * @return string Rendered HTML
      */
     public function toHtml(): string
     {

@@ -26,12 +26,9 @@ class cHTMLAudio extends cHTMLContentElement
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $content [optional]
-     *         String or object with the contents
-     * @param string $class [optional]
-     *         the class of this element
-     * @param string $id [optional]
-     *         the ID of this element
+     * @param mixed $content [optional] String or object with the contents
+     * @param string $class [optional] The class of this element
+     * @param string $id [optional] The ID of this element
      * @param string $src [optional]
      */
     public function __construct($content = '', $class = '', $id = '', $src = '')
@@ -46,38 +43,32 @@ class cHTMLAudio extends cHTMLContentElement
      *
      * @param string $src
      */
-    public function setSrc($src)
+    public function setSrc($src): self
     {
-        $this->setAttribute('src', $src);
+        return $this->setAttribute('src', $src);
     }
 
     /**
-     * Sets the autoplay attribute which specifies if the sound should be played
-     * automatically.
-     *
-     * @param bool $autoplay
+     * Sets the autoplay attribute which specifies if the sound should be played automatically.
      */
-    public function setAutoplay($autoplay)
+    public function setAutoplay(bool $autoplay): self
     {
         if ($autoplay) {
-            $this->setAttribute('autoplay', 'autoplay');
+            return $this->setAttribute('autoplay', 'autoplay');
         } else {
-            $this->removeAttribute('autoplay');
+            return $this->removeAttribute('autoplay');
         }
     }
 
     /**
-     * Sets the controls attribute which specifies if controls should be shown
-     * in the player.
-     *
-     * @param bool $controls
+     * Sets the controls attribute which specifies if controls should be shown in the player.
      */
-    public function setControls($controls)
+    public function setControls(bool $controls): self
     {
         if ($controls) {
-            $this->setAttribute('controls', 'controls');
+            return $this->setAttribute('controls', 'controls');
         } else {
-            $this->removeAttribute('controls');
+            return $this->removeAttribute('controls');
         }
     }
 

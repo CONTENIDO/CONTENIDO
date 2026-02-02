@@ -46,18 +46,18 @@ if (isset($area) && $area == 'con_content_list') {
     $tmp_area = 'con_editcontent';
     $path1 = $backendUrl . "external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client&lang=$lang";
     $path2 = $backendUrl . "external/backendedit/front_content.php?area=$tmp_area&idart=$idart&idcat=$idcat&changeview=edit&client=$client&lang=$lang";
-    $inputHTML = "";
+    $inputHTML = '';
 }
 
-if ($doedit == "1" || $doedit == "2") {
+if ($doedit == '1' || $doedit == '2') {
     //1: save; 2: refresh;
-    conSaveContentEntry($idartlang, "CMS_HTML", $typenr, $CMS_HTML);
+    conSaveContentEntry($idartlang, 'CMS_HTML', $typenr, $CMS_HTML);
     conMakeArticleIndex($idartlang, $idart);
     conGenerateCodeForArtInAllCategories($idart);
 }
-if ($doedit == "1") {
+if ($doedit == '1') {
     //save
-    header("Location:" . $sess->url($path1) . "");
+    header('Location:' . $sess->url($path1));
 }
 
 getAvailableContentTypes($idartlang);

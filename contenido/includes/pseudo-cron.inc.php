@@ -188,18 +188,13 @@ if ($PC_debug) {
 
 /**
  * Logs an entry into the cron log file.
- *
- * @param string $msg
- * @param string $PC_writeDir
- * @param string $PC_useLog
- * @param bool $PC_debug
  */
 function logMessage(string $msg, string $PC_writeDir, string $PC_useLog, bool $PC_debug)
 {
     if ($PC_useLog == 1) {
         $logfile = $PC_writeDir . "pseudo-cron.log";
 
-        if (is_writable($logfile)) {
+        if (cFileHandler::writeable($logfile)) {
             $file = fopen($logfile, "ab");
             if ($msg[cString::getStringLength($msg) - 1] != "\n") {
                 $msg .= "\r\n";
@@ -217,7 +212,6 @@ function logMessage(string $msg, string $PC_writeDir, string $PC_useLog, bool $P
  * Trims preceding zeros from given value.
  *
  * @param int|string $number
- * @return int
  */
 function lTrimZeros($number): int
 {
@@ -226,10 +220,6 @@ function lTrimZeros($number): int
 
 /**
  * Parses a crontab schedule expression item.
- *
- * @param string $element
- * @param array $targetArray
- * @param int $numberOfElements
  */
 function parseElement(string $element, array &$targetArray, int $numberOfElements)
 {
@@ -244,7 +234,7 @@ function parseElement(string $element, array &$targetArray, int $numberOfElement
             if ($matches[1] == "*") {
                 $matches[2] = 0;      // from
                 $matches[4] = $numberOfElements;      //to
-            } elseif (!array_key_exists(4, $matches) || $matches[4] == "") {
+            } elseif (!array_key_exists(4, $matches) || $matches[4] == '') {
                 $matches[4] = $matches[2];
             }
             if (array_key_exists(5, $matches)) {
@@ -265,12 +255,7 @@ function parseElement(string $element, array &$targetArray, int $numberOfElement
 }
 
 /**
- * Decreases the passed date array by amount and date unit.
- *
- * @param array $dateArr
- * @param int $amount
- * @param string $unit
- * @param bool $PC_debug
+ * Decreases the provided date array by amount and date unit.
  */
 function decDate(array &$dateArr, int $amount, string $unit, bool $PC_debug)
 {
@@ -281,20 +266,20 @@ function decDate(array &$dateArr, int $amount, string $unit, bool $PC_debug)
         );
     }
     if ($unit == "mday") {
-        $dateArr["hours"] = 23;
-        $dateArr["minutes"] = 59;
-        $dateArr["seconds"] = 59;
-        $dateArr["mday"] -= $amount;
-        $dateArr["wday"] -= $amount % 7;
-        if ($dateArr["wday"] < 0) {
-            $dateArr["wday"] += 7;
+        $dateArr['hours'] = 23;
+        $dateArr['minutes'] = 59;
+        $dateArr['seconds'] = 59;
+        $dateArr['mday'] -= $amount;
+        $dateArr['wday'] -= $amount % 7;
+        if ($dateArr['wday'] < 0) {
+            $dateArr['wday'] += 7;
         }
-        if ($dateArr["mday"] < 1) {
-            $dateArr["mon"]--;
-            switch ($dateArr["mon"]) {
+        if ($dateArr['mday'] < 1) {
+            $dateArr['mon']--;
+            switch ($dateArr['mon']) {
                 case 0:
-                    $dateArr["mon"] = 12;
-                    $dateArr["year"]--;
+                    $dateArr['mon'] = 12;
+                    $dateArr['year']--;
                 // fall through
                 case 1:
                 case 3:
@@ -303,33 +288,33 @@ function decDate(array &$dateArr, int $amount, string $unit, bool $PC_debug)
                 case 8:
                 case 10:
                 case 12:
-                    $dateArr["mday"] = 31;
+                    $dateArr['mday'] = 31;
                     break;
                 case 4:
                 case 6:
                 case 9:
                 case 11:
-                    $dateArr["mday"] = 30;
+                    $dateArr['mday'] = 30;
                     break;
                 case 2:
-                    $dateArr["mday"] = 28;
+                    $dateArr['mday'] = 28;
                     break;
             }
         }
     } elseif ($unit == "hour") {
-        if ($dateArr["hours"] == 0) {
+        if ($dateArr['hours'] == 0) {
             decDate($dateArr, 1, "mday", $PC_debug);
         } else {
-            $dateArr["minutes"] = 59;
-            $dateArr["seconds"] = 59;
-            $dateArr["hours"]--;
+            $dateArr['minutes'] = 59;
+            $dateArr['seconds'] = 59;
+            $dateArr['hours']--;
         }
     } elseif ($unit == "minute") {
-        if ($dateArr["minutes"] == 0) {
+        if ($dateArr['minutes'] == 0) {
             decDate($dateArr, 1, "hour", $PC_debug);
         } else {
-            $dateArr["seconds"] = 59;
-            $dateArr["minutes"]--;
+            $dateArr['seconds'] = 59;
+            $dateArr['minutes']--;
         }
     }
     if ($PC_debug) {
@@ -342,10 +327,6 @@ function decDate(array &$dateArr, int $amount, string $unit, bool $PC_debug)
 
 /**
  * Returns the last scheduled run time of a job.
- *
- * @param array $job
- * @param bool $PC_debug
- * @return int
  */
 function getLastScheduledRunTime(array $job, bool $PC_debug): int
 {
@@ -354,23 +335,23 @@ function getLastScheduledRunTime(array $job, bool $PC_debug): int
 
     while (
         $minutesBack < 525600 && (
-            empty($job[PC_MINUTE][$dateArr["minutes"]]) ||
-            empty($job[PC_HOUR][$dateArr["hours"]]) ||
-            (empty($job[PC_DOM][$dateArr["mday"]]) || empty($job[PC_DOW][$dateArr["wday"]])) or
-            empty($job[PC_MONTH][$dateArr["mon"]])
+            empty($job[PC_MINUTE][$dateArr['minutes']]) ||
+            empty($job[PC_HOUR][$dateArr['hours']]) ||
+            (empty($job[PC_DOM][$dateArr['mday']]) || empty($job[PC_DOW][$dateArr['wday']])) or
+            empty($job[PC_MONTH][$dateArr['mon']])
         )
     ) {
-        if (empty($job[PC_DOM][$dateArr["mday"]]) || empty($job[PC_DOW][$dateArr["wday"]])) {
+        if (empty($job[PC_DOM][$dateArr['mday']]) || empty($job[PC_DOW][$dateArr['wday']])) {
             decDate($dateArr, 1, "mday", $PC_debug);
             $minutesBack += 1440;
             continue;
         }
-        if (empty($job[PC_HOUR][$dateArr["hours"]])) {
+        if (empty($job[PC_HOUR][$dateArr['hours']])) {
             decDate($dateArr, 1, "hour", $PC_debug);
             $minutesBack += 60;
             continue;
         }
-        if (empty($job[PC_MINUTE][$dateArr["minutes"]])) {
+        if (empty($job[PC_MINUTE][$dateArr['minutes']])) {
             decDate($dateArr, 1, "minute", $PC_debug);
             $minutesBack++;
         }
@@ -381,16 +362,12 @@ function getLastScheduledRunTime(array $job, bool $PC_debug): int
     }
 
     return mktime(
-        $dateArr["hours"], $dateArr["minutes"], 0, $dateArr["mon"], $dateArr["mday"], $dateArr["year"]
+        $dateArr['hours'], $dateArr['minutes'], 0, $dateArr['mon'], $dateArr['mday'], $dateArr['year']
     );
 }
 
 /**
  * Returns the file name (full path + file name) to a job.
- *
- * @param string $jobName
- * @param string $PC_writeDir
- * @return string
  */
 function getJobFileName(string $jobName, string $PC_writeDir): string
 {
@@ -399,10 +376,6 @@ function getJobFileName(string $jobName, string $PC_writeDir): string
 
 /**
  * Return last run time of a job.
- *
- * @param string $jobName
- * @param string $PC_writeDir
- * @return int
  */
 function getLastActialRunTime(string $jobName, string $PC_writeDir): int
 {
@@ -420,10 +393,6 @@ function getLastActialRunTime(string $jobName, string $PC_writeDir): int
 
 /**
  * Marks last run time of a job.
- *
- * @param string $jobName
- * @param int $lastRun
- * @param string $PC_writeDir
  */
 function markLastRun(string $jobName, int $lastRun, string $PC_writeDir)
 {
@@ -442,14 +411,6 @@ function markLastRun(string $jobName, int $lastRun, string $PC_writeDir)
 
 /**
  * Runs a job.
- *
- * @param array $job
- * @param string $PC_jobDir
- * @param string $PC_writeDir
- * @param int $PC_useLog
- * @param bool $PC_debug
- *
- * @return bool
  */
 function runJob(
     array $job, string $PC_jobDir, string $PC_writeDir, int $PC_useLog, bool $PC_debug = false
@@ -506,15 +467,11 @@ function runJob(
 
 /**
  * Parses the content of the cron file and returns the list of found jobs.
- *
- * @param string $PC_cronTabFile
- * @param bool $PC_debug
- *
  * @return array List of jobs
  */
 function parseCronFile(string $PC_cronTabFile, bool $PC_debug): array
 {
-    $file = @file($PC_cronTabFile);
+    $file = cFileHandler::isFile($PC_cronTabFile) ? file($PC_cronTabFile) : null;
     $job = [];
     $jobs = [];
 
@@ -530,7 +487,7 @@ function parseCronFile(string $PC_cronTabFile, bool $PC_debug): array
                 $jobs[$jobNumber] = $job;
                 if ($jobs[$jobNumber][PC_DOW][0] != '*' and !is_numeric($jobs[$jobNumber][PC_DOW])) {
                     $jobs[$jobNumber][PC_DOW] = str_replace(
-                        ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                        ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
                         [0, 1, 2, 3, 4, 5, 6],
                         $jobs[$jobNumber][PC_DOW]
                     );
@@ -544,5 +501,6 @@ function parseCronFile(string $PC_cronTabFile, bool $PC_debug): array
     if ($PC_debug) {
         var_dump($jobs);
     }
+
     return $jobs;
 }

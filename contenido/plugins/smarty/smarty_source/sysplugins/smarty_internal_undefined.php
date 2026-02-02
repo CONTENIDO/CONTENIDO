@@ -14,7 +14,7 @@ class Smarty_Internal_Undefined
     /**
      * Name of undefined extension class
      *
-     * @var string|null
+     * @var ?string
      */
     public $class = null;
 

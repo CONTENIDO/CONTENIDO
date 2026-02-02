@@ -19,7 +19,7 @@ $cfg = cRegistry::getConfig();
 $area = cRegistry::getArea();
 $frame = cRegistry::getFrame();
 
-$oPage = new cGuiPage("clientsettings");
+$oPage = new cGuiPage('clientsettings');
 $oList = new cGuiScrollList();
 $oList->objTable->setClass('generic col_md');
 
@@ -89,7 +89,6 @@ $imagesPath = $backendUrl . $cfg['path']['images'];
 $aItems = $oClient->getProperties();
 
 if ($aItems !== false) {
-
     // Wrapper for the buttons
     $controls = new cHTMLDiv('', 'con_form_action_control');
 
@@ -97,15 +96,15 @@ if ($aItems !== false) {
     $oLnkDelete->setClass('con_img_button')
         ->setCLink($area, $frame, "clientsettings_delete_item")
         ->setContent(cHTMLImage::img($imagesPath . 'delete.gif', i18n("Delete")))
-        ->setCustom("idclient", $idclient)
-        ->setCustom("idclientslang", $idclientslang);
+        ->setCustom('idclient', $idclient)
+        ->setCustom('idclientslang', $idclientslang);
 
     $oLnkEdit = new cHTMLLink();
     $oLnkEdit->setClass('con_img_button')
         ->setCLink($area, $frame, "clientsettings_edit_item")
         ->setContent(cHTMLImage::img($imagesPath . 'editieren.gif', i18n("Edit")))
-        ->setCustom("idclient", $idclient)
-        ->setCustom("idclientslang", $idclientslang);
+        ->setCustom('idclient', $idclient)
+        ->setCustom('idclientslang', $idclientslang);
 
     $sSubmit = cHTMLButton::image($imagesPath . 'submit.gif', i18n("Save"), ['class' => 'con_img_button']);
     $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
@@ -116,20 +115,19 @@ if ($aItems !== false) {
         $settingName = conHtmlentities($aValue['name']);
         $settingValue = conHtmlentities($aValue['value']);
 
-        $oLnkDelete->setCustom("idprop", $iKey);
-        $oLnkEdit->setCustom("idprop", $iKey);
+        $oLnkDelete->setCustom('idprop', $iKey);
+        $oLnkEdit->setCustom('idprop', $iKey);
 
         $controls->setContent([
             $oLnkEdit->render(), $oLnkDelete->render()
         ]);
 
-        if (($action == "clientsettings_edit_item") && ($request['idprop'] == $iKey)) {
-
-            $oInputboxType = new cHTMLTextbox("cstype", $settingType);
+        if (($action == 'clientsettings_edit_item') && ($request['idprop'] == $iKey)) {
+            $oInputboxType = new cHTMLTextbox('cstype', $settingType);
             $oInputboxType->setWidth(15);
-            $oInputboxName = new cHTMLTextbox("csname", $settingName);
+            $oInputboxName = new cHTMLTextbox('csname', $settingName);
             $oInputboxName->setWidth(15);
-            $oInputboxValue = new cHTMLTextbox("csvalue", $settingValue);
+            $oInputboxValue = new cHTMLTextbox('csvalue', $settingValue);
             $oInputboxValue->setClass('mgr5')
                 ->setWidth(30);
 
@@ -143,7 +141,6 @@ if ($aItems !== false) {
                 $controls->render()
             );
         } else {
-
             if (cString::getStringLength($aValue['type']) > 35) {
                 $sShort = conHtmlentities(cString::trimHard($aValue['type'], 35));
                 $settingType = sprintf($sMouseoverTemplate, $settingType, $sShort);
@@ -200,13 +197,13 @@ $oForm->add(i18n('Value'), $oInputbox->render());
 $spacer = new cHTMLDiv();
 $spacer->setContent("<br>");
 
-if ($action == "clientsettings_edit_item") {
-    $oForm2 = new cHTMLForm("clientsettings", "main.php");
-    $oForm2->setVar("area", $area);
-    $oForm2->setVar("frame", $frame);
-    $oForm2->setVar("action", "clientsettings_save_item");
-    $oForm2->setVar("idclient", $idclient);
-    $oForm2->setVar("idclientslang", $idclientslang);
+if ($action == 'clientsettings_edit_item') {
+    $oForm2 = new cHTMLForm('clientsettings', "main.php");
+    $oForm2->setVar('area', $area);
+    $oForm2->setVar('frame', $frame);
+    $oForm2->setVar('action', 'clientsettings_save_item');
+    $oForm2->setVar('idclient', $idclient);
+    $oForm2->setVar('idclientslang', $idclientslang);
 
     $oForm2->appendContent($oList->render());
     $oPage->setContent([

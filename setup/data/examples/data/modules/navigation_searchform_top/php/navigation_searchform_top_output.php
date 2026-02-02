@@ -20,7 +20,7 @@ $searchResultIdart = getEffectiveSetting('navigation_searchform_top', 'search_re
 $searchResultIdart = cSecurity::toInteger($searchResultIdart);
 
 // check if plugin mod_rewrite is enabled
-$isModRewriteEnabled = class_exists('ModRewrite') && ModRewrite::isEnabled();
+$isModRewriteEnabled = class_exists('PiModRewrite') && PiModRewrite::isEnabled();
 
 // show search form only if search result article is defined
 $action = $method = $label = $submit = '';

@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiMailLog createNewItem
- * @method cApiMailLog|bool next
+ * @extends ItemCollection<cApiMailLog>
  */
 class cApiMailLogCollection extends ItemCollection
 {
@@ -46,7 +45,7 @@ class cApiMailLogCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('mail_log'), 'idmail');
+        parent::__construct(cDb::getTableName('mail_log'), 'idmail');
         $this->_setItemClass('cApiMailLog');
     }
 
@@ -60,18 +59,26 @@ class cApiMailLogCollection extends ItemCollection
      * @param string|array $bcc
      * @param string $subject
      * @param string $body
-     * @param string $created
-     *         timestamp!
+     * @param string $created timestamp!
      * @param string $charset
      * @param string $contentType
-     *
      * @return cApiMailLog
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($from, $to, $replyTo, $cc, $bcc, $subject, $body, $created, $charset, $contentType)
-    {
+    public function create(
+        $from,
+        $to,
+        $replyTo,
+        $cc,
+        $bcc,
+        $subject,
+        $body,
+        $created,
+        $charset,
+        $contentType,
+        ?int $clientId = null,
+        ?int $languageId = null,
+    ) {
         $item = $this->createNewItem();
 
         $item->set('from', json_encode($from));
@@ -83,10 +90,8 @@ class cApiMailLogCollection extends ItemCollection
         $item->set('body', $body);
         $date = date('Y-m-d H:i:s', $created);
         $item->set('created', $date, false);
-        $idclient = cRegistry::getClientId();
-        $item->set('idclient', $idclient);
-        $idlang = cRegistry::getLanguageId();
-        $item->set('idlang', $idlang);
+        $item->set('idclient', $clientId ?? cRegistry::getClientId());
+        $item->set('idlang', $languageId ?? cRegistry::getLanguageId());
         $item->set('charset', $charset);
         $item->set('content_type', $contentType);
 
@@ -107,17 +112,15 @@ class cApiMailLog extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('mail_log'), 'idmail');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('mail_log'), 'idmail');
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 }

@@ -28,18 +28,14 @@ class cHTMLList extends cHTMLContentElement
      *
      * Creates an HTML list element.
      *
-     * @param string $type [optional]
-     *         type of the list - ul or ol
-     * @param string $id [optional]
-     *         the ID of the list element
-     * @param string $class [optional]
-     *         the class of the list element
-     * @param array|string|object $elements [optional]
-     *         the elements of this list
+     * @param string $type [optional] Type of the list - ul or ol
+     * @param string $id [optional] The ID of the list element
+     * @param string $class [optional] The class of the list element
+     * @param array|string|object $contents [optional] The elements of this list
      */
-    public function __construct($type = 'ul', $id = '', $class = '', $elements = [])
+    public function __construct($type = 'ul', $id = '', $class = '', $contents = [])
     {
-        parent::__construct($elements, $class, $id);
+        parent::__construct($contents, $class, $id);
         if ($type !== 'ul' && $type !== 'ol') {
             $type = 'ul';
         }

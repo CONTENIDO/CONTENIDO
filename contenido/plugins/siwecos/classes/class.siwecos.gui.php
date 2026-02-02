@@ -31,10 +31,7 @@ class SIWECOSLeftBottomPage extends cGuiPage
     /**
      * SIWECOSLeftBottomPage constructor.
      *
-     * @throws SIWECOSException
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws SIWECOSException|cDbException|cException|cInvalidArgumentException
      */
     public function __construct()
     {
@@ -45,19 +42,15 @@ class SIWECOSLeftBottomPage extends cGuiPage
     /**
      * Get menu with all forms of current client in current language.
      *
-     * @return string
-     * @throws SIWECOSException
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws SIWECOSException|cDbException|cException|cInvalidArgumentException
      */
-    private function _getMenu()
+    private function _getMenu(): string
     {
         global $idsiwecos;
 
         $cfg = cRegistry::getConfig();
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
         $requestIdSiwecos = cSecurity::toInteger($_REQUEST['idsiwecos'] ?? '0');
 
         // Unset global $idsiwecos variable so we can get all menu entries
@@ -72,7 +65,7 @@ class SIWECOSLeftBottomPage extends cGuiPage
         $deleteForm = i18n('DELETE_ENTITY', 'siwecos');
 
         // create menu
-        $oPage = new cGuiPage("siwecos_menu", "siwecos");
+        $oPage = new cGuiPage('siwecos_menu', 'siwecos');
         $oPage->addScript('parameterCollector.js');
         $counter = 0;
         $menu = new cGuiMenu();
@@ -137,14 +130,14 @@ class SIWECOSRightBottomPage extends cGuiPage
      *
      * @var string
      */
-    const METHODE_GET = 'GET';
-    const METHODE_POST = 'POST';
-    const SHOW_FORM = 'siwecos_show';
-    const VERIFICATION_FORM = 'siwecos_verification';
-    const ADD_FORM = 'siwecos_add';
-    const SCAN_FORM = 'siwecos_scan';
-    const STORE_FORM = 'siwecos_store';
-    const DELETE_FORM = 'siwecos_delete';
+    public const METHODE_GET = 'GET';
+    public const METHODE_POST = 'POST';
+    public const SHOW_FORM = 'siwecos_show';
+    public const VERIFICATION_FORM = 'siwecos_verification';
+    public const ADD_FORM = 'siwecos_add';
+    public const SCAN_FORM = 'siwecos_scan';
+    public const STORE_FORM = 'siwecos_store';
+    public const DELETE_FORM = 'siwecos_delete';
 
     private $_SIWECOSForm;
 
@@ -156,8 +149,7 @@ class SIWECOSRightBottomPage extends cGuiPage
      * and its values are stored in the appropriate model.
      *
      * @throws SIWECOSException if form could not be loaded
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct()
     {
@@ -181,7 +173,7 @@ class SIWECOSRightBottomPage extends cGuiPage
         // load models
         $idsiwecos = cSecurity::toInteger($idsiwecos);
         if (0 < $idsiwecos) {
-            if (false === $this->_SIWECOSForm->loadByPrimaryKey($idsiwecos)) {
+            if (!$this->_SIWECOSForm->loadByPrimaryKey($idsiwecos)) {
                 $msg = i18n('ERR_LOAD_ENTITY', 'siwecos');
                 throw new SIWECOSException($msg);
             }
@@ -206,7 +198,7 @@ class SIWECOSRightBottomPage extends cGuiPage
      * @throws CurlException
      * @throws SIWECOSException if the given action is unknown
      * @throws cDbException
-     * @throws cException
+     * @throws cException|SmartyException
      */
     private function _dispatch($action)
     {
@@ -277,7 +269,6 @@ class SIWECOSRightBottomPage extends cGuiPage
                             cGuiNotification::LEVEL_OK,
                             i18n('MSG_DELETED_ENTITY', 'siwecos')
                         );
-                        $content = '';
                         $this->reloadLeftBottomFrame(['idsiwecos' => null]);
                         $this->reloadRightTopFrame(['idsiwecos' => null]);
                     } catch (Exception $e) {
@@ -298,10 +289,9 @@ class SIWECOSRightBottomPage extends cGuiPage
     /**
      * Build and return form for SIWECOS forms.
      *
-     * @return string
      * @throws CurlException|SIWECOSException|cDbException|cException|SmartyException
      */
-    private function _showForm()
+    private function _showForm(): string
     {
         $area = cRegistry::getArea();
         $auth = cRegistry::getAuth();
@@ -413,10 +403,9 @@ class SIWECOSRightBottomPage extends cGuiPage
     /**
      * Build and return form for SIWECOS verification forms.
      *
-     * @return string
      * @throws cException|SmartyException
      */
-    private function _showVerificationInfo()
+    private function _showVerificationInfo(): string
     {
         $cfg = cRegistry::getConfig();
 
@@ -434,11 +423,9 @@ class SIWECOSRightBottomPage extends cGuiPage
     /**
      * Request the info for current SIWECOS user.
      *
-     * @return stdClass
-     * @throws CurlException
-     * @throws SIWECOSException
+     * @throws CurlException|SIWECOSException
      */
-    private function _login()
+    private function _login(): stdClass
     {
         $email = $this->_SIWECOSForm->get('email');
         $password = $_POST['password'] ?? '';
@@ -462,13 +449,9 @@ class SIWECOSRightBottomPage extends cGuiPage
     /**
      * Request the list of all domains of given user.
      *
-     * @param string $userToken
-     *
-     * @return stdClass
-     * @throws CurlException
-     * @throws SIWECOSException
+     * @throws CurlException|SIWECOSException
      */
-    private function _getDomainList(string $userToken)
+    private function _getDomainList(string $userToken): stdClass
     {
         $header = [
             'Accept: application/json',
@@ -488,12 +471,9 @@ class SIWECOSRightBottomPage extends cGuiPage
     /**
      * Request the report for the domain.
      *
-     * @return stdClass
-     * @throws CurlException
-     * @throws SIWECOSException
-     * @throws cException
+     * @throws CurlException|SIWECOSException|cException
      */
-    private function _getDomainResult()
+    private function _getDomainResult(): stdClass
     {
         $belang = cRegistry::getBackendLanguage();
         $userToken = $this->_SIWECOSForm->get('userToken');
@@ -551,14 +531,12 @@ class SIWECOSRightBottomPage extends cGuiPage
     /**
      * Validate form.
      *
-     * @throws SIWECOSException
-     * @throws cDbException
-     * @throws cException
+     * @throws SIWECOSException|cDbException|cException
      */
     private function _validation()
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $client = cRegistry::getClientId();
+        $lang = cRegistry::getLanguageId();
         $forms = SIWECOSCollection::getByClientAndLang($client, $lang);
         $domain = trim(cSecurity::toString(cSecurity::unescapeDB($_POST['domain'])));
         if (!filter_var($domain, FILTER_VALIDATE_URL)) {
@@ -579,22 +557,17 @@ class SIWECOSRightBottomPage extends cGuiPage
     }
 
     /**
-     * @param $elem
-     * @param $array
-     *
-     * @return bool
+     * @param mixed $elem
      */
-    private function _in_multiarray($elem, $array)
+    private function _in_multiarray($elem, array $array): bool
     {
         foreach ($array as $key => $item) {
             if (is_array($item) || is_object($item)) {
                 if ($this->_in_multiarray($elem, (array)$item)) {
                     return true;
                 }
-            } else {
-                if ($elem === $item) {
-                    return true;
-                }
+            } elseif ($elem === $item) {
+                return true;
             }
         }
 
@@ -605,10 +578,7 @@ class SIWECOSRightBottomPage extends cGuiPage
      * store connection for form
      *
      * @throws CurlException
-     * @throws SIWECOSException
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws SIWECOSException|cDbException|cException|cInvalidArgumentException
      */
     private function _storeForm()
     {
@@ -658,7 +628,7 @@ class SIWECOSRightBottomPage extends cGuiPage
         }
 
         // store item
-        if (false === $this->_SIWECOSForm->store()) {
+        if (!$this->_SIWECOSForm->store()) {
             $msg = i18n('FORM_STORE_ERROR', 'siwecos');
             throw new SIWECOSException($msg);
         }
@@ -670,7 +640,7 @@ class SIWECOSRightBottomPage extends cGuiPage
             if ($userToken !== $this->_SIWECOSForm->get('userToken')) {
                 $this->_SIWECOSForm->set('userToken', $userToken);
                 // store item
-                if (false === $this->_SIWECOSForm->store()) {
+                if (!$this->_SIWECOSForm->store()) {
                     $msg = i18n('FORM_STORE_ERROR', 'siwecos');
                     throw new SIWECOSException($msg);
                 }
@@ -703,7 +673,7 @@ class SIWECOSRightBottomPage extends cGuiPage
         if ($domainToken !== $this->_SIWECOSForm->get('domainToken')) {
             $this->_SIWECOSForm->set('domainToken', $domainToken);
             // store item
-            if (false === $this->_SIWECOSForm->store()) {
+            if (!$this->_SIWECOSForm->store()) {
                 $msg = i18n('FORM_STORE_ERROR', 'siwecos');
                 throw new SIWECOSException($msg);
             }
@@ -741,9 +711,7 @@ class SIWECOSRightBottomPage extends cGuiPage
     /**
      * Delete form.
      *
-     * @throws SIWECOSException
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException|SIWECOSException
      */
     private function _deleteForm()
     {

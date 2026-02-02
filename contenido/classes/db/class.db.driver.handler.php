@@ -27,75 +27,65 @@ abstract class cDbDriverHandler
      *
      * @var string
      */
-    const HALT_YES = 'yes';
+    public const HALT_YES = 'yes';
 
     /**
      *
      * @var string
      */
-    const HALT_NO = 'no';
+    public const HALT_NO = 'no';
 
     /**
      *
      * @var string
      */
-    const HALT_REPORT = 'report';
+    public const HALT_REPORT = 'report';
 
     /**
      *
      * @var string
      */
-    const FETCH_NUMERIC = 'numeric';
+    public const FETCH_NUMERIC = 'numeric';
 
     /**
      *
      * @var string
      */
-    const FETCH_ASSOC = 'assoc';
+    public const FETCH_ASSOC = 'assoc';
 
     /**
      *
      * @var string
      */
-    const FETCH_BOTH = 'both';
+    public const FETCH_BOTH = 'both';
 
     /**
-     * Loader database driver.
-     *
-     * @var cDbDriverAbstract|NULL
+     * @var ?cDbDriverAbstract Loader database driver.
      */
     protected $_driver = NULL;
 
     /**
-     * Driver type
-     *
-     * @var string
+     * @var string Driver type
      */
     protected $_driverType = '';
 
     /**
-     * Default database connection for all instances
-     *
-     * @var array
+     * @var array Default database connection for all instances
      */
     protected static $_defaultDbCfg = [];
 
     /**
-     * Associative list of database connections
-     * @var array
+     * @var array Associative list of database connections
      */
     protected static $_connectionCache = [];
 
     /**
-     * Associative list of database tables metadata
-     * @var array
+     * @var array Associative list of database tables metadata
      */
     protected static $_metaCache = [];
 
     /**
-     * Database connection configuration for current instance
-     *
-     * @var array
+     * @var array Database connection configuration for current instance
      */
     protected $_dbCfg = [];
 
@@ -111,23 +101,17 @@ abstract class cDbDriverHandler
     protected $_haltBehaviour = 'no';
 
     /**
-     * Text to prepend to the halt message
-     *
-     * @var string
+     * @var string Text to prepend to the halt message
      */
     protected $_haltMsgPrefix = '';
 
     /**
-     * Database connection link id.
-     *
-     * @var int|null|object|resource
+     * @var int|null|object|resource|mixed Database connection link id.
      */
     protected $_linkId = NULL;
 
     /**
-     * Profile data array
-     *
-     * @var array
+     * @var array Profile data array
      */
     protected static $_profileData = [];
 
@@ -139,23 +123,18 @@ abstract class cDbDriverHandler
      * Uses default connection settings, passed $options['connection'] settings
      * will overwrite connection settings for current instance.
      *
-     * @param array $options [optional]
-     *         Associative options as follows:
-     *         - $options['haltBehavior'] (string) Optional, halt behavior on
-     *             occurred errors
-     *         - $options['haltMsgPrefix'] (string) Optional, Text to prepend to
-     *             the halt message
-     *         - $options['enableProfiling'] (bool) Optional, flag to enable
-     *             profiling
-     *         - $options['connection'] (array) Optional, associative connection
-     *             settings
-     *         - $options['connection']['host'] (string) Hostname or ip
-     *         - $options['connection']['database'] (string) Database name
-     *         - $options['connection']['user'] (string) User name
-     *         - $options['connection']['password'] (string) User password
+     * @param array $options [optional] Associative options as follows:
+     *      - $options['haltBehavior'] (string) Optional, halt behavior on occurred errors
+     *      - $options['haltMsgPrefix'] (string) Optional, Text to prepend to the halt message
+     *      - $options['enableProfiling'] (bool) Optional, flag to enable profiling
+     *      - $options['connection'] (array) Optional, associative connection settings
+     *      - $options['connection']['host'] (string) Hostname or ip
+     *      - $options['connection']['database'] (string) Database name
+     *      - $options['connection']['user'] (string) User name
+     *      - $options['connection']['password'] (string) User password
      * @throws cDbException
      */
-    public function __construct($options = [])
+    public function __construct(array $options = [])
     {
         // use default connection configuration, but overwrite it by passed options
         $this->_dbCfg = array_merge(self::$_defaultDbCfg, $options);
@@ -200,40 +179,30 @@ abstract class cDbDriverHandler
 
     /**
      * Returns error code of last occurred error from database.
-     *
-     * @return int
-     *         database error code
      */
-    abstract public function getErrorNumber();
+    abstract public function getErrorNumber(): int;
 
     /**
      * Sets the current error number from database.
-     *
-     * @param int $errorNumber
-     *         current error number
      */
-    abstract public function setErrorNumber($errorNumber);
+    abstract public function setErrorNumber(int $errorNumber);
 
     /**
      * Returns error message of last occurred error from database.
-     *
-     * @return string
-     *         database error message
      */
-    abstract public function getErrorMessage();
+    abstract public function getErrorMessage(): string;
 
     /**
      * Sets the current error message from database.
      *
-     * @param string $errorMessage
-     *         current error message
+     * @param string $errorMessage Current error message
      */
-    abstract public function setErrorMessage($errorMessage);
+    abstract public function setErrorMessage(string $errorMessage);
 
     /**
      * Returns the query ID resource.
      *
-     * @return NULL|resource
+     * @return NULL|resource|mixed
      */
     abstract public function getQueryId();
 
@@ -241,8 +210,7 @@ abstract class cDbDriverHandler
      * Sets the query ID resource.
      * Do not set it manually unless you know what you are doing.
      *
-     * @param NULL|resource $queryId
-     *         query ID resource
+     * @param NULL|resource|mixed $queryId Query ID resource
      */
     abstract public function setQueryId($queryId);
 
@@ -257,8 +225,7 @@ abstract class cDbDriverHandler
      * Sets the link ID resource.
      * Do not set it manually unless you know what you are doing.
      *
-     * @param NULL|resource $linkId
-     *         link ID resource
+     * @param NULL|resource|mixed $linkId Link ID, resource, or any other type.
      */
     abstract public function setLinkId($linkId);
 
@@ -273,8 +240,7 @@ abstract class cDbDriverHandler
      * Sets the current record data set.
      * Do not set it manually unless you know what you are doing.
      *
-     * @param array|false|NULL $record
-     *         current record set data
+     * @param array|false|NULL $record Current record set data
      */
     abstract public function setRecord($record);
 
@@ -282,20 +248,16 @@ abstract class cDbDriverHandler
 
     /**
      * Checks if profiling was enabled via configuration.
-     *
-     * @return bool
      */
-    public function isProfilingEnabled()
+    public function isProfilingEnabled(): bool
     {
         return cSecurity::toBoolean($this->_dbCfg['enableProfiling'] ?? '0');
     }
 
     /**
      * Returns the halt behaviour setting.
-     *
-     * @return string
      */
-    public function getHaltBehaviour()
+    public function getHaltBehaviour(): string
     {
         return $this->_haltBehaviour;
     }
@@ -336,10 +298,8 @@ abstract class cDbDriverHandler
 
     /**
      * Returns the database driver instance.
-     *
-     * @return cDbDriverAbstract
      */
-    public function getDriver()
+    public function getDriver(): ?cDbDriverAbstract
     {
         return $this->_driver;
     }
@@ -357,10 +317,8 @@ abstract class cDbDriverHandler
     /**
      * Returns connection from connection cache
      *
-     * @param array $data
-     *         Connection data array
-     * @return mixed
-     *         Either The connection (object, resource, integer) or NULL
+     * @param array $data^Connection data array
+     * @return mixed Either The connection (object, resource, integer) or NULL
      */
     protected function _getConnection(array $data)
     {
@@ -375,10 +333,8 @@ abstract class cDbDriverHandler
     /**
      * Stores connection in connection cache
      *
-     * @param array $data
-     *         Connection data array
-     * @param mixed $connection
-     *         The connection to store in cache
+     * @param array $data Connection data array
+     * @param mixed $connection The connection to store in cache
      */
     protected function _setConnection(array $data, $connection)
     {
@@ -389,8 +345,7 @@ abstract class cDbDriverHandler
     /**
      * Removes connection from cache
      *
-     * @param mixed $connection
-     *         The connection to remove in cache
+     * @param mixed $connection The connection to remove in cache
      */
     protected function _removeConnection($connection)
     {
@@ -404,13 +359,13 @@ abstract class cDbDriverHandler
     }
 
     /**
-     * Adds a entry to the profile data.
+     * Adds an entry to the profile data.
      *
-     * @param float $timeStart
-     * @param float $timeEnd
+     * @param int|float $timeStart
+     * @param int|float $timeEnd
      * @param string $statement
      */
-    protected static function _addProfileData($timeStart, $timeEnd, $statement)
+    protected static function _addProfileData($timeStart, $timeEnd, string $statement)
     {
         self::$_profileData[] = [
             'time' => $timeEnd - $timeStart,
@@ -421,79 +376,64 @@ abstract class cDbDriverHandler
     /**
      * Returns collected profile data.
      *
-     * @return array
-     *         Profile data array like:
+     * @return array Profile data array like:
      *         - $arr[$i]['time'] (float) Elapsed time to execute the query
      *         - $arr[$i]['query'] (string) The query itself
      */
-    public static function getProfileData()
+    public static function getProfileData(): array
     {
         return self::$_profileData;
     }
 
     /**
      * Prepares the statement for execution and returns it back.
-     * Accepts multiple parameter, where the first parameter should be the query
-     * and any additional parameter should be the values to replace in format
-     * definitions.
-     * As an alternative the second parameter could be also a indexed array with
-     * values to replace in format definitions.
      *
-     * Other option is to call this function with the statement containing named
-     * parameter
-     * and the second parameter as a associative array with key/value pairs to
-     * set in statement.
+     * This method accepts a SQL statement in `$statement` and optional replacement values in `$params`.
+     * Replacement values may be supplied in one of the following ways:
+     *
+     * - As multiple additional arguments:
+     *     $db->prepare($sql, $val1, $val2, ...);
+     * - As a single indexed array:
+     *     $db->prepare($sql, [$val1, $val2]);
+     * - As a single associative array (named parameters):
+     *     $db->prepare('... :name ...', ['name' => $value]);
+     *
+     * For indexed parameters the values will be escaped and inserted using `sprintf`-style placeholders
+     * (e.g. %s, %d). For associative (named) parameters the method substitutes occurrences of `:key`,
+     * quoted `':key'` and backticked ```:key``` appropriately and applies escaping.
      *
      * Examples:
      * <pre>
-     * // multiple parameter
      * $sql = $obj->prepare('SELECT * FROM `%s` WHERE id = %d', 'tablename', 123);
-     *
-     * // 2 parameter where the first is the statement with formatting signs and
-     * the second the entries array
      * $sql = $obj->prepare('SELECT * FROM `%s` WHERE id = %d', ['tablename', 123]);
-     *
-     * // 2 parameter where the first is the statement with named parameter and
-     * the second the associative entries array
      * $sql = $obj->prepare('SELECT * FROM `:mytab` WHERE id = :myid', ['mytab' => 'tablename', 'myid' => 123]);
      * </pre>
      *
-     * Accepts additional unlimited parameter, where the parameter will be
-     * replaced against formatting sign in query.
-     *
-     * @param string $statement
-     *         The sql statement to prepare.
-     * @return string
-     *         The prepared sql statement
-     * @throws cDbException
-     *         If statement is empty or function is called with less than 2 parameters
+     * @param string $statement The SQL statement to prepare.
+     * @param mixed ...$arguments Optional replacement parameters (variadic).
+     *      Can be individual values or a single array (indexed or associative) as described above.
+     * @return string The prepared SQL statement.
+     * @throws cDbException If `$statement` is empty or required parameters are missing.
      */
-    public function prepare($statement, ...$params)
+    public function prepare(string $statement, ...$arguments): string
     {
         // No empty queries
         if (empty($statement)) {
             throw new cDbException('Empty statement!');
         }
 
-        $arguments = func_get_args();
-        if (count($arguments) <= 1) {
+        if (count($arguments) < 1) {
             throw new cDbException('Wrong number of parameter!');
         }
-
-        array_shift($arguments);
 
         return $this->_prepareStatement($statement, $arguments);
     }
 
     /**
-     * Prepares the passed statement.
-     *
-     * @param string $statement
-     * @param array $arguments
-     *
-     * @return string
+     * Prepares the provided statement.
+     * @see cDbDriverHandler::prepare()
      */
-    protected function _prepareStatement($statement, array $arguments)
+    protected function _prepareStatement(string $statement, array $arguments): string
     {
         if (count($arguments) == 1 && is_array($arguments[0])) {
             $arguments = $arguments[0];
@@ -520,14 +460,9 @@ abstract class cDbDriverHandler
      * $obj->_prepareStatementF('SELECT * FROM `%s` WHERE id = %d AND user = %d', 'tablename', 123, 3);
      * </pre>
      *
-     * @param string $statement
-     * @param array $arguments
-     *         Arguments array containing the query with formatting signs and
-     *         the entries.
-     *
-     * @return string
+     * @param array $arguments Arguments array containing the query with formatting signs and the entries.
      */
-    protected function _prepareStatementF($statement, array $arguments)
+    protected function _prepareStatementF(string $statement, array $arguments): string
     {
         if (count($arguments) > 0) {
             $arguments = array_map([
@@ -555,27 +490,20 @@ abstract class cDbDriverHandler
      * );
      * </pre>
      *
-     * @param string $statement
-     * @param array $arguments
-     *         Arguments array containing the query with named parameter and
-     *         associative entries array
-     *
-     * @return string
+     * @param array $arguments Arguments array containing the query with named parameter and associative entries array
      */
-    protected function _prepareStatementA($statement, array $arguments)
+    protected function _prepareStatementA(string $statement, array $arguments): string
     {
-        if (count($arguments) > 0) {
-            foreach ($arguments as $key => $value) {
-                $param = ':' . $key;
-                if (cSecurity::isInteger($value)) {
-                    $statement = preg_replace('/' . $param . '/', cSecurity::toString($value), $statement);
-                    $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::toString($value) . '\'', $statement);
-                } else {
-                    $param = cSecurity::toString($param);
-                    $statement = preg_replace('/' . $param . '/', cSecurity::escapeString($value), $statement);
-                    $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::escapeString($value) . '\'', $statement);
-                    $statement = preg_replace('/`' . $param . '`/', '`' . cSecurity::escapeString($value) . '`', $statement);
-                }
+        foreach ($arguments as $key => $value) {
+            $param = ':' . $key;
+            if (cSecurity::isInteger($value)) {
+                $statement = preg_replace('/' . $param . '/', cSecurity::toString($value), $statement);
+                $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::toString($value) . '\'', $statement);
+            } else {
+                $param = cSecurity::toString($param);
+                $statement = preg_replace('/' . $param . '/', cSecurity::escapeString($value), $statement);
+                $statement = preg_replace('/\'' . $param . '\'/', '\'' . cSecurity::escapeString($value) . '\'', $statement);
+                $statement = preg_replace('/`' . $param . '`/', '`' . cSecurity::escapeString($value) . '`', $statement);
             }
         }
 
@@ -585,10 +513,9 @@ abstract class cDbDriverHandler
     /**
      * Sets the halt behaviour.
      *
-     * @param string $haltBehaviour
      * @return void
      */
-    protected function _setHaltBehaviour($haltBehaviour)
+    protected function _setHaltBehaviour(string $haltBehaviour)
     {
         switch ($haltBehaviour) {
             case self::HALT_YES:
@@ -632,6 +559,14 @@ abstract class cDbDriverHandler
     }
 
     /**
+     * @see cDbDriverAbstract::buildInsert()
+     */
+    public function buildInsert(string $tableName, array $fields): string
+    {
+        return $this->getDriver()->buildInsert($tableName, $fields);
+    }
+
+    /**
      * Builds and executes an insert query.
      * String values in passed fields parameter will be escaped automatically.
      *
@@ -644,52 +579,19 @@ abstract class cDbDriverHandler
      *     'idclient' => $client,
      *     'code' => "<html>... code n' fun ...</html>",
      * ];
-     * $result = $db->insert($cfg['tab']['code'], $fields);
+     * $result = $db->insert(cDb::getTableName('code'), $fields);
      * </pre>
      *
-     * @param string $tableName
-     *         The table name
-     * @param array $fields
-     *         Associative array of fields to insert
-     *
-     * @return bool
+     * @param string $tableName The table name
+     * @param array $fields Associative array of fields to insert
+     * @return mixed
      * @throws cDbException
      */
-    public function insert($tableName, array $fields)
+    public function insert(string $tableName, array $fields)
     {
         $statement = $this->buildInsert($tableName, $fields);
 
         return $this->query($statement);
-    }
-
-    /**
-     * Builds and returns a insert query.
-     * String values in passed fields parameter will be escaped automatically.
-     *
-     * Example:
-     * <pre>
-     * $db = cRegistry::getDb();
-     * $fields = [
-     *     'idcode' => $idcode,
-     *     'idcatart' => $idcatart,
-     *     'idlang' => $lang,
-     *     'idclient' => $client,
-     *     'code' => "<html>... code n' fun ...</html>",
-     * ];
-     * $statement = $db->buildInsert($cfg['tab']['code'], $fields);
-     * $db->query($statement);
-     * </pre>
-     *
-     * @param string $tableName
-     *         The table name
-     * @param array $fields
-     *         Associative array of fields to insert
-     *
-     * @return string
-     */
-    public function buildInsert($tableName, array $fields)
-    {
-        return $this->getDriver()->buildInsert($tableName, $fields);
     }
 
     /**
@@ -701,20 +603,17 @@ abstract class cDbDriverHandler
      * $db = cRegistry::getDb();
      * $fields = ['code' => "<html>... some new code n' fun ...</html>"];
      * $whereClauses = ['idcode' => 123];
-     * $result = $db->update($cfg['tab']['code'], $fields, $whereClauses);
+     * $result = $db->update(cDb::getTableName('code'), $fields, $whereClauses);
      * </pre>
      *
-     * @param string $tableName
-     *         The table name
-     * @param array $fields
-     *         Associative array of fields to update
-     * @param array $whereClauses
-     *         Associative array of field in where clause.
+     * @param string $tableName The table name
+     * @param array $fields Associative array of fields to update
+     * @param array $whereClauses Associative array of field in where clause.
      *         Multiple entries will be concatenated with AND.
-     * @return bool
+     * @return mixed
      * @throws cDbException
      */
-    public function update($tableName, array $fields, array $whereClauses)
+    public function update(string $tableName, array $fields, array $whereClauses)
     {
         $statement = $this->buildUpdate($tableName, $fields, $whereClauses);
 
@@ -722,90 +621,47 @@ abstract class cDbDriverHandler
     }
 
     /**
-     * Builds and returns an update query.
-     * String values in passed fields and where parameter will be escaped automatically.
-     *
-     * Example:
-     * <pre>
-     * $db = cRegistry::getDb();
-     * $fields = ['code' => "<html>... some new code n' fun ...</html>"];
-     * $whereClauses = ['idcode' => 123];
-     * $statement = $db->buildUpdate($cfg['tab']['code'], $fields, $whereClauses);
-     * $db->query($statement);
-     * </pre>
-     *
-     * @param string $tableName
-     *         The table name
-     * @param array $fields
-     *         Associative array of fields to update
-     * @param array $whereClauses
-     *         Associative array of field in where clause.
-     *         Multiple entries will be concatenated with AND
-     * @return string
+     * @see cDbDriverAbstract::buildUpdate()
      */
-    public function buildUpdate($tableName, array $fields, array $whereClauses)
+    public function buildUpdate(string $tableName, array $fields, array $whereClauses): string
     {
         return $this->getDriver()->buildUpdate($tableName, $fields, $whereClauses);
     }
 
     /**
      * Executes the statement.
+     *
      * If called with one parameter, it executes the statement directly.
+     * If called with multiple parameters, it prepares the statement first and then executes it.
      *
-     * Accepts multiple parameter, where the first parameter should be the query
-     * and any additional parameter should be the values to replace in format
-     * definitions.
-     * As an alternative the second parameter could be also a indexed array with
-     * values to replace in format definitions.
-     *
-     * Other option is to call this function with the statement containing named
-     * parameter
-     * and the second parameter as a associative array with key/value pairs to
-     * set in statement.
+     * This function behaves like {@see cDbDriverHandler::prepare()} when called with multiple parameters.
      *
      * Examples:
      * <pre>
-     * // call with one parameter
      * $obj->query('SELECT * FROM `tablename` WHERE id = 123');
-     *
-     * // call with multiple parameter
      * $obj->query('SELECT * FROM `%s` WHERE id = %d', 'tablename', 123);
-     *
-     * // 2 parameter where the first is the statement with formatting signs and
-     * the second the entries array
      * $obj->query('SELECT * FROM `%s` WHERE id = %d', ['tablename', 123]);
-     *
-     * // 2 parameter where the first is the statement with named parameter and
-     * the second the associative entries array
      * $obj->query(
      *     'SELECT * FROM `:mytab` WHERE id = :myid', ['mytab' => 'tablename', 'myid' => 123]
      * );
      * </pre>
      *
-     * Accepts additional unlimited parameter, where the parameter will be
-     * replaced against formatting sign in query.
-     *
-     * @param string $statement
-     *         The SQL statement to execute.
-     *
-     * @return resource|int|object|bool
-     *         database driver, false on error
+     * @param string $statement The SQL statement to execute.
+     * @param mixed ...$arguments Optional replacement parameters (variadic).
+     *      Can be individual values or a single array (indexed or associative) as described above.
+     * @return resource|int|object|bool Database driver, false on error
      * @throws cDbException
      */
-    public function query($statement, ...$params)
+    public function query(string $statement, ...$arguments)
     {
         // No empty queries, please, since PHP4 chokes on them
         if ($statement == '') {
-            // The empty query string is passed on from the constructor, when
-            // calling
-            // the class without a query, e.g. in situations '$db = new
-            // DB_Sql_Subclass;'
+            // The empty query string is passed on from the constructor, when calling
+            // the class without a query, e.g. in situations '$db = new DB_Sql_Subclass;'
             return false;
         }
 
-        $arguments = func_get_args();
-        if (count($arguments) > 1) {
-            array_shift($arguments);
+        if (count($arguments) > 0) {
             $statement = $this->_prepareStatement($statement, $arguments);
         }
 
@@ -818,11 +674,11 @@ abstract class cDbDriverHandler
             $this->free();
         }
 
-        $timeStart = $this->isProfilingEnabled() === true ? microtime(true) : 0;
+        $timeStart = $this->isProfilingEnabled() ? microtime(true) : 0;
 
         $this->getDriver()->query($statement);
 
-        if ($this->isProfilingEnabled() === true) {
+        if ($this->isProfilingEnabled()) {
             $timeEnd = microtime(true);
             $this->_addProfileData($timeStart, $timeEnd, $statement);
         }
@@ -838,10 +694,9 @@ abstract class cDbDriverHandler
     /**
      * Fetches the next record set from result set
      *
-     * @return bool
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
-    public function nextRecord()
+    public function nextRecord(): bool
     {
         if (!$this->getQueryId()) {
             $currentModule = cRegistry::getCurrentModuleId();
@@ -858,69 +713,48 @@ abstract class cDbDriverHandler
     }
 
     /**
-     * This method returns the current result set as object or NULL if no result
-     * set is left.
-     * If optional param $className is set, the result object is an instance of
-     * class $className.
+     * @see cDbDriverAbstract::getResultObject()
      *
-     * @param string $className [optional]
-     * @return object
      */
-    public function getResultObject($className = NULL)
+    public function getResultObject(?string $className = NULL)
     {
         return $this->getDriver()->getResultObject($className);
     }
 
     /**
-     * Returns number of affected rows from last executed query (update, delete)
-     *
-     * @return int
-     *         Number of affected rows
+     * @see cDbDriverAbstract::affectedRows()
      */
-    public function affectedRows()
+    public function affectedRows(): int
     {
         return $this->getDriver()->affectedRows();
     }
 
     /**
-     * Returns the number of rows from last executed select query.
-     *
-     * @return int
-     *         The number of rows from last select query result
+     * @see cDbDriverAbstract::numRows()
      */
-    public function numRows()
+    public function numRows(): int
     {
         return $this->getDriver()->numRows();
     }
 
     /**
-     * Returns the number of fields (columns) from current record set
-     *
-     * @return int
-     *         Number of fields
+     * @see cDbDriverAbstract::numFields()
      */
-    public function numFields()
+    public function numFields(): int
     {
         return $this->getDriver()->numFields();
     }
 
     /**
-     * Discard the query result
-     *
-     * @return int
+     * @see cDbDriverAbstract::free()
      */
     public function free()
     {
-        return $this->getDriver()->free();
+        $this->getDriver()->free();
     }
 
     /**
-     * Escape string for using in SQL-Statement.
-     *
-     * @param string $string
-     *         The string to escape
-     * @return string
-     *         Escaped string
+     * @see cDbDriverAbstract::escape()
      */
     public function escape($string)
     {
@@ -932,14 +766,10 @@ abstract class cDbDriverHandler
     }
 
     /**
-     * Moves the cursor (position inside current result sets).
-     *
-     * @param int $pos
-     *         The position to move to inside the current result set
-     * @return int
-     * @throws cDbException|cInvalidArgumentException
+     * @see cDbDriverAbstract::seek()
+     * @throws cDbException
      */
-    public function seek($pos)
+    public function seek(int $pos): int
     {
         $status = $this->getDriver()->seek($pos);
         if ($status == 0) {
@@ -952,37 +782,28 @@ abstract class cDbDriverHandler
     /**
      * Get last inserted id of given table name
      *
-     * @return int
-     *         NULL id of table
-     * @throws cDbException|cInvalidArgumentException
+     * @return ?int Id of last inserted record
+     * @throws cDbException
      */
-    public function getLastInsertedId()
+    public function getLastInsertedId(): ?int
     {
         $lastId = NULL;
 
-        $this->query('SELECT LAST_INSERT_ID() as last_id');
+        $this->query('SELECT LAST_INSERT_ID() AS last_id');
         if ($this->nextRecord()) {
-            $lastId = $this->f('last_id');
+            $lastId = (int) $this->f('last_id');
         }
 
         return $lastId;
     }
 
     /**
-     * Parses te table structure and generates a metadata from it.
-     *
-     * @param string $tableName [optional]
-     *         The table to get metadata or empty string to retrieve metadata
-     *         of all tables
-     * @param bool $full [optional]
-     *         Flag to load full metadata
-     * @return array
-     *         Depends on used database and on parameter $full
+     * @see cDbDriverAbstract::getMetaData()
      */
-    public function getMetaData($tableName = '', $full = false)
+    public function getMetaData(string $tableName = '', bool $full = false): array
     {
         $databaseName = '';
-        $key = (string)$databaseName . '_' . $tableName . '_' . (($full) ? '1' : '0');
+        $key = $databaseName . '_' . $tableName . '_' . (($full) ? '1' : '0');
 
         if (!isset(self::$_metaCache[$key])) {
             // get meta data
@@ -993,15 +814,10 @@ abstract class cDbDriverHandler
     }
 
     /**
-     * Returns names of existing tables.
      *
-     * @return array|NULL
-     *         array containing associative table data as follows or NULL:
-     *         - $info[$i]['table_name']
-     *         - $info[$i]['tablespace_name']
-     *         - $info[$i]['database']
+     * @return ?array {@see cDbDriverAbstract::getTableNames()}
      */
-    public function getTableNames()
+    public function getTableNames(): ?array
     {
         if (!$this->connect()) {
             return NULL;
@@ -1011,12 +827,10 @@ abstract class cDbDriverHandler
     }
 
     /**
-     * Returns the data-type of a specific table field.
-     *
-     * @return string|null
+     * @see cDbDriverAbstract::getTableFieldDataType()
      * @since CONTENIDO 4.10.2
      */
-    public function getTableFieldDataType(string $table, string $field)
+    public function getTableFieldDataType(string $table, string $field): ?string
     {
         if (!$this->connect()) {
             return NULL;
@@ -1027,12 +841,9 @@ abstract class cDbDriverHandler
 
 
     /**
-     * Returns information about DB server.
-     * The return value depends always on used DBMS.
-     *
-     * @return array|NULL {@see cDbDriverAbstract::getServerInfo()}
+     * @return ?array {@see cDbDriverAbstract::getServerInfo()}
      */
-    public function getServerInfo()
+    public function getServerInfo(): ?array
     {
         if (!$this->connect()) {
             return NULL;
@@ -1060,12 +871,9 @@ abstract class cDbDriverHandler
     /**
      * Returns the desired field value from current record set.
      *
-     * @param mixed $name
-     *         The field name or index position
-     * @param mixed $default [optional]
-     *         The default value to return
-     * @return mixed
-     *         The value of field
+     * @param mixed $name The field name or index position
+     * @param mixed $default The default value to return
+     * @return mixed The value of field
      */
     public function f($name, $default = NULL)
     {
@@ -1077,11 +885,9 @@ abstract class cDbDriverHandler
     /**
      * Returns current record set as a associative and/or indexed array.
      *
-     * @param string $fetchMode [optional]
-     *         One of cDbDriverHandler::FETCH_* constants
-     * @return array
+     * @param string $fetchMode One of cDbDriverHandler::FETCH_* constants
      */
-    public function toArray($fetchMode = self::FETCH_ASSOC)
+    public function toArray(string $fetchMode = self::FETCH_ASSOC): array
     {
         switch ($fetchMode) {
             case self::FETCH_NUMERIC:
@@ -1097,11 +903,11 @@ abstract class cDbDriverHandler
         $result = [];
         if (is_array($this->getRecord())) {
             foreach ($this->getRecord() as $key => $value) {
-                if ($fetchMode == self::FETCH_ASSOC && !is_numeric($key)) {
+                if ($fetchMode === self::FETCH_ASSOC && !is_numeric($key)) {
                     $result[$key] = $value;
-                } elseif ($fetchMode == self::FETCH_NUMERIC && is_numeric($key)) {
+                } elseif ($fetchMode === self::FETCH_NUMERIC && is_numeric($key)) {
                     $result[$key] = $value;
-                } elseif ($fetchMode == self::FETCH_BOTH) {
+                } elseif ($fetchMode === self::FETCH_BOTH) {
                     $result[$key] = $value;
                 }
             }
@@ -1117,7 +923,7 @@ abstract class cDbDriverHandler
      */
     public function toObject()
     {
-        return (object)$this->toArray(self::FETCH_ASSOC);
+        return (object) $this->toArray();
     }
 
     /**
@@ -1130,11 +936,10 @@ abstract class cDbDriverHandler
      * Terminates further script execution if $this->_haltBehaviour is set to
      * self::HALT_YES
      *
-     * @param string $message
-     *         The message to use for error handling
-     * @throws cDbException|cInvalidArgumentException
+     * @param string $message The message to use for error handling
+     * @throws cDbException
      */
-    public function halt($message)
+    public function halt(string $message)
     {
         if ($this->_haltBehaviour == self::HALT_REPORT) {
             $this->reportHalt($this->_haltMsgPrefix . $message);
@@ -1149,11 +954,8 @@ abstract class cDbDriverHandler
      * Logs passed message, basically the last db error to the error log.
      * Concatenates a detailed error message and invoke PHP's error_log()
      * method.
-     *
-     * @param string $message
-     * @throws cInvalidArgumentException
      */
-    public function reportHalt($message)
+    public function reportHalt(string $message)
     {
         $errorNumber = $this->getErrorNumber();
         $errorMessage = $this->getErrorMessage();
@@ -1171,7 +973,7 @@ abstract class cDbDriverHandler
     }
 
     /**
-     * @deprecated [2023-01-25] Since 4.10.2, use {@see cDbDriverHandler::numRows} instead
+     * @deprecated [2023-01-25] Since CONTENIDO 4.10.2, use {@see cDbDriverHandler::numRows} instead
      */
     public function num_rows()
     {
@@ -1180,7 +982,7 @@ abstract class cDbDriverHandler
     }
 
     /**
-     * @deprecated [2023-01-25] Since 4.10.2, use {@see cDbDriverHandler::affectedRows} instead
+     * @deprecated [2023-01-25] Since CONTENIDO 4.10.2, use {@see cDbDriverHandler::affectedRows} instead
      */
     public function affected_rows()
     {
@@ -1189,7 +991,7 @@ abstract class cDbDriverHandler
     }
 
     /**
-     * @deprecated [2023-01-25] Since 4.10.2, use {@see cDbDriverHandler::numFields} instead
+     * @deprecated [2023-01-25] Since CONTENIDO 4.10.2, use {@see cDbDriverHandler::numFields} instead
      */
     public function num_fields()
     {
@@ -1198,7 +1000,7 @@ abstract class cDbDriverHandler
     }
 
     /**
-     * @deprecated [2023-01-25]  Since 4.10.2, use {@see cDbDriverHandler::nextRecord} instead
+     * @deprecated [2023-01-25] Since CONTENIDO 4.10.2, use {@see cDbDriverHandler::nextRecord} instead
      */
     public function next_record()
     {

@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * cHTMLOptgroup class can be used for creating optgrops
+ * cHTMLOptgroup class can be used for creating HTML option groups
  *
  * @package    Core
  * @subpackage GUI_HTML
@@ -26,12 +26,9 @@ class cHTMLOptgroup extends cHTMLContentElement
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $content [optional]
-     *         String or object with the contents
-     * @param string $class [optional]
-     *         the class of this element
-     * @param string $id [optional]
-     *         the ID of this element
+     * @param mixed $content [optional] String or object with the contents
+     * @param string $class [optional] The class of this element
+     * @param string $id [optional] The ID of this element
      */
     public function __construct($content = '', $class = '', $id = '')
     {

@@ -28,7 +28,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract
      */
     public function _execute()
     {
-        $systemPropTable = cRegistry::getDbTableName('system_prop');
+        $systemPropTable = cDb::getTableName('system_prop');
         $this->_version = getContenidoVersion($this->_oDb, $systemPropTable);
         $this->_executeInitialJobs();
 
@@ -46,14 +46,14 @@ class cUpgradeJobMain extends cUpgradeJobAbstract
     {
         $cfg = cRegistry::getConfig();
 
-        $systemPropTable = cRegistry::getDbTableName('system_prop');
+        $systemPropTable = cDb::getTableName('system_prop');
         updateContenidoVersion($this->_oDb, $systemPropTable, CON_VERSION);
         if ($this->_setupType == 'setup') {
             updateSysadminPassword($this->_oDb, $cfg['sql']['sqlprefix'] . '_user', $_SESSION['adminpass'], $_SESSION['adminmail']);
         }
 
         // Set code creation (on update) flag
-        $catArtTable = cRegistry::getDbTableName('cat_art');
+        $catArtTable = cDb::getTableName('cat_art');
         $this->_oDb->query('UPDATE `%s` SET `createcode` = 1', $catArtTable);
 
         // Convert old category start articles to new format, we don't support
@@ -77,7 +77,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract
      *
      * In former CONTENIDO versions (4.6 or earlier) start articles were
      * stored in table con_cat_art.is_start.
-     * Since 4.6 start articles are stored con_cat_lang.startidartlang.
+     * Since CONTENIDO 4.6 start articles are stored con_cat_lang.startidartlang.
      *
      * This function takes the start articles from con_cat_art.is_start and
      * sets them in con_cat_lang.startidartlang for all available languages.
@@ -87,20 +87,20 @@ class cUpgradeJobMain extends cUpgradeJobAbstract
         // Convert old category start articles to new format, we don't support
         // the configuration '$cfg['is_start_compatible'] = true;'
         if ($this->_setupType == 'upgrade') {
-            $catArtTable = cRegistry::getDbTableName('cat_art');
-            $artLangTable = cRegistry::getDbTableName('art_lang');
-            $catLangTable = cRegistry::getDbTableName('cat_lang');
+            $catArtTable = cDb::getTableName('cat_art');
+            $artLangTable = cDb::getTableName('art_lang');
+            $catLangTable = cDb::getTableName('cat_lang');
             $this->_oDb->query("SELECT * FROM `%s` WHERE `is_start` = 1", $catArtTable);
 
             $db2 = getSetupMySQLDBConnection();
 
             while ($this->_oDb->nextRecord()) {
-                $startIdArt = $this->_oDb->f("idart");
-                $idcat = $this->_oDb->f("idcat");
+                $startIdArt = $this->_oDb->f('idart');
+                $idcat = $this->_oDb->f('idcat');
                 foreach (self::$_languages as $_idLang => $oLang) {
                     $db2->query("SELECT `idartlang` FROM `%s` WHERE `idart` = %d AND `idlang` = %d", $artLangTable, $startIdArt, $_idLang);
                     if ($db2->nextRecord()) {
-                        $idartlang = (int)$db2->f("idartlang");
+                        $idartlang = (int)$db2->f('idartlang');
                         $db2->query("UPDATE `%s` SET `startidartlang` = %d WHERE `idcat` = %d AND `idlang` = %d", $catLangTable, $idartlang, $idcat, $_idLang);
                     }
                 }
@@ -156,8 +156,6 @@ class cUpgradeJobMain extends cUpgradeJobAbstract
 
     /**
      * Get all upgrade job files
-     *
-     * @return array
      */
     protected function _getUpgradeJobFiles(): array
     {
@@ -166,7 +164,7 @@ class cUpgradeJobMain extends cUpgradeJobAbstract
         if (is_dir($dir)) {
             if (false !== ($handle = cDirHandler::read($dir))) {
                 foreach ($handle as $file) {
-                    if (false === cFileHandler::fileNameIsDot($file) && is_file($dir . $file)) {
+                    if (!cFileHandler::fileNameIsDot($file) && is_file($dir . $file)) {
                         if (preg_match('/^class\.upgrade\.job\.(\d{4})\.php$/', $file, $match)) {
                             $files[$match[1]] = $file;
                         }

@@ -24,14 +24,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cUpgradeJob_0003 extends cUpgradeJobAbstract
 {
 
-    public $maxVersion = "4.9.0-beta1";
+    public $maxVersion = '4.9.0-beta1';
 
     public function _execute()
     {
         $cfg = cRegistry::getConfig();
 
         convertToDatetime($this->_oDb, $cfg);
-        if ($_SESSION['setuptype'] == 'upgrade') { // we don't want this to happen during the setup since it would decode the example client which is already decoded
+        if ($this->_setupType == 'upgrade') {
+            // we don't want this to happen during the setup since it would decode the example client which is already decoded
             urlDecodeTables($this->_oDb);
         }
     }

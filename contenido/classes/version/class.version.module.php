@@ -24,17 +24,14 @@ class cVersionModule extends cVersion
 {
 
     /**
-     * Module type.
-     *
-     * @var string
+     * @var string Module type.
      */
     public $sModType;
 
     /**
      * Module template, see table `con_mod.template`.
-     * Seems not to be used anymore, but still exists in the database
-     * and some places in the source code are accessing this property,
-     * see calls of {@see modEditModule()} function.
+     * Seems not to be used anymore, but still exists in the database and some places in the source
+     * code are accessing this property, see calls of {@see modEditModule()} function.
      * The table field is also still in use in {@see cApiModule}.
      *
      * @var string
@@ -46,26 +43,24 @@ class cVersionModule extends cVersion
      *
      * Initializes class variables.
      *
-     * @param string $iIdMod
-     *         The name of style file
-     * @param array $aCfg
-     * @param array $aCfgClient
-     * @param cDb $oDB
-     *         CONTENIDO database object
-     * @param int $iClient
-     * @param string $sArea
-     * @param int $iFrame
+     * @param string $moduleId The name of style file
+     * @param array $cfg
+     * @param array $cfgClient
+     * @param cDb $db CONTENIDO database object
+     * @param int $clientId
+     * @param string $area
+     * @param int $frame
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function __construct($iIdMod, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame)
+    public function __construct($moduleId, array $cfg, array $cfgClient, cDb $db, $clientId, $area, $frame)
     {
         // Set globals in main class
-        parent::__construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
+        parent::__construct($cfg, $cfgClient, $db, $clientId, $area, $frame);
 
         // folder layout
         $this->sType = 'module';
-        $this->iIdentity = $iIdMod;
+        $this->entityId = $moduleId;
 
         $this->sTemplate = '';
 
@@ -79,8 +74,8 @@ class cVersionModule extends cVersion
      */
     protected function _storeModuleInformation()
     {
-        $iIdMod = cSecurity::toInteger($this->iIdentity);
-        $oModule = new cApiModule($iIdMod);
+        $moduleId = cSecurity::toInteger($this->entityId);
+        $oModule = new cApiModule($moduleId);
 
         // create body node of XML file
         $this->setData('Name', $oModule->getField('name'));
@@ -94,7 +89,7 @@ class cVersionModule extends cVersion
         $this->setData('PackageData', $oModule->getField('package_data'));
 
         // retrieve module code from files
-        $oModuleHandler = new cModuleHandler($iIdMod);
+        $oModuleHandler = new cModuleHandler($moduleId);
         $this->setData('CodeOutput', conHtmlSpecialChars($oModuleHandler->readOutput()));
         $this->setData('CodeInput', conHtmlSpecialChars($oModuleHandler->readInput()));
     }
@@ -102,17 +97,15 @@ class cVersionModule extends cVersion
     /**
      * This function read a xml file nodes
      *
-     * @param string $sPath
-     *         Path to file
-     * @return array
-     *         returns array width this four nodes
+     * @param string $path Path to file
+     * @return array Returns array width this four nodes
      */
-    public function initXmlReader($sPath)
+    public function initXmlReader(string $path): array
     {
         $aResult = [];
-        if ($sPath != '') {
+        if ($path != '') {
             // Output this xml file
-            $sXML = simplexml_load_file($sPath);
+            $sXML = simplexml_load_file($path);
 
             if ($sXML) {
                 foreach ($sXML->body as $oBodyValues) {
@@ -129,22 +122,17 @@ class cVersionModule extends cVersion
     }
 
     /**
-     * Function returns javascript which refreshes CONTENIDO frames for file
-     * list a sub-navigation. This is necessary, if filenames where changed,
-     * when a history entry is restored.
+     * Function returns javascript which refreshes CONTENIDO frames for file list a sub-navigation.
+     * This is necessary, if filenames where changed, when a history entry is restored.
      *
-     * @param string $sArea
-     *         name of CONTENIDO area in which this procedure should be done
-     * @param int $iIdModule
-     *         Id of module
-     * @param cSession $sess
-     *         CONTENIDO session object
-     * @return string
-     *         Javascript for refreshing left_bottom frame
+     * @param string $area name of CONTENIDO area in which this procedure should be done
+     * @param int $moduleId Id of module
+     * @param cSession $sess CONTENIDO session object
+     * @return string Javascript for refreshing left_bottom frame
      */
-    public function renderReloadScript($sArea, $iIdModule, cSession $sess)
+    public function renderReloadScript($area, $moduleId, cSession $sess)
     {
-        $urlLeftBottom = $sess->url("main.php?area=$sArea&frame=2&idmod=$iIdModule");
+        $urlLeftBottom = $sess->url("main.php?area=$area&frame=2&idmod=$moduleId");
         return <<<JS
 <script type="text/javascript">
 (function(Con, $) {

@@ -27,7 +27,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 
 $perm = cRegistry::getPerm();
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getClientId();
 $area = cRegistry::getArea();
 
 $oPage = new cGuiPage('js_history');
@@ -51,7 +51,7 @@ if (!$perm->have_perm_area_action($area, 'js_history_manage')) {
 cInclude('includes', 'functions.file.php');
 cInclude('external', 'codemirror/class.codemirror.php');
 
-$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
+$readOnly = getEffectiveSetting('client', 'readonly', 'false') === 'true';
 if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
@@ -84,7 +84,7 @@ if ((!$readOnly) && $requestAction === 'history_truncate') {
 }
 
 // Save action
-if ((!$readOnly) && $requestJsScriptSend && $requestJsScriptCode != '' && $sFileName != '' && !empty($aFileInfo['idsfi'])) {
+if (!$readOnly && $requestJsScriptSend && $requestJsScriptCode != '' && $sFileName != '' && !empty($aFileInfo['idsfi'])) {
     $oVersionJScript = new cVersionFile(
         $aFileInfo['idsfi'], $aFileInfo, $sFileName, $sTypeContent,
         $cfg, $cfgClient, $db, $client, $area, $frame
@@ -141,8 +141,10 @@ if ($sFileName != '' && !empty($aFileInfo['idsfi']) && ($requestAction !== 'hist
 
     // Create and output the select box
     $sSelectBox = $oVersionJScript->buildSelectBox(
-        'jscript_history', 'JScript History',
-        i18n('Show history entry'), 'idjscripthistory', $readOnly
+        'jscript_history',
+        'JScript History',
+        i18n('Show history entry'),'idjscripthistory',
+        $readOnly
     );
 
     // Generate form

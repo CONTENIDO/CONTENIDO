@@ -91,7 +91,7 @@ abstract class cValidatorAbstract
     }
 
     /**
-     * Validates the passed value.
+     * Validates the provided value.
      *
      * @param mixed $value
      * @return bool

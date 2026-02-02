@@ -20,8 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Plugin
  * @subpackage PluginManager
  * @author     Frederic Schneider
- * @method PimPluginRelations createNewItem
- * @method PimPluginRelations|bool next
+ * @extends ItemCollection<PimPluginRelations>
  */
 class PimPluginRelationsCollection extends ItemCollection
 {
@@ -32,30 +31,25 @@ class PimPluginRelationsCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('plugins_rel'), 'idpluginrelation');
+        parent::__construct(cDb::getTableName('plugins_rel'), 'idpluginrelation');
         $this->_setItemClass('PimPluginRelations');
     }
 
     /**
      * Create a new plugin
      *
-     * @param $idItem   int Is equivalent to idarea or idnavm
-     * @param $idPlugin int Plugin Id
-     * @param $type     string Relation to tables *_area and *_nav_main
-     *
-     * @return Item
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param $itemId int Is equivalent to idarea or idnavm
+     * @param $pluginId int Plugin Id
+     * @param $type string Relation to tables *_area and *_nav_main
+     * @return PimPluginRelations
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idItem, $idPlugin, $type)
+    public function create(int $itemId, int $pluginId, string $type)
     {
-
         // create a new entry
         $item = $this->createNewItem();
-        $item->set('iditem', $idItem);
-        $item->set('idplugin', $idPlugin);
+        $item->set('iditem', $itemId);
+        $item->set('idplugin', $pluginId);
         $item->set('type', $type);
 
         $item->store();
@@ -74,20 +68,18 @@ class PimPluginRelations extends Item
     /**
      * @var string Error storage
      */
-    protected $_sError;
+    protected $error;
 
     /**
      * Constructor Function
      *
      * @param mixed $id Specifies the id of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('plugins_rel'), 'idpluginrelation');
-        $this->_sError = '';
+        parent::__construct(cDb::getTableName('plugins_rel'), 'idpluginrelation');
+        $this->error = '';
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
@@ -96,22 +88,37 @@ class PimPluginRelations extends Item
     /**
      * User-defined setter for pim relations fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
+            case 'idpluginrelation':
             case 'idplugin':
             case 'iditem':
                 $value = cSecurity::toInteger($value);
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getField($name, $safe = true)
+    {
+        $value = parent::getField($name, $safe);
+
+        switch ($name) {
+            case 'idpluginrelation':
+            case 'idplugin':
+            case 'iditem':
+                $value = cSecurity::toInteger($value);
+                break;
+        }
+
+        return $value;
     }
 
 }

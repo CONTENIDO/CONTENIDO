@@ -25,13 +25,12 @@ class cTypeGenerator
 {
 
     /**
-     *
      * @var array
      */
     private $cfg = NULL;
 
     /**
-     * @deprecated [2023-01-26] Since 4.10.2, is not needed anymore
+     * @deprecated [2023-01-26] Since CONTENIDO 4.10.2, is not needed anymore
      */
     private static $db = NULL;
 
@@ -43,19 +42,16 @@ class cTypeGenerator
     private static $articleContentHelper = NULL;
 
     /**
-     *
      * @var array
      */
     private static $a_content = [];
 
     /**
-     *
      * @var int
      */
     private $_idart = NULL;
 
     /**
-     *
      * @var int
      */
     private $_idlang = NULL;
@@ -67,8 +63,8 @@ class cTypeGenerator
      */
     public function __construct()
     {
-        $this->_idart = cSecurity::toInteger(cRegistry::getArticleId(true));
-        $this->_idlang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $this->_idart = cRegistry::getArticleId(true);
+        $this->_idlang = cRegistry::getLanguageId();
         $this->cfg = cRegistry::getConfig();
 
         if (!isset(self::$a_content[$this->_idart])) {
@@ -79,25 +75,24 @@ class cTypeGenerator
     /**
      * Returns the classname for a content type.
      *
-     * @param string $type
-     *         Content type, e.g. CMS_HTMLHEAD
-     * @return string
-     *         The classname e.g. cContentTypeHtmlhead for content type CMS_HTMLHEAD
+     * @param string $type Content type, e.g. CMS_HTMLHEAD
+     * @return string The classname e.g. cContentTypeHtmlhead for content type CMS_HTMLHEAD
      */
-    protected function _getContentTypeClassName($type)
+    protected function _getContentTypeClassName(string $type): string
     {
         return 'cContentType' . ucfirst(cString::toLowerCase(str_replace('CMS_', '', $type)));
     }
 
     /**
-     *
-     * @param string $type
-     * @return string
+     * Returns the content type class name for a type, e.g. the class name
+     * for the type 'CMS_HTML' will be `cContentTypeHtml`.
      */
-    public static function getContentTypeClassName($type)
+    public static function getContentTypeClassName(string $type): string
     {
+        // Remove the prefix 'CMS_'
         $contentType = cString::getPartOfString($type, 4);
-        return 'cContentType' . cString::toUpperCase($contentType[0]) . cString::toLowerCase(cString::getPartOfString($contentType, 1));
+
+        return sprintf('cContentType%s', cString::ucfirst(cString::toLowerCase($contentType)));
     }
 
     /**
@@ -134,12 +129,9 @@ class cTypeGenerator
     }
 
     /**
-     *
      * @param string $type
      * @param int $index
-     *
      * @return string
-     *
      * @throws cDbException|cException
      */
     private function _processCmsTags($type, $index)
@@ -148,7 +140,7 @@ class cTypeGenerator
         $oTypeColl->select();
 
         $typeList = [];
-        while (false !== $oType = $oTypeColl->next()) {
+        while ($oType = $oTypeColl->next()) {
             $typeList[] = $oType->toObject();
         }
 

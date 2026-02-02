@@ -19,23 +19,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiContainer createNewItem
- * @method cApiContainer|bool next
+ * @extends ItemCollection<cApiContainer>
  */
 class cApiContainerCollection extends ItemCollection
 {
     /**
      * Constructor to create an instance of this class.
      *
-     * @param bool $select [optional]
-     *                     where clause to use for selection (see ItemCollection::select())
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param string|false $select [optional] Where clause to use for selection {@see ItemCollection::select()}
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($select = false)
     {
-        parent::__construct(cRegistry::getDbTableName('container'), 'idcontainer');
+        parent::__construct(cDb::getTableName('container'), 'idcontainer');
         $this->_setItemClass('cApiContainer');
 
         // set the join partners so that joins can be used via link() method
@@ -49,22 +45,19 @@ class cApiContainerCollection extends ItemCollection
     /**
      * Creates a container item entry
      *
-     * @param int $idtpl
+     * @param int $templateId
      * @param int $number
-     * @param int $idmod
-     *
+     * @param int $moduleId
      * @return cApiContainer
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idtpl, $number, $idmod)
+    public function create($templateId, $number, $moduleId)
     {
         $item = $this->createNewItem();
 
-        $item->set('idtpl', $idtpl);
+        $item->set('idtpl', $templateId);
         $item->set('number', $number);
-        $item->set('idmod', $idmod);
+        $item->set('idmod', $moduleId);
         $item->store();
 
         return $item;
@@ -73,17 +66,16 @@ class cApiContainerCollection extends ItemCollection
     /**
      * Returns list of container numbers by passed template id.
      *
-     * @param int $idtpl
-     * @return array
+     * @return int[]
      * @throws cDbException
      */
-    public function getNumbersByTemplate($idtpl)
+    public function getNumbersByTemplate($templateId): array
     {
         $list = [];
-        $sql = "SELECT number FROM `%s` WHERE idtpl = %d";
-        $this->db->query($sql, $this->table, $idtpl);
+        $sql = "SELECT `number` FROM `%s` WHERE `idtpl` = %d";
+        $this->db->query($sql, $this->table, $templateId);
         while ($this->db->nextRecord()) {
-            $list[] = $this->db->f('number');
+            $list[] = cSecurity::toInteger($this->db->f('number'));
         }
         return $list;
     }
@@ -91,33 +83,32 @@ class cApiContainerCollection extends ItemCollection
     /**
      * Deletes all configurations by given template id
      *
-     * @param int $idtpl
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param int $templateId
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function clearAssignments($idtpl)
+    public function clearAssignments($templateId)
     {
-        $this->deleteBy('idtpl', (int)$idtpl);
+        $this->deleteBy('idtpl', cSecurity::toInteger($templateId));
     }
 
     /**
-     *
-     * @param int $idtpl
+     * @param int $templateId
      * @param int $number
-     * @param int $idmod
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param int $moduleId
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function assignModule($idtpl, $number, $idmod)
+    public function assignModule($templateId, $number, $moduleId)
     {
-        $this->select('idtpl = ' . (int)$idtpl . ' AND number = ' . (int)$number);
+        $this->select($this->db->prepare(
+            '`idtpl` = %d AND `number` = %d',
+            $templateId,
+            $number
+        ));
         if (($item = $this->next()) !== false) {
-            $item->set('idmod', $idmod);
+            $item->set('idmod', $moduleId);
             $item->store();
         } else {
-            $this->create($idtpl, $number, $idmod);
+            $this->create($templateId, $number, $moduleId);
         }
     }
 }
@@ -133,32 +124,24 @@ class cApiContainer extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('container'), 'idcontainer');
-        $this->setFilters([], []);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('container'), 'idcontainer');
+        $this->setFilters();
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * User-defined setter for container fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe [optional]
-     *         Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
             case 'idtpl':
@@ -168,7 +151,7 @@ class cApiContainer extends Item
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
     }
 
 }

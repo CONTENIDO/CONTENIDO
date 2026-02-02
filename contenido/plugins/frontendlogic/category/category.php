@@ -54,7 +54,7 @@ class frontendlogic_category extends FrontendLogic
     public function listItems()
     {
         $cfg = cRegistry::getConfig();
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $lang = cRegistry::getLanguageId();
         $db = cRegistry::getDb();
 
         $sSQL = "SELECT
@@ -62,9 +62,9 @@ class frontendlogic_category extends FrontendLogic
                    b.name,
                    c.level
                  FROM
-                   " . cRegistry::getDbTableName('cat') . " AS a,
-                   " . cRegistry::getDbTableName('cat_lang') . " AS b,
-                   " . cRegistry::getDbTableName('cat_tree') . " AS c
+                   " . cDb::getTableName('cat') . " AS a,
+                   " . cDb::getTableName('cat_lang') . " AS b,
+                   " . cDb::getTableName('cat_tree') . " AS c
                  WHERE
                    a.idcat = b.idcat AND
                    a.idcat = c.idcat AND
@@ -75,7 +75,7 @@ class frontendlogic_category extends FrontendLogic
         $db->query($sSQL);
         $items = [];
         while ($db->nextRecord()) {
-            $items[$db->f("idcatlang")] = '<span style="padding-left: ' . ($db->f("level") * 10) . 'px;">' . htmldecode($db->f("name")) . '</span>';
+            $items[$db->f('idcatlang')] = '<span style="padding-left: ' . ($db->f('level') * 10) . 'px;">' . htmldecode($db->f('name')) . '</span>';
         }
 
         return $items;

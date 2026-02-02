@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiContentVersion createNewItem
- * @method cApiContentVersion|bool next
+ * @extends ItemCollection<cApiContentVersion>
  */
 class cApiContentVersionCollection extends ItemCollection
 {
@@ -32,7 +31,7 @@ class cApiContentVersionCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('content_version'), 'idcontentversion');
+        parent::__construct(cDb::getTableName('content_version'), 'idcontentversion');
         $this->_setItemClass('cApiContentVersion');
 
         // set the join partners so that joins can be used via link() method
@@ -43,18 +42,14 @@ class cApiContentVersionCollection extends ItemCollection
     /**
      * Creates a content version entry.
      *
-     * @param array $parameters
-     *
      * @return cApiContentVersion
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create(array $parameters)
     {
         if (empty($parameters['author'])) {
             $auth = cRegistry::getAuth();
-            $parameters['author'] = $auth->auth['uname'];
+            $parameters['author'] = $auth->getUsername();
         }
         if (empty($parameters['created'])) {
             $parameters['created'] = date('Y-m-d H:i:s');
@@ -75,48 +70,46 @@ class cApiContentVersionCollection extends ItemCollection
     }
 
     /**
-     * Gets ids of content version entries by WHERE clause
-     *
-     * @param string $where
-     * @return array $ids
-     * @throws cDbException
-     * @throws cException
+     * @inheritDoc
+     * @return int[]
      */
-    public function getIdsByWhereClause($where)
+    public function getIdsByWhereClause(
+        string $where,
+        string $groupBy = '',
+        string $orderBy = '',
+        string $limit = ''
+    ): array
     {
-        $this->select($where);
+        $ids = parent::getIdsByWhereClause($where, $groupBy, $orderBy, $limit);
 
-        $ids = [];
-        while ($item = $this->next()) {
-            $ids[] = cSecurity::toInteger($item->get('idcontentversion'));
-        }
-        return $ids;
+        return array_map('intval', $ids);
     }
 
     /**
      * Returns the maximum version of a content version entry.
      *
-     * @param int $idArtLang Article language id
+     * @param int $articleLanguageId Article language id
      * @param int $idType Content type id (e.g. id of `CONTENT_TYPE`)
      * @param int $typeId Content id (e.g. the ID in `CONTENT_TYPE[ID]`)
      * @return int Found maximum version or 0
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      * @since CONTENIDO 4.10.2
      */
     public function getMaximumVersionByArticleLanguageId(
-        int $idArtLang, int $idType, int $typeId
-    ): int
-    {
+        int $articleLanguageId,
+        int $idType,
+        int $typeId
+    ): int {
         $contentVersionColl = new self();
         $contentVersionColl->addResultField('version');
-        $contentVersionColl->setWhere('idartlang', $idArtLang);
+        $contentVersionColl->setWhere('idartlang', $articleLanguageId);
         $contentVersionColl->setWhere('idtype', $idType);
         $contentVersionColl->setWhere('typeid', $typeId);
         $contentVersionColl->setOrder('`version` DESC');
         $contentVersionColl->setLimit(0, 1);
         $contentVersionColl->query();
         $data = $contentVersionColl->fetchTable(['version']);
+
         return count($data) ? cSecurity::toInteger($data[1]['version']) : 0;
     }
 
@@ -134,18 +127,15 @@ class cApiContentVersion extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $id
-     *         Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {
         parent::__construct(
-            cRegistry::getDbTableName('content_version'), 'idcontentversion'
+            cDb::getTableName('content_version'), 'idcontentversion'
         );
-        $this->setFilters([], []);
+        $this->setFilters();
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
@@ -154,12 +144,7 @@ class cApiContentVersion extends Item
     /**
      * User-defined setter for item fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $safe
-     *         Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function setField($name, $value, $safe = true)
     {
@@ -175,14 +160,14 @@ class cApiContentVersion extends Item
     {
         // try to get item from database
         $content = new cApiContent();
-        $succ = $content->loadByArticleLanguageIdTypeAndTypeId(
+        $success = $content->loadByArticleLanguageIdTypeAndTypeId(
             $this->get('idartlang'),
             $this->get('idtype'),
             $this->get('typeid')
         );
 
         // create new item if none has been found
-        if (!$succ) {
+        if (!$success) {
             $coll = new cApiContentCollection();
             $content = $coll->createNewItem();
         }
@@ -205,9 +190,7 @@ class cApiContentVersion extends Item
      *
      * @param string $version
      * @param mixed $deleted
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function markAsEditable($version, $deleted)
     {
@@ -238,31 +221,28 @@ class cApiContentVersion extends Item
      *          'version' => (int) Content version
      *      ];
      *      </pre>
-     *
-     * @return bool
-     *
      * @throws cException
      */
-    public function loadByArticleLanguageIdTypeTypeIdAndVersion(array $contentParameters)
+    public function loadByArticleLanguageIdTypeTypeIdAndVersion(array $contentParameters): bool
     {
-        $props = [
+        $recordSet = $this->_oCache->getItemByProperties([
             'idartlang' => $contentParameters['idartlang'],
             'idtype' => $contentParameters['idtype'],
             'typeid' => $contentParameters['typeid'],
             'version' => $contentParameters['version'],
-        ];
-        $recordSet = $this->_oCache->getItemByProperties($props);
+        ]);
         if ($recordSet) {
             // entry in cache found, load entry from cache
             $this->loadByRecordSet($recordSet);
             return true;
         } else {
-            $where = '`idartlang` = %d AND `idtype` = %d AND `typeid` = %d AND `version` <= %d GROUP BY `pk` desc LIMIT 1';
-            $where = $this->db->prepare(
-                $where, $contentParameters['idartlang'], $contentParameters['idtype'],
-                $contentParameters['typeid'], $contentParameters['version']
-            );
-            return $this->_loadByWhereClause($where);
+            return $this->_loadByWhereClause($this->db->prepare(
+                '`idartlang` = %d AND `idtype` = %d AND `typeid` = %d AND `version` <= %d GROUP BY `pk` desc LIMIT 1',
+                $contentParameters['idartlang'],
+                $contentParameters['idtype'],
+                $contentParameters['typeid'],
+                $contentParameters['version']
+            ));
         }
     }
 

@@ -24,4 +24,4 @@ if (isset($tmpchangelang) && $tmpchangelang != $lang) {
     $url = $sess->url("front_content.php?changeview=$changeview&client=$client&lang=$lang&action=$action&idartlang=$idartlang&idart=$idart&idcat=$idcat&lang=$lang");
 }
 
-header("location: $path$url");
+header("Location: $path$url");

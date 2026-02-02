@@ -19,10 +19,12 @@ if (!defined('CON_FRAMEWORK')) {
 global $cfg;
 
 // CONTENIDO path
-$contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/';
+$contenidoPath = str_replace('\\', '/', realpath(__DIR__ . '/../')) . '/';
 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
+
+$area = cRegistry::getArea();
 
 // con_cli Plugin
 if ('cli' === cString::getPartOfString(PHP_SAPI, 0, 3)) {
@@ -40,5 +42,3 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
 
     conMoveArticles();
 }
-
-?>

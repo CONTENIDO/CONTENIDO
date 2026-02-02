@@ -25,8 +25,8 @@ class cSetupAdminPassword extends cSetupMask
 
     /**
      * cSetupAdminPassword constructor.
-     * @param $step
-     * @param $previous
+     * @param bool|int $step
+     * @param bool $previous
      * @param $next
      */
     public function __construct($step, $previous, $next)
@@ -38,9 +38,9 @@ class cSetupAdminPassword extends cSetupMask
         cArray::initializeKey($_SESSION, "adminpassrepeat");
 
         $this->setHeader(i18n("Administrator password", "setup"));
-        $this->_stepTemplateClass->set("s", "TITLE", i18n("Administrator password", "setup"));
+        $this->_stepTemplateClass->set('s', 'TITLE', i18n("Administrator password", "setup"));
 
-        $this->_stepTemplateClass->set("s", "DESCRIPTION", i18n("Please enter the password for the default administrator account sysadmin and specify it's mail address in case you forgot your entered password.", "setup"));
+        $this->_stepTemplateClass->set('s', 'DESCRIPTION', i18n("Please enter the password for the default administrator account sysadmin and specify it's mail address in case you forgot your entered password.", "setup"));
 
         if ($_SESSION['adminpass'] != '') {
             $displayadminpass = str_repeat('*', cString::getStringLength($_SESSION['adminpass']));
@@ -54,9 +54,9 @@ class cSetupAdminPassword extends cSetupMask
             $displayadminpassrepeat = '';
         }
 
-        $adminmail = new cHTMLTextbox("adminmail", $_SESSION['adminmail'], 30, 255);
-        $adminpass = new cHTMLPasswordbox("adminpass", $displayadminpass, 30, 255);
-        $adminpassrepeat = new cHTMLPasswordbox("adminpassrepeat", $displayadminpassrepeat, 30, 255);
+        $adminmail = new cHTMLTextbox('adminmail', $_SESSION['adminmail'], 30, 255);
+        $adminpass = new cHTMLPasswordbox('adminpass', $displayadminpass, 30, 255);
+        $adminpassrepeat = new cHTMLPasswordbox('adminpassrepeat', $displayadminpassrepeat, 30, 255);
 
         $adminpass->attachEventDefinition("onchange handler", "onchange", "document.setupform.adminpass_changed.value = 'true';");
         $adminpass->attachEventDefinition("onchange handler", "onkeypress", "document.setupform.adminpass_changed.value = 'true';");
@@ -64,16 +64,16 @@ class cSetupAdminPassword extends cSetupMask
         $adminpassrepeat->attachEventDefinition("onchange handler", "onchange", "document.setupform.adminpassrepeat_changed.value = 'true';");
         $adminpassrepeat->attachEventDefinition("onchange handler", "onkeypress", "document.setupform.adminpassrepeat_changed.value = 'true';");
 
-        $adminpass_hidden = new cHTMLHiddenField("adminpass_changed", "false");
-        $adminpassrepeat_hidden = new cHTMLHiddenField("adminpassrepeat_changed", "false");
+        $adminpass_hidden = new cHTMLHiddenField('adminpass_changed', 'false');
+        $adminpassrepeat_hidden = new cHTMLHiddenField('adminpassrepeat_changed', 'false');
 
-        $this->_stepTemplateClass->set("s", "LABEL_ADMINPASS", i18n("Administrator password", "setup"));
-        $this->_stepTemplateClass->set("s", "LABEL_ADMINPASSREPEAT", i18n("Administrator password", "setup") . " " . i18n("(repeat)", "setup"));
-        $this->_stepTemplateClass->set("s", "LABEL_ADMINMAIL", i18n("Administrator mail address", "setup"));
+        $this->_stepTemplateClass->set('s', 'LABEL_ADMINPASS', i18n("Administrator password", "setup"));
+        $this->_stepTemplateClass->set('s', 'LABEL_ADMINPASSREPEAT', i18n("Administrator password", "setup") . " " . i18n("(repeat)", "setup"));
+        $this->_stepTemplateClass->set('s', 'LABEL_ADMINMAIL', i18n("Administrator mail address", "setup"));
 
-        $this->_stepTemplateClass->set("s", "INPUT_ADMINPASS", $adminpass->render() . $adminpass_hidden->render());
-        $this->_stepTemplateClass->set("s", "INPUT_ADMINPASSREPEAT", $adminpassrepeat->render() . $adminpassrepeat_hidden->render());
-        $this->_stepTemplateClass->set("s", "INPUT_ADMINMAIL", $adminmail->render());
+        $this->_stepTemplateClass->set('s', 'INPUT_ADMINPASS', $adminpass->render() . $adminpass_hidden->render());
+        $this->_stepTemplateClass->set('s', 'INPUT_ADMINPASSREPEAT', $adminpassrepeat->render() . $adminpassrepeat_hidden->render());
+        $this->_stepTemplateClass->set('s', 'INPUT_ADMINMAIL', $adminmail->render());
 
         $this->setNavigation($previous, $next);
     }
@@ -90,21 +90,21 @@ class cSetupAdminPassword extends cSetupMask
             i18n("You need to enter a mail address.", "setup")
         );
 
-        $link->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '" . $this->_nextstep . "';");
-        $link->attachEventDefinition("submitAttach", "onclick", $checkScript);
+        $link->attachEventDefinition('pageAttach', 'onclick', "document.setupform.step.value = '" . $this->_nextstep . "';");
+        $link->attachEventDefinition('submitAttach', 'onclick', $checkScript);
         // } else {
-        //     $link->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '".$this->_bNextstep."'; document.setupform.submit();");
+        //     $link->attachEventDefinition('pageAttach', 'onclick', "document.setupform.step.value = '".$this->_bNextstep."'; document.setupform.submit();");
         // }
-        $link->setClass("nav");
+        $link->setClass('nav');
         $link->setContent("<span>&raquo;</span>");
-        $this->_stepTemplateClass->set("s", "NEXT", $link->render());
+        $this->_stepTemplateClass->set('s', 'NEXT', $link->render());
 
         $backlink = new cHTMLLink("#");
-        $backlink->attachEventDefinition("pageAttach", "onclick", "document.setupform.step.value = '" . $this->_backstep . "';");
-        $backlink->attachEventDefinition("submitAttach", "onclick", "document.setupform.submit();");
+        $backlink->attachEventDefinition('pageAttach', 'onclick', "document.setupform.step.value = '" . $this->_backstep . "';");
+        $backlink->attachEventDefinition('submitAttach', 'onclick', "document.setupform.submit();");
         $backlink->setClass("nav navBack");
         $backlink->setContent("<span>&raquo;</span>");
-        $this->_stepTemplateClass->set("s", "BACK", $backlink->render());
+        $this->_stepTemplateClass->set('s', 'BACK', $backlink->render());
     }
 
 }

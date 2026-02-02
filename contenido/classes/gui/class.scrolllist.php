@@ -115,10 +115,8 @@ class cGuiScrollList
     /**
      * Constructor to create an instance of this class.
      *
-     * @param bool $defaultStyle [optional]
-     *        use the default style for object initializing?
-     * @param string $action [optional]
-     *        Action (action name) for the link
+     * @param bool $defaultStyle [optional] Use the default style for object initializing?
+     * @param string $action [optional] Action (action name) for the link
      */
     public function __construct(bool $defaultStyle = true, string $action = "")
     {
@@ -128,7 +126,7 @@ class cGuiScrollList
 
         $this->objTable = new cHTMLTable();
         if ($defaultStyle) {
-            $this->objTable->setClass("generic");
+            $this->objTable->setClass('generic');
         }
 
         $this->objHeaderRow = new cHTMLTableRow();
@@ -150,8 +148,7 @@ class cGuiScrollList
      * $obj->setSortable(true);
      *
      * @param int $key
-     * @param bool $sortable
-     *         true or false
+     * @param bool $sortable true or false
      */
     public function setSortable(int $key, bool $sortable)
     {
@@ -163,10 +160,8 @@ class cGuiScrollList
      *
      * $obj->setCustom($key, $custom);
      *
-     * @param string $key
-     *         Custom entry key
-     * @param string $custom
-     *         Custom entry value
+     * @param string $key Custom entry key
+     * @param string $custom Custom entry value
      */
     public function setCustom(string $key, string $custom)
     {
@@ -176,8 +171,7 @@ class cGuiScrollList
     /**
      * Is called when a new row is rendered.
      *
-     * @param int $row
-     *         The current row which is being rendered
+     * @param int $row The current row which is being rendered
      */
     public function onRenderRow(int $row)
     {
@@ -187,8 +181,7 @@ class cGuiScrollList
     /**
      * Is called when a new column is rendered.
      *
-     * @param int|string $column
-     *         The current column which is being rendered
+     * @param int|string $column The current column which is being rendered
      */
     public function onRenderColumn($column)
     {
@@ -200,21 +193,17 @@ class cGuiScrollList
      * Note: This public function eats as many parameters as you specify.
      *
      * Example:
-     * $obj->setHeader("foo", "bar");
+     * $obj->setHeader('foo', 'bar');
      *
      * Make sure that the amount of parameters stays the same for all
      * setData calls in a single object.
      *
-     * @param mixed ...$values
-     *         Additional parameters (data)
-     * @noinspection PhpUnusedParameterInspection
+     * @param mixed ...$arguments Additional parameters (header data)
      */
-    public function setHeader(...$values)
+    public function setHeader(...$arguments)
     {
-        $numArgs = func_num_args();
-
-        for ($i = 0; $i < $numArgs; $i++) {
-            $this->header[$i] = func_get_arg($i);
+        foreach ($arguments as $i => $value) {
+            $this->header[$i] = $value;
         }
     }
 
@@ -230,18 +219,13 @@ class cGuiScrollList
      * setData calls in a single object. Also make sure that your index
      * starts from 0 and ends with the actual number - 1.
      *
-     * @param int $index
-     *         Numeric index
-     * @param mixed ...$values
-     *         Additional parameters (data)
-     * @noinspection PhpUnusedParameterInspection
+     * @param int $index Numeric index
+     * @param mixed ...$values Additional parameters (data)
      */
     public function setData(int $index, ...$values)
     {
-        $numArgs = func_num_args();
-
-        for ($i = 1; $i < $numArgs; $i++) {
-            $this->data[$index][$i] = func_get_arg($i);
+        foreach ($values as $i => $value) {
+            $this->data[$index][$i + 1] = $value;
         }
     }
 
@@ -257,26 +241,20 @@ class cGuiScrollList
      * setData calls in a single object. Also make sure that your index
      * starts from 0 and ends with the actual number - 1.
      *
-     * @param int $index
-     *         Numeric index
-     * @param mixed ...$values
-     *         Additional parameters (data)
-     * @noinspection PhpUnusedParameterInspection
+     * @param int $index Numeric index
+     * @param mixed ...$values Additional parameters (data)
      */
     public function setHiddenData(int $index, ...$values)
     {
-        $numArgs = func_num_args();
-
-        for ($i = 1; $i < $numArgs; $i++) {
-            $this->data[$index]["hiddendata"][$i] = func_get_arg($i);
+        foreach ($values as $i => $value) {
+            $this->data[$index]['hiddendata'][$i + 1] = $value;
         }
     }
 
     /**
      * Sets the number of records per page.
      *
-     * @param int $resultsPerPage
-     *         Amount of records per page
+     * @param int $resultsPerPage Amount of records per page
      */
     public function setResultsPerPage(int $resultsPerPage)
     {
@@ -286,8 +264,7 @@ class cGuiScrollList
     /**
      * Sets the starting page number.
      *
-     * @param int $listStart
-     *         Page number on which the list display starts
+     * @param int $listStart Page number on which the list display starts
      */
     public function setListStart(int $listStart)
     {
@@ -297,8 +274,7 @@ class cGuiScrollList
     /**
      * Returns the current page.
      *
-     * @return int
-     *         Current page number
+     * @return int Current page number
      */
     public function getCurrentPage(): int
     {
@@ -312,8 +288,7 @@ class cGuiScrollList
     /**
      * Returns the amount of pages.
      *
-     * @return int
-     *         Amount of pages
+     * @return int Amount of pages
      */
     public function getNumPages(): int
     {
@@ -323,10 +298,8 @@ class cGuiScrollList
     /**
      * Sorts the list by a given field and a given order.
      *
-     * @param int $field
-     *         Field index
-     * @param string $order
-     *         'ASC' or 'DESC'
+     * @param int $field Field index
+     * @param string $order 'ASC' or 'DESC'
      */
     public function sort(int $field, string $order = 'ASC')
     {
@@ -341,12 +314,9 @@ class cGuiScrollList
      * Field converting facility.
      * Needs to be overridden in the child class to work properly.
      *
-     * @param int $field
-     *         Field index
-     * @param string|mixed $value
-     *         Field value
+     * @param int $field Field index
+     * @param string|mixed $value Field value
      * @param array $hiddenData
-     * @return string
      */
     public function convert(int $field, $value, array $hiddenData): string
     {
@@ -356,9 +326,7 @@ class cGuiScrollList
     /**
      * Outputs or optionally returns.
      *
-     * @param bool $return [optional]
-     *         If true, returns the list
-     * @return string|void
+     * @return ?string
      */
     public function render(bool $return = true)
     {
@@ -374,12 +342,12 @@ class cGuiScrollList
             if (is_array($this->sortable)) {
                 if (array_key_exists($key, $this->sortable) && $this->sortable[$key]) {
                     $this->sortlink->setContent($value);
-                    $this->sortlink->setCustom("sortby", $key);
+                    $this->sortlink->setCustom('sortby', $key);
 
                     if ($this->sortkey == $key && $this->sortmode == SORT_ASC) {
-                        $this->sortlink->setCustom("sortmode", "DESC");
+                        $this->sortlink->setCustom('sortmode', 'DESC');
                     } else {
-                        $this->sortlink->setCustom("sortmode", "ASC");
+                        $this->sortlink->setCustom('sortmode', 'ASC');
                     }
 
                     $this->objHeaderItem->setContent($this->sortlink->render());
@@ -425,7 +393,7 @@ class cGuiScrollList
                 $this->onRenderColumn($key);
 
                 if ($key != "hiddendata") {
-                    $hiddendata = !empty($this->data[$i - 1]["hiddendata"]) && is_array($this->data[$i - 1]["hiddendata"]) ? $this->data[$i - 1]["hiddendata"] : [];
+                    $hiddendata = !empty($this->data[$i - 1]['hiddendata']) && is_array($this->data[$i - 1]['hiddendata']) ? $this->data[$i - 1]['hiddendata'] : [];
 
                     $this->objItem->setContent($this->convert($key, $value, $hiddendata));
                     $items .= $this->objItem->render();
@@ -447,6 +415,7 @@ class cGuiScrollList
             return $output;
         } else {
             echo $output;
+            return null;
         }
     }
 

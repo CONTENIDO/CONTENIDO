@@ -14,5 +14,11 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cTemplate $tpl
+ */
+
+$cfg = cRegistry::getConfig();
+
 $tpl->set('s', 'CONTENTS', '');
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['blank']);

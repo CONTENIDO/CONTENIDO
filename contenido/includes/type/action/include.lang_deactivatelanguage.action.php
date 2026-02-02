@@ -14,9 +14,19 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if ($perm->have_perm_area_action("lang", "lang_deactivatelanguage") || $perm->have_perm_area_action_item("lang", "lang_deactivatelanguage", $idlang)) {
+/**
+ * @var cGuiNotification $notification
+ * @var int $idlang
+ */
+
+$perm = cRegistry::getPerm();
+
+if (
+    $perm->have_perm_area_action('lang', 'lang_deactivatelanguage')
+    || $perm->have_perm_area_action_item('lang', 'lang_deactivatelanguage', $idlang)
+) {
     cInclude('includes', 'functions.lang.php');
     langActivateDeactivateLanguage($idlang, 0);
 } else {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
 }

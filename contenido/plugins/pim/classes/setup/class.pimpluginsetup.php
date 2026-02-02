@@ -23,35 +23,46 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class PimPluginSetup
 {
+    /** @var int */
+    public const MODE_EXTRACTED = 1;
+    /** @var int */
+    public const MODE_UPLOADED = 2;
+    /** @var int */
+    public const MODE_UNINSTALL = 3;
+    /** @var int */
+    public const MODE_UPDATE = 4;
 
-    /**
-     * File name of Xml configuration file for plugins
-     */
-    const PLUGIN_XML_FILENAME = "plugin.xml";
+    /** @var int[] */
+    protected const SUPPORTED_MODES = [
+        self::MODE_EXTRACTED,
+        self::MODE_UPLOADED,
+        self::MODE_UNINSTALL,
+        self::MODE_UPDATE,
+    ];
 
     /**
      * Specific sql prefix for plugins
      */
-    const PLUGIN_SQL_PREFIX = '!PLUGIN_PREFIX!';
+    public const PLUGIN_SQL_PREFIX = '!PLUGIN_PREFIX!';
 
     /**
      * PimPluginCollection instance
      *
      * @var PimPluginCollection
      */
-    protected $_pimPluginCollection;
+    protected $pimPluginCollection;
 
     /**
      * PimPluginRelationsCollection instance
      *
      * @var PimPluginRelationsCollection
      */
-    protected $_pimPluginRelationsCollection;
+    protected $pimPluginRelationsCollection;
 
     /**
      * Initializing variables
-     * Variable for installation / update mode:
-     * Extracted or uploaded file?
+     * Variable for installation / update mode, extracted or uploaded file?
+     * See also {@see self::SUPPORTED_MODES} constants.
      *
      * @var int
      */
@@ -60,12 +71,12 @@ class PimPluginSetup
     /**
      * @var cGuiPage
      */
-    protected static $_GuiPage;
+    protected static $guiPage;
 
     /**
      * @var PimPluginArchiveExtractor
      */
-    protected static $_PimPluginArchiveExtractor;
+    protected static $pimPluginArchiveExtractor;
 
     /**
      * Help variable.
@@ -74,139 +85,123 @@ class PimPluginSetup
      *
      * @var bool
      */
-    private static $_updateSqlFileExist = false;
+    private static $updateSqlFileExist = false;
 
     /**
-     * Xml variables
+     * XML variables
      * General information of plugin
      *
      * @var SimpleXMLElement
      */
-    public static $XmlGeneral;
+    public static $xmlGeneral;
 
     /**
      * Plugin requirements
      *
      * @var SimpleXMLElement
      */
-    public static $XmlRequirements;
+    public static $xmlRequirements;
 
     /**
      * Plugin dependencies
      *
      * @var SimpleXMLElement
      */
-    public static $XmlDependencies;
+    public static $xmlDependencies;
 
     /**
      * CONTENIDO areas: *_area
      *
      * @var SimpleXMLElement
      */
-    public static $XmlArea;
+    public static $xmlArea;
 
     /**
      * CONTENIDO actions: *_actions
      *
      * @var SimpleXMLElement
      */
-    public static $XmlActions;
+    public static $xmlActions;
 
     /**
      * CONTENIDO frames: *_frame_files and *_files
      *
      * @var SimpleXMLElement
      */
-    public static $XmlFrames;
+    public static $xmlFrames;
 
     /**
      * CONTENIDO main navigations: *_nav_main
      *
      * @var SimpleXMLElement
      */
-    public static $XmlNavMain;
+    public static $xmlNavMain;
 
     /**
      * CONTENIDO sub navigations: *_nav_sub
      *
      * @var SimpleXMLElement
      */
-    public static $XmlNavSub;
+    public static $xmlNavSub;
 
     /**
      * CONTENIDO content types: *_type
      *
      * @var SimpleXMLElement
      */
-    public static $XmlContentType;
+    public static $xmlContentType;
 
     /**
      * Id of selected/new plugin
      *
      * @var int
      */
-    protected static $_pluginId = 0;
+    protected static $pluginId = 0;
 
     /**
      * Name of selected plugin
      *
      * @var string
      */
-    protected static $_pluginName;
+    protected static $pluginName = '';
 
     public function __construct()
     {
-        $this->_setPimPluginCollection();
-        $this->_setPimPluginRelationsCollection();
+        $this->setPimPluginCollection(new PimPluginCollection());
+        $this->setPimPluginRelationsCollection(new PimPluginRelationsCollection());
     }
 
-    // GET and SET methods for installation routine
+    // GET and SET methods for the installation routine
 
     /**
-     * Set method for installation / update mode
-     * Mode 1: Plugin is already extracted
-     * Mode 2: Plugin is uploaded
+     * Setter method for installation / update mode, see also {@see self::SUPPORTED_MODES} constants.
      *
-     * @param string $mode
+     * - Mode 1: Plugin is already extracted
+     * - Mode 2: Plugin is uploaded
+     * - Mode 3: Plugin is uninstalled
+     * - Mode 4: Plugin is updated
      */
-    public static function setMode($mode)
+    public static function setMode(int $mode)
     {
-        switch ($mode) {
-            case 'extracted':
-                self::$mode = 1;
-                break;
-            case 'uploaded':
-                self::$mode = 2;
-                break;
-            case 'uninstall':
-                self::$mode = 3;
-                break;
-            case 'update':
-                self::$mode = 4;
-                break;
+        if (in_array($mode, self::SUPPORTED_MODES)) {
+            self::$mode = $mode;
         }
     }
 
     /**
-     * Set method for cGuiPage class
-     *
-     * @param cGuiPage $page
-     *
-     * @return cGuiPage
+     * Setter method for cGuiPage class
      */
-    public function setPageClass($page)
+    public function setPageClass(cGuiPage $page)
     {
-        return self::$_GuiPage = $page;
+        self::$guiPage = $page;
     }
 
     /**
-     * Set method to change updateSqlFileExist variable
-     *
-     * @param bool $value
+     * Setter method to change updateSqlFileExist variable
      */
-    protected function _setUpdateSqlFileExist($value)
+    protected function setUpdateSqlFileExist(bool $value)
     {
-        self::$_updateSqlFileExist = cSecurity::toBoolean($value);
+        self::$updateSqlFileExist = $value;
     }
 
     /**
@@ -214,140 +209,125 @@ class PimPluginSetup
      *
      * @param string $tempArchiveNewPath Path to Zip archive
      * @param string $tempArchiveName Name of Zip archive
-     * @return PimPluginArchiveExtractor
      * @throws cException
      */
-    protected static function _setPimPluginArchiveExtractor($tempArchiveNewPath, $tempArchiveName)
+    protected static function setPimPluginArchiveExtractor(string $tempArchiveNewPath, string $tempArchiveName)
     {
-        return self::$_PimPluginArchiveExtractor = new PimPluginArchiveExtractor($tempArchiveNewPath, $tempArchiveName);
+        self::$pimPluginArchiveExtractor = new PimPluginArchiveExtractor($tempArchiveNewPath, $tempArchiveName);
     }
 
     /**
      * Set temporary xml content to static variables
-     *
-     * @param SimpleXMLElement $xml
      */
-    private function _setXml($xml)
+    private function setXml(SimpleXMLElement $xml)
     {
         // General plugin information
-        self::$XmlGeneral = $xml->general;
+        self::$xmlGeneral = $xml->general;
 
         // Plugin requirements
-        self::$XmlRequirements = $xml->requirements;
+        self::$xmlRequirements = $xml->requirements;
 
         // Plugin dependencies
-        self::$XmlDependencies = $xml->dependencies;
+        self::$xmlDependencies = $xml->dependencies;
 
         // CONTENIDO areas: *_area
-        self::$XmlArea = $xml->contenido->areas;
+        self::$xmlArea = $xml->contenido->areas;
 
         // CONTENIDO actions: *_actions
-        self::$XmlActions = $xml->contenido->actions;
+        self::$xmlActions = $xml->contenido->actions;
 
         // CONTENIDO frames: *_frame_files and *_files
-        self::$XmlFrames = $xml->contenido->frames;
+        self::$xmlFrames = $xml->contenido->frames;
 
         // CONTENIDO main navigations: *_nav_main
-        self::$XmlNavMain = $xml->contenido->nav_main;
+        self::$xmlNavMain = $xml->contenido->nav_main;
 
         // CONTENIDO sub navigations: *_nav_sub
-        self::$XmlNavSub = $xml->contenido->nav_sub;
+        self::$xmlNavSub = $xml->contenido->nav_sub;
 
         // CONTENIDO Content Types: *_type
-        self::$XmlContentType = $xml->content_types;
+        self::$xmlContentType = $xml->content_types;
     }
 
     /**
-     * Set method for PluginId
-     *
-     * @param int $pluginId
-     *
-     * @return int
+     * Setter method for PluginId
      */
-    public function setPluginId($pluginId = 0)
+    public function setPluginId(int $pluginId = 0)
     {
-        return self::$_pluginId = $pluginId;
+        self::$pluginId = $pluginId;
     }
 
     /**
-     * Set method for PluginName
-     *
-     * @param string $pluginName
-     *
-     * @return string
+     * Setter method for PluginName
      */
-    public function setPluginName($pluginName = '')
+    public function setPluginName(string $pluginName = '')
     {
-        return self::$_pluginName = $pluginName;
+        self::$pluginName = $pluginName;
     }
 
     /**
-     * Get method for installation / update mode
-     *
-     * @return int
+     * Getter method for installation / update mode.
      */
-    public static function getMode()
+    public static function getMode(): int
     {
         return self::$mode;
     }
 
     /**
-     * Get method for PluginId
-     *
-     * @return int
+     * Getter method for PluginId
      */
-    protected static function _getPluginId()
+    protected static function getPluginId(): int
     {
-        return self::$_pluginId;
+        return self::$pluginId;
     }
 
     /**
-     * Get methos for PluginName
-     *
-     * @return string
+     * Getter method for PluginName
      */
-    protected static function _getPluginName()
+    protected static function getPluginName(): string
     {
-        return self::$_pluginName;
+        return self::$pluginName;
     }
 
     /**
-     * Set method for updateSqlFileExist variable
-     *
-     * @return bool
+     * Getter method for updateSqlFileExist variable
      */
-    protected function _getUpdateSqlFileExist()
+    protected function getUpdateSqlFileExist(): bool
     {
-        return self::$_updateSqlFileExist;
+        return self::$updateSqlFileExist;
     }
 
     // Help methods
 
     /**
-     * checkXml
-     * Load plugin data and run Xml checks
+     * Load plugin data and run XML checks
      *
      * @throws cException
      */
-    public function checkXml()
+    public function checkXml(): bool
     {
         $cfg = cRegistry::getConfig();
 
         if (self::getMode() == 1) { // Plugin is already extracted
-            $XmlData = file_get_contents(cRegistry::getBackendPath() . $cfg['path']['plugins'] . cSecurity::escapeString($_GET['pluginFoldername']) . DIRECTORY_SEPARATOR . self::PLUGIN_XML_FILENAME);
+            $xmlData = file_get_contents(PimPluginHelper::getPluginConfigFile(
+                cSecurity::escapeString($_GET['pluginFoldername']))
+            );
         } elseif (self::getMode() == 2 || self::getMode() == 4) {
             // Plugin is uploaded / Update mode
 
             // Path to CONTENIDO temp dir
-            $tempArchiveNewPath = $cfg['path']['frontend'] . DIRECTORY_SEPARATOR . $cfg['path']['temp'];
+            $tempArchiveNewPath = $cfg['path']['frontend'] . '/' . $cfg['path']['temp'];
 
-            // Check if temp directory exists, otherwise try to create it
+            // Check if the temp directory exists, otherwise try to create it
             if (!cDirHandler::exists($tempArchiveNewPath)) {
                 $success = cDirHandler::create($tempArchiveNewPath);
 
-                // If PIM can not create a temporary directory (if it does not exist), throw an error message
+                // If PIM cannot create a temporary directory (if it does not exist), throw an error message
                 if (!$success) {
-                    self::error(sprintf(i18n('Plugin Manager could not find a temporary CONTENIDO directory. Also, it is not possible to create a temporary directory at <em>%s</em>. You have to create it manually.', 'pim'), $tempArchiveNewPath));
+                    self::error(sprintf(
+                        i18n('Plugin Manager could not find a temporary CONTENIDO directory. Also, it is not possible to create a temporary directory at <em>%s</em>. You have to create it manually.', 'pim'),
+                        $tempArchiveNewPath
+                    ));
                     return false;
                 }
             }
@@ -365,23 +345,26 @@ class PimPluginSetup
 
             // Initializing plugin archive extractor
             try {
-                self::_setPimPluginArchiveExtractor($tempArchiveNewPath, $tempArchiveName);
+                self::setPimPluginArchiveExtractor($tempArchiveNewPath, $tempArchiveName);
             } catch (cException $e) {
-                if (self::$_PimPluginArchiveExtractor instanceof PimPluginArchiveExtractor) {
-                    self::$_PimPluginArchiveExtractor->destroyTempFiles();
+                if (self::$pimPluginArchiveExtractor instanceof PimPluginArchiveExtractor) {
+                    self::$pimPluginArchiveExtractor->destroyTempFiles();
                 }
                 cLogError($e->getMessage());
-                self::error(sprintf(i18n('Plugin Manager could not open the archive file <em>%s</em>. See logs fore more details.', 'pim'), $tempArchiveName));
+                self::error(sprintf(
+                    i18n('Plugin Manager could not open the archive file <em>%s</em>. See logs fore more details.', 'pim'),
+                    $tempArchiveName
+                ));
                 return false;
             }
 
             // Get plugin.xml information
-            $XmlData = self::$_PimPluginArchiveExtractor->extractArchiveFileToVariable(self::PLUGIN_XML_FILENAME);
+            $xmlData = self::$pimPluginArchiveExtractor->extractArchiveFileToVariable(PimPluginHelper::PLUGIN_CONFIG_FILENAME);
         }
 
         // Check and set plugin.xml
-        if ($this->validXml($XmlData) === true) {
-            $this->_setXml(simplexml_load_string($XmlData));
+        if (isset($xmlData) && $this->validXml($xmlData) === true) {
+            $this->setXml(simplexml_load_string($xmlData));
         } else {
             self::error(i18n('Invalid Xml document. Please contact the plugin author.', 'pim'));
             return false;
@@ -395,37 +378,32 @@ class PimPluginSetup
      * Global function for uninstall and status mode
      * Install mode uses an own dependencies function
      *
-     * @return bool
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function checkDependencies()
+    public function checkDependencies(): bool
     {
         // Initializing
-        $cfg = cRegistry::getConfig();
-        $pluginsDir = cRegistry::getBackendPath() . $cfg['path']['plugins'];
+        $pluginsDir = PimPluginHelper::getPluginsFolderPath();
 
         // Get uuid from plugin to uninstall
-        $this->_pimPluginCollection->setWhere('idplugin', self::_getPluginId());
-        $this->_pimPluginCollection->query();
-        $pimPluginSql = $this->_pimPluginCollection->next();
+        $this->pimPluginCollection->setWhere('idplugin', self::getPluginId());
+        $this->pimPluginCollection->query();
+        $pimPluginSql = $this->pimPluginCollection->next();
         $uuidUninstall = $pimPluginSql->get('uuid');
 
         // Reset query, so we can use PimPluginCollection later again...
-        $this->_pimPluginCollection->resetQuery();
+        $this->pimPluginCollection->resetQuery();
 
         // Read all dirs
         $dirs = cDirHandler::read($pluginsDir);
-        foreach ($dirs as $dirname) {
+        foreach ($dirs as $folderName) {
             // Skip plugin if it has no plugin.xml file
-            if (!cFileHandler::exists($pluginsDir . $dirname . DIRECTORY_SEPARATOR . self::PLUGIN_XML_FILENAME)) {
+            if (!cFileHandler::exists(PimPluginHelper::getPluginConfigFile($folderName))) {
                 continue;
             }
 
             // Read plugin.xml files from existing plugins at contenido/plugins dir
-            $tempXmlContent = cFileHandler::read($pluginsDir . $dirname . DIRECTORY_SEPARATOR . self::PLUGIN_XML_FILENAME);
+            $tempXmlContent = cFileHandler::read(PimPluginHelper::getPluginConfigFile($folderName));
 
             // Write plugin.xml content into temporary variable
             $tempXml = simplexml_load_string($tempXmlContent);
@@ -436,7 +414,7 @@ class PimPluginSetup
                 $depend = cSecurity::escapeString($tempXml->dependencies->depend[$i]);
 
                 // If is no dependencies name defined please go to next dependencies
-                if ($depend == "") {
+                if ($depend == '') {
                     continue;
                 }
 
@@ -452,12 +430,12 @@ class PimPluginSetup
                 // Return false if uuid from plugin to uninstall and depended on plugin is the same
                 // AND depended on plugin is active
                 if ($uuidTemp === $uuidUninstall) {
-                    $this->_pimPluginCollection->setWhere('uuid', $tempXml->general->uuid);
-                    $this->_pimPluginCollection->setWhere('active', '1');
-                    $this->_pimPluginCollection->query();
+                    $this->pimPluginCollection->setWhere('uuid', $tempXml->general->uuid);
+                    $this->pimPluginCollection->setWhere('active', '1');
+                    $this->pimPluginCollection->query();
 
-                    if ($this->_pimPluginCollection->count() != 0) {
-                        self::setPluginName($tempXml->general->plugin_name);
+                    if ($this->pimPluginCollection->count() != 0) {
+                        self::setPluginName(cSecurity::toString($tempXml->general->plugin_name));
                         return false;
                     }
                 }
@@ -470,10 +448,9 @@ class PimPluginSetup
     /**
      * Check file type, Plugin Manager accepts only Zip archives
      *
-     * @return bool
      * @throws cException
      */
-    private function checkZip()
+    private function checkZip(): bool
     {
         if (cString::getPartOfString($_FILES['package']['name'], -4) != ".zip") {
             self::error(i18n('Plugin Manager accepts only Zip archives', 'pim'));
@@ -485,36 +462,31 @@ class PimPluginSetup
     /**
      * Validate Xml source
      * @param string $xml
-     * @return bool
      */
-    private function validXml($xml)
+    private function validXml(string $xml): bool
     {
         // Initializing PHP DomDocument class
         $dom = new DomDocument();
         $dom->loadXML($xml);
 
         // Validate
-        if ($dom->schemaValidate('plugins' . DIRECTORY_SEPARATOR . 'pim' . DIRECTORY_SEPARATOR . 'xml' . DIRECTORY_SEPARATOR . 'plugin_info.xsd')) {
-            return true;
-        } else {
-            return false;
-        }
+        return $dom->schemaValidate('plugins/pim/xml/plugin_info.xsd');
     }
 
     /**
      * Initialize and set variable for PimPluginCollection class
      */
-    private function _setPimPluginCollection()
+    private function setPimPluginCollection(PimPluginCollection $pimPluginCollection)
     {
-        $this->_pimPluginCollection = new PimPluginCollection();
+        $this->pimPluginCollection = $pimPluginCollection;
     }
 
     /**
      * Initialize and set variable for PimPluginRelationsCollection class
      */
-    private function _setPimPluginRelationsCollection()
+    private function setPimPluginRelationsCollection(PimPluginRelationsCollection $pimPluginRelationsCollection)
     {
-        $this->_pimPluginRelationsCollection = new PimPluginRelationsCollection();
+        $this->pimPluginRelationsCollection = $pimPluginRelationsCollection;
     }
 
     /**
@@ -524,10 +496,9 @@ class PimPluginSetup
      * @param string $file The plugin setup SQL file (full path).
      * @param string $pattern The pattern to match for found SQL to execute.
      * @return bool True on success otherwise false.
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
-    protected function _processSetupSql(string $file, string $pattern): bool
+    protected function processSetupSql(string $file, string $pattern): bool
     {
         // Skip using plugin sql if it does not exist
         if (empty($file) || !cFileHandler::exists($file)) {
@@ -562,20 +533,17 @@ class PimPluginSetup
     /**
      * Error function with pim_error-Template
      *
-     * @param string $message
-     *
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cException|cInvalidArgumentException
      */
-    protected static function error($message = '')
+    protected static function error(string $message = '')
     {
         // Get session variable
         $session = cRegistry::getSession();
 
         // Destroy temporary files if plugin is uploaded
         if (self::getMode() == 2) {
-            if (self::$_PimPluginArchiveExtractor instanceof PimPluginArchiveExtractor) {
-                self::$_PimPluginArchiveExtractor->destroyTempFiles();
+            if (self::$pimPluginArchiveExtractor instanceof PimPluginArchiveExtractor) {
+                self::$pimPluginArchiveExtractor->destroyTempFiles();
             }
         }
 
@@ -589,13 +557,13 @@ class PimPluginSetup
     }
 
     /**
-     * Info function, used displayOk CONTENIDO method
+     * Info function, passes the message to the GUI pages' displayOk function.
      *
      * @param string $message
      */
-    protected static function info($message = '')
+    protected static function info(string $message = '')
     {
-        self::$_GuiPage->displayOk($message);
+        self::$guiPage->displayOk($message);
     }
 
 }

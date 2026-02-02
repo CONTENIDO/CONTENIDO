@@ -20,7 +20,7 @@ if (!defined('CON_FRAMEWORK')) {
 global $cfg;
 
 // CONTENIDO path
-$contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/';
+$contenidoPath = str_replace('\\', '/', realpath(__DIR__ . '/../')) . '/';
 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
@@ -38,62 +38,69 @@ $workflowArtAllocations->select();
 
 while ($obj = $workflowArtAllocations->next()) {
     $startTime = $obj->get('starttime');
-    $idArtLang = $obj->get('idartlang');
-    $lastIdUserSequence = $obj->get('lastusersequence');
+    $articleLanguageId = $obj->get('idartlang');
+    $lastUserSequenceId = $obj->get('lastusersequence');
 
-    $userSequence = getCurrentUserSequence($idArtLang, 0);
+    $userSequence = piwf_getCurrentUserSequence($articleLanguageId, 0);
     if (false === $userSequence) {
         continue;
     }
 
-    if ($userSequence != $lastIdUserSequence) {
-        $workflowUserSequences->select('idusersequence=' . $userSequence);
+    if ($userSequence != $lastUserSequenceId) {
+        $workflowUserSequences->select('`idusersequence` = ' . $userSequence);
 
-        if ($wfObj = $workflowUserSequences->next()) {
-            $idWorkflowItem = (int) $wfObj->get('idworkflowitem');
-            $pos = (int) $wfObj->get('position');
-            $timeUnit = $wfObj->get('timeunit');
-            $timeLimit = $wfObj->get('timelimit');
-        } else {
+        if (($wfObj = $workflowUserSequences->next()) === false) {
+            cWarning("Could not load workflow user sequence '$userSequence'.");
             continue;
         }
 
+        $wfObj = $workflowUserSequences->next();
+        $workflowItemId = cSecurity::toInteger($wfObj->get('idworkflowitem'));
+        $pos = cSecurity::toInteger($wfObj->get('position'));
+        $timeUnit = $wfObj->get('timeunit');
+        $timeLimit = cSecurity::toInteger($wfObj->get('timelimit'));
+
         $startTime = strtotime(
-            substr_replace(cString::getPartOfString(cString::getPartOfString($startTime, 0, 2)
-            . chunk_split(cString::getPartOfString($startTime, 2, 6), 2, '-')
-            . chunk_split(cString::getPartOfString($startTime, 8), 2, ':'), 0, 19), ' ', 10, 1)
+            substr_replace(
+                cString::getPartOfString(cString::getPartOfString($startTime, 0, 2)
+                    . chunk_split(cString::getPartOfString($startTime, 2, 6), 2, '-')
+                    . chunk_split(cString::getPartOfString($startTime, 8), 2, ':'), 0, 19),
+                ' ',
+                10,
+                1
+            )
         );
 
+        // TODO Code is redundant with contenido/plugins/workflow/classes/class.workflowartallocation.php
         switch ($timeUnit) {
             case 'Seconds':
-                $maxTme = $startTime + $timeLimit;
+                $maxTime = $startTime + $timeLimit;
                 break;
             case 'Minutes':
-                $maxTme = $startTime + ($timeLimit * 60);
+                $maxTime = $startTime + ($timeLimit * 60);
                 break;
             case 'Hours':
-                $maxTme = $startTime + ($timeLimit * 3600);
+                $maxTime = $startTime + ($timeLimit * 3600);
                 break;
             case 'Days':
-                $maxTme = $startTime + ($timeLimit * 86400);
+                $maxTime = $startTime + ($timeLimit * 86400);
                 break;
             case 'Weeks':
-                $maxTme = $startTime + ($timeLimit * 604800);
+                $maxTime = $startTime + ($timeLimit * 604800);
                 break;
             case 'Months':
-                $maxTme = $startTime + ($timeLimit * 2678400);
+                $maxTime = $startTime + ($timeLimit * 2678400);
                 break;
             case 'Years':
-                $maxTme = $startTime + ($timeLimit * 31536000);
+                $maxTime = $startTime + ($timeLimit * 31536000);
                 break;
             default:
-                $maxTme = $startTime + $timeLimit;
+                $maxTime = $startTime + $timeLimit;
         }
 
-        if ($maxTme < time()) {
+        if ($maxTime < time()) {
             $pos = $pos + 1;
-            $workflowUserSequences->select('idworkflowitem=' . $idWorkflowItem . ' AND position=' . $pos);
-
+            $workflowUserSequences->select("`idworkflowitem` = '$workflowItemId' AND `position` = $pos");
             if ($wfObj = $workflowUserSequences->next()) {
                 $obj->set('idusersequence', $wfObj->get('idusersequence'));
                 $obj->store();

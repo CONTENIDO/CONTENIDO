@@ -30,94 +30,65 @@ abstract class cItemBaseAbstract extends cGenericDb
 {
 
     /**
-     * Database instance, contains the database object
-     *
-     * @var cDb
+     * @var cDb Database instance, contains the database object
      */
     protected $db;
 
     /**
-     * Second DB instance, is required for some additional queries without
-     * losing a current existing query result.
-     *
-     * @var cDb
+     * @var cDb Second DB instance, is required for some additional queries without
+     *     losing a current existing query result.
      */
     protected $secondDb;
 
     /**
-     * Property collection instance
-     *
-     * @var cApiPropertyCollection
+     * @var cApiPropertyCollection Property collection instance
      */
     protected $properties;
 
     /**
-     * Item cache instance
-     *
-     * @var cItemCache
+     * @var cItemCache Item cache instance
      */
     protected $_oCache;
 
     /**
-     * GenericDB settings, see $cfg['sql']
-     *
-     * @var array
+     * @var array GenericDB settings, see `$cfg['sql']`
      */
     protected $_settings;
 
     /**
-     * Storage of the source table to use for the information
-     *
-     * @var string
+     * @var string Storage of the source table to use for the information
      */
     protected $table;
 
     /**
-     * Setting of primaryKey name (deprecated)
-     *
-     * @deprecated [2015-05-04]
-     *         Class variable primaryKey is deprecated, use getPrimaryKeyName() instead
-     * @var string
+     * @deprecated [2015-05-04] Class variable primaryKey is deprecated, use getPrimaryKeyName() instead
+     * @var string Setting of primaryKey name (deprecated)
      */
     private $primaryKey;
 
     /**
-     * Storage of the primary key name
-     *
-     * @var string
+     * @var string Storage of the primary key name
      */
     protected $_primaryKeyName;
 
     /**
-     * Checks for the virginity of created objects.
-     * If true, the object
-     * is virgin and no operations on it except load-functions are allowed.
-     *
-     * @deprecated [2015-05-05]
-     *         Class variable virgin is deprecated, use negated result of isLoaded() instead
+     * @deprecated [2015-05-05] Class variable virgin is deprecated, use negated result of isLoaded() instead
      * @var bool
      */
     private $virgin = true;
 
     /**
-     * Checks if an object is loaded
-     * If it is true an object is loaded
-     * If it is false then no object is loaded and only load-functions are allowed to be used
      * @var bool
      */
     protected $_loaded = false;
 
     /**
-     * Storage of the last occurred error
-     *
-     * @var string
+     * @var string Storage of the last occurred error
      */
     protected $lasterror = '';
 
     /**
-     * Classname of current instance
-     *
-     * @var string
+     * @var string Classname of current instance
      */
     protected $_className;
 
@@ -126,41 +97,39 @@ abstract class cItemBaseAbstract extends cGenericDb
      *
      * Sets some common properties.
      *
-     * @param string $sTable
-     *         Name of table
-     * @param string $sPrimaryKey
-     *         Primary key of table
-     * @param string $sClassName
-     *         Name of parent class
-     * @throws cInvalidArgumentException
-     *         If table name or primary key is not set
+     * @param string $table Name of table
+     * @param string $primaryKey Primary key of table
+     * @param string $className Name of parent class
+     * @throws cInvalidArgumentException If table name or primary key is not set
      */
-    protected function __construct($sTable, $sPrimaryKey, $sClassName)
+    protected function __construct($table, $primaryKey, $className)
     {
         $cfg = cRegistry::getConfig();
-        $sTable = cSecurity::toString($sTable);
-        $sPrimaryKey = cSecurity::toString($sPrimaryKey);
-        $sClassName = cSecurity::toString($sClassName);
+        $table = cSecurity::toString($table);
+        $primaryKey = cSecurity::toString($primaryKey);
+        $className = cSecurity::toString($className);
 
         $this->db = cRegistry::getDb();
 
-        if ($sTable == '') {
-            $sMsg = "$sClassName: No table specified. Inherited classes *need* to set a table";
-            throw new cInvalidArgumentException($sMsg);
-        } elseif ($sPrimaryKey == '') {
-            $sMsg = "No primary key specified. Inherited classes *need* to set a primary key";
-            throw new cInvalidArgumentException($sMsg);
+        if ($table == '') {
+            throw new cInvalidArgumentException(sprintf(
+                '%s: No table specified. Inherited classes *need* to set a table',
+                $className
+            ));
+        } elseif ($primaryKey == '') {
+            throw new cInvalidArgumentException(
+                'No primary key specified. Inherited classes *need* to set a primary key'
+            );
         }
 
         $this->_settings = $cfg['sql'];
 
         // instantiate caching
-        $aCacheOpt = $this->_settings['cache'] ?? [];
-        $this->_oCache = cItemCache::getInstance($sTable, $aCacheOpt);
+        $this->_oCache = cItemCache::getInstance($table, $this->_settings['cache'] ?? []);
 
-        $this->table = $sTable;
-        static::_setPrimaryKeyName($sPrimaryKey);
-        $this->_className = $sClassName;
+        $this->table = $table;
+        static::_setPrimaryKeyName($primaryKey);
+        $this->_className = $className;
     }
 
     /**
@@ -177,14 +146,12 @@ abstract class cItemBaseAbstract extends cGenericDb
     /**
      * Escape string for using in SQL-Statement.
      *
-     * @param string $sString
-     *         The string to escape
-     * @return string
-     *         Escaped string
+     * @param string|mixed $string The string to escape
+     * @return string|mixed Escaped string
      */
-    public function escape($sString)
+    public function escape($string)
     {
-        return $this->db->escape($sString);
+        return $this->db->escape($string);
     }
 
     /**
@@ -193,7 +160,7 @@ abstract class cItemBaseAbstract extends cGenericDb
      * If it is false then no object is loaded and only load-functions are allowed to be used
      * @return bool Whether an object has been loaded
      */
-    public function isLoaded()
+    public function isLoaded(): bool
     {
         return (bool)$this->_loaded;
     }
@@ -203,42 +170,39 @@ abstract class cItemBaseAbstract extends cGenericDb
      * If it is true an object is loaded
      * If it is false then no object is loaded and only load-functions are allowed to be used
      *
-     * @param bool $value
-     *         Whether an object is loaded
+     * @param bool $loaded Whether an object is loaded
      */
-    protected function _setLoaded($value)
+    protected function _setLoaded(bool $loaded)
     {
-        $this->_loaded = (bool)$value;
+        $this->_loaded = $loaded;
     }
 
     /**
      * Magic getter function for deprecated variables primaryKey and virgin
      * This function will be removed when the variables are no longer supported
      *
-     * @param string $name
-     *         Name of the variable that should be accessed
-     * @return mixed|void
+     * @param string $name Name of the variable that should be accessed
+     * @return mixed|null
      */
-    public function __get($name)
+    public function __get(string $name)
     {
-        if ('primaryKey' === $name) {
+        if ($name === 'primaryKey') {
             return static::getPrimaryKeyName();
-        }
-        if ('virgin' === $name) {
+        } elseif ($name === 'virgin') {
             return !static::isLoaded();
         }
+
+        return null;
     }
 
     /**
      * Magic setter function for deprecated variables primaryKey and virgin
      * This function will be removed when the variables are no longer supported
      *
-     * @param string $name
-     *         Name of the variable that should be accessed
-     * @param mixed $value
-     *         Value that should be assigned to variable
+     * @param string $name Name of the variable that should be accessed
+     * @param mixed $value Value that should be assigned to variable
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value)
     {
         if ('primaryKey' === $name) {
             static::_setPrimaryKeyName($value);
@@ -249,8 +213,6 @@ abstract class cItemBaseAbstract extends cGenericDb
 
     /**
      * Get the table name.
-     *
-     * @return string Name of table
      * @since CONTENIDO 4.10.2
      */
     public function getTable(): string
@@ -260,10 +222,8 @@ abstract class cItemBaseAbstract extends cGenericDb
 
     /**
      * Get the primary key name of the corresponding table
-     * @return string
-     *         Name of primary key
      */
-    public function getPrimaryKeyName()
+    public function getPrimaryKeyName(): string
     {
         return $this->_primaryKeyName;
     }
@@ -273,15 +233,14 @@ abstract class cItemBaseAbstract extends cGenericDb
      * The function can be called with a statement and replacement parameters,
      * see {@see cDbDriverHandler::prepare()} for more details.
      *
-     * @param ... Multiple parameters where the first is the statement and the further ones the replacements.
-     *     See {@see cDbDriverHandler::prepare()} for more details.
+     * @param mixed ...$arguments Multiple parameters where the first is the statement and the further
+     *      ones the replacements. See {@see cDbDriverHandler::prepare()} for more details.
      * @return string
      * @throws cDbException
      * @since CONTENIDO 4.10.2
      */
-    public function prepare(): string
+    public function prepare(...$arguments): string
     {
-        $arguments = func_get_args();
         $statement = count($arguments) ? array_shift($arguments) : '';
 
         return $this->db->prepare($statement, $arguments);
@@ -290,10 +249,8 @@ abstract class cItemBaseAbstract extends cGenericDb
     /**
      * Set the primary key name for class
      * The name must always match the primary key name in database
-     *
-     * @param string $keyName
      */
-    protected function _setPrimaryKeyName($keyName)
+    protected function _setPrimaryKeyName(string $keyName)
     {
         $this->_primaryKeyName = cSecurity::toString($keyName);
     }
@@ -301,10 +258,8 @@ abstract class cItemBaseAbstract extends cGenericDb
     /**
      * Returns the second database instance, usable to run additional statements
      * without losing current query results.
-     *
-     * @return cDb
      */
-    protected function _getSecondDBInstance()
+    protected function _getSecondDBInstance(): cDb
     {
         if (!isset($this->secondDb) || !($this->secondDb instanceof cDb)) {
             $this->secondDb = cRegistry::getDb();
@@ -314,19 +269,15 @@ abstract class cItemBaseAbstract extends cGenericDb
 
     /**
      * Returns properties instance, instantiates it if not done before.
-     * NOTE: This function changes always the client variable of property
-     * collection instance.
+     * NOTE: This function changes always the client variable of property collection instance.
      *
-     * @param int $idclient [optional]
-     *         Id of client to use in property collection.
+     * @param int $clientId Id of client to use in property collection.
      *         If not passed it uses global variable
-     * @return cApiPropertyCollection
      */
-    protected function _getPropertiesCollectionInstance($idclient = 0)
+    protected function _getPropertiesCollectionInstance(int $clientId = 0): cApiPropertyCollection
     {
-        $idclient = cSecurity::toInteger($idclient);
-        if ($idclient <= 0) {
-            $idclient = cSecurity::toInteger(cRegistry::getClientId());
+        if ($clientId <= 0) {
+            $clientId = cRegistry::getClientId();
         }
 
         // Runtime on-demand allocation of the properties object
@@ -334,8 +285,8 @@ abstract class cItemBaseAbstract extends cGenericDb
             $this->properties = new cApiPropertyCollection();
         }
 
-        if ($idclient > 0) {
-            $this->properties->changeClient($idclient);
+        if ($clientId > 0) {
+            $this->properties->changeClient($clientId);
         }
 
         return $this->properties;

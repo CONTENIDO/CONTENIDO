@@ -2,8 +2,7 @@
 
 /**
  * @author marcus.gnass
- * @method DogItem createNewItem
- * @method DogItem|bool next
+ * @extends ItemCollection<DogItem>
  */
 class DogCollection extends ItemCollection
 {
@@ -11,12 +10,11 @@ class DogCollection extends ItemCollection
      *
      * @param string|bool $where
      *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($where = false)
     {
-        parent::__construct(cRegistry::getDbTableName('con_test_dog'), 'id');
+        parent::__construct(cDb::getTableName('con_test_dog'), 'id');
         $this->_setItemClass('DogItem');
         if (false !== $where) {
             $this->select($where);
@@ -33,12 +31,11 @@ class DogItem extends Item
      *
      * @param int|bool $id
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('con_test_dog'), 'id');
+        parent::__construct(cDb::getTableName('con_test_dog'), 'id');
         if (false !== $id) {
             $this->loadByPrimaryKey($id);
         }

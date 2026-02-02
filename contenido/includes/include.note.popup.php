@@ -14,9 +14,22 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-$cpage = new cGuiPage("note.popup");
+/**
+ * @var string $category
+ * @var string $categoryentry
+ * @var string $note
+ * @var string $itemtype
+ * @var string|int $itemid
+ */
 
-if ($action == 'note_save_item') {
+$action = cRegistry::getAction();
+$lang = cRegistry::getLanguageId();
+$area = cRegistry::getArea();
+$frame = cRegistry::getFrame();
+
+$cpage = new cGuiPage('note.popup');
+
+if ($action === 'note_save_item') {
     $notes = new NoteCollection();
 
     $note = stripslashes(nl2br($note));

@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiFile createNewItem
- * @method cApiFile|bool next
+ * @extends ItemCollection<cApiFile>
  */
 class cApiFileCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiFileCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('files'), 'idfile');
+        parent::__construct(cDb::getTableName('files'), 'idfile');
         $this->_setItemClass('cApiFile');
 
         // set the join partners so that joins can be used via link() method
@@ -44,12 +43,8 @@ class cApiFileCollection extends ItemCollection
      * @param string $area
      * @param string $filename
      * @param string $filetype [optional]
-     *
      * @return cApiFile
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($area, $filename, $filetype = 'main')
     {
@@ -63,7 +58,11 @@ class cApiFileCollection extends ItemCollection
                 $area = $c->get('idarea');
             } else {
                 $area = 0;
-                cWarning(__FILE__, __LINE__, "Could not resolve area [$area] passed to method [create], assuming 0");
+                cWarning(
+                    __FILE__,
+                    __LINE__,
+                    "Could not resolve area [$area] passed to method [create], assuming 0"
+                );
             }
         }
 
@@ -93,18 +92,15 @@ class cApiFile extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('files'), 'idfile');
+        parent::__construct(cDb::getTableName('files'), 'idfile');
         $this->setFilters(['addslashes'], ['stripslashes']);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 }

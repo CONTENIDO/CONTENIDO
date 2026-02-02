@@ -28,6 +28,7 @@ class cSmartyWrapper extends Smarty
         parent::__construct();
         $path = realpath(__DIR__ . '/../includes/smarty_plugins');
         $this->addPluginsDir($path);
+        $this->registerPlugin('modifier', 'i18n', 'i18n');
     }
 
     /**
@@ -35,46 +36,55 @@ class cSmartyWrapper extends Smarty
      * @param mixed $cache_id cache id to be used with this template
      * @param mixed $compile_id compile id to be used with this template
      * @param object $parent next higher level of Smarty variables
-     * @param bool $display
-     * @param bool $merge_tpl_vars
-     * @param bool $no_output_filter
-     *
-     * @return mixed|string
+     * @param bool $display [deprecated] It's no longer used.
+     * @param bool $merge_tpl_vars [deprecated] It's no longer used.
+     * @param bool $no_output_filter [deprecated] It's no longer used.
+     * @return false|string
      * @see Smarty_Internal_TemplateBase::fetch()
-     *
      */
-    public function fetch($template = NULL, $cache_id = NULL, $compile_id = NULL, $parent = NULL, $display = false, $merge_tpl_vars = true, $no_output_filter = false)
-    {
+    public function fetch(
+        $template = NULL,
+        $cache_id = NULL,
+        $compile_id = NULL,
+        $parent = NULL,
+        $display = false,
+        $merge_tpl_vars = true,
+        $no_output_filter = false
+    ) {
         if ($this->templateExists($template) === false) {
-            $moduleId = (int)cRegistry::getCurrentModuleId();
+            $moduleId = cRegistry::getCurrentModuleId();
             if ($moduleId > 0) {
                 $module = new cModuleHandler($moduleId);
                 $template = $module->getTemplatePath($template);
             }
         }
 
-        return parent::fetch($template, $cache_id, $compile_id, $parent, $display, $merge_tpl_vars, $no_output_filter);
+        return parent::fetch($template, $cache_id, $compile_id, $parent);
     }
 
     /**
-     *
      * @param string $template the resource handle of the template file or template object
      * @param mixed $cache_id cache id to be used with this template
      * @param mixed $compile_id compile id to be used with this template
      * @param object $parent next higher level of Smarty variables
-     * @param bool $display
-     * @param bool $merge_tpl_vars
-     * @param bool $no_output_filter
-     *
-     * @return string
+     * @param bool $display [deprecated] It's no longer used.
+     * @param bool $merge_tpl_vars [deprecated] It's no longer used.
+     * @param bool $no_output_filter [deprecated] It's no longer used.
+     * @return false|string
      * @see Smarty_Internal_TemplateBase::fetch()
-     *
      */
-    public function fetchGeneral($template = NULL, $cache_id = NULL, $compile_id = NULL, $parent = NULL, $display = false, $merge_tpl_vars = true, $no_output_filter = false)
-    {
+    public function fetchGeneral(
+        $template = NULL,
+        $cache_id = NULL,
+        $compile_id = NULL,
+        $parent = NULL,
+        $display = false,
+        $merge_tpl_vars = true,
+        $no_output_filter = false
+    ) {
         $template = cRegistry::getFrontendPath() . 'templates/' . $template;
 
-        return parent::fetch($template, $cache_id, $compile_id, $parent, $display, $merge_tpl_vars, $no_output_filter);
+        return parent::fetch($template, $cache_id, $compile_id, $parent);
     }
 
     /**
@@ -82,6 +92,7 @@ class cSmartyWrapper extends Smarty
      * @param mixed $cache_id cache id to be used with this template
      * @param mixed $compile_id compile id to be used with this template
      * @param object $parent next higher level of Smarty variables
+     * @see Smarty_Internal_TemplateBase::display()
      */
     public function display($template = NULL, $cache_id = NULL, $compile_id = NULL, $parent = NULL)
     {
@@ -109,11 +120,10 @@ class cSmartyWrapper extends Smarty
      * @param mixed $compile_id compile id to be used with this template
      * @param object $parent next higher level of Smarty variables
      * @see Smarty_Internal_TemplateBase::display()
-     *
      */
     public function displayGeneral($template = NULL, $cache_id = NULL, $compile_id = NULL, $parent = NULL)
     {
-        $this->fetchGeneral($template, $cache_id, $compile_id, $parent, true);
+        parent::display($template, $cache_id, $compile_id, $parent);
     }
 
     /**
@@ -125,11 +135,12 @@ class cSmartyWrapper extends Smarty
      * @param integer $exp_time expiration time
      * @param string $type resource type
      * @return integer number of cache files deleted
+     * @see Smarty_Internal_TemplateBase::clearCache()
      */
     public function clearCache($template_name, $cache_id = null, $compile_id = null, $exp_time = null, $type = null)
     {
         if ($this->templateExists($template_name) === false) {
-            $moduleId = (int)cRegistry::getCurrentModuleId();
+            $moduleId = cRegistry::getCurrentModuleId();
             if ($moduleId > 0) {
                 $module = new cModuleHandler($moduleId);
                 $template_name = $module->getTemplatePath($template_name);

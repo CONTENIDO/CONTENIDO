@@ -17,10 +17,12 @@ if (!defined('CON_FRAMEWORK')) {
 }
 
 // CONTENIDO path
-$contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/';
+$contenidoPath = str_replace('\\', '/', realpath(__DIR__ . '/../')) . '/';
 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
+
+$area = cRegistry::getArea();
 
 if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
     $cfg = cRegistry::getConfig();
@@ -34,9 +36,7 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
     }
 
     if ($cfg['statistics_heap_table']) {
-        $sHeapTable = $cfg['tab']['stat_heap_table'];
+        $sHeapTable = cDb::getTableName('stat_heap_table');
         buildHeapTable($sHeapTable, $db);
     }
 }
-
-?>

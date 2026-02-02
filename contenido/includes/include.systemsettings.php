@@ -22,7 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var array $cfg
  */
 
-$page = new cGuiPage("systemsettings");
+$page = new cGuiPage('systemsettings');
 
 $aManagedValues = [
     'versioning_prune_limit', 'update_check', 'update_news_feed', 'versioning_path', 'versioning_activated',
@@ -41,7 +41,7 @@ $requestCsIdSystemProp = cSecurity::toInteger($_REQUEST['csidsystemprop'] ?? '0'
 $action = cRegistry::getAction();
 $isSysadmin = $perm->isSysadmin($currentuser);
 
-if ($action == "systemsettings_save_item") {
+if ($action == 'systemsettings_save_item') {
     if (!$isSysadmin) {
         $page->displayError(i18n("You don't have the permission to make changes here."));
     } else {
@@ -58,7 +58,7 @@ if ($action == "systemsettings_save_item") {
     }
 }
 
-if ($action == "systemsettings_delete_item") {
+if ($action == 'systemsettings_delete_item') {
     if (!$isSysadmin) {
         $page->displayError(i18n("You don't have the permission to make changes here."));
     } else {
@@ -107,14 +107,11 @@ $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
 
 try {
     $allSystemProperties = getSystemProperties(true);
-} catch (cDbException $e) {
-    $allSystemProperties = [];
-} catch (cException $e) {
+} catch (cDbException|cException $e) {
     $allSystemProperties = [];
 }
 foreach ($allSystemProperties as $type => $typeSystemProperties) {
     foreach ($typeSystemProperties as $name => $value) {
-
         // skip managed system settings
         if (in_array($type . '_' . $name, $aManagedValues)) {
             continue;
@@ -126,15 +123,14 @@ foreach ($allSystemProperties as $type => $typeSystemProperties) {
         $settingName = conHtmlentities($name);
         $settingValue = conHtmlentities($value['value']);
 
-        if (($action == "systemsettings_edit_item") && ($requestSysType == $type) && ($requestSysName == $name) && $isSysadmin) {
-
-            $oInputboxType = new cHTMLTextbox("systype", $settingType);
+        if (($action == 'systemsettings_edit_item') && ($requestSysType == $type) && ($requestSysName == $name) && $isSysadmin) {
+            $oInputboxType = new cHTMLTextbox('systype', $settingType);
             $oInputboxType->setWidth(10);
 
-            $oInputboxName = new cHTMLTextbox("sysname", $settingName);
+            $oInputboxName = new cHTMLTextbox('sysname', $settingName);
             $oInputboxName->setWidth(30);
 
-            $oInputboxValue = new cHTMLTextbox("sysvalue", $settingValue);
+            $oInputboxValue = new cHTMLTextbox('sysvalue', $settingValue);
             $oInputboxValue->setWidth(30);
 
             $hidden = '<input type="hidden" name="csidsystemprop" value="' . $value['idsystemprop'] . '">';
@@ -143,7 +139,6 @@ foreach ($allSystemProperties as $type => $typeSystemProperties) {
             $list->setCell($count, 2, $oInputboxName->render());
             $list->setCell($count, 3, $oInputboxValue->render() . $hidden . $sSubmit);
         } else {
-
             if (cString::getStringLength($type) > 35) {
                 $sShort = conHtmlentities(cString::trimHard($type, 35));
                 $type = sprintf($sMouseoverTemplate, $settingType, $sShort);
@@ -169,11 +164,11 @@ foreach ($allSystemProperties as $type => $typeSystemProperties) {
         }
 
         if ($isSysadmin) {
-            $oLinkEdit->setCustom("systype", urlencode($type));
-            $oLinkEdit->setCustom("sysname", urlencode($name));
+            $oLinkEdit->setCustom('systype', urlencode($type));
+            $oLinkEdit->setCustom('sysname', urlencode($name));
 
-            $oLinkDelete->setCustom("systype", urlencode($type));
-            $oLinkDelete->setCustom("sysname", urlencode($name));
+            $oLinkDelete->setCustom('systype', urlencode($type));
+            $oLinkDelete->setCustom('sysname', urlencode($name));
 
             $controls->setContent([
                 $oLinkEdit->render(), $oLinkDelete->render()
@@ -193,20 +188,20 @@ if ($count == 2) {
 }
 unset($form);
 
-$form = new cGuiTableForm("systemsettings");
-$form->setVar("area", $area);
-$form->setVar("frame", $frame);
-$form->setVar("action", "systemsettings_save_item");
+$form = new cGuiTableForm('systemsettings');
+$form->setVar('area', $area);
+$form->setVar('frame', $frame);
+$form->setVar('action', 'systemsettings_save_item');
 $form->setHeader(i18n("Add new variable"));
-$inputbox = new cHTMLTextbox("systype");
+$inputbox = new cHTMLTextbox('systype');
 $inputbox->setWidth(30);
 $form->add(i18n("Type"), $inputbox->render());
 
-$inputbox = new cHTMLTextbox("sysname");
+$inputbox = new cHTMLTextbox('sysname');
 $inputbox->setWidth(30);
 $form->add(i18n("Name"), $inputbox->render());
 
-$inputbox = new cHTMLTextbox("sysvalue");
+$inputbox = new cHTMLTextbox('sysvalue');
 $inputbox->setWidth(30);
 $form->add(i18n("Value"), $inputbox->render());
 
@@ -215,15 +210,15 @@ $spacer->setContent("<br>");
 
 $renderObjects = [];
 
-if ($action == "systemsettings_edit_item") {
+if ($action == 'systemsettings_edit_item') {
     if (!$isSysadmin) {
         $page->displayError(i18n("You don't have the permission to make changes here."));
         $renderObjects[] = $list;
     } else {
-        $form2 = new cHTMLForm("systemsettings");
-        $form2->setVar("area", $area);
-        $form2->setVar("frame", $frame);
-        $form2->setVar("action", "systemsettings_save_item");
+        $form2 = new cHTMLForm('systemsettings');
+        $form2->setVar('area', $area);
+        $form2->setVar('frame', $frame);
+        $form2->setVar('action', 'systemsettings_save_item');
         $form2->appendContent($list->render());
         $renderObjects[] = $form2;
     }

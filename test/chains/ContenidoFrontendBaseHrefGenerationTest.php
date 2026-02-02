@@ -67,16 +67,16 @@ class ContenidoFrontendBaseHrefGenerationTest extends TestCase
     public function testOneChain()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendBaseHrefGeneration_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoFrontendBaseHrefGeneration_Test');
 
         // execute chain
         $newBaseHref = cApiCecHook::executeAndReturn($this->_chain, $this->_baseHref);
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendBaseHrefGeneration_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoFrontendBaseHrefGeneration_Test');
 
         $this->assertEquals($this->_baseHref . 'foo/', $newBaseHref);
     }
@@ -88,18 +88,18 @@ class ContenidoFrontendBaseHrefGenerationTest extends TestCase
     public function testTwoChains()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendBaseHrefGeneration_Test');
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendBaseHrefGeneration_Test2');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoFrontendBaseHrefGeneration_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoFrontendBaseHrefGeneration_Test2');
 
         // execute chain
         $newBaseHref = cApiCecHook::executeAndReturn($this->_chain, $this->_baseHref);
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendBaseHrefGeneration_Test');
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendBaseHrefGeneration_Test2');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoFrontendBaseHrefGeneration_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoFrontendBaseHrefGeneration_Test2');
 
         $this->assertEquals($this->_baseHref . 'foo/bar/', $newBaseHref);
     }

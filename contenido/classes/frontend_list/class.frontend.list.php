@@ -73,12 +73,9 @@ class cFrontendList
      *
      * Caution: Make sure that percentage signs are written as %%.
      *
-     * @param string $startWrap
-     *         Wrap for the list start
-     * @param string $endWrap
-     *         Wrap for the list end
-     * @param string $itemWrap
-     *         Wrap for a single item
+     * @param string $startWrap Wrap for the list start
+     * @param string $endWrap Wrap for the list end
+     * @param string $itemWrap Wrap for a single item
      */
     public function __construct(string $startWrap, string $endWrap, string $itemWrap)
     {
@@ -98,10 +95,8 @@ class cFrontendList
      * Make sure that the amount of parameters stays the same for all
      * setData calls in a single object.
      *
-     * @param int $index
-     *         Numeric index
+     * @param int $index Numeric index
      * @param mixed ...$params Additional parameters (data)
-     * @noinspection PhpUnusedParameterInspection
      */
     public function setData(int $index, ...$params)
     {
@@ -115,8 +110,7 @@ class cFrontendList
     /**
      * Sets the number of records per page.
      *
-     * @param int $resultsPerPage
-     *         Amount of records per page
+     * @param int $resultsPerPage Amount of records per page
      */
     public function setResultsPerPage(int $resultsPerPage)
     {
@@ -126,8 +120,7 @@ class cFrontendList
     /**
      * Sets the starting page number.
      *
-     * @param int $listStart
-     *         Page number on which the list display starts
+     * @param int $listStart Page number on which the list display starts
      */
     public function setListStart(int $listStart)
     {
@@ -137,8 +130,7 @@ class cFrontendList
     /**
      * Returns the current page.
      *
-     * @return int
-     *         Current page number
+     * @return int Current page number
      */
     public function getCurrentPage(): int
     {
@@ -152,22 +144,19 @@ class cFrontendList
     /**
      * Returns the amount of pages.
      *
-     * @return int
-     *         Amount of pages
+     * @return int Amount of pages
      */
     public function getNumPages(): int
     {
-        return (int)ceil(count($this->_data) / $this->_resultsPerPage);
+        return cSecurity::toInteger(ceil(count($this->_data) / $this->_resultsPerPage));
     }
 
     /**
      * Sorts the list by a given field and a given order.
      *
-     * @param string $field
-     *         name of field to sort for
-     * @param int $order
-     *         Sort order (see php's sort documentation)
-     *         one of SORT_ASC, SORT_DESC, SORT_REGULAR, SORT_NUMERIC, SORT_STRING
+     * @param string $field Name of field to sort for
+     * @param int $order Sort order (see php's sort documentation)
+     *      one of SORT_ASC, SORT_DESC, SORT_REGULAR, SORT_NUMERIC, SORT_STRING
      */
     public function sort(string $field, int $order)
     {
@@ -178,10 +167,8 @@ class cFrontendList
      * Field converting facility.
      * Needs to be overridden in the child class to work properly.
      *
-     * @param int $field
-     *         Field index
-     * @param mixed $value
-     *         Field value
+     * @param int $field Field index
+     * @param mixed $value Field value
      * @return mixed
      */
     public function convert(int $field, $value)
@@ -192,11 +179,9 @@ class cFrontendList
     /**
      * Outputs or optionally returns.
      *
-     * @param bool $return
-     *         if true, returns the list
-     * @return string|void
+     * @param bool $return If true, returns the list.
      */
-    public function output(bool $return = false)
+    public function output(bool $return = false): ?string
     {
         $output = $this->_startWrap;
 
@@ -204,11 +189,9 @@ class cFrontendList
 
         $itemStart = (($currentPage - 1) * $this->_resultsPerPage) + 1;
 
-        if ($this->_resultsPerPage == 0) {
-            $itemEnd = count($this->_data) - ($itemStart - 1);
-        } else {
-            $itemEnd = $currentPage * $this->_resultsPerPage;
-        }
+        $itemEnd = $this->_resultsPerPage == 0
+            ? count($this->_data) - ($itemStart - 1)
+            : $currentPage * $this->_resultsPerPage;
 
         if ($itemEnd > count($this->_data)) {
             $itemEnd = count($this->_data);
@@ -222,6 +205,7 @@ class cFrontendList
                     $items .= ", '" . addslashes($this->convert($key, $value)) . "'";
                 }
 
+                // NOTE: $itemWrap will be evaluated below!
                 $itemWrap = str_replace('{LIST_ITEM_POS}', $currentPos, $this->_itemWrap);
                 $execute = '$output .= sprintf($itemWrap ' . $items . ');';
                 eval($execute);
@@ -236,13 +220,14 @@ class cFrontendList
             return $output;
         } else {
             echo $output;
+            return null;
         }
     }
 
 }
 
 /**
- * @deprecated [2024-02-04] Since 4.10.2, use {@see cFrontendList} instead!
+ * @deprecated [2024-02-04] Since CONTENIDO 4.10.2, use {@see cFrontendList} instead!
  */
 class FrontendList extends cFrontendList
 {

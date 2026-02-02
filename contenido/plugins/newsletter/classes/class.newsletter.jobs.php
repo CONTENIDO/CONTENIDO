@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Plugin
  * @subpackage Newsletter
- * @method NewsletterJob createNewItem
- * @method NewsletterJob|bool next
+ * @extends ItemCollection<NewsletterJob>
  */
 class NewsletterJobCollection extends ItemCollection
 {
@@ -46,93 +45,90 @@ class NewsletterJobCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('news_jobs'), 'idnewsjob');
-        $this->_setItemClass("NewsletterJob");
+        parent::__construct(cDb::getTableName('news_jobs'), 'idnewsjob');
+        $this->_setItemClass('NewsletterJob');
     }
 
     /**
      * Creates a newsletter job
      *
-     * @param int    $iIDNews
-     * @param int    $iIDCatArt
-     * @param string $sName
-     *
-     * @return bool|Item
+     * @param int $newsId
+     * @param int $categoryArticleId
+     * @param string $name
+     * @return NewsletterJob|false
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($iIDNews, $iIDCatArt, $sName = "")
+    public function create($newsId, $categoryArticleId, $name = '')
     {
         $cfg = cRegistry::getConfig();
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-        $lang = cSecurity::toInteger(cRegistry::getLanguageId());
+        $clientId = cRegistry::getClientId();
+        $languageId = cRegistry::getLanguageId();
+        $categoryArticleId = cSecurity::toInteger($categoryArticleId);
         $auth = cRegistry::getAuth();
 
         $oNewsletter = new Newsletter();
-        if ($oNewsletter->loadByPrimaryKey($iIDNews)) {
-            $iIDNews = cSecurity::toInteger($iIDNews);
-            $iIDCatArt = cSecurity::toInteger($iIDCatArt);
-            $lang = cSecurity::toInteger($lang);
-            $client = cSecurity::toInteger($client);
-            $sName = $this->escape($sName);
+        if ($oNewsletter->loadByPrimaryKey($newsId)) {
+            $newsId = cSecurity::toInteger($newsId);
+            $name = $this->escape($name);
 
             $oItem = $this->createNewItem();
 
-            $oItem->set("idnews", $iIDNews);
-            $oItem->set("idclient", $client);
-            $oItem->set("idlang", $lang);
+            $oItem->set('idnews', $newsId);
+            $oItem->set('idclient', $clientId);
+            $oItem->set('idlang', $languageId);
 
-            if ($sName == "") {
-                $oItem->set("name", $oNewsletter->get("name"));
+            if ($name == '') {
+                $oItem->set('name', $oNewsletter->get('name'));
             } else {
-                $oItem->set("name", $sName);
+                $oItem->set('name', $name);
             }
-            $oItem->set("type", $oNewsletter->get("type"));
-            $oItem->set("use_cronjob", $oNewsletter->get("use_cronjob"));
+            $oItem->set('type', $oNewsletter->get('type'));
+            $oItem->set('use_cronjob', $oNewsletter->get('use_cronjob'));
 
-            $oLang = new cApiLanguage($lang);
-            $oItem->set("encoding", $oLang->get("encoding"));
+            $oLang = new cApiLanguage($languageId);
+            $oItem->set('encoding', $oLang->get('encoding'));
             unset($oLang);
-            $oItem->set("idart", $oNewsletter->get("idart"));
-            $oItem->set("subject", $oNewsletter->get("subject"));
+            $oItem->set('idart', $oNewsletter->get('idart'));
+            $oItem->set('subject', $oNewsletter->get('subject'));
 
             // Precompile messages
-            $sPath = cRegistry::getFrontendUrl() . "front_content.php?changelang=" . $lang . "&idcatart=" . $iIDCatArt . "&";
+            $path = cRegistry::getFrontendUrl() . "front_content.php?changelang=$languageId&idcatart=$categoryArticleId&";
 
-            $sMessageText = $oNewsletter->get("message") ?? "";
+            $messageText = $oNewsletter->get('message') ?? '';
 
             // Preventing double lines in mail, you may wish to disable this
             // function on windows servers
-            if (!getSystemProperty("newsletter", "disable-rn-replacement")) {
-                $sMessageText = str_replace("\r\n", "\n", $sMessageText);
+            if (!getSystemProperty('newsletter', 'disable-rn-replacement')) {
+                $messageText = str_replace("\r\n", "\n", $messageText);
             }
 
-            $oNewsletter->_replaceTag($sMessageText, false, "unsubscribe", $sPath . "unsubscribe={KEY}");
-            $oNewsletter->_replaceTag($sMessageText, false, "change", $sPath . "change={KEY}");
-            $oNewsletter->_replaceTag($sMessageText, false, "stop", $sPath . "stop={KEY}");
-            $oNewsletter->_replaceTag($sMessageText, false, "goon", $sPath . "goon={KEY}");
+            $oNewsletter->_replaceTag($messageText, false, "unsubscribe", $path . "unsubscribe={KEY}");
+            $oNewsletter->_replaceTag($messageText, false, "change", $path . "change={KEY}");
+            $oNewsletter->_replaceTag($messageText, false, "stop", $path . "stop={KEY}");
+            $oNewsletter->_replaceTag($messageText, false, "goon", $path . "goon={KEY}");
 
-            $oItem->set("message_text", $sMessageText);
+            $oItem->set('message_text', $messageText);
 
-            if ($oNewsletter->get("type") == "text") {
+            if ($oNewsletter->get('type') == "text") {
                 // Text newsletter, no html message
-                $sMessageHTML = "";
+                $messageHTML = '';
             } else {
                 // HTML newsletter, get article content
-                $sMessageHTML = $oNewsletter->getHTMLMessage();
+                $messageHTML = $oNewsletter->getHTMLMessage();
 
-                if ($sMessageHTML) {
-                    $oNewsletter->_replaceTag($sMessageHTML, true, "name", "MAIL_NAME");
-                    $oNewsletter->_replaceTag($sMessageHTML, true, "number", "MAIL_NUMBER");
-                    $oNewsletter->_replaceTag($sMessageHTML, true, "date", "MAIL_DATE");
-                    $oNewsletter->_replaceTag($sMessageHTML, true, "time", "MAIL_TIME");
+                if ($messageHTML) {
+                    $oNewsletter->_replaceTag($messageHTML, true, "name", "MAIL_NAME");
+                    $oNewsletter->_replaceTag($messageHTML, true, "number", "MAIL_NUMBER");
+                    $oNewsletter->_replaceTag($messageHTML, true, "date", "MAIL_DATE");
+                    $oNewsletter->_replaceTag($messageHTML, true, "time", "MAIL_TIME");
 
-                    $oNewsletter->_replaceTag($sMessageHTML, true, "unsubscribe", $sPath . "unsubscribe={KEY}");
-                    $oNewsletter->_replaceTag($sMessageHTML, true, "change", $sPath . "change={KEY}");
-                    $oNewsletter->_replaceTag($sMessageHTML, true, "stop", $sPath . "stop={KEY}");
-                    $oNewsletter->_replaceTag($sMessageHTML, true, "goon", $sPath . "goon={KEY}");
+                    $oNewsletter->_replaceTag($messageHTML, true, "unsubscribe", $path . "unsubscribe={KEY}");
+                    $oNewsletter->_replaceTag($messageHTML, true, "change", $path . "change={KEY}");
+                    $oNewsletter->_replaceTag($messageHTML, true, "stop", $path . "stop={KEY}");
+                    $oNewsletter->_replaceTag($messageHTML, true, "goon", $path . "goon={KEY}");
 
                     // Replace plugin tags by simple MAIL_ tags
-                    if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
+                    if (getSystemProperty('newsletter', 'newsletter-recipients-plugin') == 'true') {
                         if (cHasPlugins('recipients')) {
                             cIncludePlugins('recipients');
                             foreach ($cfg['plugins']['recipients'] as $sPlugin) {
@@ -140,7 +136,7 @@ class NewsletterJobCollection extends ItemCollection
                                     $wantVariables = call_user_func('recipients_' . $sPlugin . '_wantedVariables');
                                     if (is_array($wantVariables)) {
                                         foreach ($wantVariables as $sPluginVar) {
-                                            $oNewsletter->_replaceTag($sMessageHTML, true, $sPluginVar, "MAIL_" . cString::toUpperCase($sPluginVar));
+                                            $oNewsletter->_replaceTag($messageHTML, true, $sPluginVar, "MAIL_" . cString::toUpperCase($sPluginVar));
                                         }
                                     }
                                 }
@@ -156,66 +152,67 @@ class NewsletterJobCollection extends ItemCollection
                 }
             }
 
-            $oItem->set("message_html", $sMessageHTML);
+            $oItem->set('message_html', $messageHTML);
 
-            $oItem->set("newsfrom", $oNewsletter->get("newsfrom"));
-            if ($oNewsletter->get("newsfromname") == "") {
-                $oItem->set("newsfromname", $oNewsletter->get("newsfrom"));
+            $oItem->set('newsfrom', $oNewsletter->get('newsfrom'));
+            if ($oNewsletter->get('newsfromname') == '') {
+                $oItem->set('newsfromname', $oNewsletter->get('newsfrom'));
             } else {
-                $oItem->set("newsfromname", $oNewsletter->get("newsfromname"));
+                $oItem->set('newsfromname', $oNewsletter->get('newsfromname'));
             }
-            $oItem->set("newsdate", date("Y-m-d H:i:s"), false); // $oNewsletter->get("newsdate"));
-            $oItem->set("dispatch", $oNewsletter->get("dispatch"));
-            $oItem->set("dispatch_count", $oNewsletter->get("dispatch_count"));
-            $oItem->set("dispatch_delay", $oNewsletter->get("dispatch_delay"));
+            $oItem->set('newsdate', date('Y-m-d H:i:s'), false); // $oNewsletter->get('newsdate'));
+            $oItem->set('dispatch', $oNewsletter->get('dispatch'));
+            $oItem->set('dispatch_count', $oNewsletter->get('dispatch_count'));
+            $oItem->set('dispatch_delay', $oNewsletter->get('dispatch_delay'));
 
             // Store "send to" info in serialized array (just info)
-            $aSendInfo = [];
-            $aSendInfo[] = $oNewsletter->get("send_to");
+            $sendInfo = [
+                $oNewsletter->get('send_to')
+            ];
 
-            switch ($oNewsletter->get("send_to")) {
+            switch ($oNewsletter->get('send_to')) {
                 case "selection":
                     $oGroups = new NewsletterRecipientGroupCollection();
-                    $oGroups->setWhere("idnewsgroup", unserialize($oNewsletter->get("send_ids")), "IN");
+                    $oGroups->setWhere('idnewsgroup', unserialize($oNewsletter->get('send_ids')), "IN");
                     $oGroups->setOrder("groupname");
                     $oGroups->query();
                     // oGroups->select("idnewsgroup IN ('" . implode("','",
-                    // unserialize($oNewsletter->get("send_ids"))) . "')", "",
+                    // unserialize($oNewsletter->get('send_ids'))) . "')", "",
                     // "groupname");
 
-                    while (($oGroup = $oGroups->next()) !== false) {
-                        $aSendInfo[] = $oGroup->get("groupname");
+                    while ($oGroup = $oGroups->next()) {
+                        $sendInfo[] = $oGroup->get('groupname');
                     }
 
                     unset($oGroup);
                     unset($oGroups);
                     break;
                 case "single":
-                    if (is_numeric($oNewsletter->get("send_ids"))) {
-                        $oRcp = new NewsletterRecipient($oNewsletter->get("send_ids"));
+                    if (is_numeric($oNewsletter->get('send_ids'))) {
+                        $oRcp = new NewsletterRecipient($oNewsletter->get('send_ids'));
 
-                        if ($oRcp->get("name") == "") {
-                            $aSendInfo[] = $oRcp->get("email");
+                        if ($oRcp->get('name') == '') {
+                            $sendInfo[] = $oRcp->get('email');
                         } else {
-                            $aSendInfo[] = $oRcp->get("name");
+                            $sendInfo[] = $oRcp->get('name');
                         }
-                        $aSendInfo[] = $oRcp->get("email");
+                        $sendInfo[] = $oRcp->get('email');
 
                         unset($oRcp);
                     }
                     break;
                 default:
             }
-            $oItem->set("send_to", serialize($aSendInfo), false);
+            $oItem->set('send_to', serialize($sendInfo), false);
 
-            $oItem->set("created", date('Y-m-d H:i:s'), false);
-            $oItem->set("author", $auth->auth["uid"]);
-            $oItem->set("authorname", $auth->auth["uname"]);
+            $oItem->set('created', date('Y-m-d H:i:s'), false);
+            $oItem->set('author', $auth->getUserId());
+            $oItem->set('authorname', $auth->getUsername());
             unset($oNewsletter); // Not needed anymore
 
             // Adds log items for all recipients and returns recipient count
             $oLogs = new NewsletterLogCollection();
-            $iRecipientCount = $oLogs->initializeJob($oItem->get($oItem->getPrimaryKeyName()), $iIDNews);
+            $iRecipientCount = $oLogs->initializeJob($oItem->get($oItem->getPrimaryKeyName()), $newsId);
             unset($oLogs);
 
             // fallback. there's no need to create a newsletter job if no user is selected
@@ -223,9 +220,9 @@ class NewsletterJobCollection extends ItemCollection
                 return false;
             }
 
-            $oItem->set("rcpcount", $iRecipientCount);
-            $oItem->set("sendcount", 0);
-            $oItem->set("status", 1); // Waiting for sending; note, that status
+            $oItem->set('rcpcount', $iRecipientCount);
+            $oItem->set('sendcount', 0);
+            $oItem->set('status', 1); // Waiting for sending; note, that status
             // will be set to 9, if $iRecipientCount =
             // 0 in store() method
 
@@ -239,18 +236,17 @@ class NewsletterJobCollection extends ItemCollection
 
     /**
      * Overridden delete method to remove job details (logs) from newsletter
-     * logs table
-     * before deleting newsletter job
+     * logs table before deleting newsletter job
      *
-     * @param int $iItemID Specifies the frontend user group
-     * @throws cDbException|cInvalidArgumentException
+     * @inheritDoc
+     * @param int $id The newsletter job id.
+     * @throws cDbException|cInvalidArgumentException|cException
      */
-    public function delete($iItemID)
+    public function delete($id)
     {
-        $oLogs = new NewsletterLogCollection();
-        $oLogs->delete($iItemID);
+        (new NewsletterLogCollection())->delete($id);
 
-        parent::delete($iItemID);
+        return parent::delete($id);
     }
 
 }
@@ -264,15 +260,14 @@ class NewsletterJob extends Item
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
-     *
+     * @param mixed $id The ID of item to load
      * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('news_jobs'), 'idnewsjob');
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('news_jobs'), 'idnewsjob');
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
@@ -288,73 +283,73 @@ class NewsletterJob extends Item
 
         $oLogs = null;
         $iCount = 0;
-        if ($this->get("status") == 2) {
+        if ($this->get('status') == 2) {
             // Job is currently running, check start time and restart if
             // started 5 minutes ago
-            $dStart = strtotime($this->get("started"));
+            $dStart = strtotime($this->get('started'));
             $dNow = time();
 
             if (($dNow - $dStart) > (5 * 60)) {
-                $this->set("status", 1);
-                $this->set("started", "0000-00-00 00:00:00", false);
+                $this->set('status', 1);
+                $this->set('started', '0000-00-00 00:00:00', false);
 
                 $oLogs = new NewsletterLogCollection();
-                $oLogs->setWhere("idnewsjob", $this->get($this->getPrimaryKeyName()));
-                $oLogs->setWhere("status", "sending");
+                $oLogs->setWhere('idnewsjob', $this->get($this->getPrimaryKeyName()));
+                $oLogs->setWhere('status', 'sending');
                 $oLogs->query();
 
-                while (($oLog = $oLogs->next()) !== false) {
-                    $oLog->set("status", "error (sending)");
+                while ($oLog = $oLogs->next()) {
+                    $oLog->set('status', "error (sending)");
                     $oLog->store();
                 }
             }
         }
 
-        if ($this->get("status") == 1) {
+        if ($this->get('status') == 1) {
             // Job waiting for sending
-            $this->set("status", 2);
-            $this->set("started", date("Y-m-d H:i:s"), false);
+            $this->set('status', 2);
+            $this->set('started', date('Y-m-d H:i:s'), false);
             $this->store();
 
             /** @var PiNewsletter $plugin */
             $plugin = cRegistry::getAppVar('pluginNewsletter');
-            $sFormatDate = $plugin->getDateFormat(cSecurity::toInteger($this->get('idlang')));
-            $sFormatTime = $plugin->getTimeFormat(cSecurity::toInteger($this->get('idlang')));
+            $sFormatDate = $plugin->getDateFormat($this->get('idlang'));
+            $sFormatTime = $plugin->getTimeFormat($this->get('idlang'));
 
             // Get newsletter data
-            $sFrom = $this->get("newsfrom");
-            $sFromName = $this->get("newsfromname");
-            $sSubject = $this->get("subject");
-            $sMessageText = $this->get("message_text");
-            $sMessageHTML = $this->get("message_html");
-            $dNewsDate = strtotime($this->get("newsdate"));
-            $sEncoding = $this->get("encoding");
+            $sFrom = $this->get('newsfrom');
+            $sFromName = $this->get('newsfromname');
+            $sSubject = $this->get('subject');
+            $messageText = $this->get('message_text');
+            $messageHTML = $this->get('message_html');
+            $dNewsDate = strtotime($this->get('newsdate'));
+            $sEncoding = $this->get('encoding');
             $bIsHTML = false;
-            if ($this->get("type") == "html" && $sMessageHTML != "") {
+            if ($this->get('type') == "html" && $messageHTML != '') {
                 $bIsHTML = true;
             }
 
             $bDispatch = false;
-            if ($this->get("dispatch") == 1) {
+            if ($this->get('dispatch') == 1) {
                 $bDispatch = true;
             }
 
             // Single replacements
             // Replace message tags (text message)
-            $sMessageText = str_replace("MAIL_DATE", cDate::formatToDate($sFormatDate, $dNewsDate), $sMessageText);
-            $sMessageText = str_replace("MAIL_TIME", cDate::formatToDate($sFormatTime, $dNewsDate), $sMessageText);
-            $sMessageText = str_replace("MAIL_NUMBER", $this->get("rcpcount"), $sMessageText);
+            $messageText = str_replace("MAIL_DATE", cDate::formatToDate($sFormatDate, $dNewsDate), $messageText);
+            $messageText = str_replace("MAIL_TIME", cDate::formatToDate($sFormatTime, $dNewsDate), $messageText);
+            $messageText = str_replace("MAIL_NUMBER", $this->get('rcpcount'), $messageText);
 
             // Replace message tags (html message)
             if ($bIsHTML) {
-                $sMessageHTML = str_replace("MAIL_DATE", cDate::formatToDate($sFormatDate, $dNewsDate), $sMessageHTML);
-                $sMessageHTML = str_replace("MAIL_TIME", cDate::formatToDate($sFormatTime, $dNewsDate), $sMessageHTML);
-                $sMessageHTML = str_replace("MAIL_NUMBER", $this->get("rcpcount"), $sMessageHTML);
+                $messageHTML = str_replace("MAIL_DATE", cDate::formatToDate($sFormatDate, $dNewsDate), $messageHTML);
+                $messageHTML = str_replace("MAIL_TIME", cDate::formatToDate($sFormatTime, $dNewsDate), $messageHTML);
+                $messageHTML = str_replace("MAIL_NUMBER", $this->get('rcpcount'), $messageHTML);
             }
 
             // Plugin interface
             $aPlugins = [];
-            if (getSystemProperty("newsletter", "newsletter-recipients-plugin") == "true") {
+            if (getSystemProperty('newsletter', 'newsletter-recipients-plugin') == 'true') {
                 if (cHasPlugins('recipients')) {
                     cIncludePlugins('recipients');
                     foreach ($cfg['plugins']['recipients'] as $sPlugin) {
@@ -371,63 +366,63 @@ class NewsletterJob extends Item
             } else {
                 $oLogs->resetQuery();
             }
-            $oLogs->setWhere("idnewsjob", $this->get($this->getPrimaryKeyName()));
-            $oLogs->setWhere("status", "pending");
+            $oLogs->setWhere('idnewsjob', $this->get($this->getPrimaryKeyName()));
+            $oLogs->setWhere('status', 'pending');
 
             if ($bDispatch) {
-                $oLogs->setLimit(0, $this->get("dispatch_count"));
+                $oLogs->setLimit(0, $this->get('dispatch_count'));
             }
 
             $oLogs->query();
-            while (($oLog = $oLogs->next()) !== false) {
+            while ($oLog = $oLogs->next()) {
                 $iCount++;
-                $oLog->set("status", "sending");
+                $oLog->set('status', "sending");
                 $oLog->store();
 
-                $sRcpMsgText = $sMessageText;
-                $sRcpMsgHTML = $sMessageHTML;
+                $rcpMsgText = $messageText;
+                $rcpMsgHTML = $messageHTML;
 
-                $sKey = $oLog->get("rcphash");
-                $sEMail = $oLog->get("rcpemail");
+                $sKey = $oLog->get('rcphash');
+                $sEMail = $oLog->get('rcpemail');
 
                 // do not try to send a message to an invalid email address
-                if (false === isValidMail($sEMail)) {
-                    $oLog->set("status", "error (invalid email)");
+                if (!isValidMail($sEMail)) {
+                    $oLog->set('status', "error (invalid email)");
                     $oLog->store();
                     continue;
                 }
 
                 $bSendHTML = false;
-                if ($oLog->get("rcpnewstype") == 1) {
+                if ($oLog->get('rcpnewstype') == 1) {
                     $bSendHTML = true; // Recipient accepts html newsletter
                 }
 
                 if (cString::getStringLength($sKey) == 30) { // Prevents sending without having a
                     // key
-                    $sRcpMsgText = str_replace("{KEY}", $sKey, $sRcpMsgText);
-                    $sRcpMsgText = str_replace("MAIL_MAIL", $sEMail, $sRcpMsgText);
-                    $sRcpMsgText = str_replace("MAIL_NAME", $oLog->get("rcpname"), $sRcpMsgText);
+                    $rcpMsgText = str_replace("{KEY}", $sKey, $rcpMsgText);
+                    $rcpMsgText = str_replace("MAIL_MAIL", $sEMail, $rcpMsgText);
+                    $rcpMsgText = str_replace("MAIL_NAME", $oLog->get('rcpname'), $rcpMsgText);
 
                     // Replace message tags (html message)
                     if ($bIsHTML && $bSendHTML) {
-                        $sRcpMsgHTML = str_replace("{KEY}", $sKey, $sRcpMsgHTML);
-                        $sRcpMsgHTML = str_replace("MAIL_MAIL", $sEMail, $sRcpMsgHTML);
-                        $sRcpMsgHTML = str_replace("MAIL_NAME", $oLog->get("rcpname"), $sRcpMsgHTML);
+                        $rcpMsgHTML = str_replace("{KEY}", $sKey, $rcpMsgHTML);
+                        $rcpMsgHTML = str_replace("MAIL_MAIL", $sEMail, $rcpMsgHTML);
+                        $rcpMsgHTML = str_replace("MAIL_NAME", $oLog->get('rcpname'), $rcpMsgHTML);
                     }
 
                     if (count($aPlugins)) {
                         // Don't change name of $recipient variable as it is used in plugins!
                         $recipient = new NewsletterRecipient();
-                        $recipient->loadByPrimaryKey($oLog->get("idnewsrcp"));
+                        $recipient->loadByPrimaryKey($oLog->get('idnewsrcp'));
 
                         foreach ($aPlugins as $sPlugin => $aPluginVar) {
                             foreach ($aPluginVar as $sPluginVar) {
                                 // Replace tags in text message
-                                $sRcpMsgText = str_replace("MAIL_" . cString::toUpperCase($sPluginVar), call_user_func("recipients_" . $sPlugin . "_getvalue", $sPluginVar), $sRcpMsgText);
+                                $rcpMsgText = str_replace("MAIL_" . cString::toUpperCase($sPluginVar), call_user_func("recipients_" . $sPlugin . "_getvalue", $sPluginVar), $rcpMsgText);
 
                                 // Replace tags in html message
                                 if ($bIsHTML && $bSendHTML) {
-                                    $sRcpMsgHTML = str_replace("MAIL_" . cString::toUpperCase($sPluginVar), call_user_func("recipients_" . $sPlugin . "_getvalue", $sPluginVar), $sRcpMsgHTML);
+                                    $rcpMsgHTML = str_replace("MAIL_" . cString::toUpperCase($sPluginVar), call_user_func("recipients_" . $sPlugin . "_getvalue", $sPluginVar), $rcpMsgHTML);
                                 }
                             }
                         }
@@ -439,9 +434,9 @@ class NewsletterJob extends Item
 
                     $to = $sEMail;
                     if ($bIsHTML && $bSendHTML) {
-                        $body = $sRcpMsgHTML;
+                        $body = $rcpMsgHTML;
                     } else {
-                        $body = $sRcpMsgText . "\n\n";
+                        $body = $rcpMsgText . "\n\n";
                     }
                     $contentType = 'text/plain';
                     if ($bIsHTML && $bSendHTML) {
@@ -461,44 +456,44 @@ class NewsletterJob extends Item
                     }
 
                     if ($result) {
-                        $oLog->set("status", "successful");
-                        $oLog->set("sent", date("Y-m-d H:i:s"), false);
+                        $oLog->set('status', "successful");
+                        $oLog->set('sent', date('Y-m-d H:i:s'), false);
                     } else {
-                        $oLog->set("status", "error (sending)");
+                        $oLog->set('status', "error (sending)");
                     }
                 } else {
-                    $oLog->set("status", "error (key)");
+                    $oLog->set('status', "error (key)");
                 }
                 $oLog->store();
             }
 
-            $this->set("sendcount", $this->get("sendcount") + $iCount);
+            $this->set('sendcount', $this->get('sendcount') + $iCount);
 
             if ($iCount == 0 || !$bDispatch) {
                 // No recipients remaining, job finished
-                $this->set("status", 9);
-                $this->set("finished", date("Y-m-d H:i:s"), false);
+                $this->set('status', 9);
+                $this->set('finished', date('Y-m-d H:i:s'), false);
             } elseif ($bDispatch) {
                 // Check, if there are recipients remaining - stops job faster
                 $oLogs->resetQuery();
-                $oLogs->setWhere("idnewsjob", $this->get($this->getPrimaryKeyName()));
-                $oLogs->setWhere("status", "pending");
-                $oLogs->setLimit(0, $this->get("dispatch_count"));
+                $oLogs->setWhere('idnewsjob', $this->get($this->getPrimaryKeyName()));
+                $oLogs->setWhere('status', 'pending');
+                $oLogs->setLimit(0, $this->get('dispatch_count'));
                 $oLogs->query();
 
                 if ($oLogs->next()) {
                     // Remaining recipients found, set job back to pending
-                    $this->set("status", 1);
-                    $this->set("started", "0000-00-00 00:00:00", false);
+                    $this->set('status', 1);
+                    $this->set('started', '0000-00-00 00:00:00', false);
                 } else {
                     // No remaining recipients, job finished
-                    $this->set("status", 9);
-                    $this->set("finished", date("Y-m-d H:i:s"), false);
+                    $this->set('status', 9);
+                    $this->set('finished', date('Y-m-d H:i:s'), false);
                 }
             } else {
                 // Set job back to pending
-                $this->set("status", 1);
-                $this->set("started", "0000-00-00 00:00:00", false);
+                $this->set('status', 1);
+                $this->set('started', '0000-00-00 00:00:00', false);
             }
             $this->store();
         }
@@ -509,21 +504,72 @@ class NewsletterJob extends Item
     /**
      * Overridden store() method to set status to finished if rcpcount is 0.
      *
-     * @return bool
-     * @throws cDbException|cInvalidArgumentException
+     * @inheritDoc
      */
     public function store(): bool
     {
-        if ($this->get("rcpcount") == 0) {
+        if ($this->get('rcpcount') == 0) {
             // No recipients, job finished
-            $this->set("status", 9);
-            if ($this->get("started") == "0000-00-00 00:00:00") {
-                $this->set("started", date("Y-m-d H:i:s"), false);
+            $this->set('status', 9);
+            if ($this->get('started') == '0000-00-00 00:00:00') {
+                $this->set('started', date('Y-m-d H:i:s'), false);
             }
-            $this->set("finished", date("Y-m-d H:i:s"), false);
+            $this->set('finished', date('Y-m-d H:i:s'), false);
         }
 
         return parent::store();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setField($name, $value, $safe = true)
+    {
+        switch ($name) {
+            case 'idnewsjob':
+            case 'idclient':
+            case 'idlang':
+            case 'idnews':
+            case 'status':
+            case 'use_cronjob':
+            case 'idart':
+            case 'dispatch':
+            case 'dispatch_count':
+            case 'dispatch_delay':
+            case 'rcpcount':
+            case 'sendcount':
+                $value = cSecurity::toInteger($value);
+                break;
+        }
+
+        return parent::setField($name, $value, $safe);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getField($name, $safe = true)
+    {
+        $value = parent::getField($name, $safe);
+
+        switch ($name) {
+            case 'idnewsjob':
+            case 'idclient':
+            case 'idlang':
+            case 'idnews':
+            case 'status':
+            case 'use_cronjob':
+            case 'idart':
+            case 'dispatch':
+            case 'dispatch_count':
+            case 'dispatch_delay':
+            case 'rcpcount':
+            case 'sendcount':
+                $value = cSecurity::toInteger($value);
+                break;
+        }
+
+        return $value;
     }
 
 }

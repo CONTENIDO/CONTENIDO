@@ -13,7 +13,7 @@
  * @license    https://www.contenido.org/license/LIZENZ.txt
  * @link       https://www.4fb.de
  * @link       https://www.contenido.org
- * @since      file available since CONTENIDO release 4.8.7
+ * @since      file available since CONTENIDO 4.8.7
  * @deprecated [2015-05-21] This file is no longer supported
  */
 
@@ -29,7 +29,7 @@ if (!defined('CON_FRAMEWORK')) {
  */
 
 // CONTENIDO startup process
-include_once('../includes/startup.php');
+include_once(__DIR__ . '/../includes/startup.php');
 
 header('Content-Type: application/javascript');
 
@@ -45,11 +45,9 @@ require(cRegistry::getBackendPath() . 'includes/functions.includePluginConf.php'
 // it will print <script> tags which result in errors
 
 // Fetch chains
-$_cecRegistry = cApiCecRegistry::getInstance();
-$iterator = $_cecRegistry->getIterator('Contenido.Article.RegisterCustomTab');
-
 $aTabs = [];
-while ($chainEntry = $iterator->next()) {
+$cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.Article.RegisterCustomTab');
+while ($chainEntry = $cecIterator->next()) {
     $aTmpArray = $chainEntry->execute();
     if (is_array($aTmpArray)) {
         $aTabs = array_merge($aTabs, $aTmpArray);
@@ -59,8 +57,8 @@ while ($chainEntry = $iterator->next()) {
 $aCustomTabs = [];
 
 foreach ($aTabs as $key => $sTab) {
-    $iterator = $_cecRegistry->getIterator('Contenido.Article.GetCustomTabProperties');
-    while ($chainEntry = $iterator->next()) {
+    $cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.Article.GetCustomTabProperties');
+    while ($chainEntry = $cecIterator->next()) {
         $aTmpArray = $chainEntry->execute($sTab);
         if (is_array($aTmpArray)) {
             $aCustomTabs[$sTab] = [
@@ -197,9 +195,9 @@ echo $cutomTabsJs;
         /**
          * Define required global variables
          * @method setGlobalVars
-         * @param  {String}  sessid  Session id
-         * @param  {Number}  client  Client id
-         * @param  {Number}  lang  Language id
+         * @param {String}  sessid  Session id
+         * @param {Number}  client  Client id
+         * @param {Number}  lang  Language id
          */
         setGlobalVars: function(sessid, client, lang) {
             this.sessid = sessid;
@@ -210,7 +208,7 @@ echo $cutomTabsJs;
         /**
          * Sets href to overview page, which was last visited
          * @method setHrefOverview
-         * @param  {String}  href
+         * @param {String}  href
          */
         setHrefOverview: function(href) {
             // copy url - cut all actions
@@ -238,7 +236,7 @@ echo $cutomTabsJs;
         /**
          * Adds the frame and session parameter to the given url
          * @method sessUrl
-         * @param  {String}  str
+         * @param {String}  str
          * @return {String}  String with attached frame & session parameters
          */
         sessUrl: function(str) {
@@ -249,7 +247,7 @@ echo $cutomTabsJs;
         /**
          * Execute an action.
          * @method doAction
-         * @param   {String}  str  The action to execute
+         * @param {String}  str  The action to execute
          * @return  {Boolean}  Action executes Yes/No
          */
         doAction: function(str) {
@@ -420,12 +418,12 @@ echo $cutomTabsJs;
         /**
          * Define article and category related properties
          * @method setProperties
-         * @param  {Number}  idart
-         * @param  {Number}  idartlang
-         * @param  {Number}  idcat
-         * @param  {Number}  idcatlang
-         * @param  {Number}  idcatart
-         * @param  {Number}  idlang
+         * @param {Number}  idart
+         * @param {Number}  idartlang
+         * @param {Number}  idcat
+         * @param {Number}  idcatlang
+         * @param {Number}  idcatart
+         * @param {Number}  idlang
          */
         setProperties: function(idart, idartlang, idcat, idcatlang, idcatart, idlang) {
             this.idart      = idart;

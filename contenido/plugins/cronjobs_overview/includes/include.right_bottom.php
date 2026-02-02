@@ -19,9 +19,8 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @var string $area
  * @var string $contenido
  * @var array $cfg
+ * @var cTemplate $tpl
  */
-
-$tpl = new cTemplate();
 
 $pluginName = $cfg['pi_cronjob_overview']['pluginName'];
 
@@ -56,7 +55,7 @@ switch ($requestAction) {
 
     case 'crontab_edit':
         if (!$perm->have_perm_area_action($area, 'crontab_edit')) {
-            $notification->displayNotification("error", i18n("Permission denied", 'cronjobs_overview'));
+            $notification->displayNotification('error', i18n("Permission denied", 'cronjobs_overview'));
             return -1;
         }
         if (!empty($_POST['crontab_contents'])) {
@@ -76,7 +75,7 @@ switch ($requestAction) {
 
     case 'cronjob_execute':
         if (!$perm->have_perm_area_action($area, 'cronjob_execute')) {
-            $notification->displayNotification("error", i18n("Permission denied", 'cronjobs_overview'));
+            $notification->displayNotification('error', i18n("Permission denied", 'cronjobs_overview'));
             return -1;
         }
 

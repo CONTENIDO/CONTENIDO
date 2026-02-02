@@ -28,10 +28,8 @@ class cHTMLImage extends cHTML
      *
      * Creates an HTML IMG element.
      *
-     * @param mixed $src [optional]
-     *         image source
-     * @param string $class [optional]
-     *         the class of this element
+     * @param ?string $src [optional] Image source
+     * @param string $class [optional] The class of this element
      */
     public function __construct($src = NULL, $class = '')
     {
@@ -47,12 +45,9 @@ class cHTMLImage extends cHTML
     /**
      * Sets the image's source file
      *
-     * @param string $src
-     *         source location
-     * @return cHTMLImage
-     *         $this for chaining
+     * @param string $src Source location
      */
-    public function setSrc($src)
+    public function setSrc($src): self
     {
         if ($src === NULL) {
             $src = 'images/spacer.gif';
@@ -64,40 +59,31 @@ class cHTMLImage extends cHTML
     /**
      * Sets the image's width
      *
-     * @param int $width
-     *         Image width
-     * @return cHTMLImage
-     *         $this for chaining
+     * @param int $width Image width
      */
-    public function setWidth($width)
+    public function setWidth($width): self
     {
-        return $this->updateAttribute('width', $width);
+        return $this->updateAttribute('width', cSecurity::toInteger($width));
     }
 
     /**
      * Sets the image's height
      *
-     * @param int $height
-     *         Image height
-     * @return cHTMLImage
-     *         $this for chaining
+     * @param int $height Image height
      */
-    public function setHeight($height)
+    public function setHeight($height): self
     {
-        return $this->updateAttribute('height', $height);
+        return $this->updateAttribute('height', cSecurity::toInteger($height));
     }
 
     /**
      * Sets the border size
      *
-     * @param int $border
-     *         Border size
-     * @return cHTMLImage
-     *         $this for chaining
+     * @param int $border Border size
      */
-    public function setBorder($border)
+    public function setBorder($border): self
     {
-        return $this->updateAttribute('border', $border);
+        return $this->updateAttribute('border', cSecurity::toInteger($border));
     }
 
     /**
@@ -120,7 +106,6 @@ class cHTMLImage extends cHTML
      * @param string $src The source (path) to the image
      * @param string $alt Alternate text
      * @param array $attributes Attributes to set
-     * @return string
      * @since CONTENIDO 4.10.2
      */
     public static function img(string $src, string $alt = '', array $attributes = []): string

@@ -28,10 +28,8 @@ class cHTMLListItem extends cHTMLContentElement
      *
      * Creates an HTML li element.
      *
-     * @param string $id [optional]
-     *         the ID of this list item
-     * @param string $class [optional]
-     *         the class of this list item
+     * @param string $id [optional] The ID of this list item
+     * @param string $class [optional] The class of this list item
      */
     public function __construct($id = '', $class = '')
     {

@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 function pica_RegisterCustomTab()
 {
-    return ["con_contentallocation"];
+    return ['con_contentallocation'];
 }
 
 /**
@@ -41,7 +41,7 @@ function pica_GetCustomTabProperties($sIntName)
  */
 function pica_ArticleListActions(array $aActions)
 {
-    $aTmpActions["con_contentallocation"] = "con_contentallocation";
+    $aTmpActions['con_contentallocation'] = "con_contentallocation";
 
     return $aTmpActions + $aActions;
 }

@@ -25,7 +25,7 @@ class Solr
      *
      * @var string
      */
-    private static $_name = 'search_solr';
+    private static $name = 'search_solr';
 
     /**
      * @param mixed $whatever
@@ -47,7 +47,7 @@ class Solr
         $filename = $cfg['path']['contenido_logs'] . 'errorlog.txt';
 
         // extend message with optional prefix
-        $prefix = number_format($delta * 1000, 0) . 'ms: ';
+        $prefix = number_format($delta * 1000) . 'ms: ';
         if (NULL !== $file) {
             $prefix .= $file;
             if (NULL !== $line) {
@@ -82,43 +82,48 @@ class Solr
 
     /**
      * Return the plugin name.
-     *
-     * @return string
      */
-    public static function getName()
+    public static function getName(): string
     {
-        return self::$_name;
+        return self::$name;
     }
 
     /**
-     * Return path to this plugins folder.
-     *
-     * @return string
+     * Return path to this plugins' folder.
      */
-    public static function getPath()
+    public static function getPath(): string
     {
         $cfg = cRegistry::getConfig();
 
         $path = cRegistry::getBackendPath() . $cfg['path']['plugins'];
-        $path .= self::$_name . '/';
+        $path .= self::$name . '/';
 
         return $path;
     }
 
     /**
-     *
-     * @param string $key
-     * @return string
+     * Return URL to this plugins' folder.
      */
-    public static function i18n($key)
+    public static function getUrl(): string
+    {
+        $cfg = cRegistry::getConfig();
+
+        $path = cRegistry::getBackendUrl() . $cfg['path']['plugins'];
+        $path .= self::$name . '/';
+
+        return $path;
+    }
+
+    public static function i18n(string $key): string
     {
         try {
-            $trans = i18n($key, self::$_name);
+            return i18n($key, self::$name);
         } catch (cException $e) {
-            $trans = $key;
+            error_log(sprintf(
+                'Plugin "%s" translation error: %s. Key: %s', self::$name, $e->getMessage(), $key)
+            );
+            return $key;
         }
-
-        return $trans;
     }
 
     /**
@@ -127,14 +132,11 @@ class Solr
      * The option values are read from system or client settings.
      * Required settings are solr/hostname, solr/port, solr/path.
      *
-     * @param $idclient
-     * @param $idlang
-     *
-     * @return array
-     * @throws cDbException
-     * @throws cException
+     * @param int $clientId
+     * @param int $languageId
+     * @throws cDbException|cException
      */
-    public static function getClientOptions($idclient, $idlang)
+    public static function getClientOptions($clientId, $languageId): array
     {
         $options = [];
 
@@ -209,7 +211,6 @@ class Solr
      * Check if required options exist.
      * Required settings are solr/hostname, solr/port, solr/path.
      *
-     * @param array $options
      * @throws SolrWarning when required options don't exist
      */
     public static function validateClientOptions(array $options)
@@ -265,13 +266,11 @@ class Solr
     }
 
     /**
-     * Creates a notification widget in order to display an exception message in
-     * backend.
+     * Creates a notification widget in order to display an exception message in backend.
      *
      * @param Exception $e
-     * @return string
      */
-    public static function notifyException(Exception $e)
+    public static function notifyException(Exception $e): string
     {
         $cGuiNotification = new cGuiNotification();
         $level = cGuiNotification::LEVEL_ERROR;

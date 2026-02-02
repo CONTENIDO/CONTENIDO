@@ -14,7 +14,7 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-cInclude("includes", "functions.con.php");
+cInclude('includes', 'functions.con.php');
 
 global $tpl, $db;
 
@@ -29,9 +29,9 @@ $frame = cRegistry::getFrame();
 $sql = "SELECT
             logtimestamp
         FROM
-            " . $cfg['tab']['actionlog'] . "
+            " . cDb::getTableName('actionlog') . "
         WHERE
-           user_id = '" . $db->escape($auth->auth["uid"]) . "'
+           user_id = '" . $db->escape($auth->getUserId()) . "'
         ORDER BY
             logtimestamp DESC
         LIMIT 2";
@@ -39,9 +39,9 @@ $sql = "SELECT
 $db->query($sql);
 $db->nextRecord();
 
-$lastlogin = $db->f("logtimestamp");
+$lastlogin = $db->f('logtimestamp');
 
-$idaction = $perm->getIdForAction("con_editart");
+$idaction = $perm->getIdForAction('con_editart');
 
 $sql = "SELECT
             a.idart AS idart,
@@ -55,17 +55,17 @@ $sql = "SELECT
             a.created AS created,
             a.lastmodified AS lastmodified
         FROM
-            " . $cfg['tab']['art_lang'] . " AS a,
-            " . $cfg['tab']['art'] . " AS b,
-            " . $cfg['tab']['cat_art'] . " AS c,
-            " . $cfg['tab']['actionlog'] . " AS d
+            " . cDb::getTableName('art_lang') . " AS a,
+            " . cDb::getTableName('art') . " AS b,
+            " . cDb::getTableName('cat_art') . " AS c,
+            " . cDb::getTableName('actionlog') . " AS d
         WHERE
-            a.idlang    = " . (int)$lang . " AND
+            a.idlang    = " . $lang . " AND
             a.idart     = b.idart AND
-            b.idclient  = " . (int)$client . " AND
+            b.idclient  = " . $client . " AND
             b.idart     = c.idart AND
             d.idaction  = " . (int)$idaction . " AND
-            d.user_id   = '" . $db->escape($auth->auth["uid"]) . "' AND
+            d.user_id   = '" . $db->escape($auth->getUserId()) . "' AND
             d.idcatart  = c.idcatart
         GROUP BY
                 c.idcatart
@@ -84,21 +84,21 @@ $no_article = true;
 $tpl->set('s', 'LASTARTICLES', i18n("Recently edited articles") . ":" . markSubMenuItem(1));
 
 while ($db->nextRecord()) {
-    $idtplcfg = $db->f("idtplcfg");
-    $idartlang = $db->f("idartlang");
-    $idlang = $db->f("idlang");
-    $idcat = $db->f("idcat");
-    $idart = $db->f("idart");
-    $online = $db->f("online");
+    $idtplcfg = $db->f('idtplcfg');
+    $idartlang = $db->f('idartlang');
+    $idlang = $db->f('idlang');
+    $idcat = $db->f('idcat');
+    $idart = $db->f('idart');
+    $online = $db->f('online');
 
     $is_start = isStartArticle($idartlang, $idcat, $idlang);
 
-    $idcatart = $db->f("idcatart");
-    $created = $db->f("created");
-    $modified = $db->f("lastmodified");
+    $idcatart = $db->f('idcatart');
+    $created = $db->f('created');
+    $modified = $db->f('lastmodified');
     $category = "";
     conCreateLocationString($idcat, "&nbsp;/&nbsp;", $category);
-    if ($category == "") {
+    if ($category == '') {
         $category = "&nbsp;";
     }
 
@@ -125,8 +125,8 @@ while ($db->nextRecord()) {
                     b.name AS tplname,
                     b.idtpl AS idtpl
                  FROM
-                    " . $cfg['tab']['tpl_conf'] . " AS a,
-                    " . $cfg['tab']['tpl'] . " AS b
+                    " . cDb::getTableName('tpl_conf') . " AS a,
+                    " . cDb::getTableName('tpl') . " AS b
                  WHERE
                     a.idtplcfg = " . (int)$idtplcfg . " AND
                     a.idtpl = b.idtpl";
@@ -134,11 +134,11 @@ while ($db->nextRecord()) {
         $db2->query($sql2);
         $db2->nextRecord();
 
-        $a_tplname = $db2->f("tplname");
-        $a_idtpl = $db2->f("idtpl");
+        $a_tplname = $db2->f('tplname');
+        $a_idtpl = $db2->f('idtpl');
     }
 
-    if ($a_tplname == "") {
+    if ($a_tplname == '') {
         $a_tplname = "&nbsp;";
     }
 
@@ -194,11 +194,11 @@ $sql = "SELECT
             b.name AS name,
             d.idtpl AS idtpl
         FROM
-            (" . $cfg['tab']['cat'] . " AS a,
-            " . $cfg['tab']['cat_lang'] . " AS b,
-            " . $cfg['tab']['tpl_conf'] . " AS c)
+            (" . cDb::getTableName('cat') . " AS a,
+            " . cDb::getTableName('cat_lang') . " AS b,
+            " . cDb::getTableName('tpl_conf') . " AS c)
         LEFT JOIN
-            " . $cfg['tab']['tpl'] . " AS d
+            " . cDb::getTableName('tpl') . " AS d
         ON
             d.idtpl = c.idtpl
         WHERE
@@ -211,20 +211,20 @@ $sql = "SELECT
 $db->query($sql);
 $db->nextRecord();
 
-$cat_idtpl = $db->f("idtpl");
+$cat_idtpl = $db->f('idtpl');
 
 // Notify if no article was found
 if ($no_article) {
-    $tpl->set("d", "START", "&nbsp;");
-    $tpl->set("d", "ARTICLE", i18n("No article found"));
-    $tpl->set("d", "CREATED", "&nbsp;");
-    $tpl->set("d", "LASTMODIFIED", "&nbsp;");
-    $tpl->set("d", "ARTCONF", "&nbsp;");
-    $tpl->set("d", "TPLNAME", "&nbsp;");
-    $tpl->set("d", "TPLCONF", "&nbsp;");
-    $tpl->set("d", "ONLINE", "&nbsp;");
+    $tpl->set('d', 'START', "&nbsp;");
+    $tpl->set('d', 'ARTICLE', i18n("No article found"));
+    $tpl->set('d', 'CREATED', "&nbsp;");
+    $tpl->set('d', 'LASTMODIFIED', "&nbsp;");
+    $tpl->set('d', 'ARTCONF', "&nbsp;");
+    $tpl->set('d', 'TPLNAME', "&nbsp;");
+    $tpl->set('d', 'TPLCONF', "&nbsp;");
+    $tpl->set('d', 'ONLINE', "&nbsp;");
     $tpl->set('d', 'CATEGORY', '&nbsp');
-    $tpl->set("d", "DELETE", "&nbsp;");
+    $tpl->set('d', 'DELETE', "&nbsp;");
 
     $tpl->next();
 }

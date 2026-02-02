@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiCategory createNewItem
- * @method cApiCategory|bool next
+ * @extends ItemCollection<cApiCategory>
  */
 class cApiCategoryCollection extends ItemCollection
 {
@@ -36,15 +35,12 @@ class cApiCategoryCollection extends ItemCollection
     /**
      * Constructor to create an instance of this class.
      *
-     * @param bool $select [optional]
-     *                     where clause to use for selection (see ItemCollection::select())
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param string|false $select [optional] Where clause to use for selection {@see ItemCollection::select()}
+     * @throws cDbException|cInvalidArgumentException
      */
     public function __construct($select = false)
     {
-        parent::__construct(cRegistry::getDbTableName('cat'), 'idcat');
+        parent::__construct(cDb::getTableName('cat'), 'idcat');
         $this->_setItemClass('cApiCategory');
 
         // set the join partners so that joins can be used via link() method
@@ -58,7 +54,7 @@ class cApiCategoryCollection extends ItemCollection
     /**
      * Creates a category entry.
      *
-     * @param int $idclient
+     * @param int $clientId
      * @param int $parentid [optional]
      * @param int $preid [optional]
      * @param int $postid [optional]
@@ -66,18 +62,21 @@ class cApiCategoryCollection extends ItemCollection
      * @param string $author [optional]
      * @param string $created [optional]
      * @param string $lastmodified [optional]
-     *
      * @return cApiCategory
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idclient, $parentid = 0, $preid = 0, $postid = 0, $status = 0, $author = '', $created = '', $lastmodified = '')
-    {
+    public function create(
+        $clientId,
+        $parentid = 0,
+        $preid = 0,
+        $postid = 0,
+        $status = 0,
+        $author = '',
+        $created = '',
+        $lastmodified = ''
+    ) {
         if (empty($author)) {
-            $auth = cRegistry::getAuth();
-            $author = $auth->auth['uname'];
+            $author = cRegistry::getAuth()->getUsername();
         }
         if (empty($created)) {
             $created = date('Y-m-d H:i:s');
@@ -88,7 +87,7 @@ class cApiCategoryCollection extends ItemCollection
 
         $oItem = $this->createNewItem();
 
-        $oItem->set('idclient', $idclient);
+        $oItem->set('idclient', $clientId);
         $oItem->set('parentid', $parentid);
         $oItem->set('preid', $preid);
         $oItem->set('postid', $postid);
@@ -102,40 +101,30 @@ class cApiCategoryCollection extends ItemCollection
     }
 
     /**
-     * Returns the last category tree entry from the category table for a
-     * specific client.
+     * Returns the last category tree entry from the category table for a specific client.
      * Last entry has no parentid and no postid.
      *
-     * @param int $idclient
-     *
-     * @return cApiCategory|NULL
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param int $clientId
+     * @throws cDbException|cException
      */
-    public function fetchLastCategoryTree($idclient)
+    public function fetchLastCategoryTree($clientId): ?cApiCategory
     {
-        $where = 'parentid=0 AND postid=0 AND idclient=' . (int)$idclient;
-        $this->select($where);
-        return $this->next();
+        $this->select(sprintf('`parentid` = 0 AND `postid` = 0 AND `idclient` = %d', $clientId));
+        return (($item = $this->next()) instanceof cApiCategory) ? $item : null;
     }
 
     /**
      * Returns list of categories (category ids) by passed client.
      *
-     * @param int $idclient
-     *
-     * @return array
-     *
+     * @return int[]
      * @throws cDbException
      */
-    public function getCategoryIdsByClient($idclient)
+    public function getCategoryIdsByClient($clientId): array
     {
         $list = [];
-        $sql = 'SELECT idcat FROM `%s` WHERE idclient=%d';
-        $this->db->query($sql, $this->table, $idclient);
+        $this->db->query('SELECT `idcat` FROM `%s` WHERE `idclient` = %d', $this->table, $clientId);
         while ($this->db->nextRecord()) {
-            $list[] = $this->db->f('idcat');
+            $list[] = cSecurity::toInteger($this->db->f('idcat'));
         }
         return $list;
     }
@@ -153,44 +142,40 @@ class cApiCategoryCollection extends ItemCollection
      * (*) Returned category id
      * </pre>
      *
-     * @param int $idcat
-     *
-     * @return int
-     *
+     * @param int $categoryId
      * @throws cDbException
      */
-    public function getNextPostCategoryId($idcat)
+    public function getNextPostCategoryId($categoryId): int
     {
-        $sql = "SELECT idcat FROM `%s` WHERE preid = %d";
-        $this->db->query($sql, $this->table, $idcat);
-        if ($this->db->nextRecord()) {
-            // Post element exists
-            $idcat = $this->db->f('idcat');
-            $sql = "SELECT parentid FROM `%s` WHERE idcat = %d";
-            $this->db->query($sql, $this->table, $idcat);
-            if ($this->db->nextRecord()) {
-                // Parent from post can't be 0
-                $parentid = (int)$this->db->f('parentid');
-                return ($parentid != 0) ? $idcat : 0;
-            } else {
-                return 99;
-            }
-        } else {
+        $categoryId = cSecurity::toInteger($categoryId);
+
+        $this->db->query("SELECT `idcat` FROM `%s` WHERE `preid` = %d", $this->table, $categoryId);
+        if (!$this->db->nextRecord()) {
             // Post element does not exist
             return 0;
+        }
+
+        // Post element exists
+        $categoryId = cSecurity::toInteger($this->db->f('idcat'));
+        $this->db->query("SELECT `parentid` FROM `%s` WHERE `idcat` = %d", $this->table, $categoryId);
+        if ($this->db->nextRecord()) {
+            // Parent from post can't be 0
+            $parentId = cSecurity::toInteger($this->db->f('parentid'));
+            return $parentId != 0 ? $categoryId : 0;
+        } else {
+            return 99;
         }
     }
 
     /**
-     * Returns the id of category which is located after passed category ids
-     * parent category.
+     * Returns the id of category which is located after passed category ids parent category.
      *
      * Example:
      * <pre>
      * ...
      * root_category
      * parent_category
-     * previous_cateory
+     * previous_category
      * this_category
      * post_category
      * parents_post_category (*)
@@ -198,51 +183,47 @@ class cApiCategoryCollection extends ItemCollection
      * (*) Returned category id
      * </pre>
      *
-     * @param int $idcat
-     *         Category id
-     *
-     * @return int
-     *
+     * @param int $categoryId Category id
      * @throws cDbException
      */
-    public function getParentsNextPostCategoryId($idcat)
+    public function getParentsNextPostCategoryId($categoryId): int
     {
-        $sql = "SELECT parentid FROM `%s` WHERE idcat = %d";
-        $this->db->query($sql, $this->table, $idcat);
-        if ($this->db->nextRecord()) {
-            // Parent exists
-            $idcat = $this->db->f('parentid');
-            if ($idcat != 0) {
-                $sql = "SELECT idcat FROM `%s` WHERE preid = %d";
-                $this->db->query($sql, $this->table, $idcat);
-                if ($this->db->nextRecord()) {
-                    // Parent has post
-                    $idcat = (int)$this->db->f('idcat');
-                    $sql = "SELECT parentid FROM `%s` WHERE idcat = %d";
-                    $this->db->query($sql, $this->table, $idcat);
-                    if ($this->db->nextRecord()) {
-                        // Parent from post must not be 0
-                        $parentid = (int)$this->db->f('parentid');
-                        return ($parentid != 0) ? $idcat : 0;
-                    } else {
-                        return 99;
-                    }
-                } else {
-                    // Parent has no post
-                    return $this->getNextBackwardsCategoryId($idcat);
-                }
-            } else {
-                return 0;
-            }
-        } else {
+        $categoryId = cSecurity::toInteger($categoryId);
+
+        $this->db->query("SELECT `parentid` FROM `%s` WHERE `idcat` = %d", $this->table, $categoryId);
+        if (!$this->db->nextRecord()) {
             // No parent
             return 0;
+        }
+
+        // Parent exists
+        $categoryId = cSecurity::toInteger($this->db->f('parentid'));
+        if ($categoryId === 0) {
+            return 0;
+        }
+
+        $this->db->query("SELECT `idcat` FROM `%s` WHERE `preid` = %d", $this->table, $categoryId);
+        if (!$this->db->nextRecord()) {
+            // Parent has no post
+            // TODO Function `getNextBackwardsCategoryId` doesn't exist!
+            //return $this->getNextBackwardsCategoryId($categoryId);
+            return 0;
+        }
+
+        // Parent has post
+        $categoryId = cSecurity::toInteger($this->db->f('idcat'));
+        $this->db->query("SELECT `parentid` FROM `%s` WHERE `idcat` = %d", $this->table, $categoryId);
+        if ($this->db->nextRecord()) {
+            // Parent from post must not be 0
+            $parentId = cSecurity::toInteger($this->db->f('parentid'));
+            return $parentId != 0 ? $categoryId : 0;
+        } else {
+            return 99;
         }
     }
 
     /**
-     * Returns id of first child category, where parent id is the same as passed
-     * id and the previous id is 0.
+     * Returns id of first child category, where parent id is the same as passed id and the previous id is 0.
      *
      * Example:
      * <pre>
@@ -255,33 +236,29 @@ class cApiCategoryCollection extends ItemCollection
      * (*) Returned category id
      * </pre>
      *
-     * @param int $idcat
-     * @param int|NULL $idlang [optional]
-     *                         If defined, it checks also if there is a next deeper category in this language.
-     *
-     * @return int
-     *
+     * @param int $categoryId
+     * @param ?int $languageId If defined, it checks also if there is a next deeper category in this language.
      * @throws cDbException
      */
-    public function getFirstChildCategoryId($idcat, $idlang = NULL)
+    public function getFirstChildCategoryId($categoryId, $languageId = NULL): int
     {
-        $sql = "SELECT c.idcat
-        		FROM `%s` AS c
-        		LEFT JOIN `%s` AS l ON (l.idcat = c.idcat)
-        		WHERE c.parentid = %d AND l.idlang = %d";
-        $sql = $this->db->prepare($sql, $this->table, cRegistry::getDbTableName('cat_lang'), $idcat, $idlang);
+        $sql = $this->db->prepare(
+            "SELECT c.idcat
+                FROM `%s` AS c
+                LEFT JOIN `%s` AS l ON (l.idcat = c.idcat)
+                WHERE c.parentid = %d AND l.idlang = %d",
+            $this->table,
+            cDb::getTableName('cat_lang'),
+            $categoryId,
+            $languageId
+        );
         $this->db->query($sql);
 
-        if ($this->db->nextRecord()) {
-            return $this->db->f('idcat');
-        }
-
-        return 0;
+        return $this->db->nextRecord() ? cSecurity::toInteger($this->db->f('idcat')) : 0;
     }
 
     /**
-     * Returns list of all child category ids, only them on next deeper level
-     * (not recursive!)
+     * Returns list of all child category ids, only them on next deeper level (not recursive!)
      * The returned array contains already the order of the categories.
      * Example:
      * <pre>
@@ -295,56 +272,52 @@ class cApiCategoryCollection extends ItemCollection
      * (*) Returned category ids
      * </pre>
      *
-     * @param int $idcat
-     * @param int|NULL $idlang [optional]
-     *
-     * @return array
-     *
+     * @param int $categoryId
+     * @param ?int $languageId
+     * @return int[]
      * @throws cDbException
      */
-    public function getAllChildCategoryIds($idcat, $idlang = NULL)
+    public function getAllChildCategoryIds($categoryId, $languageId = NULL): array
     {
-        $aCats = [];
-        $bLoop = true;
+        $categoryIds = [];
+        $doLoop = true;
         $db2 = $this->_getSecondDBInstance();
 
-        $sql = "SELECT idcat FROM `%s` WHERE parentid = %d AND preid = 0";
-        $this->db->query($sql, $this->table, $idcat);
+        $sql = "SELECT `idcat` FROM `%s` WHERE `parentid` = %d AND `preid` = 0";
+        $this->db->query($sql, $this->table, $categoryId);
         if ($this->db->nextRecord()) {
-            while ($bLoop) {
-                $midcat = $this->db->f('idcat');
-                if (NULL == $idlang) {
-                    $aCats[] = $midcat;
+            while ($doLoop) {
+                $tmpCategoryId = cSecurity::toInteger($this->db->f('idcat'));
+                if (NULL == $languageId) {
+                    $categoryIds[] = $tmpCategoryId;
                 } else {
                     // Deeper element exists, check for language dependent part
-                    $sql = "SELECT idcatlang FROM `%s` WHERE idcat = %d AND idlang = %d";
-                    $db2->query($sql, cRegistry::getDbTableName('cat_lang'), $midcat, $idlang);
+                    $sql = "SELECT `idcatlang` FROM `%s` WHERE `idcat` = %d AND `idlang` = %d";
+                    $db2->query($sql, cDb::getTableName('cat_lang'), $tmpCategoryId, $languageId);
                     if ($db2->nextRecord()) {
-                        $aCats[] = $midcat;
+                        $categoryIds[] = $tmpCategoryId;
                     }
                 }
 
-                $sql = "SELECT idcat FROM `%s` WHERE parentid = %d AND preid = %d";
-                $this->db->query($sql, $this->table, $idcat, $midcat);
+                $sql = "SELECT `idcat` FROM `%s` WHERE `parentid` = %d AND `preid` = %d";
+                $this->db->query($sql, $this->table, $categoryId, $tmpCategoryId);
                 if (!$this->db->nextRecord()) {
-                    $bLoop = false;
+                    $doLoop = false;
                 }
             }
         }
-        return $aCats;
+        return $categoryIds;
     }
 
     /**
-     * Returns list of all child category ids and their child category ids of
-     * passed category id.
+     * Returns list of all child category ids and their child category ids of passed category id.
      * The list also contains the id of passed category.
      *
-     * The return value of this function could be used to perform bulk actions
-     * on a specific category an all of its childcategories.
+     * The return value of this function could be used to perform bulk actions on a specific category
+     * and all of its child categories.
      *
      * NOTE: The returned array is not sorted!
-     * Return value is similar to getAllCategoryIdsRecursive2, only the sorting
-     * differs
+     * Return value is similar to getAllCategoryIdsRecursive2, only the sorting differs.
      *
      * Example:
      * <pre>
@@ -359,57 +332,55 @@ class cApiCategoryCollection extends ItemCollection
      * (*) Returned category ids
      * </pre>
      *
-     * @param int $idcat
-     * @param int $idclient
-     *
-     * @return array
-     *
+     * @param int $categoryId
+     * @param int $clientId
+     * @return int[]
      * @throws cDbException
      */
-    public function getAllCategoryIdsRecursive($idcat, $idclient)
+    public function getAllCategoryIdsRecursive($categoryId, $clientId): array
     {
-        $catList = [];
-        $openList = [];
+        $categoryId = cSecurity::toInteger($categoryId);
+        $clientId = cSecurity::toInteger($clientId);
 
-        $openList[] = $idcat;
+        $categoryIds = [];
+        $openList = [$categoryId];
 
         while (($actId = array_pop($openList)) != NULL) {
-            if (in_array($actId, $catList)) {
+            if (in_array($actId, $categoryIds)) {
                 continue;
             }
 
-            $catList[] = $actId;
+            $categoryIds[] = $actId;
 
-            $sql = "SELECT * FROM `:cat_tree` AS A, `:cat` AS B WHERE A.idcat=B.idcat AND B.parentid=:parentid AND idclient=:idclient ORDER BY idtree";
             $sql = $this->db->prepare(
-                $sql,
+                "SELECT * FROM `:cat_tree` AS A, `:cat` AS B
+                WHERE A.idcat = B.idcat AND B.parentid = :parentid AND idclient = :idclient
+                ORDER BY idtree",
                 [
-                    'cat_tree' => cRegistry::getDbTableName('cat_tree'),
+                    'cat_tree' => cDb::getTableName('cat_tree'),
                     'cat' => $this->table,
-                    'parentid' => (int)$actId,
-                    'idclient' => (int)$idclient,
+                    'parentid' => $actId,
+                    'idclient' => cSecurity::toInteger($clientId),
                 ]
             );
             $this->db->query($sql);
 
             while ($this->db->nextRecord()) {
-                $openList[] = $this->db->f('idcat');
+                $openList[] = cSecurity::toInteger($this->db->f('idcat'));
             }
         }
 
-        return $catList;
+        return $categoryIds;
     }
 
     /**
-     * Returns list of all child category ids and their child category ids of
-     * passed category id.
+     * Returns list of all child category ids and their child category ids of passed category id.
      * The list also contains the id of passed category.
      *
-     * The return value of this function could be used to perform bulk actions
-     * on a specific category an all of its childcategories.
+     * The return value of this function could be used to perform bulk actions on a specific category and
+     * all of its child categories.
      *
-     * NOTE: Return value is similar to getAllCategoryIdsRecursive, only the
-     * sorting differs
+     * NOTE: Return value is similar to getAllCategoryIdsRecursive, only the sorting differs
      *
      * Example:
      * <pre>
@@ -424,21 +395,26 @@ class cApiCategoryCollection extends ItemCollection
      * (*) Returned category ids
      * </pre>
      *
-     * @param int $idcat
-     * @param        $idclient
-     * @return array
-     *         Sorted by category id
-     *
+     * @param int $categoryId
+     * @param int $clientId
+     * @return int[] Sorted by category id
      * @throws cDbException
      */
-    public function getAllCategoryIdsRecursive2($idcat, $idclient)
+    public function getAllCategoryIdsRecursive2($categoryId, $clientId): array
     {
-        $aCats = [];
+        $categoryId = cSecurity::toInteger($categoryId);
+        $clientId = cSecurity::toInteger($clientId);
+
+        $categoryIds = [];
         $found = false;
         $curLevel = 0;
 
-        $sql = "SELECT * FROM `%s` AS a, `%s` AS b WHERE a.idcat = b.idcat AND idclient = %d ORDER BY idtree";
-        $sql = $this->db->prepare($sql, cRegistry::getDbTableName('cat_tree'), cRegistry::getDbTableName('cat'), $idclient);
+        $sql = $this->db->prepare(
+            "SELECT * FROM `%s` AS a, `%s` AS b WHERE a.idcat = b.idcat AND idclient = %d ORDER BY `idtree`",
+            cDb::getTableName('cat_tree'),
+            cDb::getTableName('cat'),
+            $clientId
+        );
         $this->db->query($sql);
 
         while ($this->db->nextRecord()) {
@@ -448,17 +424,17 @@ class cApiCategoryCollection extends ItemCollection
             }
 
             // starting part of tree
-            if ($this->db->f('idcat') == $idcat) {
+            if ($this->db->f('idcat') == $categoryId) {
                 $found = true;
-                $curLevel = $this->db->f('level');
+                $curLevel = cSecurity::toInteger($this->db->f('level'));
             }
 
             if ($found) {
-                $aCats[] = $this->db->f('idcat');
+                $categoryIds[] = cSecurity::toInteger($this->db->f('idcat'));
             }
         }
 
-        return $aCats;
+        return $categoryIds;
     }
 }
 
@@ -473,26 +449,23 @@ class cApiCategory extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('cat'), 'idcat');
-        $this->setFilters([], []);
+        parent::__construct(cDb::getTableName('cat'), 'idcat');
+        $this->setFilters();
 
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * Updates lastmodified field and calls parents store method
      *
-     * @return bool
+     * @inheritDoc
      */
     public function store()
     {
@@ -503,12 +476,7 @@ class cApiCategory extends Item
     /**
      * User-defined setter for category fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $safe [optional]
-     *         Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function setField($name, $value, $safe = true)
     {
@@ -529,15 +497,10 @@ class cApiCategory extends Item
     /**
      * Returns the link to the current object.
      *
-     * @param int $changeLangId [optional]
-     *                          change language id for URL (optional)
-     *
-     * @return string
-     *                          link
-     *
-     * @throws cInvalidArgumentException
+     * @param int $changeLanguageId Change language id for URL (optional)
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function getLink($changeLangId = 0)
+    public function getLink($changeLanguageId = 0): string
     {
         if ($this->isLoaded() === false) {
             return '';
@@ -545,9 +508,9 @@ class cApiCategory extends Item
 
         $options = [];
         $options['idcat'] = $this->get('idcat');
-        $options['lang'] = ($changeLangId == 0) ? cRegistry::getLanguageId() : $changeLangId;
-        if ($changeLangId > 0) {
-            $options['changelang'] = $changeLangId;
+        $options['lang'] = $changeLanguageId == 0 ? cRegistry::getLanguageId() : $changeLanguageId;
+        if ($changeLanguageId > 0) {
+            $options['changelang'] = $changeLanguageId;
         }
 
         return cUri::getInstance()->build($options);

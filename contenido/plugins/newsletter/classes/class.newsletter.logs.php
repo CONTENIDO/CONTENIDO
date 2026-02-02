@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Plugin
  * @subpackage Newsletter
- * @method NewsletterLog createNewItem
- * @method NewsletterLog|bool next
+ * @extends ItemCollection<NewsletterLog>
  */
 class NewsletterLogCollection extends ItemCollection
 {
@@ -31,24 +30,23 @@ class NewsletterLogCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('news_log'), 'idnewslog');
-        $this->_setItemClass("NewsletterLog");
+        parent::__construct(cDb::getTableName('news_log'), 'idnewslog');
+        $this->_setItemClass('NewsletterLog');
     }
 
     /**
      * Creates a single new log item
      *
-     * @param $idnewsjob integer ID of corresponding newsletter send job
-     * @param $idnewsrcp integer ID of recipient
-     *
-     * @return bool|Item
+     * @param int $newsJobId ID of corresponding newsletter send job
+     * @param int $recipientId ID of recipient
+     * @return NewsletterLog|false
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function create($idnewsjob, $idnewsrcp)
+    public function create($newsJobId, $recipientId)
     {
         $this->resetQuery();
-        $this->setWhere("idnewsjob", $idnewsjob);
-        $this->setWhere("idnewsrcp", $idnewsrcp);
+        $this->setWhere('idnewsjob', $newsJobId);
+        $this->setWhere('idnewsrcp', $recipientId);
         $this->query();
 
         if ($oItem = $this->next()) {
@@ -56,26 +54,26 @@ class NewsletterLogCollection extends ItemCollection
         }
 
         $oRecipient = new NewsletterRecipient();
-        if ($oRecipient->loadByPrimaryKey($idnewsrcp)) {
+        if ($oRecipient->loadByPrimaryKey($recipientId)) {
             $oItem = $this->createNewItem();
 
-            $oItem->set("idnewsjob", $idnewsjob);
-            $oItem->set("idnewsrcp", $idnewsrcp);
+            $oItem->set('idnewsjob', $newsJobId);
+            $oItem->set('idnewsrcp', $recipientId);
 
-            $sEMail = $oRecipient->get("email");
-            $sName = $oRecipient->get("name");
+            $sEMail = $oRecipient->get('email');
+            $name = $oRecipient->get('name');
 
-            if ($sName == "") {
-                $oItem->set("rcpname", $sEMail);
+            if ($name == '') {
+                $oItem->set('rcpname', $sEMail);
             } else {
-                $oItem->set("rcpname", $sName);
+                $oItem->set('rcpname', $name);
             }
 
-            $oItem->set("rcpemail", $sEMail);
-            $oItem->set("rcphash", $oRecipient->get("hash"));
-            $oItem->set("rcpnewstype", $oRecipient->get("news_type"));
-            $oItem->set("status", "pending");
-            $oItem->set("created", date('Y-m-d H:i:s'), false);
+            $oItem->set('rcpemail', $sEMail);
+            $oItem->set('rcphash', $oRecipient->get('hash'));
+            $oItem->set('rcpnewstype', $oRecipient->get('news_type'));
+            $oItem->set('status', "pending");
+            $oItem->set('created', date('Y-m-d H:i:s'), false);
             $oItem->store();
 
             return $oItem;
@@ -88,115 +86,133 @@ class NewsletterLogCollection extends ItemCollection
      * Gets all active recipients as specified for the newsletter and adds for
      * every recipient a log item
      *
-     * @param int $idnewsjob ID of corresponding newsletter dispatch job
-     * @param int $idnews ID of newsletter
-     *
+     * @param int $newsJobId ID of the corresponding newsletter dispatch job
+     * @param int $newsId ID of newsletter
      * @return  int  Recipient count
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function initializeJob($idnewsjob, $idnews)
+    public function initializeJob($newsJobId, $newsId)
     {
-        $idnewsjob = cSecurity::toInteger($idnewsjob);
-        $idnews = cSecurity::toInteger($idnews);
+        $newsJobId = cSecurity::toInteger($newsJobId);
+        $newsId = cSecurity::toInteger($newsId);
 
         $oNewsletter = new Newsletter();
-        if ($oNewsletter->loadByPrimaryKey($idnews)) {
-            $sDestination = $oNewsletter->get("send_to");
-            $iIDClient = $oNewsletter->get("idclient");
-            $iIDLang = $oNewsletter->get("idlang");
-            $nrc = new NewsletterRecipientCollection();
-            $nrcClassName = cString::toLowerCase(get_class($nrc));
-
-            switch ($sDestination) {
-                case "all":
-                    $sDistinct = "";
-                    $sFrom = "";
-                    $sSQL = "deactivated='0' AND confirmed='1' AND idclient='" . $iIDClient . "' AND idlang='" . $iIDLang . "'";
-                    break;
-                case "default":
-                    $sDistinct = "distinct";
-                    $sFrom = cRegistry::getDbTableName('news_groups') . " AS groups, " . cRegistry::getDbTableName('news_groupmembers') . " AS groupmembers ";
-                    $sSQL = $nrcClassName . ".idclient = '" . $iIDClient . "' AND " . $nrcClassName . ".idlang = '" . $iIDLang . "' AND " . $nrcClassName . ".deactivated = '0' AND " . $nrcClassName . ".confirmed = '1' AND " . $nrcClassName . ".idnewsrcp = groupmembers.idnewsrcp AND " . "groupmembers.idnewsgroup = groups.idnewsgroup AND " . "groups.defaultgroup = '1' AND groups.idclient = '" . $iIDClient . "' AND " . "groups.idlang = '" . $iIDLang . "'";
-                    break;
-                case "selection":
-                    $aGroups = unserialize($oNewsletter->get("send_ids"));
-
-                    if (is_array($aGroups) && count($aGroups) > 0) {
-                        $sGroups = "'" . implode("','", $aGroups) . "'";
-
-                        $sDistinct = "distinct";
-                        $sFrom = cRegistry::getDbTableName('news_groupmembers') . " AS groupmembers ";
-                        $sSQL = "newsletterrecipientcollection.idclient = '" . $iIDClient . "' AND newsletterrecipientcollection.idlang = '" . $iIDLang . "' AND newsletterrecipientcollection.deactivated = '0' AND newsletterrecipientcollection.confirmed = '1' AND newsletterrecipientcollection.idnewsrcp = groupmembers.idnewsrcp AND " . "groupmembers.idnewsgroup IN (" . $sGroups . ")";
-                    } else {
-                        $sDestination = "unknown";
-                    }
-                    break;
-                case "single":
-                    $iID = $oNewsletter->get("send_ids");
-                    if (is_numeric($iID)) {
-                        $sDistinct = "";
-                        $sFrom = "";
-                        $sSQL = "idnewsrcp = '" . $iID . "'";
-                    } else {
-                        $sDestination = "unknown";
-                    }
-                    break;
-                default:
-                    $sDestination = "unknown";
-            }
-            unset($oNewsletter);
-
-            if ($sDestination == "unknown") {
-                return 0;
-            } else {
-                $oRecipients = new NewsletterRecipientCollection();
-                $oRecipients->flexSelect($sDistinct, $sFrom, $sSQL, "", "", "");
-
-                $iRecipients = $oRecipients->count();
-
-                while ($oRecipient = $oRecipients->next()) {
-                    $this->create($idnewsjob, $oRecipient->get($oRecipient->getPrimaryKeyName()));
-                }
-
-                return $iRecipients;
-            }
-        } else {
+        if (!$oNewsletter->loadByPrimaryKey($newsId)) {
             return 0;
         }
+
+        $destination = $oNewsletter->get('send_to');
+        $clientId = $oNewsletter->get('idclient');
+        $languageId = $oNewsletter->get('idlang');
+        // Table name alias for the flexSelect function below!
+        $tableNameAlias = cString::toLowerCase('NewsletterRecipientCollection');
+
+        $distinct = '';
+        $from = '';
+        $where = '';
+
+        switch ($destination) {
+            case 'all':
+                $where = sprintf(
+                    "`deactivated` = 0 AND `confirmed` = 1 AND idclient = %d AND `idlang` = %d",
+                    $clientId,
+                    $languageId
+                );
+                break;
+            case 'default':
+                $distinct = '`distinct`';
+                $from = sprintf(
+                    "`%s` AS `groups`, `%s` AS `groupmembers` ",
+                    cDb::getTableName('news_groups'),
+                    cDb::getTableName('news_groupmembers')
+                );
+                $where = $this->db->prepare(
+                    ":table_name_alias.idclient = :client_id AND :table_name_alias.idlang = :language_id AND "
+                    . ":table_name_alias.deactivated = 0 AND :table_name_alias.confirmed = 1 AND "
+                    . ":table_name_alias.idnewsrcp = groupmembers.idnewsrcp AND "
+                    . "groupmembers.idnewsgroup = groups.idnewsgroup AND "
+                    . "groups.defaultgroup = 1 AND groups.idclient = :client_id AND groups.idlang = language_id",
+                    [
+                        'table_name_alias' => $tableNameAlias,
+                        'client_id' => $clientId,
+                        'language_id' => $languageId
+                    ]
+                );
+                break;
+            case 'selection':
+                $groups = unserialize($oNewsletter->get('send_ids'));
+
+                if (is_array($groups) && count($groups) > 0) {
+                    $distinct = 'distinct';
+                    $from = cDb::getTableName('news_groupmembers') . " AS groupmembers ";
+                    $where = $this->db->prepare(
+                        ":table_name_alias.idclient = :client_id AND :table_name_alias.idlang = :language_id AND "
+                        . ":table_name_alias.deactivated = 0 AND :table_name_alias.confirmed = 1 AND "
+                        . ":table_name_alias.idnewsrcp = groupmembers.idnewsrcp AND groupmembers.idnewsgroup",
+                        [
+                            'table_name_alias' => $tableNameAlias,
+                            'client_id' => $clientId,
+                            'language_id' => $languageId
+                        ]
+                    );
+                    $where .= " IN ('" . implode("','", $groups) . "')";
+                } else {
+                    $destination = 'unknown';
+                }
+                break;
+            case 'single':
+                $id = $oNewsletter->get('send_ids');
+                if (is_numeric($id)) {
+                    $where = "idnewsrcp = $id";
+                } else {
+                    $destination = 'unknown';
+                }
+                break;
+            default:
+                $destination = 'unknown';
+        }
+
+        if ($destination == 'unknown') {
+            return 0;
+        }
+
+        $oRecipients = new NewsletterRecipientCollection();
+        $oRecipients->flexSelect($distinct, $from, $where);
+        $numRecipients = $oRecipients->count();
+        while ($oRecipient = $oRecipients->next()) {
+            $this->create($newsJobId, $oRecipient->get($oRecipient->getPrimaryKeyName()));
+        }
+
+        return $numRecipients;
     }
 
     /**
-     * Overridden delete function to update recipient count if removing recipient
-     * from the list
+     * Overridden delete function to update recipient count if removing recipient from the list
      *
-     * @param int $idnewslog ID
+     * @inheritDoc
+     * @param int $id The newsletter log id.
+     * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function delete($idnewslog)
+    public function delete($id)
     {
-        $idnewslog = cSecurity::toInteger($idnewslog);
+        $id = cSecurity::toInteger($id);
 
-        $oLog = new NewsletterLog($idnewslog);
-        $iIDNewsJob = $oLog->get("idnewsjob");
-        unset($oLog);
+        $newsletterJobId = (new NewsletterLog($id))->get('idnewsjob');
 
-        $oJob = new NewsletterJob($iIDNewsJob);
-        $oJob->set("rcpcount", $oJob->get("rcpcount") - 1);
-        $oJob->store();
-        unset($oJob);
+        $newsletterJob = new NewsletterJob($newsletterJobId);
+        $newsletterJob->set('rcpcount', $newsletterJob->get('rcpcount') - 1);
+        $newsletterJob->store();
 
-        parent::delete($idnewslog);
+        return parent::delete($id);
     }
 
     /**
-     * @param $idnewsjob
-     *
-     * @return bool
+     * @param int $id
      * @throws cException
      */
-    public function deleteJob($idnewsjob)
+    public function deleteJob($id): bool
     {
-        $idnewsjob = cSecurity::toInteger($idnewsjob);
-        $this->setWhere("idnewsjob", $idnewsjob);
+        $this->setWhere('idnewsjob', cSecurity::toInteger($id));
         $this->query();
 
         while ($oItem = $this->next()) {
@@ -216,38 +232,53 @@ class NewsletterLog extends Item
     /**
      * Constructor Function
      *
-     * @param mixed $mId Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('news_log'), 'idnewslog');
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        parent::__construct(cDb::getTableName('news_log'), 'idnewslog');
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 
     /**
      * User-defined setter for newsletter logs fields.
      *
-     * @param string $name
-     * @param mixed $value
-     * @param bool $bSafe Flag to run defined inFilter on passed value
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function setField($name, $value, $bSafe = true)
+    public function setField($name, $value, $safe = true)
     {
         switch ($name) {
-            case 'idnewsrcp':
+            case 'idnewslog':
             case 'idnewsjob':
+            case 'idnewsrcp':
+            case 'rcpnewstype':
                 $value = cSecurity::toInteger($value);
                 break;
         }
 
-        return parent::setField($name, $value, $bSafe);
+        return parent::setField($name, $value, $safe);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getField($name, $safe = true)
+    {
+        $value = parent::getField($name, $safe);
+
+        switch ($name) {
+            case 'idnewslog':
+            case 'idnewsjob':
+            case 'idnewsrcp':
+            case 'rcpnewstype':
+                $value = cSecurity::toInteger($value);
+                break;
+        }
+
+        return $value;
     }
 
 }

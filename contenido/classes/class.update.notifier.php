@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class contains function for the update notifier.
+ * This class contains the function for the update notifier.
  *
  * @package    Core
  * @subpackage Security
@@ -278,7 +278,7 @@ class cUpdateNotifier
             $this->bEnableView = true;
 
             $sAction = !empty($_GET['do']) ? $_GET['do'] : '';
-            if ($sAction != "") {
+            if ($sAction != '') {
                 $this->updateSystemProperty($sAction);
             }
 
@@ -287,13 +287,13 @@ class cUpdateNotifier
             $sPeriod = getSystemProperty($this->aSysPropConfPeriod['type'], $this->aSysPropConfPeriod['name']);
             $iPeriod = cSecurity::toInteger($sPeriod);
 
-            if ($sPropUpdate == "true" || $sPropRSS == "true") {
+            if ($sPropUpdate == 'true' || $sPropRSS == 'true') {
 
-                if ($sPropUpdate == "true") {
+                if ($sPropUpdate == 'true') {
                     $this->bEnableCheck = true;
                 }
 
-                if ($sPropRSS == "true") {
+                if ($sPropRSS == 'true') {
                     $this->bEnableCheckRss = true;
                 }
 
@@ -305,7 +305,7 @@ class cUpdateNotifier
                 }
 
                 $this->setCachePath();
-                if ($this->sCacheDirectory != "") {
+                if ($this->sCacheDirectory != '') {
                     $this->setRSSFile();
                     $this->detectMinorRelease();
                     $this->checkUpdateNecessity();
@@ -335,13 +335,13 @@ class cUpdateNotifier
     protected function updateSystemProperty($sAction)
     {
         if ($sAction == "activate") {
-            setSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name'], "true");
+            setSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name'], 'true');
         } elseif ($sAction == "deactivate") {
-            setSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name'], "false");
+            setSystemProperty($this->aSysPropConf['type'], $this->aSysPropConf['name'], 'false');
         } elseif ($sAction == "activate_rss") {
-            setSystemProperty($this->aSysPropConfRss['type'], $this->aSysPropConfRss['name'], "true");
+            setSystemProperty($this->aSysPropConfRss['type'], $this->aSysPropConfRss['name'], 'true');
         } elseif ($sAction == "deactivate_rss") {
-            setSystemProperty($this->aSysPropConfRss['type'], $this->aSysPropConfRss['name'], "false");
+            setSystemProperty($this->aSysPropConfRss['type'], $this->aSysPropConfRss['name'], 'false');
         }
     }
 
@@ -355,7 +355,7 @@ class cUpdateNotifier
             mkdir($sCachePath, cDirHandler::getDefaultPermissions());
         }
 
-        if (!is_writable($sCachePath)) {
+        if (!cFileHandler::writeable($sCachePath)) {
             // setting special flag for error message
             $this->bNoWritePermissions = true;
         } else {
@@ -407,8 +407,8 @@ class cUpdateNotifier
     protected function detectMinorRelease()
     {
         $sVersion = CON_VERSION;
-        $aExplode = explode(".", $sVersion);
-        $sMinorRelease = "con" . $aExplode[0] . $aExplode[1];
+        $aExplode = explode('.', $sVersion);
+        $sMinorRelease = 'con' . $aExplode[0] . $aExplode[1];
         $this->sMinorRelease = $sMinorRelease;
     }
 
@@ -449,7 +449,7 @@ class cUpdateNotifier
 
         // echo $this->sXMLContent;
         // echo $this->sRSSContent;
-        if ($this->sXMLContent != "") {
+        if ($this->sXMLContent != '') {
 
             $this->oXML = simplexml_load_string($this->sXMLContent);
             if (!is_object($this->oXML)) {
@@ -472,9 +472,7 @@ class cUpdateNotifier
      *
      * @param array $aXMLContent
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     protected function handleVendorUpdate($aXMLContent)
     {
@@ -575,7 +573,7 @@ class cUpdateNotifier
         $aWriteCache[$this->sVendorRssEnFile] = $aRSSContent[$this->sVendorRssEnFile];
         $aWriteCache[$this->sTimestampCacheFile] = time();
 
-        if (is_writable($this->sCacheDirectory)) {
+        if (cFileHandler::writeable($this->sCacheDirectory)) {
             foreach ($aWriteCache as $sFile => $sContent) {
                 $sCacheFile = $this->sCacheDirectory . $sFile;
                 cFileHandler::write($sCacheFile, $sContent, false);
@@ -588,8 +586,7 @@ class cUpdateNotifier
      *
      * @return string
      *
-     * @throws cDbException
-     * @throws cException
+     * @throws cDbException|cException
      */
     protected function getHashProperty()
     {
@@ -602,9 +599,7 @@ class cUpdateNotifier
      *
      * @param $aXMLContent
      *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     protected function updateHashProperty($aXMLContent)
     {
@@ -678,7 +673,7 @@ class cUpdateNotifier
             $oTpl->set('s', 'LABEL_BUT_RSS', i18n('Enable notification'));
             $oTpl->set('s', 'URL_RSS', $this->oSession->url('main.php?frame=4&amp;area=mycontenido&amp;do=activate_rss'));
             $oTpl->set('s', 'NEWS_NOCONTENT', i18n('RSS notification is disabled'));
-            $oTpl->set("s", "DISPLAY_DISABLED", 'block');
+            $oTpl->set('s', 'DISPLAY_DISABLED', 'block');
         }
 
         return $oTpl->generate('templates/standard/' . $this->aCfg['templates']['welcome_update'], 1);
@@ -712,44 +707,36 @@ class cUpdateNotifier
                 $description = $doc->getXpathValue('*/channel/item/description', $iCnt);
                 $date = $doc->getXpathValue('*/channel/item/pubDate', $iCnt);
 
-                // hotfix do not call conHtmlentities because of different
-                // umlaut handling on PHP 5.3 and PHP 5.4
-                // perhaps it is a bug in conHtmlentities.
-                $title = @utf8_encode($title);
-                $sText = @utf8_encode($description);
+                $title = cString::convertEncoding($title);
+                $sText = cString::convertEncoding($description);
 
                 if (cString::getStringLength($sText) > 150) {
                     $sText = cString::trimAfterWord($sText, 150) . '...';
                 }
 
-                $date = date(getEffectiveSetting("dateformat", "full", "Y-m-d H:i:s"), strtotime($date));
+                $date = date(getEffectiveSetting('dateformat', 'full', 'Y-m-d H:i:s'), strtotime($date));
 
                 // highlight newest rss news
-                if ($iCnt == 0) {
-                    $oTpl->set("d", "NEWS_NEWEST_CSS", "newest_news");
-                } else {
-                    $oTpl->set("d", "NEWS_NEWEST_CSS", "");
-                }
-
-                $oTpl->set("d", "NEWS_DATE", $date);
-                $oTpl->set("d", "NEWS_TITLE", $title);
-                $oTpl->set("d", "NEWS_TEXT", $sText);
-                $oTpl->set("d", "NEWS_URL", $link);
-                $oTpl->set("d", "LABEL_MORE", i18n('read more'));
+                $oTpl->set('d', 'NEWS_NEWEST_CSS', $iCnt == 0 ? 'newest_news' : '');
+                $oTpl->set('d', 'NEWS_DATE', $date);
+                $oTpl->set('d', 'NEWS_TITLE', $title);
+                $oTpl->set('d', 'NEWS_TEXT', $sText);
+                $oTpl->set('d', 'NEWS_URL', $link);
+                $oTpl->set('d', 'LABEL_MORE', i18n('read more'));
                 $oTpl->next();
             }
 
             if ($iCnt == 0) {
-                $oTpl->set("s", "NEWS_NOCONTENT", i18n("No RSS content available"));
-                $oTpl->set("s", "DISPLAY_DISABLED", 'block');
+                $oTpl->set('s', 'NEWS_NOCONTENT', i18n("No RSS content available"));
+                $oTpl->set('s', 'DISPLAY_DISABLED', 'block');
             } else {
-                $oTpl->set("s", "NEWS_NOCONTENT", "");
-                $oTpl->set("s", "DISPLAY_DISABLED", 'none');
+                $oTpl->set('s', 'NEWS_NOCONTENT', '')
+;                $oTpl->set('s', 'DISPLAY_DISABLED', 'none');
             }
         } elseif ($this->bNoWritePermissions == true) {
-            $oTpl->set("s", "NEWS_NOCONTENT", i18n('Your webserver does not have write permissions for the directory /contenido/data/cache/!'));
+            $oTpl->set('s', 'NEWS_NOCONTENT', i18n('Your webserver does not have write permissions for the directory /contenido/data/cache/!'));
         } else {
-            $oTpl->set("s", "NEWS_NOCONTENT", i18n("No RSS content available"));
+            $oTpl->set('s', 'NEWS_NOCONTENT', i18n("No RSS content available"));
         }
 
         return $oTpl;
@@ -781,7 +768,7 @@ class cUpdateNotifier
             return false;
         }
 
-        return ($output != "") ? $output : false;
+        return ($output != '') ? $output : false;
     }
 
     /**
@@ -801,7 +788,7 @@ class cUpdateNotifier
         } elseif (!$this->bEnableCheck) {
             $sMessage = i18n('Update notification is disabled! For actual update information, please activate.');
             $sOutput = $this->renderOutput($sMessage);
-        } elseif ($this->sErrorOutput != "") {
+        } elseif ($this->sErrorOutput != '') {
             $sOutput = $this->sErrorOutput;
         } elseif ($this->sVendorVersion == '') {
             $sMessage = i18n('You have an unknown or unsupported version of CONTENIDO!');
@@ -813,7 +800,7 @@ class cUpdateNotifier
             $sVendorDownloadURL = $this->getDownloadURL();
             $sMessage = sprintf(i18n("A new version of CONTENIDO is available! <br /> <a href='%s' class='blue' target='_blank'>Download %s now!</a>"), $sVendorDownloadURL, $this->sVendorVersion);
             $sOutput = $this->renderOutput($sMessage);
-        } elseif ($this->checkPatchLevel() == "1") {
+        } elseif ($this->checkPatchLevel() == '1') {
             $sMessage = sprintf(i18n('It seems to be that your version string was manipulated. CONTENIDO %s does not exist!'), CON_VERSION);
             $sOutput = $this->renderOutput($sMessage);
         } else {

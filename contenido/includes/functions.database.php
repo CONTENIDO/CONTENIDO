@@ -17,20 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Returns existing indexes of a specific table.
  *
- * @param cDb $db
- * @param string $table
- *
- * @return array|bool
- *         Associative array where the key and the value is the index name
- *
+ * @return array Associative array where the key and the value is the index name
  * @throws cDbException
  */
-function dbGetIndexes($db, $table)
+function dbGetIndexes(cDb $db, string $table)
 {
-    if (!is_object($db)) {
-        return false;
-    }
-
     $sql = 'SHOW INDEX FROM ' . $db->escape($table);
     $db->query($sql);
 
@@ -39,12 +30,11 @@ function dbGetIndexes($db, $table)
         $indexes[$db->f('Key_name')] = $db->f('Key_name');
     }
 
-    return ($indexes);
+    return $indexes;
 }
 
 /**
- * Updates a specific table. Used e.g. by CONTENIDO setup to create or update
- * tables.
+ * Updates a specific table. Used e.g. by CONTENIDO setup to create or update tables.
  * Function logic:
  * 1 .) Check, if the table exists
  * 2a.) If not, create it with the field specification, exit
@@ -63,37 +53,35 @@ function dbGetIndexes($db, $table)
  *  - $oldVal might be empty if the field didn't exist
  *  - $tableValues['fieldname'] contains the already existing values
  *
- * @param cDb $db
- *         Database instance
- * @param string $table
- *         Name of table to create/update
- * @param string $field
- *         Name of field to create/update
- * @param string $type
- *         Data type of field. Feasible values are all possible data types
+ * @param cDb $db Database instance
+ * @param string $table Name of table to create/update
+ * @param string $field Name of field to create/update
+ * @param string $type Data type of field. Feasible values are all possible data types
  *         e.g. int(10), varchar(32), datetime, varchar(255), text, tinyint(1)
- * @param string $null
- *         Parameter to forbid NULL values, feasible values '', 'NULL' or 'YES'
+ * @param string $null Parameter to forbid NULL values, feasible values '', 'NULL' or 'YES'
  *         where 'NULL' or 'YES' allows NULL values and '' doesn't
- * @param string $key
- *         The field will be added as a primary key, if value is 'PRI',
+ * @param string $key The field will be added as a primary key, if value is 'PRI',
  *         otherwise the value should be empty ''
- * @param string $default
- *         The default value for the field. Feasible is each possible
+ * @param string $default The default value for the field. Feasible is each possible
  *         value depending on passed $type
- * @param string $extra
- *         Additional info for the field, e.g. 'auto_increment', if the
+ * @param string $extra Additional info for the field, e.g. 'auto_increment', if the
  *         field should have the AUTO_INCREMENT attribute and empty otherwise.
- * @param string $upgradeStatement
- *         NOT USED AT THE MOMENT
- * @param bool $bRemoveIndexes
- *         Flag to remove all indexes
- *
- * @return bool
- *
+ * @param string $upgradeStatement NOT USED AT THE MOMENT
+ * @param bool $bRemoveIndexes Flag to remove all indexes
  * @throws cDbException
  */
-function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extra, $upgradeStatement, $bRemoveIndexes = false)
+function dbUpgradeTable(
+    cDb $db,
+    string $table,
+    $field,
+    $type,
+    $null,
+    $key,
+    $default,
+    $extra,
+    $upgradeStatement,
+    $bRemoveIndexes = false
+    ): bool
 {
     global $columnCache;
     global $tableCache;
@@ -224,12 +212,13 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
     $structure = dbGetColumns($db, $table);
 
     // Third check: Compare field properties
-    if (($structure[$field]['Type'] != $type) ||
-        ($structure[$field]['Null'] != $null) ||
-        ($structure[$field]['Key'] != $key) ||
-        ($structure[$field]['Default'] != $default) ||
-        ($structure[$field]['Extra'] != $extra)) {
-
+    if (
+        $structure[$field]['Type'] != $type
+        || $structure[$field]['Null'] != $null
+        || $structure[$field]['Key'] != $key
+        || $structure[$field]['Default'] != $default
+        || $structure[$field]['Extra'] != $extra
+    ) {
         if ($structure[$field]['Key'] == 'PRI') {
             $sql = "ALTER TABLE `" . $db->escape($table) . "` ADD PRIMARY KEY (" . $db->escape($field) . ") ";
         } else {
@@ -244,22 +233,13 @@ function dbUpgradeTable($db, $table, $field, $type, $null, $key, $default, $extr
 }
 
 /**
- * Checks, if passed table exists in the database
- *
- * @param cDb $db
- * @param string $table
- *
- * @return bool
+ * Checks if passed table exists in the database
  *
  * @throws cDbException
  */
-function dbTableExists($db, $table)
+function dbTableExists(cDb $db, string $table): bool
 {
     global $tableCache;
-
-    if (!is_object($db)) {
-        return false;
-    }
 
     if (!is_array($tableCache)) {
         $sql = 'SHOW TABLES';
@@ -271,31 +251,18 @@ function dbTableExists($db, $table)
         }
     }
 
-    if (in_array($table, $tableCache)) {
-        return true;
-    } else {
-        return false;
-    }
+    return in_array($table, $tableCache);
 }
 
 /**
  * Returns the column structure of a table
  *
- * @param cDb $db
- * @param string $table
- *
- * @return array|bool
- *         Either associative column array or false
- *
+ * @return array Either associative column array or false
  * @throws cDbException
  */
-function dbGetColumns($db, $table)
+function dbGetColumns(cDb $db, string $table): array
 {
     global $columnCache;
-
-    if (!is_object($db)) {
-        return false;
-    }
 
     if (isset($columnCache[$table]) && is_array($columnCache[$table])) {
         return $columnCache[$table];
@@ -315,18 +282,7 @@ function dbGetColumns($db, $table)
 }
 
 /**
- * Returns the primary key column of a table
- *
- * @param cDb $db
- * @param string $table
- *
- * @return string
- *
- * @throws cDbException
- * @throws cInvalidArgumentException
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
- *
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  */
 function dbGetPrimaryKeyName($db, $table)
 {
@@ -351,10 +307,9 @@ function dbGetPrimaryKeyName($db, $table)
  * MySQL up to 5.7 and MariaDB supports SQL-Mode 'MYSQL40', but not MySQL.
  *
  * @param string $version The SQL server version string, e.g. '5.7.37-nmm1-log', '8.0.1-dmr-log', or '10.4.11-MariaDB'
- * @param cDb $db The database instance
- * @return bool
+ * @param ?cDb $db The database instance
  */
-function dbSupportsSqlModeMYSQL40($version = '', $db = null)
+function dbSupportsSqlModeMYSQL40(string $version = '', ?cDb $db = null): bool
 {
     if (empty($version) && !is_object($db)) {
         return false;

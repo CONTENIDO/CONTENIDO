@@ -14,7 +14,17 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if (!isset($_GET['idfrontendgroup'])) {
+/**
+ * @var cTemplate $tpl
+ */
+
+$area = cRegistry::getArea();
+$lang = cRegistry::getLanguageId();
+$cfg = cRegistry::getConfig();
+$sess = cRegistry::getSession();
+
+$idfrontendgroup = $_GET['idfrontendgroup'] ?? null;
+if (!isset($idfrontendgroup)) {
     $tpl->reset();
     $tpl->generate($cfg['path']['templates'] . $cfg['templates']['right_top_blank']);
     return;

@@ -25,30 +25,22 @@ class cVersionLayout extends cVersion
 {
 
     /**
-     * The name of Layout
-     *
-     * @var string
+     * @var string The name of Layout
      */
     private $sName;
 
     /**
-     * The code of Layout
-     *
-     * @var string
+     * @var string The code of Layout
      */
     private $sCode;
 
     /**
-     * The Description of Layout
-     *
-     * @var string
+     * @var string The Description of Layout
      */
     protected $sDescription;
 
     /**
-     * Whether the layout is deletable.
-     *
-     * @var int  1 or 0
+     * @var int  1 or 0. Whether the layout is deletable.
      */
     private $iDeletable;
 
@@ -57,26 +49,24 @@ class cVersionLayout extends cVersion
      *
      * Initializes class variables.
      *
-     * @param string $iIdLayout
-     *         The name of style file
-     * @param array $aCfg
-     * @param array $aCfgClient
-     * @param cDb $oDB
-     *         CONTENIDO database object
-     * @param int $iClient
-     * @param string $sArea
-     * @param int $iFrame
+     * @param string $layoutId The name of style file
+     * @param array $cfg
+     * @param array $cfgClient
+     * @param cDb $db CONTENIDO database object
+     * @param int $clientId
+     * @param string $area
+     * @param int $frame
      *
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function __construct($iIdLayout, $aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame)
+    public function __construct($layoutId, array $cfg, array $cfgClient, cdb $db, $clientId, $area, $frame)
     {
         // Init class members in super class
-        parent::__construct($aCfg, $aCfgClient, $oDB, $iClient, $sArea, $iFrame);
+        parent::__construct($cfg, $cfgClient, $db, $clientId, $area, $frame);
 
         // folder layout
         $this->sType = 'layout';
-        $this->iIdentity = $iIdLayout;
+        $this->entityId = $layoutId;
 
         // This function looks if maximum number of stored versions is achieved
         $this->prune();
@@ -111,9 +101,9 @@ class cVersionLayout extends cVersion
      */
     private function setLayoutTable()
     {
-        $oLayout = new cApiLayout($this->iIdentity);
+        $oLayout = new cApiLayout($this->entityId);
         if ($oLayout->isLoaded()) {
-            $this->iClient = $oLayout->get('idclient');
+            $this->clientId = $oLayout->get('idclient');
             $this->sName = $oLayout->get('name');
             $this->sDescription = $oLayout->get('description') ?? '';
             $this->iDeletable = cSecurity::toInteger($oLayout->get('deletable'));
@@ -126,48 +116,40 @@ class cVersionLayout extends cVersion
     /**
      * This function reads xml file nodes
      *
-     * @param string $sPath
-     *         Path to file
-     * @return array
-     *         returns array width this three nodes
+     * @param string $path Path to file
+     * @return array Returns array width this three nodes
      */
-    public function initXmlReader($sPath)
+    public function initXmlReader(string $path): array
     {
-        $aResult = [];
-        if ($sPath != '') {
+        $result = [];
+        if ($path != '') {
             // Output this xml file
-            $sXML = simplexml_load_file($sPath);
+            $sXML = simplexml_load_file($path);
 
             if ($sXML) {
                 foreach ($sXML->body as $oBodyValues) {
                     // if choose xml file read value an set it
-                    $aResult['name'] = $oBodyValues->name;
-                    $aResult['desc'] = $oBodyValues->description;
-                    $aResult['code'] = $oBodyValues->code;
+                    $result['name'] = $oBodyValues->name;
+                    $result['desc'] = $oBodyValues->description;
+                    $result['code'] = $oBodyValues->code;
                 }
             }
         }
-        return $aResult;
+        return $result;
     }
 
     /**
-     * Function returns javascript which refreshes CONTENIDO frames for file
-     * list a sub navigation.
-     * This is necessary, if filenames where changed, when a history entry is
-     * restored
+     * Function returns javascript which refreshes CONTENIDO frames for file list a sub navigation.
+     * This is necessary, if filenames where changed, when a history entry is restored.
      *
-     * @param string $sArea
-     *         name of CONTENIDO area in which this procedure should be done
-     * @param int $iIdLayout
-     *         Id of layout to highlight
-     * @param object $sess
-     *         CONTENIDO session object
-     * @return string
-     *         Javascript for refreshing frames
+     * @param string $area name of CONTENIDO area in which this procedure should be done
+     * @param int $layoutId Id of layout to highlight
+     * @param cSession $sess CONTENIDO session object
+     * @return String Javascript for refreshing frames
      */
-    public function renderReloadScript($sArea, $iIdLayout, $sess)
+    public function renderReloadScript($area, $layoutId, cSession $sess)
     {
-        $urlLeftBottom = $sess->url("main.php?area=$sArea&frame=2&idlay=$iIdLayout");
+        $urlLeftBottom = $sess->url("main.php?area=$area&frame=2&idlay=$layoutId");
         return <<<JS
 <script type="text/javascript">
 (function(Con, $) {

@@ -33,7 +33,7 @@ class DefaultFormModule extends PifaAbstractFormModule
     {
 
         // set template to use
-        $this->setTemplateName($this->getSetting('pifaform_template_get'));
+        $this->setTemplateName(cSecurity::toString($this->getSetting('pifaform_template_get')));
 
         // create and load form
         $pifaForm = new PifaForm($this->getIdform());
@@ -74,25 +74,23 @@ class DefaultFormModule extends PifaAbstractFormModule
      */
     protected function doPost()
     {
-
         // set template to use
-        $this->setTemplateName($this->getSetting('pifaform_template_post'));
+        $this->setTemplateName(cSecurity::toString($this->getSetting('pifaform_template_post')));
 
         try {
-
             // get name of processor class
             $processorClass = $this->getSetting('pifaform_processor');
 
             // get name of file in which processor class could be found
             $filename = Pifa::fromCamelCase($processorClass);
             $filename = "extensions/class.pifa.$filename.php";
-            if (false === file_exists(Pifa::getPath() . $filename)) {
+            if (!file_exists(Pifa::getPath() . $filename)) {
                 $msg = Pifa::i18n('MISSING_PROCESSOR_FILE');
                 $msg = sprintf($msg, $filename);
                 throw new PifaException($msg);
             }
             plugin_include(Pifa::getName(), $filename);
-            if (false === class_exists($processorClass)) {
+            if (!class_exists($processorClass)) {
                 $msg = Pifa::i18n('MISSING_PROCESSOR_CLASS');
                 $msg = sprintf($msg, $processorClass);
                 throw new PifaException($msg);

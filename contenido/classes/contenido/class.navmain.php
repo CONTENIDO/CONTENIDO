@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB_Model
- * @method cApiNavMain createNewItem
- * @method cApiNavMain|bool next
+ * @extends ItemCollection<cApiNavMain>
  */
 class cApiNavMainCollection extends ItemCollection
 {
@@ -31,7 +30,7 @@ class cApiNavMainCollection extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('nav_main'), 'idnavm');
+        parent::__construct(cDb::getTableName('nav_main'), 'idnavm');
         $this->_setItemClass('cApiNavMain');
     }
 
@@ -41,11 +40,8 @@ class cApiNavMainCollection extends ItemCollection
      * @param string $name
      * @param string $location
      * @param null $id
-     *
      * @return cApiNavMain
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @throws cDbException|cException|cInvalidArgumentException
      */
     public function create($name, $location, $id = null)
     {
@@ -73,18 +69,15 @@ class cApiNavMain extends Item
     /**
      * Constructor to create an instance of this class.
      *
-     * @param mixed $mId [optional]
-     *                   Specifies the ID of item to load
-     *
-     * @throws cDbException
-     * @throws cException
+     * @param mixed $id The ID of item to load
+     * @throws cDbException|cException
      */
-    public function __construct($mId = false)
+    public function __construct($id = false)
     {
-        parent::__construct(cRegistry::getDbTableName('nav_main'), 'idnavm');
+        parent::__construct(cDb::getTableName('nav_main'), 'idnavm');
         $this->setFilters(['addslashes'], ['stripslashes']);
-        if ($mId !== false) {
-            $this->loadByPrimaryKey($mId);
+        if ($id !== false) {
+            $this->loadByPrimaryKey($id);
         }
     }
 }

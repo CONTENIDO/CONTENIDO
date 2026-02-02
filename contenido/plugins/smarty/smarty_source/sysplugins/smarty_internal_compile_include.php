@@ -19,7 +19,7 @@ class Smarty_Internal_Compile_Include extends Smarty_Internal_CompileBase
     /**
      * caching mode to create nocache code but no cache file
      */
-    const CACHING_NOCACHE_CODE = 9999;
+    public const CACHING_NOCACHE_CODE = 9999;
 
     /**
      * Attribute definition: Overwrites base class.

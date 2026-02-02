@@ -18,7 +18,7 @@
     var NAME = 'plugin-mod-rewrite';
 
     /**
-     * @class ModRewrite
+     * @class PiModRewrite
      * @constructor
      * @extends Con.Plugin
      * @param {String}  page
@@ -27,7 +27,7 @@
      * options.lng  (Object)  Translation strings
      * </pre>
      */
-    var ModRewrite = function (page, options) {
+    var PiModRewrite = function (page, options) {
         /**
          * Pagename
          * @property _page
@@ -49,7 +49,7 @@
         this._initializePage();
     };
 
-    ModRewrite.prototype = {
+    PiModRewrite.prototype = {
 
         /**
          * Toggles an element
@@ -81,7 +81,7 @@
          */
         _initializePageSettings: function (options) {
             $("#mr_use_language").change(function () {
-                if (true == $(this).attr("checked")) {
+                if ($(this).attr("checked")) {
                     $("#mr_use_language_name").removeAttr("disabled");
                 } else {
                     $("#mr_use_language_name").attr("disabled", "disabled");
@@ -89,7 +89,7 @@
             });
 
             $("#mr_use_client").change(function () {
-                if (true == $(this).attr("checked")) {
+                if ($(this).attr("checked")) {
                     $("#mr_use_client_name").removeAttr("disabled");
                 } else {
                     $("#mr_use_client_name").attr("disabled", "disabled");
@@ -97,7 +97,7 @@
             });
 
             $("#mr_add_startart_name_to_url").change(function () {
-                if (true == $(this).attr("checked")) {
+                if ($(this).attr("checked")) {
                     $("#mr_default_startart_name").removeAttr("disabled")
                         .removeClass("disabled");
                 } else {
@@ -150,6 +150,6 @@
     };
 
     // Assign to Con.Plugin namespace
-    Con.Plugin.ModRewrite = ModRewrite;
+    Con.Plugin.PiModRewrite = PiModRewrite;
 
 })(Con, Con.$);

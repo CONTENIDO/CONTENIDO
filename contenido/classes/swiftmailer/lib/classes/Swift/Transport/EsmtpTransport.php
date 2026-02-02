@@ -303,7 +303,8 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
                 sprintf("EHLO %s\r\n", $this->_domain), array(250)
                 );
         } catch (Swift_TransportException $e) {
-            return parent::_doHeloCommand();
+            parent::_doHeloCommand();
+            return null;
         }
 
         if ($this->_params['tls']) {
@@ -319,7 +320,8 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
                         sprintf("EHLO %s\r\n", $this->_domain), array(250)
                         );
                 } catch (Swift_TransportException $e) {
-                    return parent::_doHeloCommand();
+                    parent::_doHeloCommand();
+                    return null;
                 }
             } catch (Swift_TransportException $e) {
                 $this->_throwException($e);
@@ -331,6 +333,8 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
         foreach ($this->_getActiveHandlers() as $handler) {
             $handler->afterEhlo($this);
         }
+
+        return null;
     }
 
     /** Overridden to add Extension support */

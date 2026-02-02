@@ -20,29 +20,25 @@ class cLinkcheckerCategoryHelper
     /**
      * List of group ids.
      *
-     * @var array|null
+     * @var ?array
      */
     private static $_groupIds = null;
 
     /**
      * List of category ids.
      *
-     * @var array|null
+     * @var ?array
      */
     private static $_categoryIds = null;
 
     /**
-     * @param int $widcat
-     * @param null $db
-     *
-     * @return bool
      * @throws cDbException
      */
-    public static function checkPermission($widcat, $db = null)
+    public static function checkPermission(int $categoryId, ?cDb $db = null): bool
     {
         $auth = cRegistry::getAuth();
 
-        if (cString::findFirstPos($auth->auth['perm'], 'admin') !== false) {
+        if (cString::findFirstPos($auth->getPerms(), 'admin') !== false) {
             return true;
         }
 
@@ -51,12 +47,12 @@ class cLinkcheckerCategoryHelper
         }
 
         $group_ids = self::_getGroupIDs($db);
-        $group_ids[] = $db->escape($auth->auth['uid']);
+        $group_ids[] = $db->escape($auth->getUserId());
 
         if (!is_array(self::$_categoryIds)) {
             $sqlInc = " `user_id` = '" . implode("' OR `user_id` = '", $group_ids) . "' ";
             $sql = "SELECT `idcat` FROM `%s` WHERE `idarea` = 6 AND `idaction` = 359 AND ($sqlInc)";
-            $db->query($sql, cRegistry::getDbTableName('rights'));
+            $db->query($sql, cDb::getTableName('rights'));
 
             self::$_categoryIds = [];
             while ($db->nextRecord()) {
@@ -64,16 +60,13 @@ class cLinkcheckerCategoryHelper
             }
         }
 
-        return array_key_exists($widcat, self::$_categoryIds);
+        return array_key_exists($categoryId, self::$_categoryIds);
     }
 
     /**
-     * @param cDb $db
-     *
-     * @return array
      * @throws cDbException
      */
-    private static function _getGroupIDs($db)
+    private static function _getGroupIDs(cDB $db): array
     {
         if (is_array(self::$_groupIds)) {
             return self::$_groupIds;
@@ -82,11 +75,11 @@ class cLinkcheckerCategoryHelper
         $auth = cRegistry::getAuth();
 
         $sql = "SELECT `group_id` FROM `%s` WHERE `user_id` = '%s'";
-        $db->query($sql, cRegistry::getDbTableName('groupmembers'), $auth->auth['uid']);
+        $db->query($sql, cDb::getTableName('groupmembers'), $auth->getUserId());
 
         self::$_groupIds = [];
         while ($db->nextRecord()) {
-            self::$_groupIds[] = $db->f('group_id');
+            self::$_groupIds[] = cSecurity::toInteger($db->f('group_id'));
         }
 
         return self::$_groupIds;

@@ -15,12 +15,9 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class contains functions for the frontend helper class in CONTENIDO.
- *
  * @package    Core
  * @subpackage Frontend_Util
- * @deprecated [2015-05-21]
- *         This class is no longer supported
+ * @deprecated [2015-05-21] This class is no longer supported
  */
 class cFrontendHelper
 {
@@ -33,11 +30,7 @@ class cFrontendHelper
     private static $_instance = NULL;
 
     /**
-     * Returns the instance of this class.
-     *
-     * @return cFrontendHelper
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
+     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      */
     public static function getInstance()
     {
@@ -51,10 +44,7 @@ class cFrontendHelper
     }
 
     /**
-     * Constructor to create an instance of this class.
-     *
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
+     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      */
     protected function __construct()
     {
@@ -62,25 +52,7 @@ class cFrontendHelper
     }
 
     /**
-     * Fetches the requested category tree.
-     *
-     * @param int $baseCategoryId
-     *         root category ID
-     * @param int $depth
-     *         maximum depth
-     * @param int $currentCategoryId
-     *         the current category ID
-     *
-     * @return array
-     *         category tree
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
-     * @throws cUnexpectedValueException if given category ID is not greater than 0
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
-     *
+     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      */
     protected function _fetchCategoryTree($baseCategoryId, $depth, $currentCategoryId)
     {
@@ -126,25 +98,7 @@ class cFrontendHelper
     }
 
     /**
-     * Helper function to render the navigation.
-     *
-     * @param int $baseCategoryId
-     *         root category ID
-     * @param int $depth
-     *         maximum depth
-     * @param int $currentCategoryId
-     *         the current category ID
-     *
-     * @return array
-     *         category tree
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
-     * @throws cUnexpectedValueException
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
-     *
+     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      */
     public function renderNavigation($baseCategoryId, $depth, $currentCategoryId)
     {
@@ -156,22 +110,7 @@ class cFrontendHelper
     }
 
     /**
-     * Helper function to render the sitemap.
-     *
-     * @param int $baseCategoryId
-     *         root category ID
-     * @param int $depth
-     *         maximum depth
-     * @param cTemplate $tpl
-     *         template reference
-     *
-     * @throws cDbException
-     * @throws cException
-     * @throws cInvalidArgumentException
-     * @throws cUnexpectedValueException
-     * @deprecated [2015-05-21]
-     *         This method is no longer supported (no replacement)
-     *
+     * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      */
     public function renderSitemap($baseCategoryId, $depth, cTemplate &$tpl)
     {

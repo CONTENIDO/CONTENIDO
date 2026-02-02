@@ -305,6 +305,12 @@ input.image_button {
 .col_100p {
     width: 100%;
 }
+
+.col_100p_m {
+    width: 100%;
+    max-width: 100%;
+}
+
 /*endregion COLUMNS*/
 
 /*region TABLES*/

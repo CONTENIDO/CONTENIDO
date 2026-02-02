@@ -270,9 +270,9 @@ msgstr ""
 
 #: includes/include.mod_rewrite_content.php:197
 msgid ""
-"Type '/' if the .htaccess file lies inside the wwwroot (DocumentRoot) folder."
-"<br>Type the path to the subfolder fromm wwwroot, if CONTENIDO is installed "
-"in a subfolder within the wwwroot<br>(e. g. https://domain/mycontenido -&gt; "
+"Type '/' if the .htaccess file lies inside the www-root (DocumentRoot) folder."
+"<br>Type the path to the subfolder fromm www-root, if CONTENIDO is installed "
+"in a subfolder within the www-root<br>(e. g. https://domain/mycontenido -&gt; "
 "path = '/mycontenido/')"
 msgstr ""
 
@@ -585,7 +585,7 @@ msgid ""
 "/campaign/20_percent_on_everything_except_animal_food.html>>>front_content."
 "php?idcat=23\n"
 "\n"
-"# route request to wwwroot to a specific page\n"
+"# route request to www-root to a specific page\n"
 "/>>>front_content.php?idart=16"
 msgstr ""
 

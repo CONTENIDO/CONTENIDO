@@ -49,14 +49,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @throws cDbException
  * @throws cInvalidArgumentException
- * @deprecated [2015-05-21]
- *         This method is no longer supported (no replacement)
- *
+ * @deprecated [2015-05-21] This method is no longer supported (no replacement)
  */
 function cApiCatGetLevelNode($idcat, $minLevel = 0)
 {
-
-    global $cfg, $client, $lang;
+    global $client, $lang;
 
     cDeprecated('This method is deprecated and is not needed any longer');
 
@@ -68,9 +65,9 @@ function cApiCatGetLevelNode($idcat, $minLevel = 0)
                 b.parentid AS parentid,
                 c.level AS level
             FROM
-                " . $cfg['tab']['cat_lang'] . " AS a,
-                " . $cfg['tab']['cat'] . " AS b,
-                " . $cfg['tab']['cat_tree'] . " AS c
+                " . cDb::getTableName('cat_lang') . " AS a,
+                " . cDb::getTableName('cat') . " AS b,
+                " . cDb::getTableName('cat_tree') . " AS c
             WHERE
                 a.idlang   = " . (int)$lang . " AND
                 b.idclient = " . (int)$client . " AND

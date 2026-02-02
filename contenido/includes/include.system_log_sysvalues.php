@@ -33,12 +33,12 @@ if ($memoryLimit <= 0) {
 }
 
 // process the actions delete / clear log
-if ($action == 'deletelog' && !empty($logfile)) {
+if ($action === 'deletelog' && !empty($logfile)) {
     if (cFileHandler::remove($path . cSecurity::escapeString($logfile))) {
         $page->displayOk(sprintf(i18n('Logfile "%s" deleted successfully'), $logfile));
     }
     $logfile = "";
-} elseif ($action == 'clearlog' && !empty($logfile)) {
+} elseif ($action === 'clearlog' && !empty($logfile)) {
     $lines = file($path . $logfile);
     $lines = array_slice($lines, cSecurity::toInteger($_REQUEST['keepLines']) * -1);
     cFileHandler::write($path . $logfile, implode('', $lines));

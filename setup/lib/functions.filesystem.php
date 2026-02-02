@@ -96,13 +96,13 @@ function predictCorrectFilePermissions($file)
 
     if (getSafeModeStatus()) {
         // SAFE-Mode related checks
-        if ($iServerUID == ($aFilePermissions["owner"]["id"] ?? null)) {
+        if ($iServerUID == ($aFilePermissions['owner']['id'] ?? null)) {
             return CON_PREDICT_CHANGEPERM_SAMEOWNER;
         }
 
         if (getSafeModeGidStatus()) {
             // SAFE-Mode GID-related checks
-            if ($iServerGID == ($aFilePermissions["group"]["id"] ?? null)) {
+            if ($iServerGID == ($aFilePermissions['group']['id'] ?? null)) {
                 return CON_PREDICT_CHANGEPERM_SAMEGROUP;
             }
 
@@ -110,11 +110,11 @@ function predictCorrectFilePermissions($file)
         }
     } else {
         // Regular checks
-        if ($iServerUID == ($aFilePermissions["owner"]["id"] ?? null)) {
+        if ($iServerUID == ($aFilePermissions['owner']['id'] ?? null)) {
             return CON_PREDICT_CHANGEPERM_SAMEOWNER;
         }
 
-        if ($iServerGID == ($aFilePermissions["group"]["id"] ?? null)) {
+        if ($iServerGID == ($aFilePermissions['group']['id'] ?? null)) {
             return CON_PREDICT_CHANGEPERM_SAMEGROUP;
         }
 

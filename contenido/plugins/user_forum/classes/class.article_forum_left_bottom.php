@@ -50,10 +50,9 @@ class ArticleForumLeftBottom extends cGuiPage
     /**
      * Returns the menu for the user forum.
      *
-     * @return cGuiMenu
      * @throws cDbException
      */
-    protected function getMenu()
+    protected function getMenu(): cGuiMenu
     {
         if (!$this->_guiMenu->hasItems()) {
             $this->_fillGuiMenu();
@@ -64,11 +63,9 @@ class ArticleForumLeftBottom extends cGuiPage
 
     /**
      * @param $get
-     *
-     * @return cGuiMenu
      * @throws cDbException
      */
-    public function receiveData(&$get)
+    public function receiveData(&$get): cGuiMenu
     {
         return $this->getMenu();
     }
@@ -97,7 +94,7 @@ class ArticleForumLeftBottom extends cGuiPage
 
         $cfg = cRegistry::getConfig();
 
-        $idart = cSecurity::toInteger(isset($_REQUEST['idart']) ?? '0');
+        $articleId = cSecurity::toInteger(isset($_REQUEST['idart']) ?? '0');
 
         for ($i = 0; $i < count($forms); $i++) {
             // We use idart as id for the menu entry
@@ -107,7 +104,7 @@ class ArticleForumLeftBottom extends cGuiPage
             $this->_guiMenu->setId($id, $id);
             $this->_guiMenu->setTitle($id, $formName);
 
-            if ($idart == $id) {
+            if ($articleId == $id) {
                 $this->_guiMenu->setMarked($id);
             }
 

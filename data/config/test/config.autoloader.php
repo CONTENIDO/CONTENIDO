@@ -26,7 +26,7 @@
  * @license    https://www.contenido.org/license/LIZENZ.txt
  * @link       https://www.4fb.de
  * @link       https://www.contenido.org
- * @since      file available since CONTENIDO release >= 4.9.0
+ * @since      CONTENIDO 4.9.0
  */
 
 
@@ -158,6 +158,7 @@ return [
     'cArticleOverviewHelper' => 'contenido/classes/class.article.overview.helper.php',
     'cAsset' => 'contenido/classes/class.asset.php',
     'cAuth' => 'contenido/classes/auth/class.auth.php',
+    'cAuthBackendUserDetailsTrait' => 'contenido/classes/auth/trait.auth.backend.user.details.php',
     'cAuthHandlerAbstract' => 'contenido/classes/auth/class.auth.handler.abstract.php',
     'cAuthHandlerBackend' => 'contenido/classes/auth/class.auth.handler.backend.php',
     'cAuthHandlerFrontend' => 'contenido/classes/auth/class.auth.handler.frontend.php',
@@ -194,6 +195,7 @@ return [
     'cDbDriverHandler' => 'contenido/classes/db/class.db.driver.handler.php',
     'cDbDriverMysql' => 'contenido/classes/db/class.db.driver.mysql.php',
     'cDbDriverMysqli' => 'contenido/classes/db/class.db.driver.mysqli.php',
+    'cDbDriverPdoMysql' => 'contenido/classes/db/class.db.driver.pdo.mysql.php',
     'cDbException' => 'contenido/classes/db/class.exception.db.php',
     'cDebug' => 'contenido/classes/debug/class.debug.php',
     'cDebugDevNull' => 'contenido/classes/debug/class.debug.dev.null.php',
@@ -268,7 +270,7 @@ return [
     'cHTMLOptionElement' => 'contenido/classes/html/class.html.optionelement.php',
     'cHTMLParagraph' => 'contenido/classes/html/class.html.paragraph.php',
     'cHTMLPasswordbox' => 'contenido/classes/html/class.html.passwordbox.php',
-    'cHTMLRadiobutton' => 'contenido/classes/html/class.html.radiobutton.php',
+    'cHTMLRadioButton' => 'contenido/classes/html/class.html.radiobutton.php',
     'cHTMLScript' => 'contenido/classes/html/class.html.script.php',
     'cHTMLSection' => 'contenido/classes/html/class.html.section.php',
     'cHTMLSelectElement' => 'contenido/classes/html/class.html.selectelement.php',
@@ -383,6 +385,8 @@ return [
     'NoteListItem' => 'contenido/classes/class.note.php',
     'NoteView' => 'contenido/classes/class.note.php',
     'NotInitializedException' => 'contenido/classes/uri/class.uribuilder.config.php',
+    'OpenDKIM' => 'contenido/classes/swiftmailer/lib/classes/OpenDKIM.php',
+    'OpenDKIMSign' => 'contenido/classes/swiftmailer/lib/classes/OpenDKIM.php',
     'Swift' => 'contenido/classes/swiftmailer/lib/classes/Swift.php',
     'Swift_Attachment' => 'contenido/classes/swiftmailer/lib/classes/Swift/Attachment.php',
     'Swift_ByteStream_AbstractFilterableInputStream' => 'contenido/classes/swiftmailer/lib/classes/Swift/ByteStream/AbstractFilterableInputStream.php',

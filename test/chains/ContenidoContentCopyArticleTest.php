@@ -81,13 +81,13 @@ class ContenidoContentCopyArticleTest extends TestCase
     public function testNoChain()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // execute chain
         $srcIdart = $this->_srcIdart;
         $dstIdart = $this->_dstIdart;
-        $iterator = $cecReg->getIterator($this->_chain);
-        while ($chainEntry = $iterator->next()) {
+        $cecIterator = $cecRegistry->getIterator($this->_chain);
+        while ($chainEntry = $cecIterator->next()) {
             $chainEntry->execute($srcIdart, $dstIdart);
         }
 
@@ -108,21 +108,21 @@ class ContenidoContentCopyArticleTest extends TestCase
     public function testOneChain()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentCopyArticle_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoContentCopyArticle_Test');
 
         // execute chain
         $srcIdart = $this->_srcIdart;
         $dstIdart = $this->_dstIdart;
-        $iterator = $cecReg->getIterator($this->_chain);
-        while ($chainEntry = $iterator->next()) {
+        $cecIterator = $cecRegistry->getIterator($this->_chain);
+        while ($chainEntry = $cecIterator->next()) {
             $chainEntry->execute($srcIdart, $dstIdart);
         }
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoContentCopyArticle_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoContentCopyArticle_Test');
 
         $this->assertEquals(array(
             1,
@@ -141,23 +141,23 @@ class ContenidoContentCopyArticleTest extends TestCase
     public function testTwoChains()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentCopyArticle_Test');
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoContentCopyArticle_Test2');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoContentCopyArticle_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoContentCopyArticle_Test2');
 
         // execute chain
         $srcIdart = $this->_srcIdart;
         $dstIdart = $this->_dstIdart;
-        $iterator = $cecReg->getIterator($this->_chain);
-        while ($chainEntry = $iterator->next()) {
+        $cecIterator = $cecRegistry->getIterator($this->_chain);
+        while ($chainEntry = $cecIterator->next()) {
             $chainEntry->execute($srcIdart, $dstIdart);
         }
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoContentCopyArticle_Test');
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoContentCopyArticle_Test2');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoContentCopyArticle_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoContentCopyArticle_Test2');
 
         $this->assertEquals(array(
             2,

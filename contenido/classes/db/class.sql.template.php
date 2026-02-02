@@ -29,10 +29,10 @@ class cSqlTemplate
 {
 
     // Placeholders
-    const PREFIX_PLACEHOLDER = '!PREFIX!';
-    const CHARSET_PLACEHOLDER = '!CHARSET!';
-    const ENGINE_PLACEHOLDER = '!ENGINE!';
-    const COLLATION_PLACEHOLDER = '!COLLATION!';
+    public const PREFIX_PLACEHOLDER = '!PREFIX!';
+    public const CHARSET_PLACEHOLDER = '!CHARSET!';
+    public const ENGINE_PLACEHOLDER = '!ENGINE!';
+    public const COLLATION_PLACEHOLDER = '!COLLATION!';
 
     /**
      * @var cDb database instance
@@ -47,9 +47,9 @@ class cSqlTemplate
     /**
      * Constructor.
      *
-     * @param cDb|null $db Database instance.
+     * @param ?cDb $db Database instance.
      */
-    public function __construct(cDb $db = null)
+    public function __construct(?cDb $db = null)
     {
         $this->_db = $db ?? cRegistry::getDb();
         $this->reset();
@@ -75,8 +75,6 @@ class cSqlTemplate
 
     /**
      * Returns the database instance.
-     *
-     * @return cDb
      */
     public function getDb(): cDb
     {
@@ -122,9 +120,9 @@ class cSqlTemplate
      * Returns a specific placeholder value.
      *
      * @param string $key The key (placeholder) of the placeholder value to get.
-     * @return string|null The placeholder value as string or null.
+     * @return ?string The placeholder value as string or null.
      */
-    public function getPlaceholderValue(string $key)
+    public function getPlaceholderValue(string $key): ?string
     {
         return $this->_replacements[$key] ?? null;
     }

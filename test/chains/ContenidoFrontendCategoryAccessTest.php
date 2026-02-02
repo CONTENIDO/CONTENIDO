@@ -121,10 +121,10 @@ class ContenidoFrontendCategoryAccessTest extends TestCase
     public function testOneChain()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test');
 
         // set n' execute chain
         // break at "true", default value "false"
@@ -132,7 +132,7 @@ class ContenidoFrontendCategoryAccessTest extends TestCase
         $allow = cApiCecHook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_userId);
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test');
 
         $this->assertEquals(false, $allow);
     }
@@ -143,12 +143,12 @@ class ContenidoFrontendCategoryAccessTest extends TestCase
     public function testTwoChains()
     {
         // get cec registry instance
-        $cecReg = cApiCecRegistry::getInstance();
+        $cecRegistry = cApiCecRegistry::getInstance();
 
         // add chain functions
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test');
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test2');
-        $cecReg->addChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test3');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test2');
+        $cecRegistry->addChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test3');
 
         // set n' execute chain
         // break at "true", default value "false"
@@ -156,9 +156,9 @@ class ContenidoFrontendCategoryAccessTest extends TestCase
         $allow = cApiCecHook::executeWhileBreakCondition($this->_chain, $this->_lang, $this->_idcat, $this->_userId);
 
         // remove chain functions
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test');
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test2');
-        $cecReg->removeChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test3');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test2');
+        $cecRegistry->removeChainFunction($this->_chain, 'chain_ContenidoFrontendCategoryAccess_Test3');
 
         $this->assertEquals(true, $allow);
     }

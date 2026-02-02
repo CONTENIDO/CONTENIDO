@@ -35,16 +35,11 @@ class cHTMLOptionElement extends cHTMLFormElement
      *
      * Creates an HTML option element.
      *
-     * @param string $title
-     *         Displayed title of the element
-     * @param string $value
-     *         Value of the option
-     * @param bool $selected [optional]
-     *         If true, element is selected
-     * @param bool $disabled [optional]
-     *         If true, element is disabled
-     * @param string $class [optional]
-     *         the class of this element
+     * @param string $title Displayed title of the element
+     * @param string $value Value of the option
+     * @param bool $selected [optional] If true, element is selected
+     * @param bool $disabled [optional] If true, element is disabled
+     * @param string $class [optional] The class of this element
      */
     public function __construct($title, $value, $selected = false, $disabled = false, $class = '')
     {
@@ -61,14 +56,11 @@ class cHTMLOptionElement extends cHTMLFormElement
     /**
      * Sets the selected flag
      *
-     * @param bool $selected
-     *         If true, adds the "selected" attribute
-     * @return cHTMLOptionElement
-     *         $this for chaining
+     * @param bool $selected If true, adds the "selected" attribute
      */
-    public function setSelected($selected)
+    public function setSelected($selected): self
     {
-        if ($selected == true) {
+        if ($selected) {
             return $this->updateAttribute('selected', 'selected');
         } else {
             return $this->removeAttribute('selected');
@@ -78,21 +70,15 @@ class cHTMLOptionElement extends cHTMLFormElement
     /**
      * Checks whether this option element is selected.
      *
-     * @return bool
-     *         whether this option element is selected
+     * @return bool Whether this option element is selected
      */
-    public function isSelected()
+    public function isSelected(): bool
     {
         return $this->getAttribute('selected') === 'selected';
     }
 
     /**
-     * Renders the option element.
-     * Note:
-     * the cHTMLSelectElement renders the options by itself.
-     *
-     * @return string
-     *         Rendered HTML
+     * @inheritDoc
      */
     public function toHtml(): string
     {
@@ -112,10 +98,9 @@ class cHTMLOptionElement extends cHTMLFormElement
      * @since CONTENIDO 4.10.2
      */
     public static function indent(
-        int    $level, int $prefixAmount = 2, int $levelAmount = 4,
+        int $level, int $prefixAmount = 2, int $levelAmount = 4,
         string $character = '&nbsp;'
-    ): string
-    {
+    ): string {
         $prefixStr = str_repeat($character, max(0, $prefixAmount));
         $levelStr = str_repeat($character, max(0, $levelAmount));
         return $prefixStr . str_repeat($levelStr, max(0, $level));

@@ -16,14 +16,14 @@ if (!class_exists('NewsletterJobCollection')) {
     echo mi18n("ERROR_CLASS");
 } else {
 
-    $lang = cSecurity::toInteger(cRegistry::getLanguageId());
-    $client = cSecurity::toInteger(cRegistry::getClientId());
+    $lang = cRegistry::getLanguageId();
+    $client = cRegistry::getClientId();
 
     // Initialisation
     $oClientLang = new cApiClientLanguage(false, $client, $lang);
     $oClient = new cApiClient($client);
     $oRecipients = new NewsletterRecipientCollection();
-    $sMessage = " ";
+    $sMessage = ' ';
 
     // Unset any existing recipient objects - note, that it must be $recipient for the plugins...
     unset($recipient);
@@ -53,7 +53,7 @@ if (!class_exists('NewsletterJobCollection')) {
         'FrontendDel' => "CMS_VALUE[6]",
         // This one could be recycled by other modules...
         'SenderEMail' => $oClient->getProperty('global', 'sender-email'),
-        'HandlerID' => $oClientLang->getProperty('newsletter', 'idcatart'),
+        'HandlerID' => cSecurity::toInteger($oClientLang->getProperty('newsletter', 'idcatart')),
     ];
 
     $sTemplate = 'get.tpl';
@@ -236,7 +236,6 @@ if (!class_exists('NewsletterJobCollection')) {
         if (($recipient = $oRecipients->next()) !== false) {
             // For some reason, $recipient may get invalid later on - save id
             // ... and email
-            $iID = $recipient->get('idnewsrcp');
             $sEMail = $recipient->get('email');
             $recipient->set('confirmed', 1);
             $recipient->set('confirmeddate', date('Y-m-d H:i:s'), false);
@@ -252,8 +251,15 @@ if (!class_exists('NewsletterJobCollection')) {
             $oNewsletters->query();
 
             if (($oNewsletter = $oNewsletters->next()) !== false) {
+                $oLanguage = new cApiLanguage($lang);
                 $aRecipients = []; // Needed, as used by reference
-                $oNewsletter->sendDirect($aSettings['HandlerID'], $iID, false, $aRecipients);
+                $oNewsletter->sendDirect(
+                    $aSettings['HandlerID'],
+                    $recipient->get('idnewsrcp'),
+                    false,
+                    $aRecipients,
+                    $oLanguage->get('encoding')
+                );
                 $sMessage .= mi18n("WELCOME_NEWSLETTER");
             }
 
@@ -365,5 +371,3 @@ if (!class_exists('NewsletterJobCollection')) {
     $tpl->assign('CONTENT', $sMessage);
     $tpl->display($sTemplate);
 }
-
-?>

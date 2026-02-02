@@ -19,12 +19,13 @@ if (!defined('CON_FRAMEWORK')) {
 global $cfg;
 
 // CONTENIDO path
-$contenidoPath = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../')) . '/';
+$contenidoPath = str_replace('\\', '/', realpath(__DIR__ . '/../')) . '/';
 
 // CONTENIDO startup process
 include_once($contenidoPath . 'includes/startup.php');
 
 $backendPath = cRegistry::getBackendPath();
+$area = cRegistry::getArea();
 
 include_once($backendPath . 'plugins/linkchecker/includes/config.plugin.php');
 
@@ -32,10 +33,10 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
     $db = cRegistry::getDb();
 
     // Start linkchecker
-    $cronjob = true;
+    cRegistry::setAppVar('pluginLinkcheckerIsCronjob', true);
     $_REQUEST['mode'] = 2;
 
-    $sql = "SELECT idlang FROM " . $cfg['tab']['lang'] . " WHERE active = '1'";
+    $sql = "SELECT idlang FROM " . cDb::getTableName('lang') . " WHERE active = '1'";
     $db->query($sql);
 
     if ($db->numRows() > 1) {
@@ -47,4 +48,3 @@ if (!isRunningFromWeb() || function_exists('runJob') || $area == 'cronjobs') {
 
     include_once($backendPath . 'plugins/linkchecker/includes/include.linkchecker.php');
 }
-?>

@@ -22,11 +22,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * table contains a client id and a language id foreign key field.
  * Therefore, it requires following properties to be set and methods to be implemented
  * by a ItemCollection class using this trait:
- * @property string fkClientIdName
- * @property string fkLanguageIdName
- * @property cDb db
- * @method ItemCollection|string getTable
- * @method ItemCollection|string getPrimaryKeyName
+ * @property string $fkClientIdName
+ * @property string $fkLanguageIdName
+ * @property cDb $db
+ * @method ItemCollection|string getTable()
+ * @method ItemCollection|string getPrimaryKeyName()
  *
  * @package    Core
  * @subpackage Database
@@ -44,16 +44,15 @@ trait cItemCollectionIdsByClientIdAndLanguageIdTrait
      * @param int $languageId
      * @return array List of ids
      * @throws cDbException
-     * @throws cInvalidArgumentException
      */
     public function getIdsByClientIdAndLanguageId(int $clientId, int $languageId): array
     {
         $pkName = $this->getPrimaryKeyName();
         $list = [];
 
-        $sql = "SELECT `:pk_field` 
-            FROM `:table` 
-            WHERE `:client_id_field` = :client_id_value 
+        $sql = "SELECT `:pk_field`
+            FROM `:table`
+            WHERE `:client_id_field` = :client_id_value
               AND `:language_id_field` = :language_id_value";
         $this->db->query($sql, [
             'pk_field' => $pkName,

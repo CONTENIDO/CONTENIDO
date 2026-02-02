@@ -28,58 +28,46 @@ class cItemCache
 {
 
     /**
-     * List of self instances (cItemCache)
-     *
-     * @var array
+     * @var cItemCache[] List of self instances (cItemCache)
      */
-    protected static $_oInstances = [];
+    protected static $instances = [];
 
     /**
-     * Associative cache array
-     *
-     * @var array
+     * @var array Associative cache array
      */
-    protected $_aItemsCache = [];
+    protected $itemsCache = [];
 
     /**
-     * Table name for current instance
-     *
-     * @var string
+     * @var string Table name for current instance
      */
-    protected $_sTable = '';
+    protected $tableName = '';
 
     /**
-     * Max number of items to cache
-     *
-     * @var int
+     * @var int Max number of items to cache
      */
-    protected $_iMaxItemsToCache = 10;
+    protected $maxItemsToCache = 10;
 
     /**
-     * Enable caching
-     *
-     * @var bool
+     * @var bool Enable caching
      */
-    protected $_bEnable = false;
+    protected $enable = false;
 
     /**
      * Constructor to create an instance of this class.
      *
-     * @param string $sTable
-     *         Table name
-     * @param array $aOptions [optional]
-     *         Options array as follows:
-     *         - $aOptions['max_items_to_cache'] = (int) Number of items to cache
-     *         - $aOptions['enable'] = (bool) Flag to enable caching
+     * @param string $tableName Table name
+     * @param array $options Options array as follows:
+     *         - $options['max_items_to_cache'] = (int) Number of items to cache
+     *         - $options['enable'] = (bool) Flag to enable caching
      */
-    protected function __construct($sTable, array $aOptions = [])
+    protected function __construct(string $tableName, array $options = [])
     {
-        $this->_sTable = $sTable;
-        if (isset($aOptions['max_items_to_cache']) && (int)$aOptions['max_items_to_cache'] > 0) {
-            $this->_iMaxItemsToCache = (int)$aOptions['max_items_to_cache'];
+        $this->tableName = $tableName;
+        if (isset($options['max_items_to_cache']) && (int)$options['max_items_to_cache'] > 0) {
+            $this->maxItemsToCache = (int)$options['max_items_to_cache'];
         }
-        if (isset($aOptions['enable']) && is_bool($aOptions['enable'])) {
-            $this->_bEnable = (bool)$aOptions['enable'];
+        if (isset($options['enable']) && is_bool($options['enable'])) {
+            $this->enable = $options['enable'];
         }
     }
 
@@ -94,67 +82,56 @@ class cItemCache
      * Returns item cache instance, creates it, if not done before.
      * Works as a singleton for one specific table.
      *
-     * @param string $sTable
-     *         Table name
-     * @param array $aOptions [optional]
-     *         Options array as follows:
-     *         - $aOptions['max_items_to_cache'] = (int) Number of items to cache
-     *         - $aOptions['enable'] = (bool) Flag to enable caching
-     * @return cItemCache
+     * @param string $tableName Table name
+     * @param array $options Options array as follows:
+     *         - $options['max_items_to_cache'] = (int) Number of items to cache
+     *         - $options['enable'] = (bool) Flag to enable caching
      */
-    public static function getInstance($sTable, array $aOptions = [])
+    public static function getInstance(string $tableName, array $options = []): cItemCache
     {
-        if (!isset(self::$_oInstances[$sTable])) {
-            self::$_oInstances[$sTable] = new self($sTable, $aOptions);
+        if (!isset(self::$instances[$tableName])) {
+            self::$instances[$tableName] = new self($tableName, $options);
         }
-        return self::$_oInstances[$sTable];
+        return self::$instances[$tableName];
     }
 
     /**
      * Returns items cache list.
-     *
-     * @return array
      */
-    public function getItemsCache()
+    public function getItemsCache(): array
     {
-        return $this->_aItemsCache;
+        return $this->itemsCache;
     }
 
     /**
      * Returns existing entry from cache by its id.
      *
-     * @param mixed $mId
-     * @return array|NULL
+     * @param mixed $id
      */
-    public function getItem($mId)
+    public function getItem($id): ?array
     {
-        if (!$this->_bEnable) {
+        if (!$this->enable) {
             return NULL;
         }
 
-        if (isset($this->_aItemsCache[$mId])) {
-            return $this->_aItemsCache[$mId];
-        } else {
-            return NULL;
-        }
+        return $this->itemsCache[$id] ?? null;
     }
 
     /**
-     * Returns existing entry from cache by matching propery value.
+     * Returns existing entry from cache by matching proper value.
      *
-     * @param mixed $mProperty
-     * @param mixed $mValue
-     * @return array|NULL
+     * @param mixed $property
+     * @param mixed $value
      */
-    public function getItemByProperty($mProperty, $mValue)
+    public function getItemByProperty($property, $value): ?array
     {
-        if (!$this->_bEnable) {
+        if (!$this->enable) {
             return NULL;
         }
 
-        // loop thru all cached entries and try to find an entry by its property
-        foreach ($this->_aItemsCache as $id => $aEntry) {
-            if (isset($aEntry[$mProperty]) && $aEntry[$mProperty] == $mValue) {
+        // loop through all cached entries and try to find an entry by its property
+        foreach ($this->itemsCache as $aEntry) {
+            if (isset($aEntry[$property]) && $aEntry[$property] == $value) {
                 return $aEntry;
             }
         }
@@ -162,23 +139,20 @@ class cItemCache
     }
 
     /**
-     * Returns existing entry from cache by matching properties and their
-     * values.
+     * Returns existing entry from cache by matching properties and their values.
      *
-     * @param array $aProperties
-     *         Associative key value pairs
-     * @return array|NULL
+     * @param array $properties Associative key value pairs
      */
-    public function getItemByProperties(array $aProperties)
+    public function getItemByProperties(array $properties): ?array
     {
-        if (!$this->_bEnable) {
+        if (!$this->enable) {
             return NULL;
         }
 
         // loop through all cached entries and try to find an entry by its property
-        foreach ($this->_aItemsCache as $id => $aEntry) {
+        foreach ($this->itemsCache as $aEntry) {
             $mFound = NULL;
-            foreach ($aProperties as $key => $value) {
+            foreach ($properties as $key => $value) {
                 if (isset($aEntry[$key]) && $aEntry[$key] == $value) {
                     if (NULL === $mFound) {
                         $mFound = true;
@@ -198,66 +172,58 @@ class cItemCache
     /**
      * Adds passed item data to internal cache
      *
-     * @param mixed $mId
-     * @param array $aData
-     *         Usually the recordset
-     * @return void|null
-     * @todo check if null should be returned
+     * @param mixed $id
+     * @param array $data Usually the recordset
      */
-    public function addItem($mId, array $aData)
+    public function addItem($id, array $data)
     {
-        if (!$this->_bEnable) {
-            return NULL;
+        if (!$this->enable) {
+            return;
         }
 
-        if ($this->_iMaxItemsToCache == count($this->_aItemsCache)) {
-            // we have reached the maximum number of cached items, remove first
-            // entry
-            $keys = array_keys($this->_aItemsCache);
+        if ($this->maxItemsToCache == count($this->itemsCache)) {
+            // we have reached the maximum number of cached items, remove first entry
+            $keys = array_keys($this->itemsCache);
             $firstEntryKey = array_shift($keys);
-            unset($this->_aItemsCache[$firstEntryKey]);
+            unset($this->itemsCache[$firstEntryKey]);
         }
 
         // add entry
-        $this->_aItemsCache[$mId] = $aData;
+        $this->itemsCache[$id] = $data;
     }
 
     /**
      * Removes existing cache entry by its key
      *
-     * @param mixed $mId
-     * @return void|null
-     * @todo check if null should be returned
+     * @param mixed $id
      */
-    public function removeItem($mId)
+    public function removeItem($id)
     {
-        if (!$this->_bEnable) {
-            return NULL;
+        if (!$this->enable) {
+            return;
         }
 
         // remove entry
-        if (isset($this->_aItemsCache[$mId])) {
-            unset($this->_aItemsCache[$mId]);
+        if (isset($this->itemsCache[$id])) {
+            unset($this->itemsCache[$id]);
         }
     }
 
     /**
      * Removes multiple existing cache entries by their keys
      *
-     * @param array $aIds
-     * @return void|null
-     * @todo check if null should be returned
+     * @param array $ids
      */
-    public function removeItems(array $aIds)
+    public function removeItems(array $ids)
     {
-        if (!$this->_bEnable) {
-            return NULL;
+        if (!$this->enable) {
+            return;
         }
 
         // remove entries
-        foreach ($aIds as $mId) {
-            if (isset($this->_aItemsCache[$mId])) {
-                unset($this->_aItemsCache[$mId]);
+        foreach ($ids as $id) {
+            if (isset($this->itemsCache[$id])) {
+                unset($this->itemsCache[$id]);
             }
         }
     }

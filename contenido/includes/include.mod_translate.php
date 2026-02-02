@@ -34,7 +34,7 @@ if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
 
-$page = new cGuiPage("mod_translate");
+$page = new cGuiPage('mod_translate');
 
 $module = new cApiModule($idmod);
 
@@ -120,20 +120,23 @@ if (!isset($row)) {
     }
 }
 
-$page->set("s", "IDMOD", $idmod);
-$page->set("s", "CURRENT", $current);
-$page->set("s", "ROW", $row);
-$page->set("s", "HEADER", sprintf(i18n("Translate module '%s'"), conHtmlSpecialChars($module->get('name'))));
-$page->set("s", "TRANSLATION_FOR", sprintf(i18n("Translation for %s"), $langString));
-$page->set("s", "LAST_STRING", conHtmlSpecialChars($lastString));
-$page->set("s", "LAST_TRANSLATION", conHtmlSpecialChars($lastTranslation));
+$page->set('s', 'IDMOD', $idmod);
+$page->set('s', 'CURRENT', $current);
+$page->set('s', 'ROW', $row);
+$page->set('s', 'HEADER', sprintf(i18n("Translate module '%s'"), conHtmlSpecialChars($module->get('name'))));
+$page->set('s', 'TRANSLATION_FOR', sprintf(i18n("Translation for %s"), $langString));
+$page->set('s', 'LAST_STRING', conHtmlSpecialChars($lastString));
+$page->set('s', 'LAST_TRANSLATION', conHtmlSpecialChars($lastTranslation));
 
 if ($readOnly) {
-    $page->set("s", "DISABLED", "disabled='disabled'");
-    $page->set("s", "READONLY", "_off");
+    $page->set('s', 'DISABLED', "disabled='disabled'");
+    $page->set('s', 'READONLY', '_off')
+;
 } else {
-    $page->set("s", "DISABLED", "");
-    $page->set("s", "READONLY", "");
+    $page->set('s', 'DISABLED', '')
+;
+    $page->set('s', 'READONLY', '')
+;
 }
 
 $page->setMarkScript(2);

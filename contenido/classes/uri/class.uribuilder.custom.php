@@ -61,25 +61,21 @@ class cUriBuilderCustom extends cUriBuilder
     /**
      * Builds a URL in index-a-1.html style.
      *
-     * Index keys of $aParams will be used as "a", corresponding values
-     * as "1" in this sample.
+     * Index keys of $aParams will be used as "a", corresponding values as "1" in this sample.
      *
      * @param array $aParams
      * @param bool $bUseAbsolutePath [optional]
-     * @param array $aConfig [optional]
-     *                                If not set, will use cUriBuilderConfig::getConfig()
-     *
-     * @throws cException
-     * @throws cInvalidArgumentException
+     * @param array $aConfig [optional] If not set, will use cUriBuilderConfig::getConfig()
+     * @throws cException|cInvalidArgumentException
      */
     public function buildUrl(array $aParams, $bUseAbsolutePath = false, array $aConfig = [])
     {
-        if (sizeof($aParams) == 0) {
+        if (count($aParams) == 0) {
             throw new cInvalidArgumentException('$aParams must have at least one entry!');
         }
         // if no config passed or not all parameters available, use default
         // config
-        if (sizeof($aConfig) == 0 || !isset($aConfig['prefix']) || !isset($aConfig['suffix']) || !isset($aConfig['separator'])) {
+        if (count($aConfig) == 0 || !isset($aConfig['prefix']) || !isset($aConfig['suffix']) || !isset($aConfig['separator'])) {
             include_once('class.uribuilder.config.php');
             $aConfig = cUriBuilderConfig::getConfig();
         }

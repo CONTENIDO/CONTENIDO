@@ -107,7 +107,7 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
     // construct the content rows containing the mails
     $tbody = new cHTMLTableBody();
     // iterate over all logged mails
-    while (($item = $mailLogCollection->next()) !== false) {
+    while ($item = $mailLogCollection->next()) {
         $tr = new cHTMLTableRow();
         $tr->setAttribute('data-action', 'invert_selection_row')
             ->setAttribute('data-idmail', $item->get('idmail'));
@@ -268,7 +268,7 @@ if ($area === 'mail_log' || $area === 'mail_log_overview') {
         $successTable->appendContent($tr);
 
         // construct a table row for each recipient
-        while (($mailSuccessItem = $mailLogSuccessCollection->next()) !== false) {
+        while ($mailSuccessItem = $mailLogSuccessCollection->next()) {
             $tr = new cHTMLTableRow();
             $td = new cHTMLTableData();
             $td->setContent(mailLogDecodeAddresses($mailSuccessItem->get('recipient')));
@@ -329,40 +329,36 @@ $page->appendContent($jsCode);
 $page->render();
 
 /**
- * Takes an associative array where the keys represent the mail addresses
+ * Takes an json encoded string where the keys represent the mail addresses
  * and the values optionally represent the mailer name and returns an HTML
  * representation in the following form:
  * Vorname Nachname <vorname.nachname@domain.tld>
  * Vorname2 Nachname2 <vorname2.nachname2@domain2.tld>
  *
- * @param array $addresses
- *         associative array containing the mail addresses as keys
+ * @param string $addresses
+ *         json encoded string containing the mail addresses as keys
  *         and the mailer names as values
  * @return string
  *         HTML code showing the given mail addresses and names
  */
-function mailLogDecodeAddresses($addresses)
+function mailLogDecodeAddresses($addresses): string
 {
     $result = '';
     $addresses = json_decode($addresses, true);
     if (!is_array($addresses)) {
-        return "";
+        return '';
     }
     foreach ($addresses as $mail => $name) {
         $result .= $name . ' &lt;' . $mail . '&gt;<br>';
     }
-    $result = cString::getPartOfString($result, 0, cString::getStringLength($result) - 4);
 
-    return $result;
+    return cString::getPartOfString($result, 0, cString::getStringLength($result) - 4);
 }
 
 /**
- *
- * @return cHTMLTable
- *
  * @throws cException
  */
-function mailLogBulkEditingFunctions()
+function mailLogBulkEditingFunctions(): cHTMLDiv
 {
     // Navbar box
     $navBar = new cHTMLDiv('', 'con_navbar con_block');

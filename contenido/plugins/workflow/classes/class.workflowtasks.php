@@ -19,8 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Plugin
  * @subpackage Workflow
- * @method WorkflowTask createNewItem
- * @method WorkflowTask|bool next
+ * @extends ItemCollection<WorkflowTask>
  */
 class WorkflowTasks extends ItemCollection
 {
@@ -31,8 +30,8 @@ class WorkflowTasks extends ItemCollection
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('tasks'), "idtask");
-        $this->_setItemClass("WorkflowTask");
+        parent::__construct(cDb::getTableName('tasks'), 'idtask');
+        $this->_setItemClass('WorkflowTask');
     }
 
     /**
@@ -45,22 +44,17 @@ class WorkflowTasks extends ItemCollection
     }
 
     /**
-     * @param string $where
-     * @param string $group_by
-     * @param string $order_by
-     * @param string $limit
+     * Extends the where statement. See the original function for the parameters.
      *
-     * @return bool
-     * @throws cDbException
+     * @inheritDoc
      */
-    public function select($where = "", $group_by = "", $order_by = "", $limit = "")
+    public function select($where = '', $groupBy = '', $orderBy = '', $limit = '')
     {
-        $client = cSecurity::toInteger(cRegistry::getClientId());
-
-        if ($where != "") {
-            $where = $where . " AND idclient = " . $client;
+        if ($where != '') {
+            $where = $where . ' AND `idclient` = ' . cRegistry::getClientId();
         }
-        return parent::select($where, $group_by, $order_by, $limit);
+
+        return parent::select($where, $groupBy, $orderBy, $limit);
     }
 
 }
@@ -84,7 +78,7 @@ class WorkflowTask extends Item
      */
     public function __construct()
     {
-        parent::__construct(cRegistry::getDbTableName('tasks'), "idtask");
+        parent::__construct(cDb::getTableName('tasks'), 'idtask');
     }
 
 }

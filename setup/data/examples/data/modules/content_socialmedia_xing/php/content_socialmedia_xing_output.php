@@ -31,15 +31,15 @@ $art = new cApiArticleLanguage($idartlang);
 
 //if post save values in db
 if (cRegistry::isBackendEditMode() && 'POST' === cString::toUpperCase($_SERVER['REQUEST_METHOD']) && $_POST['plugin_type'] == 'xing') {
-    conSaveContentEntry($idartlang, "CMS_HTML", 2000, $_POST['profile']);
-    conSaveContentEntry($idartlang, "CMS_HTML", 2001, $_POST['look']);
-    conSaveContentEntry($idartlang, "CMS_HTML", 2002, $_POST['name']);
+    conSaveContentEntry($idartlang, 'CMS_HTML', 2000, $_POST['profile']);
+    conSaveContentEntry($idartlang, 'CMS_HTML', 2001, $_POST['look']);
+    conSaveContentEntry($idartlang, 'CMS_HTML', 2002, $_POST['name']);
 }
 
 //get saved content
-$profile = $art->getContent("CMS_HTML", 2000);
-$look = $art->getContent("CMS_HTML", 2001);
-$name = $art->getContent("CMS_HTML", 2002);
+$profile = $art->getContent('CMS_HTML', 2000);
+$look = $art->getContent('CMS_HTML', 2001);
+$name = $art->getContent('CMS_HTML', 2002);
 
 //if backend mode set some values and display config tpl
 if (cRegistry::isBackendEditMode()) {

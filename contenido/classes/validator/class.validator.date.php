@@ -62,7 +62,7 @@ class cValidatorDate extends cValidatorAbstract
             return false;
         }
 
-        $format = "Y-m-d H:i:s";
+        $format = 'Y-m-d H:i:s';
         // if $date is just a date, not datetime, simulate datetime, as it is only necessary to check validity
         if (strlen($value) == 10) $value = $value . " 00:00:00";
 

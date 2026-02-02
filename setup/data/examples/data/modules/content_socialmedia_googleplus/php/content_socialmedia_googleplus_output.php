@@ -42,19 +42,19 @@ if (cRegistry::isBackendEditMode() && 'POST' === cString::toUpperCase($_SERVER['
         $url = 'https://' . $url;
     }
 
-    conSaveContentEntry($idartlang, "CMS_HTML", 3000, $url);
-    conSaveContentEntry($idartlang, "CMS_HTML", 3001, $_POST['size']);
-    conSaveContentEntry($idartlang, "CMS_HTML", 3002, $_POST['counter']);
-    conSaveContentEntry($idartlang, "CMS_HTML", 3003, $_POST['currentArticleUrl']);
+    conSaveContentEntry($idartlang, 'CMS_HTML', 3000, $url);
+    conSaveContentEntry($idartlang, 'CMS_HTML', 3001, $_POST['size']);
+    conSaveContentEntry($idartlang, 'CMS_HTML', 3002, $_POST['counter']);
+    conSaveContentEntry($idartlang, 'CMS_HTML', 3003, $_POST['currentArticleUrl']);
 }
 
 //get saved content
-$url = $art->getContent("CMS_HTML", 3000);
-$size = $art->getContent("CMS_HTML", 3001);
-$counter = $art->getContent("CMS_HTML", 3002);
-$currentArticleUrl = $art->getContent("CMS_HTML", 3003);
+$url = $art->getContent('CMS_HTML', 3000);
+$size = $art->getContent('CMS_HTML', 3001);
+$counter = $art->getContent('CMS_HTML', 3002);
+$currentArticleUrl = $art->getContent('CMS_HTML', 3003);
 
-if ($currentArticleUrl == "1") {
+if ($currentArticleUrl == '1') {
     $url = cRegistry::getFrontendUrl() . $art->getLink();
 }
 
@@ -72,15 +72,15 @@ if (cRegistry::isBackendEditMode()) {
     $tpl->assign('displayCounterLabel', $displayCounterLabel);
     $tpl->assign('save', $saveLabel);
     $tpl->assign('label_overview', $label_overview);
-    $tpl->assign("automaticURLLabel", $automaticURLLabel);
-    $tpl->assign("currentArticleUrl", $currentArticleUrl);
+    $tpl->assign('automaticURLLabel', $automaticURLLabel);
+    $tpl->assign('currentArticleUrl', $currentArticleUrl);
 
-    $tpl->assign("urlHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("URL_HELP"))));
-    $tpl->assign("normalHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("NORMAL_HELP"))));
-    $tpl->assign("smallHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("SMALL_HELP"))));
-    $tpl->assign("mediumHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("MEDIUM_HELP"))));
-    $tpl->assign("tallHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("TALL_HELP"))));
-    $tpl->assign("counterHelp", new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("COUNTER_HELP"))));
+    $tpl->assign('urlHelp', new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("URL_HELP"))));
+    $tpl->assign('normalHelp', new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("NORMAL_HELP"))));
+    $tpl->assign('smallHelp', new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("SMALL_HELP"))));
+    $tpl->assign('mediumHelp', new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("MEDIUM_HELP"))));
+    $tpl->assign('tallHelp', new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("TALL_HELP"))));
+    $tpl->assign('counterHelp', new cGuiBackendHelpbox(conHtmlSpecialChars(mi18n("COUNTER_HELP"))));
 
     $tpl->display('google_plus_config_view.tpl');
 } else {

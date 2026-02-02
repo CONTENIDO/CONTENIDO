@@ -20,7 +20,7 @@
  */
 class cContentTypeA_Test extends cContentTypeAbstract
 {
-    const OUTPUT = '
+    public const OUTPUT = '
         <h1>Title</h1>
         <div>Some content</div>
     ';
@@ -45,6 +45,7 @@ class cContentTypeA_Test extends cContentTypeAbstract
     public function generateEditCode(): string
     {
         // Implement generateEditCode() method.
+        return '';
     }
 
     public function buildCode(): string

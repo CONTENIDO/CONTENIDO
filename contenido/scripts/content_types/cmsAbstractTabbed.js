@@ -166,7 +166,7 @@
      */
     cContentTypeAbstractTabbed.prototype.appendFormField = function(name, value) {
         var $formEditContent = $('form[name="editcontent"]');
-    	// CON-2142
+        // CON-2142
         // jQuery transforms special strings like &auml; to ä during append
         // if a hidden input field with the given name already exists, just set the value
         if ($formEditContent.find('input[type="hidden"][name="' + name + '"]').length > 0) {

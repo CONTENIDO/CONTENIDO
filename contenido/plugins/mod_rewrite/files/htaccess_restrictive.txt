@@ -12,13 +12,13 @@
 # @license    https://www.contenido.org/license/LIZENZ.txt
 # @link       https://www.4fb.de
 # @link       https://www.contenido.org
-# @since      file available since CONTENIDO release 4.9.0
+# @since      file available since CONTENIDO 4.9.0
 #
 # $Id$
 ################################################################################
 
 
-# Enable following lines to run PHP5 on 1und1.de (1and1.com)
+# Enable the following lines to run PHP5 on 1und1.de (1and1.com)
 #AddType x-mapp-php5 .php
 #AddHandler x-mapp-php5 .php
 
@@ -27,10 +27,10 @@
     # Enable rewrite engine
     RewriteEngine on
 
-    # Specify a base URL-path for the rules
+    # Specify a base URL path for the rules
     RewriteBase /cms
 
-    # Catch some common exploits in query string to get rid of them.
+    # Catch some common exploits in the query string to get rid of them.
     # NOTE: Conditions to prevent protocols (ftp, http[s]) in query string could
     #       be a disadvantage in some cases.
     RewriteCond %{QUERY_STRING} contenido_path=.*$  [NC,OR]
@@ -57,7 +57,7 @@
 </IfModule>
 
 # Some rules to compress files.
-# NOTE: Following settings are not mod rewrite specific, but enabling mod_deflate
+# NOTE: The following settings are not mod-rewrite-specific, but enabling mod_deflate
 #       for some file types can help to reduce bandwidth.
 <IfModule mod_deflate.c>
     <FilesMatch "\.(js|css|html|htm|php|xml)$">

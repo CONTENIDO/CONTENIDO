@@ -24,20 +24,15 @@ class cLogWriterFile extends cLogWriter
 {
 
     /**
-     * Destination handle.
-     *
-     * @var resource
+     * @var resource Destination handle.
      */
-    protected $_handle = NULL;
+    protected $_handle;
 
     /**
      * Constructor to create an instance of this class.
      *
-     * @param array $options [optional]
-     *                       Array with options for the writer instance (optional)
-     *
-     * @throws cException
-     * @throws cFileNotFoundException
+     * @param array $options Array with options for the writer instance (optional)
+     * @throws cException|cFileNotFoundException
      */
     public function __construct(array $options = [])
     {
@@ -49,15 +44,13 @@ class cLogWriterFile extends cLogWriter
     /**
      * Checks destination and creates the handle for the write process.
      *
-     * @throws cException
-     *         if not destination is specified
-     * @throws cFileNotFoundException
-     *         if the destination file could not be read
+     * @throws cException if not destination is specified
+     * @throws cFileNotFoundException if the destination file could not be read
      */
     protected function _createHandle()
     {
         $destination = $this->getOption('destination');
-        if ($destination == '') {
+        if (empty($destination)) {
             throw new cException('No destination was specified.');
         }
 
@@ -69,14 +62,9 @@ class cLogWriterFile extends cLogWriter
     /**
      * Writes the content to file handle.
      *
-     * @param string $message
-     *         Message to write
-     * @param int $priority
-     *         Priority of the log entry
-     * @return bool
-     *         State of the write process
+     * @inheritDoc
      */
-    public function write($message, $priority)
+    public function write(string $message, int $priority): bool
     {
         return fwrite($this->_handle, $message) != false;
     }

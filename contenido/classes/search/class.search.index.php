@@ -134,20 +134,9 @@ class cSearchIndex extends cSearchBaseAbstract
     protected $_cmsOptions = [];
 
     /**
-     * array of all available cms types
+     * Array of all available cms types
      *
-     * htmlhead - HTML Headline
-     * html - HTML Text
-     * head - Headline (no HTML)
-     * text - Text (no HTML)
-     * img - Upload id of the element
-     * imgdescr - Image description
-     * link - Link (URL)
-     * linktarget - Linktarget (_self, _blank, _top ...)
-     * linkdescr - Link description
-     * swf - Upload id of the element
-     * etc.
-     *
+     * @see cApiArticleLanguage::getContent()
      * @var array
      */
     protected $_cmsType = [];
@@ -170,13 +159,10 @@ class cSearchIndex extends cSearchBaseAbstract
      *
      * Set object properties.
      *
-     * @param cDb $db [optional]
-     *                CONTENIDO database object
-     *
-     * @throws cDbException
-     * @throws cInvalidArgumentException
+     * @param ?cDb $db [optional] CONTENIDO database object
+     * @throws cDbException|cInvalidArgumentException
      */
-    public function __construct($db = NULL)
+    public function __construct(?cDb $db = NULL)
     {
         parent::__construct($db);
 
@@ -188,25 +174,27 @@ class cSearchIndex extends cSearchBaseAbstract
      *
      * @param int $idart Article Id
      * @param array $aContent The complete content of an article specified by its content types.
-     *                                  It looks like:
-     *                                  [
-     *                                  [CMS_HTMLHEAD] => [
-     *                                  [1] => Herzlich Willkommen...
-     *                                  [2] => ...auf Ihrer Website!
-     *                                  ]
-     *                                  [CMS_HTML] => [
-     *                                  [1] => Die Inhalte auf dieser Website ...
-     *                                  ]
-     *                                  ]
+     *      It looks like:
+     *      <pre>
+     *      [
+     *          [CMS_HTMLHEAD] => [
+     *              [1] => Herzlich Willkommen...
+     *              [2] => ...auf Ihrer Website!
+     *          ]
+     *          [CMS_HTML] => [
+     *              [1] => Die Inhalte auf dieser Website ...
+     *          ]
+     *      ]
+     *      </pre>
      * @param string $place [optional] The field where to store the index information in db.
      * @param array $cms_options [optional] One can specify explicitly cms types which should not be indexed.
      * @param array $aStopwords [optional] Array with words which should not be indexed.
-     *
      * @throws cInvalidArgumentException|cDbException
      */
     public function start($idart, $aContent, $place = 'auto', $cms_options = [], $aStopwords = [])
     {
-        if (!is_int((int)$idart) || $idart < 0) {
+        $idart = cSecurity::toInteger($idart);
+        if ($idart < 0) {
             return;
         } else {
             $this->idart = $idart;
@@ -243,7 +231,7 @@ class cSearchIndex extends cSearchBaseAbstract
     public function addTitle()
     {
         $sql = "SELECT `title`, `pagetitle` FROM `%s` WHERE `idart` = %d AND `idlang` = %d";
-        $this->db->query($sql, cRegistry::getDbTableName('art_lang'), $this->idart, $this->lang);
+        $this->db->query($sql, cDb::getTableName('art_lang'), $this->idart, $this->lang);
         if ($this->db->nextRecord()) {
             $title = $this->db->f('title') . ' ' . $this->db->f('pagetitle');
             $firstItemKey = cArray::getFirstKey($this->_keycode['CMS_HTML'] ?? []);
@@ -314,7 +302,7 @@ class cSearchIndex extends cSearchBaseAbstract
      */
     public function saveKeywords()
     {
-        $tabKeywords = cRegistry::getDbTableName('keywords');
+        $tabKeywords = cDb::getTableName('keywords');
 
         foreach ($this->_keywords as $keyword => $count) {
             $tmp_count = preg_split('/[\s]/', trim($count));
@@ -354,7 +342,7 @@ class cSearchIndex extends cSearchBaseAbstract
      */
     public function deleteKeywords()
     {
-        $tabKeywords = cRegistry::getDbTableName('keywords');
+        $tabKeywords = cDb::getTableName('keywords');
         foreach ($this->_keywordsDel as $key_del) {
             $index_string = preg_replace("/&$this->idart=[0-9]+\([\w\-,]+\)/", "", $this->_keywordsOld[$key_del]);
 
@@ -396,7 +384,7 @@ class cSearchIndex extends cSearchBaseAbstract
         // Prepare sql without keywords, we don't want any strings in keywords
         // being interpreted as specifiers
         $sql = $this->db->prepare(
-            $sql, cRegistry::getDbTableName('keywords'), $this->lang, $this->_place, $this->idart
+            $sql, cDb::getTableName('keywords'), $this->lang, $this->_place, $this->idart
         );
         $sql = str_replace('{KEYWORDS}', $keywords, $sql);
         $this->_debug('sql', $sql);
@@ -591,7 +579,7 @@ class cSearchIndex extends cSearchBaseAbstract
         $idtype = cString::toUpperCase($idtype);
 
         // Do not index CMS_RAW
-        if ($idtype == "CMS_RAW") {
+        if ($idtype == 'CMS_RAW') {
             return true;
         }
 
@@ -639,9 +627,7 @@ class cSearchIndex extends cSearchBaseAbstract
 
         // Remove HTML tags
         $code = strip_tags($code);
-        if (cString::getStringLength($code) > 0) {
-            $code = conHtmlEntityDecode($code);
-        }
+        $code = conHtmlEntityDecode($code);
         $this->_debug('code', $code);
 
         // Split content by any number of commas, space characters

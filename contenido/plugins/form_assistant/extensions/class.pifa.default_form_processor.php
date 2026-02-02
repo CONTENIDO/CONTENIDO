@@ -22,24 +22,21 @@ class DefaultFormProcessor extends PifaAbstractFormProcessor
 {
 
     /**
-     *
-     * @see PifaAbstractFormProcessor::_processReadData()
+     * @inheritDoc
      */
     protected function _processReadData()
     {
     }
 
     /**
-     *
-     * @see PifaAbstractFormProcessor::_processValidatedData()
+     * @inheritDoc
      */
     protected function _processValidatedData()
     {
     }
 
     /**
-     *
-     * @see PifaAbstractFormProcessor::_processStoredData()
+     * @inheritDoc
      */
     protected function _processStoredData()
     {

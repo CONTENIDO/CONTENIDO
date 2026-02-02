@@ -29,13 +29,13 @@ abstract class PifaAbstractFormProcessor
 {
 
     /**
-     * @var PifaAbstractFormModule
+     * @var ?PifaAbstractFormModule
      */
     private $_module = NULL;
 
     /**
      * @todo Should be private instead of protected as it can be accessed via getForm()
-     * @var PifaForm
+     * @var ?PifaForm
      */
     protected $_form = NULL;
 
@@ -45,16 +45,15 @@ abstract class PifaAbstractFormProcessor
      * The idform is read from the given modules settings.
      *
      * In former implementations of the processor the modules had no settings
-     * and thus no idform. Thats why optionally the idform gan be given
-     * explicitly. This shoud be removed when all processors are refactored.
+     * and thus no idform. That's why optionally the idform gan be given
+     * explicitly. This should be removed when all processors are refactored.
      *
-     * @param PifaAbstractFormModule $module
-     * @param int $idform
-     * @throws PifaException if id of form could not be determined from module
-     *         or param
-     * @throws PifaException if form could not be loaded
+     * @param ?PifaAbstractFormModule $module
+     * @param ?int $idform
+     * @throws PifaException If id of form could not be determined from module or param
+     * @throws cDbException|cException
      */
-    public function __construct(PifaAbstractFormModule $module = NULL, $idform = NULL)
+    public function __construct(?PifaAbstractFormModule $module = NULL, ?int $idform = NULL)
     {
         $this->_module = $module;
 
@@ -72,14 +71,14 @@ abstract class PifaAbstractFormProcessor
 
         // load form
         $this->_form = new PifaForm($idform);
-        if (false === $this->_form->isLoaded()) {
+        if (!$this->_form->isLoaded()) {
             $msg = Pifa::i18n('FORM_LOAD_ERROR');
             throw new PifaException($msg);
         }
     }
 
     /**
-     * @return PifaAbstractFormModule
+     * @return ?PifaAbstractFormModule
      */
     public function getModule()
     {
@@ -102,24 +101,20 @@ abstract class PifaAbstractFormProcessor
         return $this->_form;
     }
 
-    /**
-     * @param PifaForm $_form
-     */
-    public function setForm($_form)
+    public function setForm(PifaForm $form)
     {
-        $this->_form = $_form;
+        $this->_form = $form;
     }
 
     /**
      * Template method to postprocess data that has just been read from request.
-     * This can be usefull e.g. to remove default values for certain form
-     * fields.
+     * This can be usefull e.g. to remove default values for certain form fields.
      */
     abstract protected function _processReadData();
 
     /**
      * Template method to postprocess data that has just been validated.
-     * I cannot yet imagine a situatio where this could be useful but added
+     * I cannot yet imagine a situation where this could be useful but added
      * this method for completeness' sake.
      *
      * @throws PifaValidationException
@@ -142,15 +137,14 @@ abstract class PifaAbstractFormProcessor
      * validated and written to database.
      * After each step a method is called that allows to postprocess the forms
      * data or even the form itself. This postprocessing is optional and can be
-     * implemented in concrete implementations of this abstratc class
+     * implemented in concrete implementations of this abstract class
      *
      * @throws PifaException if there is no form to process
      * @throws PifaValidationException if data is invalid
-     * @throws PifaDatabaseException if data could not be stored
+     * @throws PifaDatabaseException|cDbException if data could not be stored
      */
     public function process()
     {
-
         // assert there is a form to process
         if (NULL === $this->_form) {
             $msg = Pifa::i18n('MISSING_IDFORM');

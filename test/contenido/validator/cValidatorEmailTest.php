@@ -24,7 +24,6 @@
 class cValidatorEmailTest extends cTestingTestCase
 {
     /**
-     *
      * @var cValidatorAbstract
      */
     protected $_validator = null;
@@ -66,7 +65,7 @@ class cValidatorEmailTest extends cTestingTestCase
         unset($this->_validator, $cfg['validator']['email']);
     }
 
-    public function dataIsValid()
+    public function dataIsValid(): array
     {
         return [
             'Null' => [null, false],

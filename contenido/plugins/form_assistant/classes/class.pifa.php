@@ -37,7 +37,7 @@ class Pifa
      *
      * @var string
      */
-    private static $_name = 'form_assistant';
+    private static $name = 'form_assistant';
 
     /**
      *
@@ -47,50 +47,47 @@ class Pifa
 
     /**
      */
-    public static function getName()
+    public static function getName(): string
     {
-        return self::$_name;
+        return self::$name;
     }
 
     /**
-     * Return path to this plugins folder.
-     *
-     * @return string
+     * Return path to this plugins' folder.
      */
-    public static function getPath()
+    public static function getPath(): string
     {
         $cfg = cRegistry::getConfig();
 
         $path = cRegistry::getBackendPath() . $cfg['path']['plugins'];
-        $path .= self::$_name . '/';
+        $path .= self::$name . '/';
 
         return $path;
     }
 
     /**
      * Return URL to this plugins' folder.
-     *
-     * @return string
      */
-    public static function getUrl()
+    public static function getUrl(): string
     {
         $cfg = cRegistry::getConfig();
 
         $path = cRegistry::getBackendUrl() . $cfg['path']['plugins'];
-        $path .= self::$_name . '/';
+        $path .= self::$name . '/';
 
         return $path;
     }
 
-    /**
-     *
-     * @param string $key
-     * @return string
-     */
-    public static function i18n($key)
+    public static function i18n(string $key): string
     {
-        $trans = i18n($key, self::$_name);
-        return $trans;
+        try {
+            return i18n($key, self::$name);
+        } catch (cException $e) {
+            error_log(sprintf(
+                'Plugin "%s" translation error: %s. Key: %s', self::$name, $e->getMessage(), $key)
+            );
+            return $key;
+        }
     }
 
     /**
@@ -226,7 +223,7 @@ class Pifa
             include_once(self::getPath() . 'extensions/' . $file);
 
             $reflection = new ReflectionClass($optionClass);
-            if (false === $reflection->isSubclassOf($parentClass)) {
+            if (!$reflection->isSubclassOf($parentClass)) {
                 continue;
             }
 
@@ -243,7 +240,7 @@ class Pifa
      * Returns array of client templates that adhere to the naming convention cms_pifaform_FOOBAR.tpl
      * where FOOBAR is any character but a dot.
      *
-     * @return string[]
+     * @return array<int, array{value: string, label: string}>
      * @throws PifaException
      */
     public static function getTemplates(string $re = '/cms_pifaform_[^\.]+\.tpl/'): array
@@ -258,7 +255,7 @@ class Pifa
         $templates = [];
         foreach ($handle as $file) {
             // skip folders
-            if (true === is_dir($file)) {
+            if (is_dir($file)) {
                 continue;
             }
 

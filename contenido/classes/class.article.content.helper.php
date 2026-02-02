@@ -25,16 +25,16 @@ class cArticleContentHelper
 {
 
     /**
-     * @var cDb
+     * @var ?cDb
      */
     protected $_db = null;
 
     /**
      * Constructor.
      *
-     * @param cDb|null $db Database instance
+     * @param ?cDb $db Database instance
      */
-    public function __construct(cDb $db = null)
+    public function __construct(?cDb $db = null)
     {
         if ($db instanceof cDb) {
             $this->_db = $db;
@@ -44,14 +44,10 @@ class cArticleContentHelper
     /**
      * Get content from article by article language.
      *
-     * @param int $iIdArtLang
-     *         ArticleLanguageId of an article (idartlang)
-     *
-     * @return array
-     *         Array with content of an article indexed by content-types as follows:
-     *         - $arr[type][typeid] = value;
-     *
-     * @throws cDbException|cInvalidArgumentException
+     * @param int $iIdArtLang ArticleLanguageId of an article (idartlang)
+     * @return array Array with content of an article indexed by content-types as follows:
+     *      - $arr[type][typeid] = value;
+     * @throws cDbException
      */
     public function getContentByIdArtLang(int $iIdArtLang): array
     {
@@ -73,9 +69,9 @@ class cArticleContentHelper
                 A.idartlang = :id_art_lang';
 
         $this->_db->query($sql, [
-            'tab_content' => cRegistry::getDbTableName('content'),
-            'tab_art_lang' => cRegistry::getDbTableName('art_lang'),
-            'tab_type' => cRegistry::getDbTableName('type'),
+            'tab_content' => cDb::getTableName('content'),
+            'tab_art_lang' => cDb::getTableName('art_lang'),
+            'tab_type' => cDb::getTableName('type'),
             'id_art_lang' => cSecurity::toInteger($iIdArtLang)
         ]);
 
@@ -90,16 +86,11 @@ class cArticleContentHelper
     /**
      * Get content from article by article id and language id.
      *
-     * @param int $idArt
-     *         Id of an article (idart)
-     * @param int $idLang
-     *         Id of a language (idlang)
-     *
-     * @return array
-     *         Array with content of an article indexed by content-types as follows:
-     *         - $arr[type][typeid] = value;
-     *
-     * @throws cDbException|cInvalidArgumentException
+     * @param int $idArt Id of an article (idart)
+     * @param int $idLang Id of a language (idlang)
+     * @return array Array with content of an article indexed by content-types as follows:
+     *      - $arr[type][typeid] = value;
+     * @throws cDbException
      */
     public function getContentByIdArtAndIdLang(int $idArt, int $idLang): array
     {
@@ -123,9 +114,9 @@ class cArticleContentHelper
                 B.idlang    = :id_lang';
 
         $this->_db->query($sql, [
-            'tab_content' => cRegistry::getDbTableName('content'),
-            'tab_art_lang' => cRegistry::getDbTableName('art_lang'),
-            'tab_type' => cRegistry::getDbTableName('type'),
+            'tab_content' => cDb::getTableName('content'),
+            'tab_art_lang' => cDb::getTableName('art_lang'),
+            'tab_type' => cDb::getTableName('type'),
             'id_art' => cSecurity::toInteger($idArt),
             'id_lang' => cSecurity::toInteger($idLang),
         ]);

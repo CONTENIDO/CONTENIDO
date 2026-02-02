@@ -54,7 +54,7 @@
                 <br>
                 <br>
                 {LNG_COPY_HTACCESS_TO}<br>
-                <a class="con_func_button mr_action_link" data-action="copyhtaccess"
+                <a class="con_func_button mr_action_link" data-action="copy_htaccess"
                    data-params="copy=contenido">{LNG_COPY_HTACCESS_TO_CONTENIDO}</a>
                 <a href="javascript:void(0)" data-tooltip-id="copyHtaccessInfo2" title=""
                    class="main i-link con_img_button con_info_button"></a>
@@ -63,7 +63,7 @@
                 </div>
                 <br>
 
-                <a class="con_func_button mr_action_link" data-action="copyhtaccess"
+                <a class="con_func_button mr_action_link" data-action="copy_htaccess"
                    data-params="copy=cms">{LNG_COPY_HTACCESS_TO_CLIENT}</a>
                 <a href="javascript:void(0)" data-tooltip-id="copyHtaccessInfo3" title=""
                    class="main i-link con_img_button con_info_button"></a>
@@ -74,7 +74,7 @@
                 <br>
 
                 {LNG_OR}<br>
-                <a class="con_func_button mr_action_link" data-action="downloadhtaccess"
+                <a class="con_func_button mr_action_link" data-action="download_htaccess"
                    data-params="">{LNG_DOWNLOAD}</a>
                 <a href="javascript:void(0)" data-tooltip-id="showHtaccessInfo" title=""
                    class="main i-link con_img_button con_info_button"></a>
@@ -87,27 +87,27 @@
         <!-- reset -->
         <tr>
             <td>
-                {LNG_RESETALIASES}
+                {LNG_RESET_ALIASES}
             </td>
             <td>
-                <a class="con_func_button mr_action_link" data-action="resetempty" data-params="">{LNG_RESETEMPTY_LINK}</a>
+                <a class="con_func_button mr_action_link" data-action="reset_empty" data-params="">{LNG_RESET_EMPTY_LINK}</a>
                 <a href="javascript:void(0)" data-tooltip-id="resetAliasesInfo1" title=""
                    class="main i-link con_img_button con_info_button"></a>
                 <div id="resetAliasesInfo1" class="no_display">
-                    {LNG_RESETEMPTY_INFO}
+                    {LNG_RESET_EMPTY_INFO}
                 </div>
                 <br>
 
-                <a class="con_func_button mr_action_link" data-action="reset" data-params="">{LNG_RESETALL_LINK}</a>
+                <a class="con_func_button mr_action_link" data-action="reset" data-params="">{LNG_RESET_ALL_LINK}</a>
                 <a href="javascript:void(0)" data-tooltip-id="resetAliasesInfo2" title=""
                    class="main i-link con_img_button con_info_button"></a>
                 <div id="resetAliasesInfo2" class="no_display">
-                    {LNG_RESETALL_INFO}
+                    {LNG_RESET_ALL_INFO}
                 </div>
                 <br>
                 <br>
                 <strong>{LNG_NOTE}:</strong><br>
-                {LNG_RESETALIASES_NOTE}
+                {LNG_RESET_ALIASES_NOTE}
             </td>
         </tr>
 
@@ -130,11 +130,11 @@
 
 {CONTENT_AFTER}
 
-<script type="text/javascript" src="plugins/mod_rewrite/scripts/mod_rewrite.js"></script>
+<script type="text/javascript" src="{_ASSET(plugins/mod_rewrite/scripts/mod_rewrite.js)_}"></script>
 <script type="text/javascript">
     (function (Con, $) {
         $(function () {
-            new Con.Plugin.ModRewrite('expert', {lng: {more_information: "{LNG_MORE_INFORMATIONS}"}});
+            new Con.Plugin.PiModRewrite('expert', {lng: {more_information: "{LNG_MORE_INFORMATIONS}"}});
         });
     })(Con, Con.$);
 </script>

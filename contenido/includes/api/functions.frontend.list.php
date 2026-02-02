@@ -3,7 +3,7 @@
 /**
  * This file contains the frontend list class.
  *
- * @deprecated [2024-02-04] Since 4.10.2, the frontend list class has been moved to contenido/classes/frontend_list/class.frontend.list.php!
+ * @deprecated [2024-02-04] Since CONTENIDO 4.10.2, the frontend list class has been moved to contenido/classes/frontend_list/class.frontend.list.php!
  *
  * @package    Core
  * @subpackage Backend

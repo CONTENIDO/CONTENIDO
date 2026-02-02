@@ -18,21 +18,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Adds sorting images to string
  *
- * @param int $index
- * @param string $text
- *
- * @return string
- *
  * @throws cException
  */
-function addSortImages($index, $text)
+function addSortImages(int $index, string $text): string
 {
     $cfg = cRegistry::getConfig();
     $sortUp = '<img src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . 'sort_up.gif" class="sort_img" alt="' . i18n("Sort") . '" title="' . i18n("Sort") . '">';
     $sortDown = '<img src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . 'sort_down.gif" class="sort_img" alt="' . i18n("Sort") . '" title="' . i18n("Sort") . '">';
 
-    if ($_REQUEST["sortby"] == $index) {
-        if ($_REQUEST["sortmode"] == 'ASC') {
+    if (($_REQUEST['sortby'] ?? null) == $index) {
+        if (($_REQUEST['sortmode'] == null) == 'ASC') {
             $sortString = $text . $sortUp;
         } else {
             $sortString = $text . $sortDown;
@@ -50,12 +45,12 @@ $perm = cRegistry::getPerm();
 $sess = cRegistry::getSession();
 $cfg = cRegistry::getConfig();
 $area = cRegistry::getArea();
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getClientId();
 $lang = cRegistry::getLanguageId();
 $frame = cRegistry::getFrame();
 $action = cRegistry::getAction() ?? 'con_translate_view';
 
-$page = new cGuiPage("con_translate");
+$page = new cGuiPage('con_translate');
 
 // Display critical error if no valid client is selected
 if ($client < 1) {
@@ -100,11 +95,11 @@ foreach (['dellang', 'editlang', 'editstring', 'elemperpage', 'extralang', 'filt
     }
 }
 
-$aTmpExtraLanguages = $_REQUEST["extralang"];
+$aTmpExtraLanguages = $_REQUEST['extralang'];
 $extraLanguages = [];
 if (is_array($aTmpExtraLanguages)) {
     foreach ($aTmpExtraLanguages as $idlang) {
-        if ($idlang != $_REQUEST["dellang"]) {
+        if ($idlang != $_REQUEST['dellang']) {
             $extraLanguages[] = $idlang;
         }
     }
@@ -113,14 +108,14 @@ $allLanguages = array_merge([
     $lang
 ], $extraLanguages);
 
-$editstring = $_REQUEST["editstring"];
-$editlang = $_REQUEST["editlang"];
+$editstring = $_REQUEST['editstring'];
+$editlang = $_REQUEST['editlang'];
 if ($editlang != 'all') {
     $editlang = cSecurity::toInteger($editlang);
 }
 
-$search = cString::toLowerCase(trim($_REQUEST["search"]));
-$filter = $_REQUEST["filter"];
+$search = cString::toLowerCase(trim($_REQUEST['search']));
+$filter = $_REQUEST['filter'];
 
 $cApiModuleCollection = new cApiModuleCollection();
 $modulesInUse = $cApiModuleCollection->getModulesInUse();
@@ -130,27 +125,27 @@ if ($iNextPage <= 0) {
     $iNextPage = 1;
 }
 
-if ($_REQUEST["sortmode"] !== "DESC") {
-    $_REQUEST["sortmode"] = "ASC";
+if ($_REQUEST['sortmode'] !== "DESC") {
+    $_REQUEST['sortmode'] = "ASC";
 }
 
 // no value found in request for items per page -> get it from db or set default
-$oUser = new cApiUser($auth->auth["uid"]);
-if (!isset($_REQUEST["elemperpage"]) || !is_numeric($_REQUEST['elemperpage']) || $_REQUEST['elemperpage'] < 0) {
-    $_REQUEST["elemperpage"] = $oUser->getProperty("itemsperpage", $area);
+$oUser = new cApiUser($auth->getUserId());
+if (!isset($_REQUEST['elemperpage']) || !is_numeric($_REQUEST['elemperpage']) || $_REQUEST['elemperpage'] < 0) {
+    $_REQUEST['elemperpage'] = $oUser->getProperty('itemsperpage', $area);
 }
-if (!is_numeric($_REQUEST["elemperpage"])) {
-    $_REQUEST["elemperpage"] = 25;
+if (!is_numeric($_REQUEST['elemperpage'])) {
+    $_REQUEST['elemperpage'] = 25;
 }
-if ($_REQUEST["elemperpage"] > 0) {
+if ($_REQUEST['elemperpage'] > 0) {
     // -- All -- will not be stored, as it may be impossible to change this back
     // to something more useful
-    $oUser->setProperty("itemsperpage", $area, $_REQUEST["elemperpage"]);
+    $oUser->setProperty('itemsperpage', $area, $_REQUEST['elemperpage']);
 }
 unset($oUser);
 
-if (!isset($_REQUEST["page"]) || !is_numeric($_REQUEST['page']) || $_REQUEST['page'] <= 0 || $_REQUEST["elemperpage"] == 0) {
-    $_REQUEST["page"] = 1;
+if (!isset($_REQUEST['page']) || !is_numeric($_REQUEST['page']) || $_REQUEST['page'] <= 0 || $_REQUEST['elemperpage'] == 0) {
+    $_REQUEST['page'] = 1;
 }
 
 // Save translations
@@ -160,7 +155,6 @@ if ($action == 'con_translate_edit') {
     $savetranslations = $_REQUEST['modtrans'];
     if (is_array($savetranslations)) {
         foreach ($savetranslations as $idmod => $savemodtranslations) {
-
             // get translation keywords from module
             $module = new cApiModule($idmod);
             $moduleKeywords = $module->parseModuleForStringsLoadFromFile($cfg, $client, $lang);
@@ -316,11 +310,11 @@ if (is_array($allLanguages)) {
     $formExtraLangs = new cHTMLForm('extralangs');
     $formExtraLangs->setVar('area', $area);
     $formExtraLangs->setVar('frame', $frame);
-    $formExtraLangs->setVar("elemperpage", $_REQUEST["elemperpage"]);
-    $formExtraLangs->setVar("sortby", $_REQUEST["sortby"]);
-    $formExtraLangs->setVar("sortmode", $_REQUEST["sortmode"]);
-    $formExtraLangs->setVar("search", $search);
-    $formExtraLangs->setVar("filter", $filter);
+    $formExtraLangs->setVar('elemperpage', $_REQUEST['elemperpage']);
+    $formExtraLangs->setVar('sortby', $_REQUEST['sortby']);
+    $formExtraLangs->setVar('sortmode', $_REQUEST['sortmode']);
+    $formExtraLangs->setVar('search', $search);
+    $formExtraLangs->setVar('filter', $filter);
     foreach ($extraLanguages as $idExtraLang) {
         $formExtraLangs->setVar('extralang[]', $idExtraLang);
     }
@@ -331,8 +325,8 @@ if (is_array($allLanguages)) {
     $sql = "SELECT
               A.name AS name, A.idlang AS idlang, B.idclientslang AS idclientslang
             FROM
-              " . $cfg['tab']['lang'] . " AS A,
-              " . $cfg['tab']['clients_lang'] . " AS B
+              " . cDb::getTableName('lang') . " AS A,
+              " . cDb::getTableName('clients_lang') . " AS B
             WHERE
               A.idlang = B.idlang AND
               B.idclient = '" . cSecurity::toInteger($client) . "'
@@ -343,8 +337,8 @@ if (is_array($allLanguages)) {
     $langNames = [];
     $countExtraLangOptions = 0;
     while ($db->nextRecord()) {
-        $idlang = $db->f("idlang");
-        $langString = conHtmlSpecialChars($db->f("name")) . " (" . $db->f("idlang") . ")";
+        $idlang = $db->f('idlang');
+        $langString = conHtmlSpecialChars($db->f('name')) . " (" . $db->f('idlang') . ")";
         $langNames[$idlang] = $langString;
         if (!in_array($idlang, $allLanguages)) {
             $option = new cHTMLOptionElement($langString, $idlang);
@@ -367,10 +361,10 @@ $formElementsPerPage = new cHTMLForm('elementsperpage');
 $formElementsPerPage->setVar('area', $area);
 $formElementsPerPage->setVar('frame', $frame);
 $formElementsPerPage->setVar('idclient', $client);
-$formElementsPerPage->setVar("sortby", $_REQUEST["sortby"]);
-$formElementsPerPage->setVar("sortmode", $_REQUEST["sortmode"]);
-$formElementsPerPage->setVar("search", $search);
-$formElementsPerPage->setVar("filter", $filter);
+$formElementsPerPage->setVar('sortby', $_REQUEST['sortby']);
+$formElementsPerPage->setVar('sortmode', $_REQUEST['sortmode']);
+$formElementsPerPage->setVar('search', $search);
+$formElementsPerPage->setVar('filter', $filter);
 foreach ($extraLanguages as $idExtraLang) {
     $formElementsPerPage->setVar('extralang[]', $idExtraLang);
 }
@@ -379,7 +373,7 @@ $selectElementsPerPage = new cHTMLSelectElement('elemperpage');
 
 foreach ($elemPerPage as $value => $option) {
     $option = new cHTMLOptionElement($option, $value);
-    if ($_REQUEST["elemperpage"] == $value) {
+    if ($_REQUEST['elemperpage'] == $value) {
         $option->setSelected(true);
     }
     $selectElementsPerPage->addOptionElement($value, $option);
@@ -394,9 +388,9 @@ $formElementsPerPage->setContent($labelElementsPerPage->render() . $selectElemen
 $formSearch = new cHTMLForm('searchfilter');
 $formSearch->setVar('area', $area);
 $formSearch->setVar('frame', $frame);
-$formSearch->setVar("elemperpage", $elemperpage);
-$formSearch->setVar("sortby", $_REQUEST["sortby"]);
-$formSearch->setVar("sortmode", $_REQUEST["sortmode"]);
+$formSearch->setVar('elemperpage', $elemperpage);
+$formSearch->setVar('sortby', $_REQUEST['sortby']);
+$formSearch->setVar('sortmode', $_REQUEST['sortmode']);
 foreach ($extraLanguages as $idExtraLang) {
     $formSearch->setVar('extralang[]', $idExtraLang);
 }
@@ -405,7 +399,7 @@ $filterSelect .= '<option value="-1">' . i18n("-- filter by --") . '</option>';
 if (is_array($allModules) && count($allModules) > 0) {
     $filterSelect .= '<optgroup label="' . i18n("Module name") . '">';
     foreach ($allModules as $idmod => $sModule) {
-        if ($_REQUEST["filter"] == 'module_' . $idmod) {
+        if ($_REQUEST['filter'] == 'module_' . $idmod) {
             $sSelected = ' selected';
         } else {
             $sSelected = '';
@@ -417,7 +411,7 @@ if (is_array($allModules) && count($allModules) > 0) {
 if (is_array($aAllTemplates) && count($aAllTemplates) > 0) {
     $filterSelect .= '<optgroup label="' . i18n("Template") . '">';
     foreach ($aAllTemplates as $idtpl => $sTemplate) {
-        if ($_REQUEST["filter"] == 'template_' . $idtpl) {
+        if ($_REQUEST['filter'] == 'template_' . $idtpl) {
             $sSelected = ' selected';
         } else {
             $sSelected = '';
@@ -467,16 +461,16 @@ $iHeaders = count($tableHeaders);
 for ($i = 0; $i < $iHeaders; $i++) {
     $list->setSortable($i, true);
 }
-$list->setCustom("nextpage", $iNextPage);
-$list->setCustom("elemperpage", $_REQUEST["elemperpage"]);
-$list->setCustom("sortby", $_REQUEST["sortby"]);
-$list->setCustom("sortmode", $_REQUEST["sortmode"]);
-$list->setCustom("search", $search);
-$list->setCustom("filter", $filter);
+$list->setCustom('nextpage', $iNextPage);
+$list->setCustom('elemperpage', $_REQUEST['elemperpage']);
+$list->setCustom('sortby', $_REQUEST['sortby']);
+$list->setCustom('sortmode', $_REQUEST['sortmode']);
+$list->setCustom('search', $search);
+$list->setCustom('filter', $filter);
 foreach ($extraLanguages as $idExtraLang) {
     $list->setCustom("extralang[]", $idExtraLang);
 }
-$list->setResultsPerPage(cSecurity::toInteger($_REQUEST["elemperpage"] ?? '1'));
+$list->setResultsPerPage(cSecurity::toInteger($_REQUEST['elemperpage'] ?? '1'));
 $list->objHeaderItem->updateAttributes([
     'width' => 52
 ]);
@@ -508,7 +502,6 @@ $editImage = $editImage->setAlt(i18n("Edit"))->render();
 $counter = 0;
 
 foreach ($allTranslations as $hash => $translationArray) {
-
     if (!$inUse && $perm->have_perm_area_action($area, 'con_translate_edit') && $action == 'con_translate_edit' && ($editstring == 'all' || $editstring == $hash) && ($editlang == 'all' || $editlang == $lang)) {
         $oTranslation = new cHTMLTextarea('modtrans[' . $translationArray['idmod'] . '][' . $hash . '][' . $lang . ']', conHtmlSpecialChars($translationArray['translations'][$lang]));
         $oTranslation->setWidth(30);
@@ -521,14 +514,14 @@ foreach ($allTranslations as $hash => $translationArray) {
             $linkEdit = new cHTMLLink();
             $linkEdit->setCLink($area, $frame, "con_translate_edit");
             $linkEdit->setContent($editImage);
-            $linkEdit->setCustom("editstring", $hash);
-            $linkEdit->setCustom("editlang", $lang);
-            $linkEdit->setCustom("elemperpage", $_REQUEST["elemperpage"]);
-            $linkEdit->setCustom("page", $_REQUEST["page"]);
-            $linkEdit->setCustom("sortby", $_REQUEST["sortby"]);
-            $linkEdit->setCustom("sortmode", $_REQUEST["sortmode"]);
-            $linkEdit->setCustom("search", $search);
-            $linkEdit->setCustom("filter", $filter);
+            $linkEdit->setCustom('editstring', $hash);
+            $linkEdit->setCustom('editlang', $lang);
+            $linkEdit->setCustom('elemperpage', $_REQUEST['elemperpage']);
+            $linkEdit->setCustom('page', $_REQUEST['page']);
+            $linkEdit->setCustom('sortby', $_REQUEST['sortby']);
+            $linkEdit->setCustom('sortmode', $_REQUEST['sortmode']);
+            $linkEdit->setCustom('search', $search);
+            $linkEdit->setCustom('filter', $filter);
 
             $idExtraLangCount = 0;
             foreach ($extraLanguages as $idExtraLangTemp) {
@@ -559,8 +552,13 @@ foreach ($allTranslations as $hash => $translationArray) {
         $sTranslationFirstLang
     ];
     foreach ($extraLanguages as $idExtraLang) {
-        if (!$inUse && $perm->have_perm_area_action($area, 'con_translate_edit') && $action == 'con_translate_edit' && ($editstring == 'all' || $editstring == $hash) && ($editlang == 'all' || $editlang == $idExtraLang)) {
-
+        if (
+            !$inUse
+            && $perm->have_perm_area_action($area, 'con_translate_edit')
+            && $action == 'con_translate_edit'
+            && ($editstring == 'all' || $editstring == $hash)
+            && ($editlang == 'all' || $editlang == $idExtraLang)
+        ) {
             $oExtraTranslation = new cHTMLTextarea('modtrans[' . $translationArray['idmod'] . '][' . $hash . '][' . $idExtraLang . ']', conHtmlSpecialChars($translationArray['translations'][$idExtraLang]));
             $oExtraTranslation->setWidth(30);
 
@@ -575,14 +573,14 @@ foreach ($allTranslations as $hash => $translationArray) {
                 $linkEdit = new cHTMLLink();
                 $linkEdit->setCLink($area, $frame, "con_translate_edit");
                 $linkEdit->setContent($editImage);
-                $linkEdit->setCustom("editstring", $hash);
-                $linkEdit->setCustom("editlang", $idExtraLang);
-                $linkEdit->setCustom("elemperpage", $_REQUEST["elemperpage"]);
-                $linkEdit->setCustom("page", $_REQUEST["page"]);
-                $linkEdit->setCustom("sortby", $_REQUEST["sortby"]);
-                $linkEdit->setCustom("sortmode", $_REQUEST["sortmode"]);
-                $linkEdit->setCustom("search", $search);
-                $linkEdit->setCustom("filter", $filter);
+                $linkEdit->setCustom('editstring', $hash);
+                $linkEdit->setCustom('editlang', $idExtraLang);
+                $linkEdit->setCustom('elemperpage', $_REQUEST['elemperpage']);
+                $linkEdit->setCustom('page', $_REQUEST['page']);
+                $linkEdit->setCustom('sortby', $_REQUEST['sortby']);
+                $linkEdit->setCustom('sortmode', $_REQUEST['sortmode']);
+                $linkEdit->setCustom('search', $search);
+                $linkEdit->setCustom('filter', $filter);
 
                 $idExtraLangCount = 0;
                 foreach ($extraLanguages as $idExtraLangTemp) {
@@ -606,14 +604,14 @@ foreach ($allTranslations as $hash => $translationArray) {
             $linkEditRow = new cHTMLLink();
             $linkEditRow->setCLink($area, $frame, "con_translate_edit");
             $linkEditRow->setContent($editImage);
-            $linkEditRow->setCustom("editstring", $hash);
-            $linkEditRow->setCustom("editlang", 'all');
-            $linkEditRow->setCustom("elemperpage", $_REQUEST["elemperpage"]);
-            $linkEditRow->setCustom("page", $_REQUEST["page"]);
-            $linkEditRow->setCustom("sortby", $_REQUEST["sortby"]);
-            $linkEditRow->setCustom("sortmode", $_REQUEST["sortmode"]);
-            $linkEditRow->setCustom("search", $search);
-            $linkEditRow->setCustom("filter", $filter);
+            $linkEditRow->setCustom('editstring', $hash);
+            $linkEditRow->setCustom('editlang', 'all');
+            $linkEditRow->setCustom('elemperpage', $_REQUEST['elemperpage']);
+            $linkEditRow->setCustom('page', $_REQUEST['page']);
+            $linkEditRow->setCustom('sortby', $_REQUEST['sortby']);
+            $linkEditRow->setCustom('sortmode', $_REQUEST['sortmode']);
+            $linkEditRow->setCustom('search', $search);
+            $linkEditRow->setCustom('filter', $filter);
 
             $idExtraLangCount = 0;
             foreach ($extraLanguages as $idExtraLangTemp) {
@@ -639,18 +637,18 @@ foreach ($allTranslations as $hash => $translationArray) {
 // Important to calculate needed pages
 $counter = count($allTranslations);
 
-$list->sort(cSecurity::toInteger($_REQUEST["sortby"]), $_REQUEST["sortmode"]);
-$list->setListStart(cSecurity::toInteger($_REQUEST["page"] ?? '1'));
+$list->sort(cSecurity::toInteger($_REQUEST['sortby']), $_REQUEST['sortmode']);
+$list->setListStart(cSecurity::toInteger($_REQUEST['page'] ?? '1'));
 $form = new cHTMLForm('all_mod_translations');
 $form->setVar('area', $area);
 $form->setVar('action', 'con_translate_edit');
 $form->setVar('frame', 4);
-$form->setVar("elemperpage", $_REQUEST["elemperpage"]);
-$form->setVar("page", $_REQUEST["page"]);
-$form->setVar("sortby", $_REQUEST["sortby"]);
-$form->setVar("sortmode", $_REQUEST["sortmode"]);
-$form->setVar("search", $search);
-$form->setVar("filter", $filter);
+$form->setVar('elemperpage', $_REQUEST['elemperpage']);
+$form->setVar('page', $_REQUEST['page']);
+$form->setVar('sortby', $_REQUEST['sortby']);
+$form->setVar('sortmode', $_REQUEST['sortmode']);
+$form->setVar('search', $search);
+$form->setVar('filter', $filter);
 
 $idExtraLangCount = 0;
 foreach ($extraLanguages as $idExtraLangTemp) {
@@ -666,14 +664,14 @@ $pagerLink = new cHTMLLink();
 $pagerl = "pagerlink";
 $pagerLink->setTargetFrame('right_bottom');
 $pagerLink->setLink("main.php");
-$pagerLink->setCustom("elemperpage", $elemperpage);
-$pagerLink->setCustom("sortby", $_REQUEST["sortby"]);
-$pagerLink->setCustom("sortmode", $_REQUEST["sortmode"]);
-$pagerLink->setCustom("search", $search);
-$pagerLink->setCustom("frame", $frame);
-$pagerLink->setCustom("area", $area);
-$pagerLink->setCustom("search", $search);
-$pagerLink->setCustom("filter", $filter);
+$pagerLink->setCustom('elemperpage', $elemperpage);
+$pagerLink->setCustom('sortby', $_REQUEST['sortby']);
+$pagerLink->setCustom('sortmode', $_REQUEST['sortmode']);
+$pagerLink->setCustom('search', $search);
+$pagerLink->setCustom('frame', $frame);
+$pagerLink->setCustom('area', $area);
+$pagerLink->setCustom('search', $search);
+$pagerLink->setCustom('filter', $filter);
 
 $idExtraLangCount = 0;
 foreach ($extraLanguages as $idExtraLangTemp) {
@@ -681,21 +679,22 @@ foreach ($extraLanguages as $idExtraLangTemp) {
     $idExtraLangCount++;
 }
 
-$pagerLink->setCustom("contenido", $sess->id);
-$pager = new cGuiObjectPager("02420d6b-a77e-4a97-9395-7f6be480f471", $counter, $_REQUEST["elemperpage"], $_REQUEST["page"], $pagerLink, "page", $pagerl);
+$pagerLink->setCustom('contenido', $sess->id);
+$pager = new cGuiObjectPager("02420d6b-a77e-4a97-9395-7f6be480f471", $counter, $_REQUEST['elemperpage'], $_REQUEST['page'], $pagerLink, "page", $pagerl);
 
-$page->set("s", "NEWLANG", $formExtraLangsString);
-$page->set("s", "SEARCH", $formSearch->render());
-$page->set("s", "ELEMPERPAGE", $formElementsPerPage->render());
-$page->set("s", "FORM", $form->render());
-$page->set("s", "FORM_NAME", $form->getAttribute('name'));
-$page->set("s", "PAGER", $pager->render(true));
-$page->set("s", "MODULEINUSETEXT", i18n("The module &quot;%s&quot; is used for following templates"));
+$page->set('s', 'NEWLANG', $formExtraLangsString);
+$page->set('s', 'SEARCH', $formSearch->render());
+$page->set('s', 'ELEMPERPAGE', $formElementsPerPage->render());
+$page->set('s', 'FORM', $form->render());
+$page->set('s', 'FORM_NAME', $form->getAttribute('name'));
+$page->set('s', 'PAGER', $pager->render(true));
+$page->set('s', 'MODULEINUSETEXT', i18n("The module &quot;%s&quot; is used for following templates"));
 
 if (!$noResults) {
-    $page->set("s", "INFO", $message . '<p class="notify_general notify_warning">' . i18n("WARNING: Translations have effects on every article that uses the module!") . '</p>');
+    $page->set('s', 'INFO', $message . '<p class="notify_general notify_warning">' . i18n("WARNING: Translations have effects on every article that uses the module!") . '</p>');
 } else {
-    $page->set("s", "INFO", "");
+    $page->set('s', 'INFO', '')
+;
 }
 
 $page->setMarkScript(2);

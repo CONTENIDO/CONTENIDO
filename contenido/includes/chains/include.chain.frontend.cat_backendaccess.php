@@ -20,16 +20,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @param int $idlang
  * @param int $idcat
  * @param string $user
- *
- * @return bool
- *
  * @throws cDbException
  */
-function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user)
+function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user): bool
 {
-    global $cfg, $perm;
-
-    if ($perm->have_perm()) {
+    if (cRegistry::getPerm()->have_perm()) {
         // sysadmin or client admin can always access to protected areas
         return true;
     }
@@ -38,7 +33,7 @@ function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user)
 
     $arrSearchFor = ["'" . $db2->escape($user) . "'"];
 
-    $sql = "SELECT * FROM " . $cfg['tab']['groupmembers'] . " WHERE user_id = '" . $db2->escape($user) . "'";
+    $sql = "SELECT * FROM " . cDb::getTableName('groupmembers') . " WHERE user_id = '" . $db2->escape($user) . "'";
 
     $db2->query($sql);
 
@@ -49,17 +44,13 @@ function cecFrontendCategoryAccess_Backend($idlang, $idcat, $user)
     $sSearchFor = implode(",", $arrSearchFor);
 
     $sql = "SELECT idright
-            FROM " . $cfg['tab']['rights'] . " AS A,
-                 " . $cfg['tab']['actions'] . " AS B,
-                 " . $cfg['tab']['area'] . " AS C
+            FROM " . cDb::getTableName('rights') . " AS A,
+                 " . cDb::getTableName('actions') . " AS B,
+                 " . cDb::getTableName('area') . " AS C
             WHERE B.name = 'front_allow' AND C.name = 'str' AND A.user_id IN (" . $sSearchFor . ") AND A.idcat = " . cSecurity::toInteger($idcat) . "
             AND A.idarea = C.idarea AND B.idaction = A.idaction AND A.idlang = " . cSecurity::toInteger($idlang);
 
     $db2->query($sql);
 
-    if (!$db2->nextRecord()) {
-        return false;
-    } else {
-        return true;
-    }
+    return $db2->nextRecord();
 }

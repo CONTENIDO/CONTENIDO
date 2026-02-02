@@ -12,8 +12,8 @@
  * @var int $cCurrentContainer
  */
 
-$lang = cSecurity::toInteger(cRegistry::getLanguageId());
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$lang = cRegistry::getLanguageId();
+$client = cRegistry::getClientId();
 
 // Initialisation
 $oClientLang = new cApiClientLanguage(false, $client, $lang);
@@ -208,7 +208,7 @@ if ($oRcpGroups->count() == 0) {
                 if (selGoup.val() && selGoup.val().length > 1) {
                     var selLength = selGoup.val().length;
                     selGoup.val(selGoup.val()[selLength - 1]);
-                }                
+                }
             }
             hidJoinGroups.val(selGoup.val() ? selGoup.val().join(",") : "");
         });

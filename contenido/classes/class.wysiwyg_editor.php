@@ -24,110 +24,82 @@ abstract class cWYSIWYGEditor
 {
 
     /**
-     * Access key under which the wysiwyg editor settings will be stored
-     * @var string
+     * @var string Access key under which the wysiwyg editor settings will be stored
      */
     protected static $_configPrefix = '[\'wysiwyg\']';
 
     /**
-     * Stores base url of page
-     *
-     * @var string
+     * @var string Stores base url of page
      */
     protected $_baseURL;
 
     /**
-     * Path to wysiwyg folder in CONTENIDO backend.
-     *
-     * @var string
+     * @var string Path to wysiwyg folder in CONTENIDO backend.
      */
     protected $_sPath;
 
     /**
-     * URL to wysiwyg folder in CONTENIDO backend.
-     *
-     * @var string
+     * @var string URL to wysiwyg folder in CONTENIDO backend.
      */
     protected $_sUrl;
 
     /**
-     * URL to CONTENIDO backend.
-     *
-     * @var string
+     * @var string URL to CONTENIDO backend.
      */
     protected $_sBackendUrl;
 
     /**
-     * URL to clients frontend.
-     *
-     * @var string
+     * @var string URL to clients frontend.
      */
     protected $_sFrontendUrl;
 
     /**
-     *
      * @var string
      */
     protected $_sEditor;
 
     /**
-     *
      * @var string
      */
     protected $_sEditorName;
 
     /**
-     *
      * @var string
      */
     protected $_sEditorContent;
 
     /**
-     *
      * @var array
      */
     protected $_aSettings;
 
     /**
-     * Stores, if GZIP compression will be used
-     *
-     * @var bool
+     * @var bool Stores, if GZIP compression will be used
      */
     protected $_useGZIP = false;
 
     /**
-     * Article id.
-     *
-     * @var int
+     * @var int Article id.
      */
     protected $_idart;
 
     /**
-     * Current language id.
-     *
-     * @var int
+     * @var int Current language id.
      */
     protected $_lang;
 
     /**
-     * Current backend language.
-     *
-     * @var string
+     * @var string Current backend language.
      */
     protected $_belang;
 
     /**
-     * Current client id.
-     *
-     * @var int
+     * @var int Current client id.
      */
     protected $_client;
 
     /**
      * Constructor to create an instance of this class.
-     *
-     * @param string $editorName
-     * @param string $editorContent
      */
     public function __construct(string $editorName, string $editorContent)
     {
@@ -137,28 +109,20 @@ abstract class cWYSIWYGEditor
         $this->_sUrl = $cfg['path']['all_wysiwyg_html'];
         $this->_sBackendUrl = cRegistry::getBackendUrl();
         $this->_sFrontendUrl = cRegistry::getFrontendUrl();
-        $this->_lang = cSecurity::toInteger(cRegistry::getLanguageId());
-        $this->_client = cSecurity::toInteger(cRegistry::getClientId());
+        $this->_lang = cRegistry::getLanguageId();
+        $this->_client = cRegistry::getClientId();
         $this->_belang = cRegistry::getBackendLanguage();
-        $this->_idart = cSecurity::toInteger(cRegistry::getArticleId());
+        $this->_idart = cRegistry::getArticleId();
 
         $this->_setEditorName($editorName);
         $this->_setEditorContent($editorContent);
     }
 
-    /**
-     *
-     * @param string $sEditorContent
-     */
     protected function _setEditorContent(string $sEditorContent)
     {
         $this->_sEditorContent = $sEditorContent;
     }
 
-    /**
-     *
-     * @param string $sEditor
-     */
     protected function _setEditor(string $sEditor)
     {
         if (is_dir($this->_sPath . $sEditor)) {
@@ -174,15 +138,12 @@ abstract class cWYSIWYGEditor
      * Sets given setting if setting was not yet defined.
      * Overwriting defined setting can be achieved with $forceSetting = true.
      *
-     * @param string|null $type Normally unused (counterpart of {@see cTinyMCE4Editor::setSetting})
-     * @param string $key
-     *         of setting to set
-     * @param string|mixed $value
-     *         of setting to set
-     * @param bool $forceSetting [optional]
-     *         to overwrite defined setting
+     * @param string|int|null $type Normally unused (counterpart of {@see cTinyMCE4Editor::setSetting})
+     * @param ?string $key Key of setting to set
+     * @param string|mixed $value Value of setting to set
+     * @param bool $forceSetting  To overwrite defined setting
      */
-    public function setSetting($type = null, string $key = null, $value = '', bool $forceSetting = false)
+    public function setSetting($type = null, ?string $key = null, $value = '', bool $forceSetting = false)
     {
         if ($key === null) {
             cWarning(__FILE__, __LINE__, 'Key can not be null');
@@ -193,10 +154,6 @@ abstract class cWYSIWYGEditor
         }
     }
 
-    /**
-     *
-     * @param string $key
-     */
     protected function _unsetSetting(string $key)
     {
         unset($this->_aSettings[$key]);
@@ -204,8 +161,6 @@ abstract class cWYSIWYGEditor
 
     /**
      * Returns the path to the editor.
-     *
-     * @return string
      */
     protected function _getEditorPath(): string
     {
@@ -214,27 +169,19 @@ abstract class cWYSIWYGEditor
 
     /**
      * Returns the URL to the editor.
-     *
-     * @return string
      */
     protected function _getEditorUrl(): string
     {
         return $this->_sUrl . $this->_sEditor;
     }
 
-    /**
-     *
-     * @param string $sEditorName
-     */
     protected function _setEditorName(string $sEditorName)
     {
         $this->_sEditorName = $sEditorName;
     }
 
     /**
-     *
-     * @throws cBadMethodCallException if this method is not overridden in the
-     *         subclass
+     * @throws cBadMethodCallException if this method is not overridden in the subclass
      */
     protected function getScripts(): string
     {
@@ -242,9 +189,7 @@ abstract class cWYSIWYGEditor
     }
 
     /**
-     *
-     * @throws cBadMethodCallException if this method is not overridden in the
-     *         subclass
+     * @throws cBadMethodCallException if this method is not overridden in the subclass
      */
     protected function getEditor(): string
     {
@@ -253,9 +198,6 @@ abstract class cWYSIWYGEditor
 
     /**
      * Convert formats
-     *
-     * @param string $input
-     * @return string
      */
     public function convertFormat(string $input): string
     {
@@ -280,9 +222,7 @@ abstract class cWYSIWYGEditor
     }
 
     /**
-     * Set if editor should be loaded using tinymces gzip compression
-     *
-     * @param bool $bEnabled
+     * Set if editor should be loaded using TinyMCE gzip compression
      */
     protected function setGZIPMode(bool $bEnabled)
     {
@@ -296,8 +236,7 @@ abstract class cWYSIWYGEditor
     /**
      * Returns the gzip mode.
      *
-     * @return boolean
-     *         if editor is loaded using gzip compression
+     * @return bool If editor is loaded using gzip compression
      */
     public function getGZIPMode(): bool
     {
@@ -306,8 +245,6 @@ abstract class cWYSIWYGEditor
 
     /**
      * Sets the base url.
-     *
-     * @param string $baseUrl
      */
     public function setBaseURL(string $baseUrl)
     {
@@ -315,11 +252,7 @@ abstract class cWYSIWYGEditor
     }
 
     /**
-     * Function to obtain a comma separated list of plugins that are
-     * tried to be loaded.
-     *
-     * @return string
-     *        plugins the plugins
+     * Function to obtain a comma separated list of plugins that are tried to be loaded.
      */
     public function getPlugins(): string
     {
@@ -327,11 +260,7 @@ abstract class cWYSIWYGEditor
     }
 
     /**
-     * Function to obtain a comma separated list of themes that are
-     * tried to be loaded.
-     *
-     * @return string
-     *        Returns the themes
+     * Function to obtain a comma separated list of themes that are tried to be loaded.
      */
     public function getThemes(): string
     {
@@ -340,9 +269,6 @@ abstract class cWYSIWYGEditor
 
     /**
      * Add path before filename
-     *
-     * @param string $file
-     * @return string
      */
     public function addPath(string $file): string
     {
@@ -360,8 +286,6 @@ abstract class cWYSIWYGEditor
 
     /**
      * Find out which WYSIWYG editor is currently chosen
-     * @return string
-     *         The name of current WYSIWYG editor
      */
     public static function getCurrentWysiwygEditorName(): string
     {
@@ -375,7 +299,7 @@ abstract class cWYSIWYGEditor
         // no paths are allowed in WYSIWYG editor
         // fall back to defaults if editor folder does not exist
         if (0 === cString::getStringLength($curWysiwygEditor)
-            || false === cFileHandler::exists(cRegistry::getConfigValue('path', 'all_wysiwyg') . $curWysiwygEditor)
+            || !cFileHandler::exists(cRegistry::getConfigValue('path', 'all_wysiwyg') . $curWysiwygEditor)
             || false !== cString::findFirstPos($curWysiwygEditor, '.')
             || false !== cString::findFirstPos($curWysiwygEditor, '/')
             || false !== cString::findFirstPos($curWysiwygEditor, '\\')) {
@@ -390,12 +314,8 @@ abstract class cWYSIWYGEditor
      * This function does not validate input! This has to be done by classes that extend cWYSIWYGEditor
      * because this class does not know what each WYSIWYG editor expects.
      *
-     * @param array $config
-     *         Array with configuration values for the current WYSIWYG editor to save
-     *
-     * @return array
-     *         Array with values that were not accepted
-     *
+     * @param array $config Array with configuration values for the current WYSIWYG editor to save
+     * @return array Array with values that were not accepted
      * @throws cInvalidArgumentException
      */
     public static function saveConfig(array $config): array

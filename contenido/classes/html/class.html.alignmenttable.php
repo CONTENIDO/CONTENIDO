@@ -29,21 +29,18 @@ class cHTMLAlignmentTable extends cHTMLTable
 
     /**
      * Constructor to create an instance of this class.
+     * @param mixed ...$arguments Data to be displayed in the alignment table
      */
-    public function __construct()
+    public function __construct(...$arguments)
     {
         parent::__construct();
 
-        $this->_data = func_get_args();
+        $this->_data = $arguments;
         $this->_contentlessTag = false;
     }
 
     /**
-     * Generates the markup of the element.
-     *
-     * @return string
-     *         generated markup
-     * @see cHTML::render()
+     * @inheritDoc
      */
     public function render(): string
     {

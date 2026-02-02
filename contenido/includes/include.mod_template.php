@@ -16,19 +16,19 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 global $idmod, $tpl, $notification;
 
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getClientId();
 $perm = cRegistry::getPerm();
 $area = cRegistry::getArea();
 $belang = cRegistry::getBackendLanguage();
 $frame = cRegistry::getFrame();
 
-cInclude("external", "codemirror/class.codemirror.php");
-cInclude("includes", "functions.file.php");
+cInclude('external', 'codemirror/class.codemirror.php');
+cInclude('includes', 'functions.file.php');
 
 $sFileType = "html";
 $module = new cApiModule($idmod);
 
-$readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
+$readOnly = getEffectiveSetting('client', 'readonly', 'false') === 'true';
 if ($readOnly) {
     cRegistry::addWarningMessage(i18n('This area is read only! The administrator disabled edits!'));
 }
@@ -43,7 +43,7 @@ $requestDelete = $_REQUEST['delete'] ?? '';
 $requestSelectedFile = $_REQUEST['selectedFile'] ?? '';
 $requestStatus = $_REQUEST['status'] ?? '';
 
-$page = new cGuiPage("mod_template");
+$page = new cGuiPage('mod_template');
 $tpl->reset();
 
 if (!$perm->have_perm_area_action($area, $sActionEdit)) {
@@ -73,13 +73,13 @@ if (isset($_REQUEST['code'])) {
 }
 if (true === cRegistry::getConfigValue('simulate_magic_quotes')) {
     $moduleTemplateHandler->setFiles($requestFile, $requestTmpFile);
-    $moduleTemplateHandler->setFrameIdmodArea($frame, $idmod, $area);
+    $moduleTemplateHandler->setFrameIdmodArea($frame, cSecurity::toInteger($idmod), $area);
     $moduleTemplateHandler->setNewDelete($requestNew, $requestDelete);
     $moduleTemplateHandler->setSelectedFile($requestSelectedFile);
     $moduleTemplateHandler->setStatus($requestStatus);
 } else {
     $moduleTemplateHandler->setFiles(stripslashes($requestFile), stripslashes($requestTmpFile));
-    $moduleTemplateHandler->setFrameIdmodArea($frame, $idmod, $area);
+    $moduleTemplateHandler->setFrameIdmodArea($frame, cSecurity::toInteger($idmod), $area);
     $moduleTemplateHandler->setNewDelete(stripslashes($requestNew), stripslashes($requestDelete));
     $moduleTemplateHandler->setSelectedFile(stripslashes($requestSelectedFile));
     $moduleTemplateHandler->setStatus(stripslashes($requestStatus));

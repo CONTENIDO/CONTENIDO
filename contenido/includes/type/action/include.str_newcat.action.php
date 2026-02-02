@@ -14,12 +14,27 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
+/**
+ * @var cGuiNotification $notification
+ * @var string $categoryname
+ * @var string $categoryalias
+ * @var int $visible
+ * @var int $public
+ * @var int $idtplcfg
+ */
+
 cInclude('includes', 'functions.str.php');
 
-if ($perm->have_perm_area_action("str", "str_mewcat") || $perm->have_perm_area_action_item("str", "str_newcat", $idcat)) {
+$idcat = cRegistry::getCategoryId();
+$perm = cRegistry::getPerm();
+
+if (
+    $perm->have_perm_area_action('str', 'str_mewcat')
+    || $perm->have_perm_area_action_item('str', 'str_newcat', $idcat)
+) {
     $tmp_newid = strNewCategory($idcat, $categoryname, true, $categoryalias, $visible, $public, $idtplcfg);
     cApiCecHook::execute(
-        "Contenido.Action.str_newcat.AfterCall",
+        'Contenido.Action.str_newcat.AfterCall',
         [
             'newcategoryid' => $tmp_newid,
             'idcat' => $idcat,
@@ -31,5 +46,5 @@ if ($perm->have_perm_area_action("str", "str_mewcat") || $perm->have_perm_area_a
         ]
     );
 } else {
-    $notification->displayNotification("error", i18n("Permission denied"));
+    $notification->displayNotification('error', i18n("Permission denied"));
 }

@@ -1,4 +1,4 @@
-﻿---------------------------------------------------------------------
+---------------------------------------------------------------------
 ------------------------ CONTENIDO CHANGELOG ------------------------
 
 ---------------------------------------------------------------------
@@ -241,7 +241,7 @@ Release 4.9.12
 ---------------------------------------------------------------------
 ** Bug
     * [CON-2580] - Handling special chars in frontend username
-	* [CON-2581] - Formular assistant: Special chars
+    * [CON-2581] - Formular assistant: Special chars
 
 ---------------------------------------------------------------------
 Release 4.9.11
@@ -667,7 +667,7 @@ Release 4.9.7
     * [CON-2090] - Add save button in TinyMCE 4 fullscreen mode
     * [CON-2091] - Add separate configuration for different content types for TinyMCE 4
     * [CON-2092] - Frontend tests for new TinyMCE 4
-	
+
 ** New feature
     * [CON-1890] - cArticleCollector: Sort by title
     * [CON-1919] - Userforum: Show all not moderated comments on start page
@@ -678,7 +678,7 @@ Release 4.9.7
 ** Task
     * [CON-2108] - Update copyright year
     * [CON-2115] - Update Smarty library
-	
+
 ** Technical task
     * [CON-2018] - Preparation: Remove unused code from current implementation
     * [CON-2019] - Preparation: Remove flash plugin related code.

@@ -122,6 +122,11 @@ div.errorlist {
     border: 1px solid black;
 }
 
+div.errorlist > .errorlist_table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
 div.entry_closed {
     margin: 0;
     width: 100%;

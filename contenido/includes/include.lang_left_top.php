@@ -22,9 +22,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 
 // Display critical error if client does not exist
-$client = cSecurity::toInteger(cRegistry::getClientId());
+$client = cRegistry::getClientId();
 if ($client < 1 || !cRegistry::getClient()->isLoaded()) {
-    $oPage = new cGuiPage("lang_left_top");
+    $oPage = new cGuiPage('lang_left_top');
     $oPage->displayCriticalError(i18n('No Client selected'));
     $oPage->render();
     return;
@@ -63,7 +63,7 @@ $select = $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['generic
 
 $tpl->set('s', 'CLIENTSELECT', $select);
 
-if ($perm->have_perm_area_action("lang_edit", "lang_newlanguage") && $iClientCount > 0) {
+if ($perm->have_perm_area_action('lang_edit', 'lang_newlanguage') && $iClientCount > 0) {
     $tpl->set('s', 'NEWLANG', '<a class="con_func_button addfunction" href="javascript:void(0)">' . i18n("Create language for") . '</a>');
 } elseif ($iClientCount == 0) {
     $tpl->set('s', 'NEWLANG', i18n('No Client selected'));

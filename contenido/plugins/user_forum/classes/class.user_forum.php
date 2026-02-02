@@ -29,35 +29,51 @@ class UserForum
      *
      * @var string
      */
-    private static $_name = 'user_forum';
+    private static $name = 'user_forum';
 
     /**
      */
-    public static function getName()
+    public static function getName(): string
     {
-        return self::$_name;
-    }
-
-    public static function i18n($key)
-    {
-        $trans = i18n($key, self::$_name);
-
-        return $trans;
+        return self::$name;
     }
 
     /**
-     * Return URL to this plugins folder.
-     *
-     * @return string
+     * Return path to this plugins' folder.
      */
-    public static function getUrl()
+    public static function getPath(): string
+    {
+        $cfg = cRegistry::getConfig();
+
+        $path = cRegistry::getBackendPath() . $cfg['path']['plugins'];
+        $path .= self::$name . '/';
+
+        return $path;
+    }
+
+    /**
+     * Return URL to this plugins' folder.
+     */
+    public static function getUrl(): string
     {
         $cfg = cRegistry::getConfig();
 
         $path = cRegistry::getBackendUrl() . $cfg['path']['plugins'];
-        $path .= self::$_name . '/';
+        $path .= self::$name . '/';
 
         return $path;
+    }
+
+    public static function i18n(string $key): string
+    {
+        try {
+            return i18n($key, self::$name);
+        } catch (\cException $e) {
+            error_log(sprintf(
+                'Plugin "%s" translation error: %s. Key: %s', self::$name, $e->getMessage(), $key)
+            );
+            return $key;
+        }
     }
 
 }

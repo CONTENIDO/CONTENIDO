@@ -79,14 +79,14 @@ abstract class Swift_ByteStream_AbstractFilterableInputStream implements Swift_I
      *
      * @throws Swift_IoException
      *
-     * @return int
+     * @return int|void
      */
     public function write($bytes)
     {
         $this->_writeBuffer .= $bytes;
         foreach ($this->_filters as $filter) {
             if ($filter->shouldBuffer($this->_writeBuffer)) {
-                return;
+                return null;
             }
         }
         $this->_doWrite($this->_writeBuffer);

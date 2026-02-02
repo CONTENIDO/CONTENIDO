@@ -39,110 +39,110 @@ class cArticleOverviewHelper
     /**
      * @var cDb
      */
-    protected $_db = null;
+    protected $_db;
 
     /**
      * @var cAuth
      */
-    protected $_auth = null;
+    protected $_auth;
 
     /**
      * @var cPermission
      */
-    protected $_perm = null;
+    protected $_perm;
 
     /**
      * @var array
      */
-    protected $_articles = null;
+    protected $_articles;
 
     /**
      * @var int
      */
-    protected $_languageId = null;
+    protected $_languageId;
 
     /**
      * @var int
      */
-    protected $_clientId = null;
+    protected $_clientId;
 
     /**
      * @var int
      */
-    protected $_categoryId = null;
+    protected $_categoryId;
 
     /**
-     * @var string
+     * @var ?string
      */
     protected $_databaseTime;
 
     /**
-     * @var string
+     * @var ?string
      */
     protected $_textDirection;
 
     /**
-     * @var array
+     * @var ?array
      */
     protected $_articleMarks;
 
     /**
-     * @var array
+     * @var ?array
      */
     protected $_articleTemplateInfos;
 
     /**
-     * @var array
+     * @var ?array
      */
     protected $_categoryTemplateInfos;
 
     /**
-     * @var array
+     * @var ?array
      */
     protected $_articleInMultipleUse;
 
     /**
-     * @var string
+     * @var ?string
      */
     protected $_categoryBreadcrumb;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $_hasArticleContentSyncPermission;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $_hasArticleEditContentPermission;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $_hasArticleEditPermission;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $_hasArticleLockPermission;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $_hasArticleMakeStartPermission;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $_hasArticleDuplicatePermission;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $_hasArticleMakeOnlinePermission;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $_hasArticleDeletePermission;
 
@@ -173,7 +173,6 @@ class cArticleOverviewHelper
     /**
      * Articles list setter.
      *
-     * @param array $articles
      * @return void
      */
     public function setArticles(array $articles)
@@ -184,8 +183,7 @@ class cArticleOverviewHelper
     /**
      * Returns current time from database.
      *
-     * @return string
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     public function getDatabaseTime(): string
     {
@@ -201,7 +199,6 @@ class cArticleOverviewHelper
     /**
      * Returns text direction for the current language.
      *
-     * @return string
      * @throws cDbException|cException
      */
     public function getTextDirection(): string
@@ -218,7 +215,6 @@ class cArticleOverviewHelper
      * Checks if the article is in use by another user.
      *
      * @param int $idartlang Article language id
-     * @return bool
      * @throws cDbException|cException
      */
     public function isArticleInUse(int $idartlang): bool
@@ -234,14 +230,14 @@ class cArticleOverviewHelper
                 $inUseColl = new cApiInUseCollection();
                 $where = "`type` = 'article' AND `objectid` IN('" . implode("','", $ids) . "')";
                 $inUseColl->select($where);
-                while (($item = $inUseColl->next()) !== false) {
+                while ($item = $inUseColl->next()) {
                     $this->_articleMarks[cSecurity::toInteger($item->get('objectid'))] = $item->get('userid');
                 }
             }
         }
 
         if (isset($this->_articleMarks[$idartlang])) {
-            return $this->_articleMarks[$idartlang] !== $this->_auth->auth['uid'];
+            return $this->_articleMarks[$idartlang] !== $this->_auth->getUserId();
         }
 
         return false;
@@ -251,15 +247,14 @@ class cArticleOverviewHelper
      * Checks if the article is used in multiple categories.
      *
      * @param int $idart Article id
-     * @return bool
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     public function isArticleInMultipleUse(int $idart): bool
     {
         if (!isset($this->_articleInMultipleUse)) {
             $this->_articleInMultipleUse = [];
             $sql = "SELECT `idart`, COUNT(*) AS `count` FROM `%s` GROUP BY `idart` HAVING `count` > 1";
-            $this->_db->query($sql, cRegistry::getDbTableName('cat_art'));
+            $this->_db->query($sql, cDb::getTableName('cat_art'));
             while ($this->_db->nextRecord()) {
                 $_idart = cSecurity::toInteger($this->_db->f('idart'));
                 $this->_articleInMultipleUse[$_idart] = cSecurity::toInteger($this->_db->f('count'));
@@ -273,10 +268,9 @@ class cArticleOverviewHelper
      * Returns the user of an article, which is marked as "in use".
      *
      * @param int $idartlang Article language id
-     * @return cApiUser|null
      * @throws cDbException|cException
      */
-    public function getArticleInUseUser(int $idartlang)
+    public function getArticleInUseUser(int $idartlang): ?cApiUser
     {
         if ($this->isArticleInUse($idartlang)) {
             $userid = $this->_articleMarks[$idartlang];
@@ -291,7 +285,7 @@ class cArticleOverviewHelper
      *
      * @param int $idartlang Article language id
      * @return array|mixed
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     public function getArticleTemplateInfo(int $idartlang)
     {
@@ -312,8 +306,8 @@ class cArticleOverviewHelper
                         b.idtpl AS idtpl,
                         b.description AS description
                      FROM
-                        " . cRegistry::getDbTableName('tpl_conf') . " AS a,
-                        " . cRegistry::getDbTableName('tpl') . " AS b
+                        " . cDb::getTableName('tpl_conf') . " AS a,
+                        " . cDb::getTableName('tpl') . " AS b
                      WHERE
                         a.idtplcfg IN (" . implode(',', $ids) . ") AND
                         a.idtpl = b.idtpl";
@@ -346,8 +340,7 @@ class cArticleOverviewHelper
      * Returns the article template info array.
      * Will be used, if the article has not its own template configuration.
      *
-     * @return array
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     public function getCategoryTemplateInfos(): array
     {
@@ -361,9 +354,9 @@ class cArticleOverviewHelper
                     c.description AS description,
                     b.idtplcfg    AS idtplcfg
                 FROM
-                    " . cRegistry::getDbTableName('tpl_conf') . " AS a,
-                    " . cRegistry::getDbTableName('cat_lang') . " AS b,
-                    " . cRegistry::getDbTableName('tpl') . "      AS c
+                    " . cDb::getTableName('tpl_conf') . " AS a,
+                    " . cDb::getTableName('cat_lang') . " AS b,
+                    " . cDb::getTableName('tpl') . "      AS c
                 WHERE
                     b.idcat    = " . $this->_categoryId . " AND
                     b.idlang   = " . $this->_languageId . " AND
@@ -388,7 +381,6 @@ class cArticleOverviewHelper
     /**
      * Returns the category breadcrumb (category path).
      *
-     * @return string
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function getCategoryBreadcrumb(): string
@@ -404,7 +396,6 @@ class cArticleOverviewHelper
     /**
      * Checks if the user has permission to sync article content.
      *
-     * @return bool
      * @throws cDbException|cException
      */
     public function hasArticleContentSyncPermission(): bool
@@ -421,7 +412,6 @@ class cArticleOverviewHelper
     /**
      * Checks if the user has permission to edit article content.
      *
-     * @return bool
      * @throws cDbException|cException
      */
     public function hasArticleEditContentPermission(): bool
@@ -438,7 +428,6 @@ class cArticleOverviewHelper
     /**
      * Checks if the user has permission to edit article.
      *
-     * @return bool
      * @throws cDbException|cException
      */
     public function hasArticleEditPermission(): bool
@@ -455,7 +444,6 @@ class cArticleOverviewHelper
     /**
      * Checks if the user has permission to lock article.
      *
-     * @return bool
      * @throws cDbException|cException
      */
     public function hasArticleLockPermission(): bool
@@ -472,7 +460,6 @@ class cArticleOverviewHelper
     /**
      * Checks if the user has permission to make an article a start article.
      *
-     * @return bool
      * @throws cDbException|cException
      */
     public function hasArticleMakeStartPermission(): bool
@@ -489,7 +476,6 @@ class cArticleOverviewHelper
     /**
      * Checks if the user has permission to duplicate article.
      *
-     * @return bool
      * @throws cDbException|cException
      */
     public function hasArticleDuplicatePermission(): bool
@@ -506,7 +492,6 @@ class cArticleOverviewHelper
     /**
      * Checks if the user has permission to make an article online/offline.
      *
-     * @return bool
      * @throws cDbException|cException
      */
     public function hasArticleMakeOnlinePermission(): bool
@@ -523,7 +508,6 @@ class cArticleOverviewHelper
     /**
      * Checks if the user has permission to delete article.
      *
-     * @return bool
      * @throws cDbException|cException
      */
     public function hasArticleDeletePermission(): bool
@@ -538,15 +522,38 @@ class cArticleOverviewHelper
     }
 
     /**
+     * Creates HTML code for the bulk editing functions in the article overview.
+     *
+     * @param string $class the class for the link
+     * @param string $imageSrc the path to the image
+     * @param string $alt the alt tag for the image
+     * @param string $onclick [optional] the onlick attribute for the link
+     * @return string rendered HTML code
+     */
+    public static function createBulkEditingFunction(
+        string $class,
+        string $imageSrc,
+        string $alt,
+        string $onclick = ''
+    ): string {
+        $function = new cHTMLLink();
+        $function->setClass($class);
+        if ($onclick !== '') {
+            $function->setEvent('click', $onclick);
+        }
+        $image = new cHTMLImage($imageSrc);
+        $image->setAlt($alt);
+        $function->setContent($image);
+
+        return $function->render();
+    }
+
+    /**
      * Checks the permission for an area, the action and the item.
      *
-     * @param $area
-     * @param $action
-     * @param $item
-     * @return bool
      * @throws cDbException|cException
      */
-    protected function _checkPermission($area, $action, $item): bool
+    protected function _checkPermission(string $area, string $action, int $item): bool
     {
         return $this->_perm->have_perm_area_action($area, $action)
             || $this->_perm->have_perm_area_action_item($area, $action, $item);

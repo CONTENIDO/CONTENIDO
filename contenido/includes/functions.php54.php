@@ -18,18 +18,14 @@
 
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
-if (function_exists('conHtmlSpecialChars') == false) {
-
+if (!function_exists('conHtmlSpecialChars')) {
     /**
-     *
      * @param string $value
      * @param int|string $flags
      * @param string $encoding
-     * @return string
      */
-    function conHtmlSpecialChars($value, $flags = '', $encoding = '')
+    function conHtmlSpecialChars($value, $flags = '', $encoding = ''): string
     {
-
         if ($encoding == '') {
             $encoding = cRegistry::getEncoding();
         }
@@ -44,21 +40,16 @@ if (function_exists('conHtmlSpecialChars') == false) {
 
         return htmlspecialchars($value, $flags, $encoding);
     }
-
 }
 
-if (function_exists('conHtmlEntityDecode') == false) {
-
+if (!function_exists('conHtmlEntityDecode')) {
     /**
-     *
      * @param string $value
      * @param int|string $flags
      * @param string $encoding
-     * @return string
      */
-    function conHtmlEntityDecode($value, $flags = '', $encoding = '')
+    function conHtmlEntityDecode($value, $flags = '', $encoding = ''): string
     {
-
         if ($encoding == '') {
             $encoding = cRegistry::getEncoding();
         }
@@ -68,21 +59,16 @@ if (function_exists('conHtmlEntityDecode') == false) {
 
         return html_entity_decode($value, $flags, $encoding);
     }
-
 }
 
-if (function_exists('conHtmlentities') == false) {
-
+if (!function_exists('conHtmlentities')) {
     /**
-     *
      * @param string $value
      * @param int|string $flags
      * @param string $encoding
-     * @return string
      */
-    function conHtmlentities($value, $flags = '', $encoding = '')
+    function conHtmlentities($value, $flags = '', $encoding = ''): string
     {
-
         if ($encoding == '') {
             $encoding = cRegistry::getEncoding();
         }
@@ -92,24 +78,18 @@ if (function_exists('conHtmlentities') == false) {
 
         return htmlentities($value, $flags, $encoding);
     }
-
 }
 
-if (function_exists('conGetHtmlTranslationTable') == false) {
+if (!function_exists('conGetHtmlTranslationTable')) {
     /**
-     *
      * @param string $table
      * @param string $flags
-     *
-     * @return array
      */
-    function conGetHtmlTranslationTable($table = '', $flags = '')
+    function conGetHtmlTranslationTable($table = '', $flags = ''): array
     {
-
         $table = ($table == '') ? HTML_SPECIALCHARS : $table;
         $flags = ($flags == '') ? ENT_COMPAT | ENT_HTML401 : $flags;
 
         return get_html_translation_table($table, $flags);
     }
-
 }

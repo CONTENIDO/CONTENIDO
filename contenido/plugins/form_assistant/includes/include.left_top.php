@@ -17,7 +17,7 @@ $actions = [];
 
 // ACTION: SHOW_FORM (in order to create new form)
 if (cRegistry::getPerm()->have_perm_area_action('form', PifaRightBottomFormPage::STORE_FORM)) {
-    global $area;
+    $area = cRegistry::getArea();
 
     $link = new cHTMLLink();
     $link->setMultiLink($area, PifaRightBottomFormPage::SHOW_FORM, $area, PifaRightBottomFormPage::SHOW_FORM);
