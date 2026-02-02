@@ -2,42 +2,42 @@
 
 # CONTENIDO CMS
 
-CONTENIDO is a free and open-source web content management system from Germany.
+CONTENIDO ist ein freies und Open-Source Web-Content-Management-System aus Deutschland.
 
 ----
 
 ## CONTENIDO Version 4.10.1
 
-**Licence:**
+**Lizenz:**
 
 GNU General Public Licence (GPL)
 
-In order to use CONTENIDO with full functionality and without problems, there are several requirements that your system must fulfill.
+Um den vollen Funktionsumfang von CONTENIDO nutzen zu können, müssen die folgenden Voraussetzungen erfüllt sein.
 
 **Copyright:**
 
 (c) 2000-2019, four for business AG
 
-**WARNING:**
+**WARNUNG:**
 
-Please do not use versions marked as alpha, beta or RC for productive systems - never.
+Versionen, die mit Alpha, Beta oder RC markiert sind, sind definitiv nicht für den produktiven Einsatz gedacht!
 
-No Warranty - take a look at the GPL at the end of this file.
+Keine Haftung und Gewährleistung für mittelbare und unmittelbare Schäden. Weitere Informationen finden Sie in der GPL-Lizenz.
 
 ----
 
-## System requirements for using CONTENIDO
+## Systemvoraussetzungen für den Einsatz von CONTENIDO
 
 **PHP Version**
 
-| Version          | Description                           |
-|------------------|---------------------------------------|
-| >= 7.1 && < 8.0  | Latest release fully functional       |
-| >= 7.1 && <= 8.4 | Develop branch mostly functional (\*) |
+| Version          | Beschreibung                                    |
+|------------------|-------------------------------------------------|
+| >= 7.1 && < 8.0  | Letztes Release voll funktionsfähig             |
+| >= 7.1 && <= 8.4 | develop-Branch größtenteils funktionsfähig (\*) |
 
-(*) With PHP error reporting set to `error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT`
+(*) Mit PHP Fehlerbehandlung eingestellt auf `error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT`
 
-**Required PHP extensions**
+**Benötigte PHP Erweiterungen**
 
 - BC Math (`bcmath`)
 - DOM (`dom`)
@@ -52,20 +52,20 @@ No Warranty - take a look at the GPL at the end of this file.
 
 **MySQL/MariaDB Version**
 
-| Version     | Description         |
-|-------------|---------------------|
-| MySQL 5.7   | not in strict mode  |
-| MySQL 8.0   | not in strict mode  |
-| MariaDB 5.5 | not in strict mode  |
-| MariaDB 10  | not in strict mode  |
+| Version     | Beschreibung          |
+|-------------|-----------------------|
+| MySQL 5.7   | nicht im strict-Modus |
+| MySQL 8.0   | nicht im strict-Modus |
+| MariaDB 5.5 | nicht im strict-Modus |
+| MariaDB 10  | nicht im strict-Modus |
 
-MySQL/MariaDB servers with the following SQL modes can affect the functionality of CONTENIDO:
+MySQL/MariaDB-Server mit folgenden SQL-Modi können die Funktionalität von CONTENIDO beeinträchtigen:
 
 `ONLY_FULL_GROUP_BY`, `STRICT_TRANS_TABLES`, `STRICT_ALL_TABLES`, `NO_ZERO_IN_DATE`, `NO_ZERO_DATE`
 
-The following SQL modes are recommended:
+Folgende SQL-Modi werden empfohlen:
 
-| Version      | Recommended SQL mode                                                             |
+| Version      | Empfohlener SQL-Modus                                                            |
 |--------------|----------------------------------------------------------------------------------|
 | MySQL 5.7    | `SET GLOBAL sql_mode = 'MYSQL40';` oder / or `SET SESSION sql_mode = 'MYSQL40';` |
 | MySQL >= 8.0 | `SET GLOBAL sql_mode = '';` oder / or `SET SESSION sql_mode = '';`               |
@@ -74,13 +74,13 @@ The following SQL modes are recommended:
 
 ----
 
-## Installation and Upgrade
+## Installation und Aktualisierung
 
-Installation or upgrade guides can be found in the [docs/](./docs) folder or at the [online documentation](https://contenido.atlassian.net/wiki/spaces/CONE).
+Anleitungen zur Installation oder Aktualisierung finden sie im Verzeichnis [docs/](./docs) oder unter der [Onlinedokumentation](https://contenido.atlassian.net/wiki/spaces/COND).
 
 ----
 
-## More information on CONTENIDO
+## Weitere Informationen zu CONTENIDO
 
 - [Homepage](https://www.contenido.org)
 - [Community Forum](https://forum.contenido.org)
@@ -88,14 +88,14 @@ Installation or upgrade guides can be found in the [docs/](./docs) folder or at 
 - [FAQ](https://www.contenido.org/deutsch/hilfe/faq/index.html)
 - [API documentation](https://www.contenido.org/deutsch/hilfe/api-dokumentation/index.html)
 - [GitHub](https://github.com/CONTENIDO/CONTENIDO)
-- [X](https://x.com/contenido)
+- [Twitter](https://twitter.com/contenido)
 - [Facebook](https://facebook.com/cms.contenido)
 
 ----
 
-## Licenses of used third party products
+## Lizenzen von verwendeten Produkten
 
-| Name & Version                                   | Licence                                                               | Information                                           |
+| Name & Version                                   | Lizenz                                                                | Information                                           |
 |--------------------------------------------------|-----------------------------------------------------------------------|-------------------------------------------------------|
 | CodeMirror 2.32                                  | CodeMirror license                                                    | https://codemirror.net/LICENSE                        |
 | IDNA Converter 0.8.0                             | GNU Lesser General Public License 2.1                                 | https://phlylabs.de                                   |
@@ -114,8 +114,8 @@ Installation or upgrade guides can be found in the [docs/](./docs) folder or at 
 
 ----
 
-## Remarks
+## Bemerkungen
 
-All information about warranty, guarantee and licence is provided on www.contenido.org.
+Alle Informationen zu Gewährleistung, Garantie und Lizenzbestimmungen finden Sie unter www.contenido.org.
 
-Your CONTENIDO-Team
+Ihr CONTENIDO-Team

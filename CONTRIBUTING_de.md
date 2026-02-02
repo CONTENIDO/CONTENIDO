@@ -19,9 +19,9 @@ GitHub Flow und besteht aus folgenden Schritten:
 - [Ticket erstellen](#Ticket-erstellen)
 - [Git Branch für das Ticket erstellen](#Git-Branch-erstellen)
 - [Änderungen am Quellcode durchführen](#Änderungen-durchführen), [committen](#Committen-der-Änderungen)
-  und [pushen](#Änderungen-pushen)
+  und [pushen](#Pushen-der-Änderungen)
 - [Pull-Request erstellen](#Pull-Request-erstellen)
-
+- [Vorgehensweise bei Forks](#Vorgehensweise-bei-Forks)
 
 ## Ticket erstellen
 
@@ -214,106 +214,14 @@ falls Nachbesserungen nötig sind.
 
 Der Pull-Request lässt sich auch direkt nach der Erzeugung des Branches erstellen.
 
-## Git Befehle
+## Vorgehensweise bei Forks
 
-Im Folgenden sind einige Git-Befehle beschrieben, die man für die Arbeit bei Git-Projekten benötigt.
+Natürlich kann man auch von einem Fork aus ein Pull-Request erstellen.
+Wie die Änderungen in dem Fork implementiert werden oder welche Prozesse in dem Fork für die Entwicklung genutzt
+werden, ist dabei unerheblich, das können alle selbst entscheiden.
 
-Moderne IDEs (PhpStorm, Visual Studio Code, Eclipse, NetBeans, usw.) haben schon Funktionen für die Arbeit mit
-Git-Projekten integriert und bieten intuitive Oberflächen dafür an. Da jede IDE eine etwas andere Bedienung hat,
-werden hier Kommandozeilen-Befehle für Git vorgestellt. 
-
-
-### Projekt aus GitHub auschecken
-```
-git clone https://github.com/CONTENIDO/CONTENIDO.git
-cd CONTENIDO
-```
-
-**Wichtig:**
-
-Folgende Befehle sind alle im Projektordner "CONTENIDO" auszuführen!
-
-
-### Eine vorhandene Remote-Branch "develop" auschecken
-
-**Befehl:**
-
-```sh
-git checkout <branch-name>
-```
-
-**Beispiel:**
-
-```sh
-git checkout develop
-```
-
-**Wichtig:**
-
-Wenn man Änderungen gemacht und diese nicht committet hat, sollte man diese vorher committen oder die Änderungen `stashen`.
-
-
-### Eine neue lokale Branch erstellen und dabei die Branch von der "develop"-Branch abzweigen
-
-**Befehl:**
-
-```sh
-git checkout -b ＜neue-branch＞ ＜vorhandene-branch＞
-```
-
-**Beispiel:**
-
-```sh
-git checkout -b feature/123-mein-github-ticket-fuer-contenido develop
-```
-
-
-### Änderungen dem Commit hinzufügen
-
-Vor dem Commit muss man die Änderungen zuerst hinzufügen.
-Nehmen wir an, die Datei `contenido/index.php` wurde geändert.
-
-**Befehl:**
-
-```sh
-git add <pfad-zur-datei>
-```
-
-**Beispiel:**
-
-```sh
-git add contenido/index.php
-```
-
-### Änderungen committen
-
-**Befehl:**
-
-```sh
-git commit -m"<commit-message>"
-```
-
-**Beispiel für eine mehrzeilige Commit-Message:**
-
-```
-git commit -m "style: [#123] My GitHub ticket for CONTENIDO." -m "Formatted contenido/index.php."
-```
-
-
-### Änderungen pushen
-
-**Befehl:**
-
-```sh
-git push origin feature/123-mein-github-ticket-fuer-contenido
-```
-
-**Beispiel:**
-
-```sh
-git push origin <branch-name>
-```
-
+Wichtig ist nur, dass es im CONTENIDO-Repository ein Ticket dazu gibt, ein Pull-Request erstellt wird und die
+Änderungen aus dem Pull-Request den Codierungskonventionen entsprechen.
 
 ## Glossar
 
