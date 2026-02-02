@@ -17,3 +17,13 @@ Instructions for Smarty Upgrade/Update
     download the newest version
     delete the content in "smarty_sources"
     copy all content from the folder "Smarty-X.x/libs" into the "smarty_sources" folder
+
+History
+
+V2.0.4
+- #490 added autoloader config file (enhancement)
+
+V2.0.3
+- PHP 8.4 support feature/529
+
+further versions no history known
