@@ -19,7 +19,7 @@ GitHub Flow und besteht aus folgenden Schritten:
 - [Ticket erstellen](#Ticket-erstellen)
 - [Git Branch für das Ticket erstellen](#Git-Branch-erstellen)
 - [Änderungen am Quellcode durchführen](#Änderungen-durchführen), [committen](#Committen-der-Änderungen)
-  und [pushen](#Änderungen-pushen)
+  und [pushen](#Pushen-der-Änderungen)
 - [Pull-Request erstellen](#Pull-Request-erstellen)
 - [Vorgehensweise bei Forks](#Vorgehensweise-bei-Forks)
 
