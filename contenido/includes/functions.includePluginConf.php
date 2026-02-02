@@ -43,7 +43,7 @@ if ($cfg['debug']['disable_plugins'] === false) {
                 __LINE__,
                 sprintf(
                     'Plugin <%s> is activated in database, but folder does not exist. '
-                        . 'This leads to errors e.g. in user or group rights area settings.',
+                    . 'This leads to errors e.g. in user or group rights area settings.',
                     $pluginName
                 )
             );
@@ -55,9 +55,23 @@ if ($cfg['debug']['disable_plugins'] === false) {
 foreach ($plugins as $pluginName) {
     $pluginLocaleDir = $pluginFolder . $pluginName . '/locale/';
     $pluginConfigFile = $pluginFolder . $pluginName . '/includes/config.plugin.php';
+    $pluginAutoloaderFile = $pluginFolder . $pluginName . '/includes/config.autoloader.php';
 
     if (cFileHandler::exists($pluginLocaleDir)) {
         i18nRegisterDomain($pluginName, $pluginLocaleDir);
+    }
+
+    // add autoloader config
+    if (cFileHandler::exists($pluginAutoloaderFile)) {
+        if (cFileHandler::readable($pluginAutoloaderFile)) {
+            cAutoload::addClassmapConfigFile($pluginAutoloaderFile);
+        } else {
+            cWarning(
+                __FILE__,
+                __LINE__,
+                sprintf('Cannot read class autoload file config.autoloader.php of Plugin <%s>', $pluginName)
+            );
+        }
     }
 
     if (cFileHandler::exists($pluginConfigFile)) {
