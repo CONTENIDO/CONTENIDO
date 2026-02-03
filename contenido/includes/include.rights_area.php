@@ -51,6 +51,7 @@ if (($perm->have_perm_area_action("user_overview", $action)) && ($action === 'us
     $ret = cRights::saveRights();
     if ($ret === true) {
         $sMessage = $notification->returnNotification('ok', i18n('Changes saved'));
+        $rights_list_old_keys = array_keys($rights_list_old);
     }
 } else {
     if (!$perm->have_perm_area_action("user_overview", $action)) {
