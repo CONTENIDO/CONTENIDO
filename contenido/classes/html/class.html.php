@@ -551,6 +551,8 @@ class cHTML
             if (count($content->_requiredScripts) > 0) {
                 $this->_requiredScripts = array_merge($this->_requiredScripts, $content->_requiredScripts);
             }
+        } elseif (is_int($content) || is_float($content) || is_bool($content)) {
+            $this->_content = $content;
         } else {
             // Content is tring or NULL
             $this->_content = is_string($content) ? $content : '';
