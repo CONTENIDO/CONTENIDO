@@ -37,7 +37,11 @@
 # Example: mark vendor libraries as "generated"
 # vendor/** linguist-generated=true
 
-# Exclude internal files from archive exports (optional)
+# Exclude some files &folders from archive exports
 .gitattributes export-ignore
 .gitignore export-ignore
 .gitmodules export-ignore
+/CONTRIBUTING.md export-ignore
+/composer.json export-ignore
+/phpunit.xml export-ignore
+/test export-ignore
