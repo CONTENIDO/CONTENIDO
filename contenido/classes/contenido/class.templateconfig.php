@@ -108,7 +108,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection
         if (($template = $templateColl->next()) !== false) {
             if ($template->get('idtplcfg') > 0) {
                 $containerConfColl = new cApiContainerConfigurationCollection(sprintf(
-                    '`idtplconf` = %d',
+                    '`idtplcfg` = %d',
                     $template->get('idtplcfg')
                 ));
                 $standardConfig = [];
