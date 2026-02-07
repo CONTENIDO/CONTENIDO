@@ -404,6 +404,17 @@ class cStringMultiByteWrapper
             $toEncoding = cRegistry::getEncoding();
         }
 
+        // Omit the third parameter with `null` values for all PHP 7 versions, PHP 7 will fall back to 'default_charset'.
+        // Otherwise, this may cause problems if 'mbstring.internal_encoding' is not set.
+        // @phpVersion >= 7.0.0 && < 8.0.0
+        if (
+            !$fromEncoding
+            && version_compare(PHP_VERSION, '7.0.0', '>=')
+            && version_compare(PHP_VERSION, '8.0.0', '<')
+        ) {
+            return mb_convert_encoding($string, self::_getEncoding($toEncoding));
+        }
+
         return mb_convert_encoding($string, self::_getEncoding($toEncoding), $fromEncoding);
     }
 }
