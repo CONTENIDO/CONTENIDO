@@ -731,7 +731,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                         if ($tmp_sync != '') {
                             $link = new cHTMLLink(
                                 $sess->url("main.php?area=con_editart&action=con_edit&frame=4&idcat=$idcat&idart=$idart"),
-                                'aa' . cHTMLImage::img($cfg['path']['images'] . 'but_art_conf2.gif', $lngDisplayProperties),
+                                cHTMLImage::img($cfg['path']['images'] . 'but_art_conf2.gif', $lngDisplayProperties),
                                 'con_img_button mgl3'
                             );
                             $link->setAttribute('title', $lngDisplayProperties);

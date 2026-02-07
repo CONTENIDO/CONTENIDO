@@ -841,13 +841,17 @@ abstract class ItemCollection extends cItemBaseAbstract
     {
         unset($this->objects);
 
-        $where = empty($where) ? '' : 'WHERE ' . $where;
-        $groupBy = empty($groupBy) ? '' : ' GROUP BY ' . $groupBy;
-        $orderBy = empty($orderBy) ? '' : ' ORDER BY ' . $orderBy;
-        $limit = empty($limit) ? '' : ' LIMIT ' . $limit;
+        $sqlParts = array_filter([
+            'SELECT',
+            $this->_settings['select_all_mode'] ? '*' : sprintf('`%s`', $this->getPrimaryKeyName()),
+            sprintf('FROM `%s`', $this->table),
+            empty($where) ? '' : sprintf('WHERE %s', $where),
+            empty($groupBy) ? '' : sprintf('GROUP BY %s', $groupBy),
+            empty($orderBy) ? '' : sprintf('ORDER BY %s', $orderBy),
+            empty($limit) ? '' : sprintf('LIMIT %s', $limit),
+        ]);
 
-        $fields = $this->_settings['select_all_mode'] ? '*' : $this->getPrimaryKeyName();
-        $sql = 'SELECT ' . $fields . ' FROM `' . $this->table . '`' . $where . $groupBy . $orderBy . $limit;
+        $sql = implode(' ', $sqlParts);
         $this->db->query($sql);
         $this->_lastSQL = $sql;
         $this->_bAllMode = $this->_settings['select_all_mode'];
