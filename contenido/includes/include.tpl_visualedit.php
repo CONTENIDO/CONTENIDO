@@ -33,9 +33,22 @@ $defaulttemplate = $tplLayoutData['defaulttemplate' ?? 0];
 $moduleColl = new cApiModuleCollection();
 $modules = $moduleColl->getAllByIdclient($client);
 
-// $code = $db->f('code');
 $layoutInFile = new cLayoutHandler($idlay, "", $cfg, $lang);
 $code = $layoutInFile->getLayoutCode();
+
+// Add HTML page if code contains no proper HTML tags (html, head, body).
+// This is needed for the visual editor to work properly for layouts having only container tags.
+if (
+    !preg_match("/<html(.*)>/i", $code, $matches)
+    && !preg_match("/<\/head(.*)>/i", $code, $matches)
+    && !preg_match("/<body(.*)>/i", $code, $matches)
+    && !preg_match("/<\/body(.*)>/i", $code, $matches)
+) {
+    $page = new cGuiPage('tpl_visualedit.php');
+    $page->setContent($code);
+    $page->addStyle('contenido_backend.css');
+    $code = $page->render(null, true);
+}
 
 // Get document version (html or xhtml)
 $is_XHTML = getEffectiveSetting('generator', 'xhtml', 'false');
@@ -187,5 +200,7 @@ $actionControl = new cHTMLDiv($saveButton, 'con_visedit_action_control');
 $code = preg_replace("/<\/head(.*)>/i", $headCode . '</head\\1>', $code);
 $code = preg_replace("/<body(.*)>/i", "<body\\1>" . $form . $actionControl, $code);
 $code = preg_replace("/<\/body(.*)>/i", '</form></body\\1>', $code);
+
+#mp_d(htmlspecialchars($code));
 
 eval("?>\n" . $code . "\n<?php\n");

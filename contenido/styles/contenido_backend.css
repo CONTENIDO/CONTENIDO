@@ -1,0 +1,42 @@
+/* labels and values for content types in backend edit mode */
+
+.con_content_type_label {
+    color: #0060B1;
+    background-color: #BFCF00;
+    display: block;
+    margin: 5px 0 2px 0;
+    border-top: 2px solid #0060B1;
+    border-right: 2px solid #0060B1;
+    padding: 2px;
+    font-weight: bold;
+}
+
+.con_content_type_label_secondary {
+    color: #0060B1;
+    background-color: #BFCF00;
+    display: block;
+    margin: 5px 0 2px 0;
+    padding: 2px;
+    font-weight: normal;
+}
+
+.con_content_type_value {
+}
+
+#con_tpl_visedit {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+#con_tpl_visedit .con_visedit_item {
+    position: relative;
+    height: 26px;
+    white-space: nowrap;
+    font-size: 12px;
+}
+
+#con_tpl_visedit .con_visedit_action_control {
+    width: 100%;
+    text-align: right;
+}
