@@ -58,7 +58,7 @@ abstract class cTestingTestCase extends TestCase
             throw new cTestingException("No name provided for test case.");
         }
 
-        return new TestSuite(self::$_testCaseName);
+        return TestSuite::fromClassReflector(new \ReflectionClass(self::$_testCaseName));
     }
 
     /**
@@ -81,6 +81,25 @@ abstract class cTestingTestCase extends TestCase
         }
 
         return $suite;
+    }
+
+    /**
+     * PHPUnit compatibility helper.
+     *
+     * Older test suites may still call assertClassHasAttribute().
+     * Newer PHPUnit versions removed it, so we provide an equivalent
+     * implementation based on Reflection.
+     */
+    protected static function assertClassHasProperty(string $propertyName, string $className, string $message = '')
+    {
+        $ref = new \ReflectionClass($className);
+
+        self::assertTrue(
+            $ref->hasProperty($propertyName),
+            $message !== ''
+                ? $message
+                : sprintf('Failed asserting that class "%s" has property "%s".', $className, $propertyName)
+        );
     }
 
     /**

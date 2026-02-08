@@ -4,7 +4,7 @@
  * Main editor configuration file for CONTENIDO
  *
  * @package    Core
- * @subpackage Backend
+ * @subpackage Backend_Editor
  * @author     Martin Horwath <horwath@dayside.net>
  * @copyright  four for business AG <www.4fb.de>
  * @license    https://www.contenido.org/license/LIZENZ.txt

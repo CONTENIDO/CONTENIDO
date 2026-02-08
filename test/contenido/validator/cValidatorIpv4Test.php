@@ -12,6 +12,8 @@
  * @link       https://www.contenido.org
  */
 
+use PHPUnit\Framework\Attributes\DataProvider;
+
 /**
  * Class to test IPv4 address validator.
  *
@@ -33,15 +35,12 @@ class cValidatorIpv4Test extends cTestingTestCase
         $this->_validator = cValidatorFactory::getInstance('ipv4');
     }
 
-    /**
-     *
-     */
     protected function tearDown(): void
     {
         unset($this->_validator);
     }
 
-    public function dataIPv4IsValid(): array
+    public static function iPv4IsValidProvider(): array
     {
         return [
             'Null' => [null, false],
@@ -61,11 +60,10 @@ class cValidatorIpv4Test extends cTestingTestCase
     }
 
     /**
-     * @dataProvider dataIPv4IsValid()
-     *
      * @param string $input
      * @param bool $output
      */
+    #[DataProvider('iPv4IsValidProvider')]
     public function testIsValid($input, $output)
     {
         $this->assertEquals($output, $this->_validator->isValid($input));

@@ -4,7 +4,7 @@
  * This file contains the WYSIWYG editor class for TinyMCE.
  *
  * @package    Core
- * @subpackage Backend
+ * @subpackage Backend_Editor
  * @author     Timo Hummel
  * @copyright  four for business AG <www.4fb.de>
  * @license    https://www.contenido.org/license/LIZENZ.txt
