@@ -197,6 +197,7 @@ class cApiGroupCollection extends ItemCollection
  */
 class cApiGroup extends Item
 {
+    use cUserGroupPermissionsTrait;
 
     /**
      * Prefix to be used for group names.
@@ -218,6 +219,14 @@ class cApiGroup extends Item
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function _getPermissionsArray(): array
+    {
+        return cPermission::permissionToArray($this->get('perms'));
     }
 
     /**
@@ -258,14 +267,6 @@ class cApiGroup extends Item
         }
 
         return parent::setField($name, $value, $safe);
-    }
-
-    /**
-     * Returns list of group permissions.
-     */
-    public function getPermsArray(): array
-    {
-        return cPermission::permissionToArray($this->get('perms'));
     }
 
     /**

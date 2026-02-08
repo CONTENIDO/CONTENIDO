@@ -323,6 +323,7 @@ class cApiUserCollection extends ItemCollection
  */
 class cApiUser extends Item
 {
+    use cUserGroupPermissionsTrait;
 
     /**
      * @var int Password is ok and stored.
@@ -392,6 +393,14 @@ class cApiUser extends Item
         if ($id !== false) {
             $this->loadByPrimaryKey($id);
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function _getPermissionsArray(): array
+    {
+        return cPermission::permissionToArray($this->get('perms'));
     }
 
     /**
@@ -747,14 +756,6 @@ class cApiUser extends Item
     public function getPerms()
     {
         return $this->get('perms');
-    }
-
-    /**
-     * Returns list of user permissions.
-     */
-    public function getPermsArray(): array
-    {
-        return cPermission::permissionToArray($this->get('perms'));
     }
 
     /**

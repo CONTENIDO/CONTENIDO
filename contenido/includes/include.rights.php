@@ -76,7 +76,7 @@ $oTpl->set('s', 'AREA', $area);
 $oUser = new cApiUser($userid);
 $userPerms = (string) $oUser->getField('perms');
 
-ob_start();
+//ob_start();
 
 $oTpl->set('s', 'RIGHTS_PERMS', $rights_perms);
 
@@ -144,6 +144,32 @@ if (count($availableClients) > 0) {
 if (empty($rights_clientslang)) {
     $rights_clientslang = $firstClientsLang;
 }
+
+$oClientLang = new cApiClientLanguage((int)$rights_clientslang);
+if (!$oClientLang->isLoaded()) {
+    $page = new cGuiPage('generic_page');
+    if ($oUser->hasSysadminPermission()) {
+        $page->displayInfo(
+            i18n("The selected user has the system administrator right. System administrators have full rights for all clients in all languages; therefore, these rights cannot be specified in more detail.")
+        );
+    } elseif ($oUser->hasClientAdminPermission()) {
+        $page->displayInfo(
+            i18n("The selected user has the client administrator right. Client administrators have all rights for a client; therefore, the rights cannot be specified in more detail.")
+        );
+    } else {
+        $page->displayError(
+            i18n("The selected user doesn't have any rights to any client/language.")
+        );
+    }
+    $page->abortRendering();
+    $page->render();
+    exit();
+}
+
+$rights_client = $oClientLang->get('idclient');
+$rights_lang = $oClientLang->get('idlang');
+
+ob_start();
 
 $aViewRights = [];
 $bExclusive = false;
@@ -214,45 +240,6 @@ if ($area != 'user_content') {
     $oTpl->set('s', 'DISPLAY_RIGHTS', 'inline-block');
 }
 
-$bEndScript = false;
-
-$oClientLang = new cApiClientLanguage((int)$rights_clientslang);
-if ($oClientLang->isLoaded()) {
-    $rights_client = $oClientLang->get('idclient');
-    $rights_lang = $oClientLang->get('idlang');
-    $oTpl->set('s', 'NOTIFICATION', '');
-    $oTpl->set('s', 'DISPLAY_FILTER', 'block');
-} else {
-    $bEndScript = true;
-    ob_end_clean();
-
-    // Account is sysadmin
-    if (cString::findFirstPos($userPerms, 'sysadmin') !== false) {
-        $oTpl->set('s', 'NOTIFICATION', $notification->returnMessageBox('warning', i18n("The selected user is a system administrator. A system administrator has all rights for all clients for all languages and therefore rights can't be specified in more detail."), 0));
-    } elseif (cString::findFirstPos($userPerms, 'admin[') !== false) {
-        // Account is only assigned to clients with admin rights
-        $oTpl->set('s', 'NOTIFICATION', $notification->returnMessageBox('warning', i18n("The selected user is assigned to clients as admin, only. An admin has all rights for a client and therefore rights can't be specified in more detail."), 0));
-    } else {
-        $oTpl->set('s', 'NOTIFICATION', $notification->returnMessageBox('error', i18n("Current user doesn't have any rights to any client/language."), 0));
-    }
-    $oTpl->set('s', 'DISPLAY_FILTER', 'none');
-}
-
-if (!$bEndScript) {
-    $tmp = ob_get_contents();
-    ob_end_clean();
-    $oTpl->set('s', 'OB_CONTENT', $tmp);
-} else {
-    $oTpl->set('s', 'OB_CONTENT', '');
-}
-
-if ($bEndScript) {
-    $oTpl->set('s', 'NOTIFICATION_SAVE_RIGHTS', '');
-    $oTpl->set('s', 'RIGHTS_CONTENT', '');
-    $oTpl->set('s', 'JS_SCRIPT_BEFORE', '');
-    $oTpl->set('s', 'JS_SCRIPT_AFTER', '');
-    $oTpl->set('s', 'RIGHTS_CONTENT', '');
-    $oTpl->set('s', 'EXTERNAL_SCRIPTS', '');
-    $oTpl->generate('templates/standard/' . $cfg['templates']['rights']);
-    die();
-}
+$tmp = ob_get_contents();
+ob_end_clean();
+$oTpl->set('s', 'OB_CONTENT', $tmp);
