@@ -12,6 +12,8 @@
  * @link       https://www.contenido.org
  */
 
+use PHPUnit\Framework\Attributes\DataProvider;
+
 /**
  * Class to test asset util.
  *
@@ -21,30 +23,24 @@
 class cStringTest extends cTestingTestCase
 {
 
-    /**
-     * @dataProvider dataReplaceDiacritics()
-     */
+    #[DataProvider('replaceDiacriticsProvider')]
     public function testReplaceDiacritics(string $input, string $expected)
     {
         $this->assertEquals($expected, cString::replaceDiacritics($input));
     }
 
-    /**
-     * @dataProvider dataCleanURLCharacters()
-     */
+    #[DataProvider('cleanURLCharactersProvider')]
     public function testCleanURLCharacters(string $input, bool $replace, string $expected)
     {
         $this->assertEquals($expected, cString::cleanURLCharacters($input, $replace));
     }
 
-    /**
-     * @dataProvider dataNormalizeLineEndings
-     */
+    #[DataProvider('normalizeLineEndingsProvider')]
     public function testNormalizeLineEndings(string $input, string $lineEnding, string $expected): void
     {
         $this->assertEquals($expected, cString::normalizeLineEndings($input, $lineEnding));
     }
-    public function dataReplaceDiacritics(): array
+    public static function replaceDiacriticsProvider(): array
     {
         return [
             // Set of characters in upper and lower case
@@ -97,7 +93,7 @@ class cStringTest extends cTestingTestCase
         ];
     }
 
-    public function dataCleanURLCharacters(): array
+    public static function cleanURLCharactersProvider(): array
     {
         return [
             // Standard cases
@@ -122,7 +118,7 @@ class cStringTest extends cTestingTestCase
         ];
     }
 
-    public function dataNormalizeLineEndings(): array
+    public static function normalizeLineEndingsProvider(): array
     {
         return [
             // Test cases for default line ending "\n"

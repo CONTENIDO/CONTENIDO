@@ -12,6 +12,8 @@
  * @link       https://www.contenido.org
  */
 
+use PHPUnit\Framework\Attributes\DataProvider;
+
 /**
  * Class to test cGenericDbDriverMysql
  * @package    Testing
@@ -27,7 +29,7 @@ class cGenericDbDriverMysqlTest extends cTestingTestCase
 
     public function setUp(): void
     {
-        // Driver needs a Item class to use its filter/escape functions.
+        // Driver needs an Item class to use its filter/escape functions.
         $itemClass = new cApiArticleLanguage();
         $this->driver = new cGenericDbDriverMysql();
         $this->driver->setItemClassInstance($itemClass);
@@ -56,7 +58,7 @@ class cGenericDbDriverMysqlTest extends cTestingTestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function dataBuildOperator()
+    public static function buildOperatorProvider(): array
     {
         // @TODO Add more data to test
         return [
@@ -92,20 +94,19 @@ class cGenericDbDriverMysqlTest extends cTestingTestCase
     /**
      * Test {@see cGenericDbDriverMysql::buildOperator()}.
      *
-     * @dataProvider dataBuildOperator()
-     *
      * @param string $field
      * @param string $operator
      * @param mixed $restriction
      * @param string $expected
      */
+    #[DataProvider('buildOperatorProvider')]
     public function testBuildOperator($field, $operator, $restriction, $expected)
     {
         $result = $this->driver->buildOperator($field, $operator, $restriction);
         $this->assertEquals($expected, $result);
     }
 
-    public function dataBuildExceptionOperator()
+    public static function buildExceptionOperatorProvider(): array
     {
         // @TODO Add more data to test
         return [
@@ -121,12 +122,11 @@ class cGenericDbDriverMysqlTest extends cTestingTestCase
     /**
      * Test {@see cGenericDbDriverMysql::buildOperator()}.
      *
-     * @dataProvider dataBuildExceptionOperator()
-     *
      * @param string $field
      * @param string $operator
      * @param mixed $restriction
      */
+    #[DataProvider('buildExceptionOperatorProvider')]
     public function testBuildOperatorException($field, $operator, $restriction)
     {
         $this->expectException(cInvalidArgumentException::class);

@@ -51,7 +51,7 @@ cInclude('includes', 'functions.lang.php');
  * See backend.customizing.html for details
  *
  * @package    Core
- * @subpackage Backend
+ * @subpackage Backend_Editor
  */
 class cTinyMCE4Editor extends cWYSIWYGEditor
 {

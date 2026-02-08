@@ -4,7 +4,7 @@
  * This file contains the system integrity backend page.
  *
  * @package    Core
- * @subpackage Backend
+ * @subpackage Backend_Editor
  * @author     Thomas Stauer
  * @copyright  four for business AG <www.4fb.de>
  * @license    https://www.contenido.org/license/LIZENZ.txt

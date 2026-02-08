@@ -26,7 +26,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @package    Core
  * @subpackage Backend
  *
- * TODO Some properties are set, if the module could be initialized properly, e.g. the `moduleName` or `modulePath`.
+ * @TODO Some properties are set, if the module could be initialized properly, e.g. the `moduleName` or `modulePath`.
  *      But some functions use them and expect them to be of a specific type, e.g. `getTemplatePath()`, `getCssPath()`.
  *      They should never return values if `modulePath` is not set.
  */

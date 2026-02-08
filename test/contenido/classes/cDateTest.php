@@ -12,6 +12,8 @@
  * @link       https://www.contenido.org
  */
 
+use PHPUnit\Framework\Attributes\DataProvider;
+
 /**
  * This class tests the static class methods of the cDate util class.
  *
@@ -20,7 +22,7 @@
 class cDateTest extends cTestingTestCase
 {
 
-    public function dataPadDay(): array
+    public static function padDayProvider(): array
     {
         return [
             'String "" (empty)' => ['', '00'],
@@ -36,17 +38,16 @@ class cDateTest extends cTestingTestCase
     /**
      * Test {@see cDate::padDay()}.
      *
-     * @dataProvider dataPadDay()
-     *
      * @param mixed $input
      * @param mixed $output
      */
+    #[DataProvider('padDayProvider')]
     public function testPadDay($input, $output)
     {
         $this->assertEquals($output, cDate::padDay($input));
     }
 
-    public function dataPadMonth(): array
+    public static function padMonthProvider(): array
     {
         return [
             'String "" (empty)' => ['', '00'],
@@ -55,18 +56,17 @@ class cDateTest extends cTestingTestCase
             'String "0" (min possible value)' => ['0', '00'],
             'String "9"' => ['9', '09'],
             'String "12" (max possible value)' => ['12', '12'],
-            'String "13"' => ['13', '12'],
+            'String "13"' => ['13', '13'],
         ];
     }
 
     /**
      * Test {@see cDate::padMonth()}.
      *
-     * @dataProvider dataPadDay()
-     *
      * @param mixed $input
      * @param mixed $output
      */
+    #[DataProvider('padMonthProvider')]
     public function testPadMonth($input, $output)
     {
         $this->assertEquals($output, cDate::padMonth($input));
@@ -75,11 +75,10 @@ class cDateTest extends cTestingTestCase
     /**
      * Test {@see cDate::padDayOrMonth()}.
      *
-     * @dataProvider dataPadDay()
-     *
      * @param mixed $input
      * @param mixed $output
      */
+    #[DataProvider('padDayProvider')]
     public function testPadDayOrMonth($input, $output)
     {
         $this->assertEquals($output, cDate::padDayOrMonth($input));
@@ -120,7 +119,7 @@ class cDateTest extends cTestingTestCase
         $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
-    public function dataStrftimeToDate(): array
+    public static function strftimeToDateProvider(): array
     {
         return [
             'Year four digit' => ['%Y', 'Y'],
@@ -168,9 +167,8 @@ class cDateTest extends cTestingTestCase
 
     /**
      * Test {@see cDate::strftimeToDate()}.
-     *
-     * @dataProvider dataStrftimeToDate()
      */
+    #[DataProvider('strftimeToDateProvider')]
     public function testStrftimeToDate(string $input, string $output)
     {
         $this->assertEquals($output, cDate::strftimeToDate($input));

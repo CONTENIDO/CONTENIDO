@@ -12,6 +12,8 @@
  * @link       https://www.contenido.org
  */
 
+use PHPUnit\Framework\Attributes\DataProvider;
+
 /**
  * Class to test date validator.
  *
@@ -21,7 +23,6 @@
 class cValidatorDateTest extends cTestingTestCase
 {
     /**
-     *
      * @var cValidatorAbstract
      */
     protected $_validator = null;
@@ -42,7 +43,7 @@ class cValidatorDateTest extends cTestingTestCase
         unset($this->_validator);
     }
 
-    public function dataIsValid()
+    public static function isValidProvider(): array
     {
         return [
             'Null' => [null, false],
@@ -64,11 +65,10 @@ class cValidatorDateTest extends cTestingTestCase
     }
 
     /**
-     * @dataProvider dataIsValid()
-     *
      * @param string $input
      * @param bool $output
      */
+    #[DataProvider('isValidProvider')]
     public function testIsValid($input, $output)
     {
         $this->assertEquals($output, $this->_validator->isValid($input));

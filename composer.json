@@ -10,7 +10,7 @@
     "license": ["GPL-2.0"],
     "config": {
         "platform": {
-            "php": "7.2"
+            "php": "8.4"
         },
         "sort-packages": true,
         "allow-plugins": {
@@ -22,11 +22,12 @@
         "friendsofphp/php-cs-fixer": "^0.1.0",
         "phpcompatibility/php-compatibility": "^9.3",
         "phpstan/phpstan": "^1.12",
-        "phpunit/phpunit": "^8",
+        "phpunit/phpunit": "^12.5",
         "rector/rector": "^1.2",
         "squizlabs/php_codesniffer": "^3.13"
     },
     "require": {
+        "php": ">=7.1 <8.5",
         "ext-bcmath": "*",
         "ext-ctype": "*",
         "ext-dom": "*",
@@ -34,6 +35,7 @@
         "ext-gd": "*",
         "ext-iconv": "*",
         "ext-json": "*",
+        "ext-libxml": "*",
         "ext-mbstring": "*",
         "ext-mysqli": "*",
         "ext-simplexml": "*",

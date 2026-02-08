@@ -80,10 +80,10 @@ cAutoload::addClassmapConfig([
 
 
 // Initialize common variables
-$idcat = isset($idcat) ? $idcat : 0;
-$idart = isset($idart) ? $idart : 0;
-$idcatart = isset($idcatart) ? $idcatart : 0;
-$error = isset($error) ? $error : 0;
+$idcat = $idcat ?? 0;
+$idart = $idart ?? 0;
+$idcatart = $idcatart ?? 0;
+$error = $error ?? 0;
 
 cInclude('includes', 'functions.con.php');
 cInclude('includes', 'functions.con2.php');
@@ -91,6 +91,7 @@ cInclude('includes', 'functions.api.php');
 cInclude('includes', 'functions.pathresolver.php');
 
 $backendPath = cRegistry::getBackendPath();
+
 
 // Initialize the Database Abstraction Layer, the Session, Authentication and Permissions Handler of the
 if (cRegistry::getBackendSessionId()) {

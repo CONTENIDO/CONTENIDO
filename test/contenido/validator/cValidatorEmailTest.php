@@ -12,6 +12,8 @@
  * @link       https://www.contenido.org
  */
 
+use PHPUnit\Framework\Attributes\DataProvider;
+
 /**
  * Class to test email validator.
  *
@@ -56,16 +58,13 @@ class cValidatorEmailTest extends cTestingTestCase
         $this->_validator = cValidatorFactory::getInstance('email');
     }
 
-    /**
-     *
-     */
     protected function tearDown(): void
     {
         global $cfg;
         unset($this->_validator, $cfg['validator']['email']);
     }
 
-    public function dataIsValid(): array
+    public static function isValidProvider(): array
     {
         return [
             'Null' => [null, false],
@@ -143,11 +142,10 @@ class cValidatorEmailTest extends cTestingTestCase
     }
 
     /**
-     * @dataProvider dataIsValid()
-     *
      * @param string $input
      * @param bool $output
      */
+    #[DataProvider('isValidProvider')]
     public function testIsValid($input, $output)
     {
         $this->assertEquals($output, $this->_validator->isValid($input));

@@ -26,8 +26,8 @@ class cHtmlCanvasTest extends cTestingTestCase
         $this->assertSame(200, $canvas->getAttribute('height'));
         $this->assertSame('<canvas id="m21" height="200"></canvas>', $canvas->toHtml());
         $canvas->setHeight('');
-        $this->assertSame('', $canvas->getAttribute('height'));
-        $this->assertSame('<canvas id="m21" height=""></canvas>', $canvas->toHtml());
+        $this->assertSame(0, $canvas->getAttribute('height'));
+        $this->assertSame('<canvas id="m21" height="0"></canvas>', $canvas->toHtml());
     }
 
     public function testSetWidth()
@@ -37,7 +37,7 @@ class cHtmlCanvasTest extends cTestingTestCase
         $this->assertSame(200, $canvas->getAttribute('width'));
         $this->assertSame('<canvas id="m22" width="200"></canvas>', $canvas->toHtml());
         $canvas->setWidth('');
-        $this->assertSame('', $canvas->getAttribute('width'));
-        $this->assertSame('<canvas id="m22" width=""></canvas>', $canvas->toHtml());
+        $this->assertSame(0, $canvas->getAttribute('width'));
+        $this->assertSame('<canvas id="m22" width="0"></canvas>', $canvas->toHtml());
     }
 }

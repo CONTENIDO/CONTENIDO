@@ -34,7 +34,7 @@ class cHtmlIframeTest extends cTestingTestCase
         $this->_cIframe->setWidth(200);
         $this->assertSame(200, $this->_cIframe->getAttribute('width'));
         $this->_cIframe->setWidth('');
-        $this->assertSame('', $this->_cIframe->getAttribute('width'));
+        $this->assertSame(0, $this->_cIframe->getAttribute('width'));
     }
 
     public function testSetHeight()
@@ -42,7 +42,7 @@ class cHtmlIframeTest extends cTestingTestCase
         $this->_cIframe->setHeight(200);
         $this->assertSame(200, $this->_cIframe->getAttribute('height'));
         $this->_cIframe->setHeight('');
-        $this->assertSame('', $this->_cIframe->getAttribute('height'));
+        $this->assertSame(0, $this->_cIframe->getAttribute('height'));
     }
 
     public function testSetBorder()

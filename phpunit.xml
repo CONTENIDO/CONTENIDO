@@ -1,11 +1,4 @@
-<phpunit bootstrap="test/bootstrap.php" backupGlobals="false" colors="true" stderr="true">
-    <php>
-        <ini name="session.use_cookies" value="0" />
-        <ini name="session.use_only_cookies" value="0" />
-        <ini name="session.use_trans_sid" value="0" />
-        <ini name="session.cache_limiter" value="" />
-    </php>
-
+<phpunit bootstrap="test/bootstrap.php" backupGlobals="false" colors="true">
     <testsuites>
 
         <testsuite name="all">
@@ -40,6 +33,5 @@
         <testsuite name="validator">
             <directory>test/contenido/validator</directory>
         </testsuite>
-
     </testsuites>
 </phpunit>

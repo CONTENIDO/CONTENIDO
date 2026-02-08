@@ -118,13 +118,13 @@ class cHtmlImageTest extends cTestingTestCase
     {
         // test setting string as width
         $this->_imageEmpty->setWidth('1');
-        $this->assertSame('1', $this->_imageEmpty->getAttribute('width'));
+        $this->assertSame(1, $this->_imageEmpty->getAttribute('width'));
         // test setting integer as width
         $this->_imageEmpty->setWidth(1);
         $this->assertSame(1, $this->_imageEmpty->getAttribute('width'));
         // test setting float as width
         $this->_imageEmpty->setWidth(1.5);
-        $this->assertSame(1.5, $this->_imageEmpty->getAttribute('width'));
+        $this->assertSame(1, $this->_imageEmpty->getAttribute('width'));
     }
 
     /**
@@ -133,13 +133,13 @@ class cHtmlImageTest extends cTestingTestCase
     {
         // test setting string as height
         $this->_imageEmpty->setHeight('1');
-        $this->assertSame('1', $this->_imageEmpty->getAttribute('height'));
+        $this->assertSame(1, $this->_imageEmpty->getAttribute('height'));
         // test setting integer as height
         $this->_imageEmpty->setHeight(1);
         $this->assertSame(1, $this->_imageEmpty->getAttribute('height'));
         // test setting float as height
         $this->_imageEmpty->setHeight(1.5);
-        $this->assertSame(1.5, $this->_imageEmpty->getAttribute('height'));
+        $this->assertSame(1, $this->_imageEmpty->getAttribute('height'));
     }
 
     /**
@@ -148,13 +148,13 @@ class cHtmlImageTest extends cTestingTestCase
     {
         // test setting string as border
         $this->_imageEmpty->setBorder('1');
-        $this->assertSame('1', $this->_imageEmpty->getAttribute('border'));
+        $this->assertSame(1, $this->_imageEmpty->getAttribute('border'));
         // test setting integer as border
         $this->_imageEmpty->setBorder(1);
         $this->assertSame(1, $this->_imageEmpty->getAttribute('border'));        // test setting integer as border
         // test setting float as border
         $this->_imageEmpty->setBorder(1.5);
-        $this->assertSame(1.5, $this->_imageEmpty->getAttribute('border'));
+        $this->assertSame(1, $this->_imageEmpty->getAttribute('border'));
     }
 
     /**
