@@ -101,6 +101,30 @@ if (empty($rights_clientslang)) {
     $rights_clientslang = $firstClientsLang;
 }
 
+$oClientLang = new cApiClientLanguage((int)$rights_clientslang);
+if (!$oClientLang->isLoaded()) {
+    $page = new cGuiPage('generic_page');
+    if ($oGroup->hasSysadminPermission()) {
+        $page->displayInfo(
+            i18n("The selected group has the system administrator right. System administrators have full rights for all clients in all languages; therefore, these rights cannot be specified in more detail.")
+        );
+    } elseif ($oGroup->hasClientAdminPermission()) {
+        $page->displayInfo(
+            i18n("The selected group has the client administrator right. Client administrators have all rights for a client; therefore, the rights cannot be specified in more detail.")
+        );
+    } else {
+        $page->displayError(
+            i18n("The selected group doesn't have any rights to any client/language.")
+        );
+    }
+    $page->abortRendering();
+    $page->render();
+    exit();
+}
+
+$rights_client = $oClientLang->get('idclient');
+$rights_lang = $oClientLang->get('idlang');
+
 // Render Select Box
 $dataSync['INPUT_SELECT_CLIENT'] = $oHtmlSelect->render();
 
@@ -177,20 +201,6 @@ if ($area != 'groups_content') {
     // $oTpl->set('s', 'INPUT_SELECT_RIGHTS', $oHtmlSelect->render());
     // $oTpl->set('s', 'DISPLAY_RIGHTS', 'inline-block');
 }
-
-$oClientLang = new cApiClientLanguage((int)$rights_clientslang);
-if ($oClientLang->isLoaded()) {
-    $rights_client = $oClientLang->get('idclient');
-    $rights_lang = $oClientLang->get('idlang');
-} else {
-    $page = new cGuiPage('generic_page');
-    $page->displayError(i18n("Current group doesn't have any rights to any client/language."));
-    $page->abortRendering();
-    $page->render();
-    die();
-}
-
-// current set it on NULL
 
 $dataSync['NOTIFICATION'] = '';
 $dataSync['OB_CONTENT'] = '';

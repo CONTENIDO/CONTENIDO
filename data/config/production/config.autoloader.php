@@ -357,6 +357,7 @@ return [
     'cUriBuilderFactory' => 'contenido/classes/uri/class.uribuilder.factory.php',
     'cUriBuilderFrontcontent' => 'contenido/classes/uri/class.uribuilder.frontcontent.php',
     'cUriBuilderMR' => 'contenido/classes/uri/class.uribuilder.mr.php',
+    'cUserGroupPermissionsTrait' => 'contenido/classes/contenido/trait.user.group.permissions.php',
     'cValidatorAbstract' => 'contenido/classes/validator/class.validator.abstract.php',
     'cValidatorDate' => 'contenido/classes/validator/class.validator.date.php',
     'cValidatorEmail' => 'contenido/classes/validator/class.validator.email.php',

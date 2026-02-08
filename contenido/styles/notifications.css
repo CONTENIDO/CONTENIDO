@@ -64,8 +64,8 @@
 
 .notify_general {
     border: 1px solid;
-    padding: 4px 4px 4px 22px;
-    background: no-repeat 2px 2px;
+    padding: 4px 4px 4px 26px;
+    background: no-repeat 4px 4px;
 }
 
 .notify_default {

@@ -5,7 +5,7 @@
  *
  * @since      CONTENIDO 4.10.2
  * @package    Core
- * @subpackage Debug
+ * @subpackage Authentication
  * @author     Murat Purc <murat@purc.de>
  * @copyright  four for business AG <www.4fb.de>
  * @license    https://www.contenido.org/license/LIZENZ.txt

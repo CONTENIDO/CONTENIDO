@@ -8,9 +8,9 @@
  * Usage:
  * ------
  * 1. Modify settings to your requirements
- * 2. Call this script from command line as follows:
+ * 2. Call this script from the command line as follows:
  *     $ php create_autoloader_cfg.php
- * 3. Check created class map file
+ * 3. Check the created class map file
  *
  * @package    Core
  * @subpackage Tool
