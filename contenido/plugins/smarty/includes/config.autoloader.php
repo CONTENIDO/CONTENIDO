@@ -13,7 +13,10 @@ if (!defined('CON_FRAMEWORK')) {
     die('Illegal call');
 }
 
-$autoloadClassPath = strstr(dirname(__FILE__, 2) . '/classes/', 'contenido/plugins');
+global $cfg;
+
+$pluginName = basename(dirname(__DIR__));
+$autoloadClassPath = cRegistry::getBackendPath(true) . $cfg['path']['plugins'] . "$pluginName/classes/";
 
 return [
     'cSmartyWrapper' => $autoloadClassPath . 'class.smarty.wrapper.php',
