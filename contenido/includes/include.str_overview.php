@@ -60,7 +60,10 @@ $frame = cRegistry::getFrame();
 strRemakeTreeTable();
 
 // Duplicate category
-if ($action == 'str_duplicate' && ($perm->have_perm_area_action('str', 'str_duplicate') || $perm->have_perm_area_action_item('str', 'str_duplicate', $idcat))) {
+if (
+    $action === 'str_duplicate'
+    && $perm->hasAreaActionOrItemPermission('str', 'str_duplicate', $idcat)
+) {
     strCopyTree($idcat, $parentid);
 }
 
@@ -69,10 +72,9 @@ if ($action == 'str_duplicate' && ($perm->have_perm_area_action('str', 'str_dupl
  * user is allowed to create new categories.
  *
  * @return string HTML
- *
  * @throws cDbException|cException
  */
-function buildCategorySelectRights()
+function buildCategorySelectRights(): string
 {
     global $tmp_area;
 
@@ -87,23 +89,27 @@ function buildCategorySelectRights()
     $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
 
     $sql = "SELECT a.idcat AS idcat, b.name AS name, c.level
-            FROM " . cDb::getTableName('cat') . " AS a
-            , " . cDb::getTableName('cat_lang') . " AS b
-            , " . cDb::getTableName('cat_tree') . " AS c
-            WHERE a.idclient = " . $client . "
-            AND b.idlang = " . $lang . "
+            FROM `%s` AS a, `%s` AS b, `%s` AS c
+            WHERE a.idclient = %d
+            AND b.idlang = %d
             AND b.idcat = a.idcat
             AND c.idcat = a.idcat
             ORDER BY c.idtree";
 
-    $db->query($sql);
+    $db->query($sql, [
+        cDb::getTableName('cat'),
+        cDb::getTableName('cat_lang'),
+        cDb::getTableName('cat_tree'),
+        $client,
+        $lang
+    ]);
 
     $categories = [];
 
     while ($db->nextRecord()) {
         $categories[$db->f('idcat')]['name'] = $db->f('name');
         $categories[$db->f('idcat')]['idcat'] = $db->f('idcat');
-        if ($perm->have_perm_area_action($tmp_area, 'str_newcat') || $perm->have_perm_area_action_item($tmp_area, 'str_newcat', $db->f('idcat'))) {
+        if ($perm->hasAreaActionOrItemPermission($tmp_area, 'str_newcat', $db->f('idcat'))) {
             $categories[$db->f('idcat')]['perm'] = 1;
         } else {
             $categories[$db->f('idcat')]['perm'] = 0;
@@ -126,27 +132,29 @@ function buildCategorySelectRights()
         }
     }
 
-    foreach ($categories as $tmpidcat => $props) {
+    foreach ($categories as $_categoryId => $props) {
         $spaces = cHTMLOptionElement::indent(cSecurity::toInteger($props['level']));
         $sCategoryName = $props['name'];
         $sCategoryName = cString::trimHard($sCategoryName, 30);
-        $oHtmlSelectOption = new cHTMLOptionElement($spaces . ">" . conHtmlSpecialChars($sCategoryName), $tmpidcat, false, !$props['perm']);
+        $oHtmlSelectOption = new cHTMLOptionElement(
+            $spaces . '>' . conHtmlSpecialChars($sCategoryName),
+            $_categoryId,
+            false,
+            !$props['perm']
+        );
         $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
     }
 
     return $oHtmlSelect->toHtml();
 }
 
+
 /**
- *
  * @param TreeItem $item
  * @param string $catName
- *
- * @return string
- *
  * @throws cException
  */
-function getStrExpandCollapseButton($item, $catName)
+function getStrExpandCollapseButton($item, $catName): string
 {
     $area = cRegistry::getArea();
     $sess = cRegistry::getSession();
@@ -191,12 +199,9 @@ function getStrExpandCollapseButton($item, $catName)
 }
 
 /**
- *
- * @return string
- *
  * @throws cDbException|cException
  */
-function getTemplateSelect()
+function getTemplateSelect(): string
 {
     $db = cRegistry::getDb();
     $client = cRegistry::getClientId();
@@ -207,11 +212,11 @@ function getTemplateSelect()
     $oHtmlSelect->appendOptionElement($oHtmlSelectOption);
 
     $sql = "SELECT idtpl, name, defaulttemplate
-            FROM " . cDb::getTableName('tpl') . "
-            WHERE idclient = " . $client . "
+            FROM `%s`
+            WHERE idclient = %d
             ORDER BY name";
 
-    if ($db->query($sql)) {
+    if ($db->query($sql, cDb::getTableName('tpl'), $client)) {
         while ($db->nextRecord()) {
             $bDefaultTemplate = $db->f('defaulttemplate');
             $oHtmlSelectOption = new cHTMLOptionElement($db->f('name'), $db->f('idtpl'), $bDefaultTemplate);
@@ -223,7 +228,6 @@ function getTemplateSelect()
 }
 
 /**
- *
  * @param array $listColumns
  */
 function insertEmptyStrRow($listColumns)
@@ -279,9 +283,9 @@ function insertEmptyStrRow($listColumns)
 
 getTemplateSelect();
 
-$sess->register("remakeStrTable");
-$sess->register("StrTableClient");
-$sess->register("StrTableLang");
+$sess->register('remakeStrTable');
+$sess->register('StrTableClient');
+$sess->register('StrTableLang');
 
 $cancel = $sess->url("main.php?area=$area&frame=$frame");
 
@@ -305,11 +309,9 @@ $StrTableLang = $lang;
 /**
  * Checks once for common str rights and for the right to access a specific category .
  *
- * @param int $idCat
- * @return bool
  * @throws cDbException|cException
  */
-function hasStrRights(int $idCat): bool
+function hasStrRights(int $categoryId): bool
 {
     global $tmp_area;
 
@@ -337,7 +339,7 @@ function hasStrRights(int $idCat): bool
     $bCheck = $hasCommonStrRights;
     if (!$hasCommonStrRights) {
         // Check for specific str right
-        $bCheck = $perm->have_perm_item($tmp_area, $idCat);
+        $bCheck = $perm->have_perm_item($tmp_area, $categoryId);
     }
 
     return $bCheck;
@@ -708,13 +710,13 @@ foreach ($treeItemObjects as $key => $value) {
         $tpl->set('d', 'TPLNAME', $sTemplateName);
         $tpl->set('d', 'TPLDESC', $descString);
 
-        if ($perm->have_perm_area_action($tmp_area, 'str_renamecat') || $perm->have_perm_area_action_item($tmp_area, 'str_renamecat', $value->getId())) {
+        if ($perm->hasAreaActionOrItemPermission($tmp_area, 'str_renamecat', $value->getId())) {
             $bPermRename = 1;
         } else {
             $bPermRename = 0;
         }
 
-        if ($perm->have_perm_area_action('str_tplcfg', 'str_tplcfg') || $perm->have_perm_area_action_item('str_tplcfg', 'str_tplcfg', $value->getId())) {
+        if ($perm->hasAreaActionOrItemPermission('str_tplcfg', 'str_tplcfg', $value->getId())) {
             $bPermTplcfg = 1;
         } else {
             $bPermTplcfg = 0;
@@ -733,7 +735,7 @@ foreach ($treeItemObjects as $key => $value) {
         $aRecord['pTplcfg'] = $bPermTplcfg;
         $aInlineEditData[$value->getId()] = $aRecord;
 
-        if ($perm->have_perm_area_action($tmp_area, 'str_newcat') || $perm->have_perm_area_action_item($tmp_area, 'str_newcat', $value->getId())) {
+        if ($perm->hasAreaActionOrItemPermission($tmp_area, 'str_newcat', $value->getId())) {
             $bAreaAddNewCategory = true;
         }
 
@@ -756,7 +758,7 @@ foreach ($treeItemObjects as $key => $value) {
         $tpl->set('d', 'SHOW_MOUSEOVER', $title);
 
         // Button: Rename/edit category
-        if ($perm->have_perm_area_action($area, 'str_renamecat') || $perm->have_perm_area_action_item($area, 'str_renamecat', $value->getId())) {
+        if ($perm->hasAreaActionOrItemPermission($area, 'str_renamecat', $value->getId())) {
             $button = '<a class="con_img_button" href="javascript:void(0)" data-action="display_inline_edit" data-id="' . $value->getId() . '" title="' . $lngEditCategory . '">'
                 . '<img src="' . $cfg['path']['images'] . 'but_todo.gif" id="cat_' . $value->getId() . '_image" alt="' . $lngEditCategory . '" title="' . $lngEditCategory . '">'
                 . '</a>';
@@ -766,7 +768,7 @@ foreach ($treeItemObjects as $key => $value) {
         $tpl->set('d', 'RENAMEBUTTON', $button);
 
         // Button: Online/Offline
-        if ($perm->have_perm_area_action($tmp_area, 'str_makevisible') || $perm->have_perm_area_action_item($tmp_area, 'str_makevisible', $value->getId())) {
+        if ($perm->hasAreaActionOrItemPermission($tmp_area, 'str_makevisible', $value->getId())) {
             $href = $sess->url("main.php?area=$area&action=str_makevisible&frame=$frame&idcat=" . $value->getId() . '&visible=' . $value->getCustom('visible')) . '#clickedhere';
             if ($value->getCustom('visible') == 1) {
                 $button = '<a class="con_img_button" href="' . $href . '" title="' . $lngMakeOffline . '"><img src="' . $cfg['path']['images'] . 'online.gif" alt="' . $lngMakeOffline . '" title="' . $lngMakeOffline . '"></a>';
@@ -780,7 +782,7 @@ foreach ($treeItemObjects as $key => $value) {
         $tpl->set('d', 'VISIBLEBUTTON', $button);
 
         // Button: Public access
-        if ($perm->have_perm_area_action($tmp_area, 'str_makepublic') || $perm->have_perm_area_action_item($tmp_area, 'str_makepublic', $value->getId())) {
+        if ($perm->hasAreaActionOrItemPermission($tmp_area, 'str_makepublic', $value->getId())) {
             $href = $sess->url("main.php?area=$area&action=str_makepublic&frame=$frame&idcat=" . $value->getId() . '&public=' . $value->getCustom('public')) . '#clickedhere';
             if ($value->getCustom('public') == 1) {
                 $button = '<a class="con_img_button" href="' . $href . '" title="' . $lngProtectCategory . '"><img src="' . $cfg['path']['images'] . 'folder_delock.gif" alt="' . $lngProtectCategory . '" title="' . $lngProtectCategory . '"></a>';
@@ -795,7 +797,11 @@ foreach ($treeItemObjects as $key => $value) {
         // Button: Delete
         $hasChildren = strNextDeeper($value->getId()) > 0;
         $hasArticles = strHasArticles($value->getId());
-        if (!$hasChildren && !$hasArticles && ($perm->have_perm_area_action($tmp_area, 'str_deletecat') || $perm->have_perm_area_action_item($tmp_area, 'str_deletecat', $value->getId()))) {
+        if (
+            !$hasChildren
+            && !$hasArticles
+            && $perm->hasAreaActionOrItemPermission($tmp_area, 'str_deletecat', $value->getId())
+        ) {
             $button = '<a class="con_img_button" href="javascript:void(0)" data-action="str_deletecat" data-name="' . addslashes(conHtmlSpecialChars($value->getName())) . '" title="' . $lngDeleteCategory . '">'
                 . '<img src="' . $cfg['path']['images'] . 'delete.gif" alt="' . $lngDeleteCategory . '" title="' . $lngDeleteCategory . '">'
                 . '</a>';
@@ -816,7 +822,7 @@ foreach ($treeItemObjects as $key => $value) {
         $tpl->set('d', 'DELETEBUTTON', $button);
 
         // Button: Move up
-        if ($perm->have_perm_area_action($tmp_area, 'str_moveupcat') || $perm->have_perm_area_action_item($tmp_area, 'str_moveupcat', $value->getId())) {
+        if ($perm->hasAreaActionOrItemPermission($tmp_area, 'str_moveupcat', $value->getId())) {
             $rand = rand();
             if ($value->getCustom('parentid') == 0 && $value->getCustom('preid') == 0) {
                 $button = '<img class="con_img_button_off" src="' . $cfg['path']['images'] . 'folder_moveup_inact.gif" title="' . $lngCategoryAtTheTopMsg . '">';
@@ -834,7 +840,7 @@ foreach ($treeItemObjects as $key => $value) {
         $tpl->set('d', 'UPBUTTON', $button);
 
         // Button: Move down
-        if ($perm->have_perm_area_action($tmp_area, 'str_movedowncat') || $perm->have_perm_area_action_item($tmp_area, 'str_movedowncat', $value->getId())) {
+        if ($perm->hasAreaActionOrItemPermission($tmp_area, 'str_movedowncat', $value->getId())) {
             $rand = rand();
             if ($value->getCustom('postid') == 0) {
                 $button = '<img src="' . $cfg['path']['images'] . 'folder_movedown_inact.gif" title="' . $lngCategoryAtTheBottomMsg . '">';
@@ -849,7 +855,7 @@ foreach ($treeItemObjects as $key => $value) {
 
         // Button: Move sub tree
         if (($action === 'str_movesubtree') && (!isset($parentid_new))) {
-            if ($perm->have_perm_area_action($tmp_area, 'str_movesubtree') || $perm->have_perm_area_action_item($tmp_area, 'str_movesubtree', $value->getId())) {
+            if ($perm->hasAreaActionOrItemPermission($tmp_area, 'str_movesubtree', $value->getId())) {
                 if ($value->getId() == $idcat) {
                     $href = $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=$idcat&parentid_new=0");
                     $button = '<a id="#movesubtreehere" class="con_img_button" href="' . $href . '" title="' . $lngMoveTree . '"><img src="' . $cfg['path']['images'] . 'but_move_subtree_main.gif" alt="' . $lngMoveTree . '" title="' . $lngMoveTree . '"></a>';
@@ -866,7 +872,7 @@ foreach ($treeItemObjects as $key => $value) {
                 $button = $spacerButton;
             }
         } else {
-            if ($perm->have_perm_area_action($tmp_area, 'str_movesubtree') || $perm->have_perm_area_action_item($tmp_area, 'str_movesubtree', $value->getId())) {
+            if ($perm->hasAreaActionOrItemPermission($tmp_area, 'str_movesubtree', $value->getId())) {
                 if ($value->getCustom('parentid') != 0) {
                     $href = $sess->url("main.php?area=$area&action=str_movesubtree&frame=$frame&idcat=" . $value->getId()) . '#movesubtreehere';
                     $button = '<a class="con_img_button" href="' . $href . '" title="' . $lngMoveTree . '" title="' . $lngMoveTree . '"><img src="' . $cfg['path']['images'] . 'but_move_subtree.gif" alt="' . $lngMoveTree . '" title="' . $lngMoveTree . '"></a>';
@@ -880,7 +886,7 @@ foreach ($treeItemObjects as $key => $value) {
         $tpl->set('d', 'MOVEBUTTON', $button);
 
         // Button: Duplicate
-        if ($perm->have_perm_area_action('str', 'str_duplicate') || $perm->have_perm_area_action_item('str', 'str_duplicate', $value->getId())) {
+        if ($perm->hasAreaActionOrItemPermission('str', 'str_duplicate', $value->getId())) {
             $button = '<a class="con_img_button" href="javascript:void(0)"  data-action="str_duplicate" data-name="' . addslashes(conHtmlSpecialChars($value->getName())) . '" title="' . $lngDuplicateCategory . '">'
                 . '<img src="' . $cfg['path']['images'] . 'folder_duplicate.gif" alt="' . $lngDuplicateCategory . '" title="' . $lngDuplicateCategory . '">'
                 . '</a>';
@@ -926,7 +932,7 @@ $tpl->set('s', 'JS_MARK_SUBMENU_ITEM', markSubMenuItem(0, true));
 // Set DHTML generic Values
 $sImagepath = $cfg['path']['images'];
 $tpl->set('s', 'SUM_COLUMNS', 15 + count($listColumns));
-$tpl->set('s', 'HREF_ACTION', $sess->url("main.php?frame=$frame"));
+$tpl->set('s', 'HREF_ACTION', $sess->url("main.php?frame=$frame&area=$area"));
 $tpl->set('s', 'CON_IMAGES', $backendUrl . $cfg['path']['images']);
 
 // Generate input fields for category new layer and category edit layer
@@ -966,7 +972,14 @@ $tpl->set('s', 'INPUT_ALIAS_EDIT', $oNewAlias->render());
 
 // Show layer-button for adding new categories and set options
 // according to permissions
-if (($perm->have_perm_area_action($tmp_area, 'str_newtree') || $perm->have_perm_area_action($tmp_area, 'str_newcat') || $bAreaAddNewCategory) && $client > 0 && $lang > 0) {
+if (
+    (
+        $perm->have_perm_area_action($tmp_area, 'str_newtree')
+        || $perm->have_perm_area_action($tmp_area, 'str_newcat')
+        || $bAreaAddNewCategory
+    )
+    && $client > 0 && $lang > 0
+) {
     $link = '<a id="new_tree_button" class="con_func_button" href="javascript:void(0)" data-action="show_new_form"><img src="' . $cfg['path']['images'] . 'folder_new.gif" alt="">&nbsp;' . i18n('Create new category') . '</a>';
     $tpl->set('s', 'NEWCAT', $link);
     if ($perm->have_perm_area_action($tmp_area, 'str_newtree')) {
@@ -1036,9 +1049,9 @@ $clang = new cApiLanguage($lang);
 
 if (isset($movesubtreeidcat) && $movesubtreeidcat != 0) {
     if (cString::getStringLength($sMoveSubtreeCatName) > 30) {
-        $sLimiter = "...";
+            $sLimiter = '...';
     } else {
-        $sLimiter = "";
+        $sLimiter = '';
     }
     $sButtonDesc = sprintf(i18n('Cancel moving %s'), '"' . cString::getPartOfString($sMoveSubtreeCatName, 0, 30) . $sLimiter . '"');
     $tpl->set('s', 'CANCEL_MOVE_TREE', '<a class="black" id="cancel_move_tree_button" href="javascript:cancelMoveTree(\'' . $movesubtreeidcat . '\');"><img src="images/but_cancel.gif" alt="' . $sButtonDesc . '">&nbsp;' . $sButtonDesc . '</a>');
