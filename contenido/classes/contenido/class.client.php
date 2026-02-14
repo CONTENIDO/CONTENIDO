@@ -218,36 +218,6 @@ class cApiClient extends Item
     }
 
     /**
-     * Magic getter method for deprecated idclient variable.
-     *
-     * @param string $name Works only for "idclient"
-     * @return mixed|null
-     */
-    public function __get(string $name)
-    {
-        if ($name === 'idclient') {
-            return $this->get('idclient');
-        } else {
-            return parent::__get($name);
-        }
-    }
-
-    /**
-     * Magic setter method for deprecated idclient variable
-     *
-     * @param string $name Works only for "idclient"
-     * @param mixed $value Value to set
-     */
-    public function __set(string $name, $value)
-    {
-        if ($name === 'idclient') {
-            $this->set('idclient', cSecurity::toInteger($value));
-        } else {
-            parent::__set($name, $value);
-        }
-    }
-
-    /**
      * @deprecated [2015-05-21] This method is no longer supported (no replacement)
      */
     public static function getInstance($clientId = false)
@@ -395,6 +365,7 @@ class cApiClient extends Item
     public function setField($name, $value, $safe = true)
     {
         switch ($name) {
+            case 'idclient':
             case 'errsite_cat':
             case 'errsite_art':
                 $value = cSecurity::toInteger($value);
@@ -402,6 +373,24 @@ class cApiClient extends Item
         }
 
         return parent::setField($name, $value, $safe);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getField($name, $safe = true)
+    {
+        $value = parent::getField($name, $safe);
+
+        switch ($name) {
+            case 'idclient':
+            case 'errsite_cat':
+            case 'errsite_art':
+                $value = cSecurity::toInteger($value);
+                break;
+        }
+
+        return $value;
     }
 
     /**

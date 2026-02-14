@@ -254,6 +254,7 @@ class cApiClientLanguage extends Item
 
     /**
      * @inheritDoc
+     * @todo Remove this method once the property `$this->idclient` has been removed!
      */
     public function loadByPrimaryKey($value)
     {
@@ -375,20 +376,37 @@ class cApiClientLanguage extends Item
     }
 
     /**
-     * User-defined setter for clients lang fields.
-     *
      * @inheritDoc
      */
     public function setField($name, $value, $safe = true)
     {
         switch ($name) {
-            case 'idlang':
+            case 'idclientslang':
             case 'idclient':
+            case 'idlang':
                 $value = cSecurity::toInteger($value);
                 break;
         }
 
         return parent::setField($name, $value, $safe);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getField($name, $safe = true)
+    {
+        $value = parent::getField($name, $safe);
+
+        switch ($name) {
+            case 'idclientslang':
+            case 'idclient':
+            case 'idlang':
+                $value = cSecurity::toInteger($value);
+                break;
+        }
+
+        return $value;
     }
 
 }

@@ -127,4 +127,44 @@ class cApiArticleSpecification extends Item
         }
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function setField($name, $value, $safe = true)
+    {
+        switch ($name) {
+            case 'idartspec':
+            case 'client':
+            case 'lang':
+            case 'online':
+            case 'artspecdefault':
+                $value = cSecurity::toInteger($value);
+                if (in_array($name, ['online', 'artspecdefault'])) {
+                    $value = $value ? 1 : 0;
+                }
+                break;
+        }
+
+        return parent::setField($name, $value, $safe);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getField($name, $safe = true)
+    {
+        $value = parent::getField($name, $safe);
+
+        switch ($name) {
+            case 'idartspec':
+            case 'client':
+            case 'lang':
+            case 'online':
+            case 'artspecdefault':
+                $value = cSecurity::toInteger($value);
+                break;
+        }
+
+        return $value;
+    }
 }
