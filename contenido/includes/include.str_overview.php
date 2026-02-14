@@ -1053,7 +1053,7 @@ $additionalPageEnd = [];
  */
 $cecIterator = cApiCecRegistry::getInstance()->getIterator('Contenido.CategoryList.PageEnd');
 while ($chainEntry = $cecIterator->next()) {
-    $additionalPageEnd[] = $chainEntry->execute($value->getId(), $cKey);
+    $additionalPageEnd[] = $chainEntry->execute();
 }
 $tpl->set('s', 'ADDITIONAL_PAGE_END', implode("\n", $additionalPageEnd));
 
