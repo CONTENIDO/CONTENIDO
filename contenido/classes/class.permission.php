@@ -23,6 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cPermission
 {
+    public const NO_RIGHT = 'noright';
 
     /**
      * @var string Permission class name
@@ -71,9 +72,9 @@ class cPermission
             return $this->areacache[$area];
         }
 
-        $oAreaColl = new cApiAreaCollection();
-        $oAreaColl->select("name='" . $oAreaColl->escape($area) . "'");
-        if ($oItem = $oAreaColl->next()) {
+        $areaColl = new cApiAreaCollection();
+        $areaColl->select("name = '" . $areaColl->escape($area) . "'");
+        if ($oItem = $areaColl->next()) {
             $this->areacache[$area] = $oItem->get('idarea');
             $area = $oItem->get('idarea');
         }
@@ -91,12 +92,12 @@ class cPermission
     public function getIdForAction($action): int
     {
         if (is_numeric($action)) {
-            return (int) $action;
+            return cSecurity::toInteger($action);
         }
 
         if (!isset($this->actioncache[$action])) {
-            $oActionColl = new cApiActionCollection();
-            $ids = $oActionColl->getIdsWhere('name', $action);
+            $actionColl = new cApiActionCollection();
+            $ids = $actionColl->getIdsWhere('name', $action);
             $this->actioncache[$action] = !empty($ids) ? cSecurity::toInteger($ids[0]) : 0;
         }
 
@@ -112,8 +113,9 @@ class cPermission
      *         '2' if permissions was already loaded before
      *         '3' if permissions were loaded successfully
      * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
      */
-    public function load_permissions(bool $force = false): string
+    public function loadPermissions(bool $force = false): string
     {
         global $area_rights, $item_rights, $changelang, $changeclient;
 
@@ -123,7 +125,7 @@ class cPermission
         $return = '1';
 
         // if not admin or sysadmin
-        if (!$this->have_perm()) {
+        if (!$this->hasPermission()) {
             $return = isset($area_rights) ? '2' : '1';
 
             if (!isset($area_rights) || !isset($item_rights) || isset($changeclient) || isset($changelang) || $force) {
@@ -134,10 +136,10 @@ class cPermission
                 $item_rights = [];
                 $groups = $this->getGroupsForUser($auth->getUserId());
                 foreach ($groups as $group) {
-                    $this->load_permissions_for_user($group);
+                    $this->loadPermissionsForUser($group);
                 }
 
-                $this->load_permissions_for_user($auth->getUserId());
+                $this->loadPermissionsForUser($auth->getUserId());
             }
         }
 
@@ -145,45 +147,64 @@ class cPermission
     }
 
     /**
+     * @see cPermission::loadPermissions()
+     * @throws cDbException|cException
+     * @todo Mark this as deprecated!
+     */
+    public function load_permissions(bool $force = false): string
+    {
+        return $this->loadPermissions($force);
+    }
+
+    /**
      * Loads all permissions for a specific user or group.
      * Stores area rights in global variable $area_rights.
      * Stores item rights in global variable $item_rights.
      *
-     * @param string $user User Id hash
+     * @param string $userId User Id hash
      * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
      */
-    public function load_permissions_for_user($user)
+    public function loadPermissionsForUser(string $userId)
     {
         global $area_rights, $item_rights;
 
         $clientId = cRegistry::getClientId();
         $languageId = cRegistry::getLanguageId();
 
-        $oRightColl = new cApiRightCollection();
-        $sWhere = "`user_id` = '%s' AND `idcat` = 0 AND `idclient` = %d AND `idlang` = %d";
-        $sWhere = $oRightColl->prepare($sWhere, $user, $clientId, $languageId);
-        $oRightColl->select($sWhere);
+        $rightColl = new cApiRightCollection();
+        $where = $rightColl->prepare(
+            "`user_id` = '%s' AND `idcat` = 0 AND `idclient` = %d AND `idlang` = %d",
+            $userId,
+            $clientId,
+            $languageId
+        );
+        $rightColl->select($where);
 
         // define $area_rights if not already done so
         if (!is_array($area_rights)) {
             $area_rights = [];
         }
-        while ($oItem = $oRightColl->next()) {
+        while ($oItem = $rightColl->next()) {
             $idarea = $oItem->get('idarea');
             $idaction = $oItem->get('idaction');
             $area_rights[$idarea][$idaction] = true;
         }
 
         // Select Rights for Article and structure (Attention Hard code Areas)
-        $oAreaColl = new cApiAreaCollection();
-        $allAreaIds = $oAreaColl->getAllIds();
+        $areaColl = new cApiAreaCollection();
+        $allAreaIds = $areaColl->getAllIds();
         asort($allAreaIds);
 
         $tmp_area_string = implode("','", array_values($allAreaIds));
-        $sWhere = "`user_id` = '%s' AND `idclient` = %d AND `idlang` = %d AND `idarea` IN ('$tmp_area_string') AND `idcat` != 0";
-        $sWhere = $oRightColl->prepare($sWhere, $user, $clientId, $languageId);
-        $oRightColl->select($sWhere);
-        while ($oItem = $oRightColl->next()) {
+        $where = $rightColl->prepare(
+            "`user_id` = '%s' AND `idclient` = %d AND `idlang` = %d AND `idarea` IN ('$tmp_area_string') AND `idcat` != 0",
+            $userId,
+            $clientId,
+            $languageId
+        );
+        $rightColl->select($where);
+        while ($oItem = $rightColl->next()) {
             $idarea = $oItem->get('idarea');
             $idaction = $oItem->get('idaction');
             $idcat = $oItem->get('idcat');
@@ -192,88 +213,127 @@ class cPermission
     }
 
     /**
-     * @param string $area
-     * @param int|string $action [optional]
+     * @see cPermission::loadPermissionsForUser()
      * @throws cDbException|cException
+     * @todo Mark this as deprecated!
      */
-    public function have_perm_area_action_anyitem($area, $action = 0): bool
+    public function load_permissions_for_user($userId)
     {
-        global $item_rights;
-
-        if ($this->have_perm_area_action($area, $action)) {
-            return true;
-        }
-
-        $oAreaColl = new cApiAreaCollection();
-        $area = $oAreaColl->getAreaId($area);
-
-        $action = $this->getIdForAction($action);
-
-        return isset($item_rights[$area][$action]);
+        $this->loadPermissionsForUser(cSecurity::toString($userId));
     }
 
     /**
-     * @param string $area
-     * @param int|string $action
-     * @param mixed $itemid
-     * @throws cDbException|cException
+     * Checks if the user has the permission for any item in an area action.
+     *
+     * @param int|string $action [optional]
+     * @since CONTENIDO 4.10.2
      */
-    public function have_perm_area_action_item($area, $action, $itemid): bool
+    public function hasAreaActionAnyItemPermission(string $area, $action = 0): bool
     {
         global $item_rights;
 
-        if ($this->have_perm()) {
-            return true;
-        }
-
-        $oAreaColl = new cApiAreaCollection();
-        $area = $oAreaColl->getAreaId($area);
-        $action = $this->getIdForAction($action);
-
-        // If the user has a right on this action in this area check for the
-        // items
-        if ($this->have_perm_area_action($area, $action)) {
-            return true;
-        }
-
-        // Check rights for the action in this area at this item
-        if (isset($item_rights[$area][$action][$itemid])) {
-            // If we have action for area + action +item check right
-            // for client and lang
-            return true;
-        }
-
-        $auth = cRegistry::getAuth();
-        $clientId = cRegistry::getClientId();
-        $languageId = cRegistry::getLanguageId();
-
-        $item_rights[$area] = $item_rights[$area] ?? '';
-        if ($item_rights[$area] != 'noright') {
-            $groupsForUser = $this->getGroupsForUser($auth->getUserId());
-            $groupsForUser[] = $auth->getUserId();
-
-            $userIdIn = implode("','", $groupsForUser);
-
-            $oRightsColl = new cApiRightCollection();
-            $where = "`user_id` IN ('" . $userIdIn . "') AND `idclient` = %d AND `idlang` = %d AND `idarea` = %d AND `idcat` != 0";
-            $where = $oRightsColl->prepare($where, $clientId, $languageId, $area);
-            if (!$oRightsColl->select($where)) {
-                $item_rights[$area] = 'noright';
-                return false;
-            }
-
-            while ($oItem = $oRightsColl->next()) {
-                $item_rights[$oItem->get('idarea')][$oItem->get('idaction')][$oItem->get('idcat')] = $oItem->get('idcat');
-            }
-
-            // Check
-            if (isset($item_rights[$area][$action][$itemid])) {
-                // If we have action for area + action +item check right
-                // for client and lang
+        try {
+            if ($this->hasAreaActionPermission($area, $action)) {
                 return true;
             }
+
+            $areaColl = new cApiAreaCollection();
+            $area = $areaColl->getAreaId($area);
+
+            $action = $this->getIdForAction($action);
+
+            return isset($item_rights[$area][$action]);
+        } catch (cDbException|cException $e) {
+            cLogError('Could not check for permission. Error: ' . $e->getMessage());
+            return false;
         }
-        return false;
+    }
+
+    /**
+     * @see cPermission::hasAreaActionPermission()
+     * @todo Mark this as deprecated!
+     */
+    public function have_perm_area_action_anyitem($area, $action = 0): bool
+    {
+        return $this->hasAreaActionAnyItemPermission(cSecurity::toString($area), $action);
+    }
+
+    /**
+     * Checks if the user has the permission for a specific item in an area action.
+     *
+     * @param int|string $action
+     * @param mixed $itemId
+     * @since CONTENIDO 4.10.2
+     */
+    public function hasAreaActionItemPermission(string $area, $action, $itemId): bool
+    {
+        global $item_rights;
+
+        try {
+            if ($this->hasPermission()) {
+                return true;
+            }
+
+            $areaColl = new cApiAreaCollection();
+            $area = $areaColl->getAreaId($area);
+            $action = $this->getIdForAction($action);
+
+            // If the user has a right on this action in this area check for the items
+            if ($this->hasAreaActionPermission($area, $action)) {
+                return true;
+            }
+
+            // Check rights for the action in this area at this item
+            if (isset($item_rights[$area][$action][$itemId])) {
+                // If we have action for area + action +item check right for client and lang
+                return true;
+            }
+
+            $auth = cRegistry::getAuth();
+            $clientId = cRegistry::getClientId();
+            $languageId = cRegistry::getLanguageId();
+
+            $item_rights[$area] = $item_rights[$area] ?? '';
+            if ($item_rights[$area] != self::NO_RIGHT) {
+                $groupsForUser = $this->getGroupsForUser($auth->getUserId());
+                $groupsForUser[] = $auth->getUserId();
+
+                $userIdIn = implode("','", $groupsForUser);
+
+                $oRightsColl = new cApiRightCollection();
+                $where = "`user_id` IN ('" . $userIdIn . "') AND `idclient` = %d AND `idlang` = %d AND `idarea` = %d AND `idcat` != 0";
+                $where = $oRightsColl->prepare($where, $clientId, $languageId, $area);
+                if (!$oRightsColl->select($where)) {
+                    $item_rights[$area] = self::NO_RIGHT;
+                    return false;
+                }
+
+                while ($oItem = $oRightsColl->next()) {
+                    $_catId = $oItem->get('idcat');
+                    $item_rights[$oItem->get('idarea')][$oItem->get('idaction')][$_catId] = $_catId;
+                }
+
+                // Check
+                if (isset($item_rights[$area][$action][$itemId])) {
+                    // If we have action for area + action +item check right for client and lang
+                    return true;
+                }
+            }
+            return false;
+        } catch (cDbException|cException $e) {
+            cLogError('Could not check for permission. Error: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+
+    /**
+     * @see cPermission::hasAreaActionItemPermission()
+     * @todo Mark this as deprecated!
+     */
+    public function have_perm_area_action_item($area, $action, $itemId): bool
+    {
+        return $this->hasAreaActionItemPermission(cSecurity::toString($area), $action, $itemId);
     }
 
     /**
@@ -281,59 +341,85 @@ class cPermission
      */
     public function getParentAreaId($area)
     {
-        $oAreaColl = new cApiAreaCollection();
-        return $oAreaColl->getParentAreaId($area);
+        return (new cApiAreaCollection())->getParentAreaId($area);
     }
 
     /**
-     * @param string $area
+     * Checks if the user has the permission for an area action.
+     *
      * @param int|string $action [optional]
-     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
      */
-    public function have_perm_area_action($area, $action = 0): bool
+    public function hasAreaActionPermission(string $area, $action = 0): bool
     {
         global $area_rights;
 
         $clientId = cRegistry::getClientId();
         $languageId = cRegistry::getLanguageId();
 
-        $oAreaColl = new cApiAreaCollection();
-        $area = $oAreaColl->getAreaId($area);
-        $action = $this->getIdForAction($action);
+        try {
+            $areaColl = new cApiAreaCollection();
+            $area = $areaColl->getAreaId($area);
+            $action = $this->getIdForAction($action);
 
-        if ($action == 0) {
-            $area = $oAreaColl->getParentAreaId($area);
-        }
-
-        $area = $oAreaColl->getAreaId($area);
-
-        if (!$this->have_perm()) {
-            if ($action == 0 && isset($area_rights[$area])) {
-                // If we have action for area + action check right for client and lang
-                return $this->have_perm_client_lang($clientId, $languageId);
+            if ($action == 0) {
+                $area = $areaColl->getParentAreaId($area);
             }
 
-            // check rights for the action in this area
-            if (isset($area_rights[$area][$action])) {
-                // If we have action for area + action check right for client and lang
-                return $this->have_perm_client_lang($clientId, $languageId);
+            $area = $areaColl->getAreaId($area);
+
+            if (!$this->hasPermission()) {
+                if ($action == 0 && isset($area_rights[$area])) {
+                    // If we have action for area + action check right for client and lang
+                    return $this->have_perm_client_lang($clientId, $languageId);
+                }
+
+                // check rights for the action in this area
+                if (isset($area_rights[$area][$action])) {
+                    // If we have action for area + action check right for client and lang
+                    return $this->have_perm_client_lang($clientId, $languageId);
+                }
+
+                return false;
             }
 
+            return true;
+        } catch (cDbException|cException $e) {
+            cLogError('Could not check for permission. Error: ' . $e->getMessage());
             return false;
         }
-
-        return true;
     }
 
     /**
-     * @param int $clientId
-     * @param int $languageId
+     * @see cPermission::hasAreaActionPermission()
+     * @todo Mark this as deprecated!
      */
-    public function have_perm_client_lang($clientId, $languageId): bool
+    public function have_perm_area_action($area, $action = 0): bool
+    {
+        return $this->hasAreaActionPermission(cSecurity::toString($area), $action);
+    }
+
+    /**
+     * Checks if the user has the permission for an area action or for a specific item in an area action.
+     *
+     * @param int|string $action
+     * @param mixed $itemId
+     * @since CONTENIDO 4.10.2
+     */
+    public function hasAreaActionOrItemPermission(string $area, $action, $itemId): bool
+    {
+        return $this->hasAreaActionPermission($area, $action)
+            || $this->hasAreaActionItemPermission($area, $action, $itemId);
+    }
+
+    /**
+     * Checks if the user has the permission for a client and its language.
+     *
+     * @since CONTENIDO 4.10.2
+     */
+    public function hasClientAndLanguagePermission(int $clientId, int $languageId): bool
     {
         $auth = cRegistry::getAuth();
-        $clientId = cSecurity::toInteger($clientId);
-        $languageId = cSecurity::toInteger($languageId);
 
         if (self::checkSysadminPermission($auth->getPerms())) {
             // User is sysadmin
@@ -345,6 +431,18 @@ class cPermission
             // Check rights for the client and the language
             return self::checkClientAndLanguagePermission($clientId, $languageId, $auth->getPerms());
         }
+    }
+
+    /**
+     * @see cPermission::hasClientAndLanguagePermission()
+     * @todo Mark this as deprecated!
+     */
+    public function have_perm_client_lang($clientId, $languageId): bool
+    {
+        return $this->hasClientAndLanguagePermission(
+            cSecurity::toInteger($clientId),
+            cSecurity::toInteger($languageId)
+        );
     }
 
     /**
@@ -507,13 +605,14 @@ class cPermission
     }
 
     /**
-     * Checks if user has permissions to passed perm.
+     * Checks if the user has the permissions passed in the perm parameter.
      * - Sysadmin has always permission
      * - Client admin has always permission
      *
-     * @param string $perm [optional] Permissions (comma separated list of perms) to check
+     * @param string $permission [optional] Permissions (comma separated list of permission) to check.
+     * @since CONTENIDO 4.10.2
      */
-    public function have_perm($perm = 'x'): bool
+    public function hasPermission(string $permission = 'x'): bool
     {
         $auth = cRegistry::getAuth();
         $clientId = cRegistry::getClientId();
@@ -526,80 +625,107 @@ class cPermission
         }
 
         // If there are more permissions to ask, check them too
-        return self::checkPermission($auth->getPerms(), $perm);
+        return self::checkPermission($auth->getPerms(), $permission);
     }
 
     /**
-     * Checks if an item have any perms
+     * @see cPermission::hasPermission()
+     * @todo Mark this as deprecated!
+     */
+    public function have_perm($perm = 'x'): bool
+    {
+        return $this->hasPermission(cSecurity::toString($perm));
+    }
+
+    /**
+     * Checks if the user has any permissions on an item.
      *
      * @param string|int $mainArea
-     * @param int $itemid
-     * @throws cDbException|cException
+     * @param mixed $itemId
+     * @since CONTENIDO 4.10.2
      */
-    public function have_perm_item($mainArea, $itemid): bool
+    public function hasItemPermission($mainArea, $itemId): bool
     {
         global $item_rights, $area_tree;
 
-        $oAreaColl = new cApiAreaCollection();
-        $mainArea = $oAreaColl->getAreaId($mainArea);
+        try {
+            $areaColl = new cApiAreaCollection();
+            $mainArea = $areaColl->getAreaId($mainArea);
 
-        // If is admin or sysadmin
-        if ($this->have_perm()) {
-            return true;
-        }
+            // If is admin or sysadmin
+            if ($this->hasPermission()) {
+                return true;
+            }
 
-        // If is not admin or sysadmin
+            // If is not admin or sysadmin
 
-        $auth = cRegistry::getAuth();
-        $clientId = cRegistry::getClientId();
-        $languageId = cRegistry::getLanguageId();
+            $auth = cRegistry::getAuth();
+            $clientId = cRegistry::getClientId();
+            $languageId = cRegistry::getLanguageId();
 
-        if (!is_object($this->db)) {
-            $this->db = cRegistry::getDb();
-        }
+            if (!is_object($this->db)) {
+                $this->db = cRegistry::getDb();
+            }
 
-        $this->showAreas($mainArea);
+            $this->showAreas($mainArea);
 
-        $flg = false;
-        // Check if there are any rights for this areas
-        foreach ($area_tree[$mainArea] as $value) {
-            $item_rights[$value] = $item_rights[$value] ?? '';
-            // If the flag noright is set there are no rights in this area
-            if ($item_rights[$value] == 'noright') {
-                continue;
-            } elseif (is_array($item_rights[$value])) {
-                // If there are any rights
-                foreach ($item_rights[$value] as $value2) {
-                    if (in_array($itemid, $value2)) {
-                        return true;
-                    }
-                }
-            } elseif ($item_rights[$value] != 'noright') {
-                $groupsForUser = $this->getGroupsForUser($auth->getUserId());
-                $groupsForUser[] = $auth->getUserId();
-                $userIdIn = implode("','", $groupsForUser);
+            $hasPermission = false;
+            // Check if there are any rights for this areas
+            foreach ($area_tree[$mainArea] as $value) {
+                $item_rights[$value] = $item_rights[$value] ?? '';
 
-                // else search for rights for this user in this area
-                $sql = "SELECT * FROM `%s` WHERE `user_id` IN ('" . $userIdIn . "') "
-                    . "AND `idclient` = %d AND `idlang` = %d AND `idarea` = %d AND `idcat` != 0";
-                $this->db->query($sql, cDb::getTableName('rights'), $clientId, $languageId, $value);
-
-                // If there are no rights for this area set the flag noright
-                if ($this->db->affectedRows() == 0) {
-                    $item_rights[$value] = 'noright';
+                // If the flag noright is set there are no rights in this area
+                if ($item_rights[$value] === self::NO_RIGHT) {
+                    continue;
                 }
 
-                // Set the rights
-                while ($this->db->nextRecord()) {
-                    $rs = $this->db->toObject();
-                    if ($rs->idcat == $itemid) {
-                        $flg = true;
+                if (is_array($item_rights[$value])) {
+                    // If there are any rights
+                    foreach ($item_rights[$value] as $value2) {
+                        if (in_array($itemId, $value2)) {
+                            return true;
+                        }
                     }
-                    $item_rights[$rs->idarea][$rs->idaction][$rs->idcat] = $rs->idcat;
+                } elseif ($item_rights[$value] != self::NO_RIGHT) {
+                    $groupsForUser = $this->getGroupsForUser($auth->getUserId());
+                    $groupsForUser[] = $auth->getUserId();
+                    $userIdIn = implode("','", $groupsForUser);
+
+                    // else search for rights for this user in this area
+                    $sql = "SELECT * FROM `%s` WHERE `user_id` IN ('" . $userIdIn . "') "
+                        . "AND `idclient` = %d AND `idlang` = %d AND `idarea` = %d AND `idcat` != 0";
+                    $this->db->query($sql, cDb::getTableName('rights'), $clientId, $languageId, $value);
+
+                    // If there are no rights for this area set the flag noright
+                    if ($this->db->affectedRows() == 0) {
+                        $item_rights[$value] = self::NO_RIGHT;
+                    }
+
+                    // Set the rights
+                    while ($this->db->nextRecord()) {
+                        $rs = $this->db->toObject();
+                        if ($rs->idcat == $itemId) {
+                            $hasPermission = true;
+                        }
+                        $item_rights[$rs->idarea][$rs->idaction][$rs->idcat] = $rs->idcat;
+                    }
                 }
             }
+
+            return $hasPermission;
+        } catch (cDbException|cException $e) {
+            cLogError('Could not check for permission. Error: ' . $e->getMessage());
+            return false;
         }
-        return $flg;
+    }
+
+    /**
+     * @see cPermission::hasItemPermission()
+     * @todo Mark this as deprecated!
+     */
+    public function have_perm_item($mainArea, $itemId): bool
+    {
+        return $this->hasItemPermission($mainArea, $itemId);
     }
 
     /**
@@ -614,18 +740,18 @@ class cPermission
 
         $sess = cRegistry::getSession();
 
-        $oAreaColl = new cApiAreaCollection();
-        $mainArea = $oAreaColl->getAreaId($mainArea);
+        $areaColl = new cApiAreaCollection();
+        $mainArea = $areaColl->getAreaId($mainArea);
 
         // If $area_tree for this area is not register
         if (!isset($area_tree[$mainArea])) {
             $sess->register('area_tree');
 
             // parent_id uses the name not the idarea
-            $name = $oAreaColl->getNameByAreaId(cSecurity::toInteger($mainArea));
+            $name = $areaColl->getNameByAreaId(cSecurity::toInteger($mainArea));
 
             // Check which subareas are there and write them in the array
-            $area_tree[$mainArea] = $oAreaColl->getAreaIdsByParentIdOrAreaId(
+            $area_tree[$mainArea] = $areaColl->getAreaIdsByParentIdOrAreaId(
                 $name, cSecurity::toInteger($mainArea)
             );
         }
