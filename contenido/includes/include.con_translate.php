@@ -23,8 +23,10 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 function addSortImages(int $index, string $text): string
 {
     $cfg = cRegistry::getConfig();
-    $sortUp = '<img src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . 'sort_up.gif" class="sort_img" alt="' . i18n("Sort") . '" title="' . i18n("Sort") . '">';
-    $sortDown = '<img src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . 'sort_down.gif" class="sort_img" alt="' . i18n("Sort") . '" title="' . i18n("Sort") . '">';
+    $imagesPath = cRegistry::getBackendUrl() . $cfg['path']['images'];
+
+    $sortUp = cHTMLImage::img($imagesPath . 'sort_up.gif', i18n("Sort"), ['class' => 'sort_img']);
+    $sortDown = cHTMLImage::img($imagesPath . 'sort_down.gif', i18n("Sort"), ['class' => 'sort_img']);
 
     if (($_REQUEST['sortby'] ?? null) == $index) {
         if (($_REQUEST['sortmode'] == null) == 'ASC') {
@@ -67,7 +69,14 @@ if (!$perm->have_perm_area_action($area, $action)) {
 }
 
 $inUseCollection = new cApiInUseCollection();
-list($inUse, $message) = $inUseCollection->checkAndMark("translations", $client, true, i18n("Translations are used by %s (%s)"), true, "main.php?area=$area&frame=$frame");
+list($inUse, $message) = $inUseCollection->checkAndMark(
+    'translations',
+    $client,
+    true,
+    i18n("Translations are used by %s (%s)"),
+    true,
+    "main.php?area=$area&frame=$frame"
+);
 unset($inUseCollection);
 if ($inUse == true) {
     $message .= "<br>";
@@ -280,7 +289,10 @@ if ($search != '' || ($filter != '' && $filter != -1)) {
                 }
             } else {
                 $iFilterTemplate = $aFilterType[1];
-                if (is_array($modulesInUse[$aTranslation['idmod']]) && array_key_exists($iFilterTemplate, $modulesInUse[$aTranslation['idmod']])) {
+                if (
+                    is_array($modulesInUse[$aTranslation['idmod']])
+                    && array_key_exists($iFilterTemplate, $modulesInUse[$aTranslation['idmod']])
+                ) {
                     $bFoundFilter = true;
                 }
             }
@@ -346,11 +358,22 @@ if (is_array($allLanguages)) {
             $countExtraLangOptions++;
         }
     }
-    $submitExtraLangs = new cHTMLButton('newlangsubmit', i18n("Add"), 'new_lang_submit', false, NULL, '', 'image', "con_img_button");
+    $submitExtraLangs = new cHTMLButton(
+        'newlangsubmit',
+        i18n("Add"),
+        'new_lang_submit',
+        false,
+        NULL,
+        '',
+        'image',
+        'con_img_button'
+    );
     $submitExtraLangs->setImageSource('images/but_art_new.gif')
         ->setAlt(i18n("Add"));
 
-    $formExtraLangs->setContent($labelExtraLangs->render() . $selectExtraLangs->render() . $submitExtraLangs->render());
+    $formExtraLangs->setContent(
+        $labelExtraLangs->render() . $selectExtraLangs->render() . $submitExtraLangs->render()
+    );
     if ($countExtraLangOptions > 0) {
         $formExtraLangsString = $formExtraLangs->render();
     }
@@ -379,10 +402,21 @@ foreach ($elemPerPage as $value => $option) {
     $selectElementsPerPage->addOptionElement($value, $option);
 }
 $selectElementsPerPage->setAttribute('class', 'elem_per_page');
-$submitElementsPerPage = new cHTMLButton('elemperpagesubmit', i18n("Submit"), 'elem_per_page_submit', false, NULL, '', 'image', 'con_img_button');
+$submitElementsPerPage = new cHTMLButton(
+    'elemperpagesubmit',
+    i18n("Submit"),
+    'elem_per_page_submit',
+    false,
+    NULL,
+    '',
+    'image',
+    'con_img_button'
+);
 $submitElementsPerPage->setImageSource(cRegistry::getBackendUrl() . $cfg['path']['images'] . 'but_ok.gif');
 
-$formElementsPerPage->setContent($labelElementsPerPage->render() . $selectElementsPerPage->render() . $submitElementsPerPage->render());
+$formElementsPerPage->setContent(
+    $labelElementsPerPage->render() . $selectElementsPerPage->render() . $submitElementsPerPage->render()
+);
 
 // Form for filtering by module/template and searching by given strings
 $formSearch = new cHTMLForm('searchfilter');
@@ -420,11 +454,17 @@ if (is_array($aAllTemplates) && count($aAllTemplates) > 0) {
     }
     $filterSelect .= '</optgroup>';
 }
+$filterSelect .= '</select>';
+
+
 $searchInput = new cHTMLTextbox('search', $search, 20);
 
-$searchSubmit = ' <input type="image" name="searchsubmit" class="con_img_button" value="submit" src="' . cRegistry::getBackendUrl() . $cfg['path']['images'] . 'but_preview.gif">';
+$searchSubmit = new cHTMLFormElement('searchsubmit', '', '', '', '', 'con_img_button');
+$searchSubmit->setAttribute('type', 'image')
+    ->setAttribute('src', cRegistry::getBackendUrl() . $cfg['path']['images'] . 'but_preview.gif')
+    ->setAlt(i18n("Submit"));
 
-$formSearch->setContent($filterSelect . $searchInput->render() . $searchSubmit);
+$formSearch->setContent($filterSelect . $searchInput->render() . ' ' . $searchSubmit);
 
 // The list of translations
 $list = new cGuiScrollListAlltranslations();
@@ -502,8 +542,17 @@ $editImage = $editImage->setAlt(i18n("Edit"))->render();
 $counter = 0;
 
 foreach ($allTranslations as $hash => $translationArray) {
-    if (!$inUse && $perm->have_perm_area_action($area, 'con_translate_edit') && $action == 'con_translate_edit' && ($editstring == 'all' || $editstring == $hash) && ($editlang == 'all' || $editlang == $lang)) {
-        $oTranslation = new cHTMLTextarea('modtrans[' . $translationArray['idmod'] . '][' . $hash . '][' . $lang . ']', conHtmlSpecialChars($translationArray['translations'][$lang]));
+    if (
+        !$inUse
+        && $perm->have_perm_area_action($area, 'con_translate_edit')
+        && $action == 'con_translate_edit'
+        && ($editstring == 'all' || $editstring == $hash)
+        && ($editlang == 'all' || $editlang == $lang)
+    ) {
+        $oTranslation = new cHTMLTextarea(
+            'modtrans[' . $translationArray['idmod'] . '][' . $hash . '][' . $lang . ']',
+            conHtmlSpecialChars($translationArray['translations'][$lang])
+        );
         $oTranslation->setWidth(30);
         $sTranslationFirstLang = $oTranslation->render();
         if ($editstring == $hash && $editlang == $lang) {
@@ -536,13 +585,27 @@ foreach ($allTranslations as $hash => $translationArray) {
         $sTranslationFirstLang = trim(conHtmlentities($translationArray['translations'][$lang])) . $sLinkEdit;
     }
     // building parameter array
-    $countCurrentModuleInUse = isset($modulesInUse[$translationArray['idmod']]) && is_array($modulesInUse[$translationArray['idmod']]) ? count($modulesInUse[$translationArray['idmod']]) : 0;
+    $countCurrentModuleInUse = isset($modulesInUse[$translationArray['idmod']]) && is_array($modulesInUse[$translationArray['idmod']])
+        ? count($modulesInUse[$translationArray['idmod']])
+        : 0;
     if ($countCurrentModuleInUse == 0) {
         $inUseString = '';
         $currentModuleInUse = i18n('No template');
     } else {
         $inUseString = i18n("Click for more information about usage");
-        $currentModuleInUse = '<a href="javascript:void(0)" rel="' . $translationArray['idmod'] . '" class="inused_module" data-action="inused_module" data-id="' . $translationArray['idmod'] . '"><img src="' . $cfg['path']['images'] . 'info.gif" title="' . $inUseString . '" alt="' . $inUseString . '">' . $countCurrentModuleInUse . ' ' . ($countCurrentModuleInUse == 1 ? i18n('Template') : i18n('Templates')) . ' </a>';
+
+        $img = (new cHTMLImage($cfg['path']['images'] . 'info.gif'))->setAlt($inUseString);
+        $link = new cHTMLLink(
+            'javascript:void(0)',
+            $img . $countCurrentModuleInUse . ' '
+                . ($countCurrentModuleInUse == 1 ? i18n('Template') : i18n('Templates')),
+            'inused_module'
+        );
+        $link->disableAutomaticParameterAppend()
+            ->setAlt($inUseString)
+            ->setAttribute('data-action', 'inused_module')
+            ->setAttribute('data-id', $translationArray['idmod']);
+        $currentModuleInUse = $link->render();
     }
     $fields = [
         $counter,
@@ -559,7 +622,10 @@ foreach ($allTranslations as $hash => $translationArray) {
             && ($editstring == 'all' || $editstring == $hash)
             && ($editlang == 'all' || $editlang == $idExtraLang)
         ) {
-            $oExtraTranslation = new cHTMLTextarea('modtrans[' . $translationArray['idmod'] . '][' . $hash . '][' . $idExtraLang . ']', conHtmlSpecialChars($translationArray['translations'][$idExtraLang]));
+            $oExtraTranslation = new cHTMLTextarea(
+                'modtrans[' . $translationArray['idmod'] . '][' . $hash . '][' . $idExtraLang . ']',
+                conHtmlSpecialChars($translationArray['translations'][$idExtraLang])
+            );
             $oExtraTranslation->setWidth(30);
 
             if ($editstring == $hash && $editlang == $idExtraLang) {
@@ -680,7 +746,15 @@ foreach ($extraLanguages as $idExtraLangTemp) {
 }
 
 $pagerLink->setCustom('contenido', $sess->id);
-$pager = new cGuiObjectPager("02420d6b-a77e-4a97-9395-7f6be480f471", $counter, $_REQUEST['elemperpage'], $_REQUEST['page'], $pagerLink, "page", $pagerl);
+$pager = new cGuiObjectPager(
+    '02420d6b-a77e-4a97-9395-7f6be480f471',
+    $counter,
+    $_REQUEST['elemperpage'],
+    $_REQUEST['page'],
+    $pagerLink,
+    'page',
+    $pagerl
+);
 
 $page->set('s', 'NEWLANG', $formExtraLangsString);
 $page->set('s', 'SEARCH', $formSearch->render());
@@ -691,7 +765,10 @@ $page->set('s', 'PAGER', $pager->render(true));
 $page->set('s', 'MODULEINUSETEXT', i18n("The module &quot;%s&quot; is used for following templates"));
 
 if (!$noResults) {
-    $page->set('s', 'INFO', $message . '<p class="notify_general notify_warning">' . i18n("WARNING: Translations have effects on every article that uses the module!") . '</p>');
+    $message .= '<p class="notify_general notify_warning">'
+            . i18n("WARNING: Translations have effects on every article that uses the module!")
+        . '</p>';
+    $page->set('s', 'INFO', $message);
 } else {
     $page->set('s', 'INFO', '')
 ;
