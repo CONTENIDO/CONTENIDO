@@ -19,62 +19,54 @@ $cfg = cRegistry::getConfig();
 $area = cRegistry::getArea();
 $frame = cRegistry::getFrame();
 
-$oPage = new cGuiPage('clientsettings');
-$oList = new cGuiScrollList();
-$oList->objTable->setClass('generic col_md');
+$page = new cGuiPage('clientsettings');
 
-// @TODO Find a general solution for this!
-$request = $_REQUEST;
+$selectedClientLanguageId = cSecurity::toInteger($_REQUEST['idclientslang'] ?? '0');
+$selectedClientId = cSecurity::toInteger($_REQUEST['idclient'] ?? '0');
+$action = $_REQUEST['action'] ?? '';
+$csidproperty = cSecurity::toInteger($_REQUEST['csidproperty'] ?? '0');
 
-$idclientslang = cSecurity::toInteger($request['idclientslang'] ?? '0');
-$action = $request['action'] ?? '';
-$idclient = cSecurity::toInteger($request['idclient'] ?? '0');
-$csidproperty = cSecurity::toInteger($request['csidproperty'] ?? '0');
-
-$oFrmRange = new cGuiTableForm('range');
-$oFrmRange->setTableClass('generic col_sm');
-$oFrmRange->setVar('area', $area);
-$oFrmRange->setVar('frame', $frame);
-$oFrmRange->setVar('idclient', $idclient);
-$oFrmRange->setHeader(i18n('Select range'));
-
-$oSelRange = new cHTMLSelectElement('idclientslang');
-$oOption = new cHTMLOptionElement(i18n("Language independent"), 0);
-$oSelRange->addOptionElement(0, $oOption);
-
-// Get all client languages and fill the language dependent settings select box
-$oClientLangColl = new cApiClientLanguageCollection();
-$aLanguages = $oClientLangColl->getAllLanguagesByClient($idclient);
-foreach ($aLanguages as $curIdLang => $aItem) {
-    $iID = $aItem['idclientslang'];
-    $languageName = conHtmlSpecialChars($aItem['name']);
-    $oOption = new cHTMLOptionElement("{$languageName} ({$aItem['idlang']})", $iID);
-    $oSelRange->addOptionElement($iID, $oOption);
+$selectedClient = cBackendClientHelper::requireClient($selectedClientId);
+if (!$selectedClient) {
+    return;
 }
 
-if ($idclientslang) {
-    $oSelRange->setDefault($idclientslang);
+if (!cBackendClientHelper::requireClientHasLanguages($selectedClient)) {
+    return;
 }
 
-$oSelRange->setEvent("onchange", "document.forms.range.submit();");
-$oFrmRange->add(i18n('Range'), $oSelRange->render());
-
-if (!$idclientslang) {
-    $oClient = new cApiClient($idclient);
+if ($selectedClientLanguageId >= 1) {
+    $selectedClientLanguage = cBackendClientHelper::requireClientLanguage($selectedClientLanguageId);
+    if (!$selectedClientLanguage) {
+        return;
+    }
 } else {
-    $oClient = new cApiClientLanguage();
-    $oClient->loadByPrimaryKey($idclientslang);
+    $selectedClientLanguage = null;
 }
+
+// Store settings as client language property (language-dependent) or client property (language-independent)
+$itemInstance = $selectedClientLanguage ?: $selectedClient;
 
 if ($action == 'clientsettings_save_item') {
-    $oClient->setProperty(trim($request['cstype']), trim($request['csname']), trim($request['csvalue']), $csidproperty);
-    $oPage->displayOk(i18n("Save changes successfully!"));
+    $itemInstance->setProperty(
+        trim($_REQUEST['cstype']),
+        trim($_REQUEST['csname']),
+        trim($_REQUEST['csvalue']),
+        $csidproperty
+    );
+    $page->displayOk(i18n("Save changes successfully!"));
 }
 
 if ($action == 'clientsettings_delete_item') {
-    $oClient->deleteProperty($request['idprop']);
-    $oPage->displayOk(i18n("Deleted item successfully!"));
+    $itemInstance->deleteProperty($_REQUEST['idprop']);
+    $page->displayOk(i18n("Deleted item successfully!"));
 }
+
+// Language selection form
+$clientLanguageForm = new cGuiClientLanguageForm($selectedClient, $selectedClientLanguage);
+
+$oList = new cGuiScrollList();
+$oList->objTable->setClass('generic col_md');
 
 $oList->setHeader(i18n('Type'), i18n('Name'), i18n('Value'), i18n('Actions'));
 $oList->objHeaderItem->updateAttributes([
@@ -86,7 +78,7 @@ $oList->objRow->updateAttributes([
 
 $imagesPath = $backendUrl . $cfg['path']['images'];
 
-$aItems = $oClient->getProperties();
+$aItems = $itemInstance->getProperties();
 
 if ($aItems !== false) {
     // Wrapper for the buttons
@@ -96,15 +88,15 @@ if ($aItems !== false) {
     $oLnkDelete->setClass('con_img_button')
         ->setCLink($area, $frame, "clientsettings_delete_item")
         ->setContent(cHTMLImage::img($imagesPath . 'delete.gif', i18n("Delete")))
-        ->setCustom('idclient', $idclient)
-        ->setCustom('idclientslang', $idclientslang);
+        ->setCustom('idclient', $selectedClientId)
+        ->setCustom('idclientslang', $selectedClientLanguageId);
 
     $oLnkEdit = new cHTMLLink();
     $oLnkEdit->setClass('con_img_button')
         ->setCLink($area, $frame, "clientsettings_edit_item")
         ->setContent(cHTMLImage::img($imagesPath . 'editieren.gif', i18n("Edit")))
-        ->setCustom('idclient', $idclient)
-        ->setCustom('idclientslang', $idclientslang);
+        ->setCustom('idclient', $selectedClientId)
+        ->setCustom('idclientslang', $selectedClientLanguageId);
 
     $sSubmit = cHTMLButton::image($imagesPath . 'submit.gif', i18n("Save"), ['class' => 'con_img_button']);
     $sMouseoverTemplate = '<span class="tooltip" title="%1$s">%2$s</span>';
@@ -115,14 +107,17 @@ if ($aItems !== false) {
         $settingName = conHtmlentities($aValue['name']);
         $settingValue = conHtmlentities($aValue['value']);
 
-        $oLnkDelete->setCustom('idprop', $iKey);
-        $oLnkEdit->setCustom('idprop', $iKey);
+        foreach ([$oLnkDelete, $oLnkEdit] as $_link) {
+            $_link->setCustom('idprop', $iKey);
+            $_link->setCustom('idclient', $selectedClient->getId());
+            $_link->setCustom('idclientslang', $selectedClientLanguage ? $selectedClientLanguage->getId() : 0);
+        }
 
         $controls->setContent([
             $oLnkEdit->render(), $oLnkDelete->render()
         ]);
 
-        if (($action == 'clientsettings_edit_item') && ($request['idprop'] == $iKey)) {
+        if (($action == 'clientsettings_edit_item') && ($_REQUEST['idprop'] == $iKey)) {
             $oInputboxType = new cHTMLTextbox('cstype', $settingType);
             $oInputboxType->setWidth(15);
             $oInputboxName = new cHTMLTextbox('csname', $settingName);
@@ -178,8 +173,8 @@ $oForm->setTableClass('generic col_sm');
 $oForm->setVar('area', $area);
 $oForm->setVar('frame', $frame);
 $oForm->setVar('action', 'clientsettings_save_item');
-$oForm->setVar('idclient', $idclient);
-$oForm->setVar('idclientslang', $idclientslang);
+$oForm->setVar('idclient', $selectedClientId);
+$oForm->setVar('idclientslang', $selectedClientLanguageId);
 $oForm->setHeader(i18n('Add new variable'));
 
 $oInputbox = new cHTMLTextbox('cstype');
@@ -202,20 +197,20 @@ if ($action == 'clientsettings_edit_item') {
     $oForm2->setVar('area', $area);
     $oForm2->setVar('frame', $frame);
     $oForm2->setVar('action', 'clientsettings_save_item');
-    $oForm2->setVar('idclient', $idclient);
-    $oForm2->setVar('idclientslang', $idclientslang);
+    $oForm2->setVar('idclient', $selectedClientId);
+    $oForm2->setVar('idclientslang', $selectedClientLanguageId);
 
     $oForm2->appendContent($oList->render());
-    $oPage->setContent([
-        $oFrmRange,
+    $page->setContent([
+        $clientLanguageForm->render(),
         $spacer,
         $oForm2,
         $spacer,
         $oForm
     ]);
 } else {
-    $oPage->setContent([
-        $oFrmRange,
+    $page->setContent([
+        $clientLanguageForm->render(),
         $spacer,
         $oList,
         $spacer,
@@ -223,4 +218,4 @@ if ($action == 'clientsettings_edit_item') {
     ]);
 }
 
-$oPage->render();
+$page->render();

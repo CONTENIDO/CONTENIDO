@@ -68,6 +68,18 @@ class cApiArticleSpecificationCollection extends ItemCollection
     }
 
     /**
+     * Returns all language-independent article specifications by client.
+     *
+     * @return cApiArticleSpecification[]
+     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function fetchByClient(int $clientId, string $orderBy = ''): array
+    {
+        return $this->fetchByClientLang($clientId, 0, $orderBy);
+    }
+
+    /**
      * Sets the online status of an article specification.
      *
      * @param int $online The online status `0` or `1`, default is `0`.

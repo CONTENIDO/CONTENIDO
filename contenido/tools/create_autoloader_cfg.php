@@ -41,8 +41,15 @@ $context->contenidoInstallPath = str_replace('\\', '/', realpath(__DIR__ . '/../
 
 // Include the environment definer file
 include_once $context->contenidoInstallPath . '/contenido/environment.php';
-// The destination file where the class map configuration should be written in
-$context->destinationFile = $context->contenidoInstallPath . '/data/config/' . CON_ENVIRONMENT . '/config.autoloader.php';
+
+// The destination files where the class map configuration should be written in
+$context->destinationFiles = [];
+$context->dirIterator = new DirectoryIterator($context->contenidoInstallPath . '/data/config/');
+foreach ($context->dirIterator as $fileInfo) {
+    if ($fileInfo->isDir() && !$fileInfo->isDot()) {
+        $context->destinationFiles[] = $context->contenidoInstallPath . '/data/config/' . $fileInfo->getFilename() . '/config.autoloader.php';
+    }
+}
 
 // List of paths from where all class/interface names should be found
 $context->pathsToParse = [
@@ -93,13 +100,15 @@ foreach ($context->classNames as $className) {
 // Uncomment following line to get some debug messages
 // echo $context->classTypeFinder->getFormattedDebugMessages();
 
-// write the class map configuration
-$context->classMapCreator = new mpClassMapFileCreatorContenido($context->contenidoInstallPath);
-$context->classMapCreator->create($context->classMapList, $context->destinationFile);
+// Write the class map configurations
+foreach ($context->destinationFiles as $destinationFile) {
+    $context->classMapCreator = new mpClassMapFileCreatorContenido($context->contenidoInstallPath);
+    $context->classMapCreator->create($context->classMapList, $destinationFile);
+}
 
 echo sprintf(
     "Autoloader configuration created/updated in:\n%s\n",
-    $context->destinationFile
+    '- ' . implode("\n- ", $context->destinationFiles)
 );
 
 // /////////////////////////////////////////////////////////////////////
