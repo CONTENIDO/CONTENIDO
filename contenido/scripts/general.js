@@ -838,9 +838,7 @@
          * @static
          */
         build: function(page, params) {
-            var query = Con.UtilUrl.buildQuery(params);
-
-            return page + '?' + query.join('&');
+            return page + '?' + Con.UtilUrl.buildQuery(params);
         },
 
         /**
