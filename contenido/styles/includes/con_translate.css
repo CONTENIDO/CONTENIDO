@@ -26,6 +26,9 @@
     vertical-align: middle;
 }
 
+.all_translations td a.inused_module {
+    display: block;
+}
 .all_translations td img,
 .all_translations td input {
     float: right;
