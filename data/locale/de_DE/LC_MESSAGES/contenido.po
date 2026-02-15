@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CONTENIDO 4.10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-15 09:52+0100\n"
-"PO-Revision-Date: 2026-02-15 10:02+0100\n"
+"POT-Creation-Date: 2026-02-15 11:52+0100\n"
+"PO-Revision-Date: 2026-02-15 11:54+0100\n"
 "Last-Translator: Murat Purc <murat@purc.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: de_DE\n"
@@ -18,7 +18,7 @@ msgstr ""
 
 #: classes/class.note.php:424 classes/class.note.php:427
 msgid "View notes / add note"
-msgstr "Notizen anzeigen / erstellen"
+msgstr "Notizen anzeigen / Notiz hinzufügen"
 
 #: classes/class.todo.php:113
 msgid "New"
@@ -854,7 +854,7 @@ msgid "Field of the file name is empty!"
 msgstr "Das Feld für den Dateinamen ist leer!"
 
 #: classes/module/class.module.template.handler.php:315
-#: includes/include.frontend.user_edit.php:175
+#: includes/include.frontend.user_edit.php:180
 #: includes/include.frontend.group_edit.php:120
 #: includes/include.frontend.group_edit.php:146
 #: includes/include.pretplcfg_edit.php:45 includes/include.mod_script.php:172
@@ -2374,13 +2374,13 @@ msgid "You may now set a new password"
 msgstr "Sie können nun ein neues Passwort setzen"
 
 #: classes/class.password.request.php:307
-#: includes/include.frontend.user_edit.php:200
+#: includes/include.frontend.user_edit.php:205
 #: includes/include.rights_left_top.php:95
 msgid "User name"
 msgstr "Benutzername"
 
 #: classes/class.password.request.php:312
-#: includes/include.frontend.user_edit.php:201
+#: includes/include.frontend.user_edit.php:206
 #: includes/include.mycontenido_settings.php:156
 #: includes/include.rights_create.php:182
 #: includes/include.rights_overview.php:235
@@ -3616,7 +3616,7 @@ msgstr "Datum bis"
 
 #: templates/standard/template.con_left_top_art_search.html:66
 #: templates/standard/template.con_meta_edit_form.html:105
-#: includes/include.frontend.user_edit.php:259
+#: includes/include.frontend.user_edit.php:264
 #: includes/include.upl_edit.php:104
 msgid "Author"
 msgstr "Autor"
@@ -4736,27 +4736,27 @@ msgstr ""
 "Konnte das neue Passwort nicht setzen: Das gewählte Passwort und die "
 "Passwort-Wiederholung stimmen nicht überein"
 
-#: includes/include.frontend.user_edit.php:188
+#: includes/include.frontend.user_edit.php:193
 #: ../data/config/local/cfg_actions.inc.php:106
 #: ../data/config/production/cfg_actions.inc.php:106
 #: ../data/config/test/cfg_actions.inc.php:106
 msgid "Edit user"
 msgstr "Benutzer bearbeiten"
 
-#: includes/include.frontend.user_edit.php:202
+#: includes/include.frontend.user_edit.php:207
 msgid "New password (again)"
 msgstr "Neues Passwort (erneut)"
 
-#: includes/include.frontend.user_edit.php:203
+#: includes/include.frontend.user_edit.php:208
 #: includes/include.lang_edit.php:230
 msgid "Active"
 msgstr "Aktiv"
 
-#: includes/include.frontend.user_edit.php:230
+#: includes/include.frontend.user_edit.php:235
 msgid "WARNING"
 msgstr "WARNUNG"
 
-#: includes/include.frontend.user_edit.php:230
+#: includes/include.frontend.user_edit.php:235
 #, php-format
 msgid ""
 "The plugin %s delivered an array for the displayed titles, but did not "
@@ -4765,7 +4765,7 @@ msgstr ""
 "Das Plugin %s lieferte ein Array für die angezeigten Titel, aber lieferte "
 "kein Array für die Inhalte."
 
-#: includes/include.frontend.user_edit.php:253
+#: includes/include.frontend.user_edit.php:258
 #: includes/include.con_left_top.php:244
 #: includes/include.tplcfg_edit_form.php:294
 #: includes/include.tpl_edit_form.php:79 includes/include.tpl_edit_form.php:149
@@ -4777,15 +4777,19 @@ msgstr ""
 msgid "none"
 msgstr "kein"
 
-#: includes/include.frontend.user_edit.php:256
+#: includes/include.frontend.user_edit.php:261
 #: includes/include.rights_overview.php:441
 msgid "Group membership"
 msgstr "Gruppenzugehörigkeit"
 
-#: includes/include.frontend.user_edit.php:261
+#: includes/include.frontend.user_edit.php:266
 #: includes/include.upl_edit.php:105
 msgid "Last modified by"
 msgstr "Zuletzt geändert von"
+
+#: includes/include.frontend.user_edit.php:281
+msgid "Reset selection"
+msgstr "Auswahl zurücksetzen"
 
 #: includes/include.upl_left_top.php:37 includes/include.mod_new.php:25
 #: includes/include.rights.php:27 includes/include.mycontenido.tasks.php:44

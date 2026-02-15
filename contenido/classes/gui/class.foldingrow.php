@@ -161,6 +161,15 @@ class cGuiFoldingRow extends cHTML
     }
 
     /**
+     * Sets the id of folding rows hidden field.
+     * @since CONTENIDO 4.10.2
+     */
+    public function setHiddenFieldId(string $hiddenFieldId)
+    {
+        $this->_hiddenField->setID($hiddenFieldId);
+    }
+
+    /**
      *
      * @param bool $expanded [optional]
      */

@@ -819,8 +819,9 @@
     Con.UtilUrl = {
         /**
          * Builds a CONTENIDO backend url, adds also the contenido parameter to
-         * it, if it's not passed with params. Example:
+         * it, if it's not passed with params.
          *
+         * Example:
          * <pre>
          * // result: main.php?area=con&amp;action=new&amp;frame=4&amp;contenido=123434
          * var url = Con.UtilUrl.build('main.php', {
@@ -837,6 +838,32 @@
          * @static
          */
         build: function(page, params) {
+            var query = Con.UtilUrl.buildQuery(params);
+
+            return page + '?' + query.join('&');
+        },
+
+        /**
+         * Builds a query string, adds also the contenido parameter to
+         * it, if it's not passed with params.
+         *
+         * Example:
+         * <pre>
+         * // result: area=con&amp;action=new&amp;frame=4&amp;contenido=123434
+         * var url = Con.UtilUrl.buildQuery({
+         *     area : 'con',
+         *     action : 'new',
+         *     frame : 4
+         * });
+         * </pre>
+         *
+         * @method buildQuery
+         * @param {Object} [params={}]
+         * @return {String}
+         * @static
+         * @since CONTENIDO 4.10.2
+         */
+        buildQuery: function(params) {
             params = params || {};
 
             var query = [];
@@ -849,7 +876,7 @@
                 query.push('contenido=' + Con.sid);
             }
 
-            return page + '?' + query.join('&');
+            return query.join('&');
         },
 
         /**

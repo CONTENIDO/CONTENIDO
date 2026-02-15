@@ -113,9 +113,7 @@ if ($feuser->isLoaded() && $feuser->get('idclient') == $client) {
         }
 
         if ($feuser->get('username') != $username) {
-            $usernameDb = $feuser->escape($username);
-            $feUsers->select("username = '" . $usernameDb . "' and idclient='$client'");
-            if ($feUsers->next()) {
+            if ($feUsers->fetchByUsernameAndClientId($username, $client)) {
                 $messages[] = i18n("Could not set new username: Username already exists");
             } else {
                 $feuser->set('username', $username);
@@ -150,12 +148,16 @@ if ($feuser->isLoaded() && $feuser->get('idclient') == $client) {
 
                         if (is_array($wantVariables)) {
                             foreach ($wantVariables as $value) {
-                                if (is_array($GLOBALS[$value])) {
-                                    foreach ($GLOBALS[$value] as $globKey => $globValue) {
-                                        $GLOBALS[$value][$globKey] = stripslashes($globValue);
+                                if (isset($GLOBALS[$value])) {
+                                    if (is_array($GLOBALS[$value])) {
+                                        foreach ($GLOBALS[$value] as $globKey => $globValue) {
+                                            $GLOBALS[$value][$globKey] = stripslashes($globValue);
+                                        }
+                                    } else {
+                                        $variablesToStore[$value] = stripslashes($GLOBALS[$value]);
                                     }
                                 } else {
-                                    $variablesToStore[$value] = stripslashes($GLOBALS[$value]);
+                                    $variablesToStore[$value] = '';
                                 }
                             }
                         }
@@ -202,7 +204,9 @@ if ($feuser->isLoaded() && $feuser->get('idclient') == $client) {
     $form->add(i18n("New password (again)"), $newpw2->render());
     $form->add(i18n("Active"), $active->toHtml(false));
 
-    $pluginOrder = cArray::trim(explode(',', getSystemProperty('plugin', 'frontendusers-pluginorder')));
+    $pluginOrder = cArray::trim(
+        explode(',', getSystemProperty('plugin', 'frontendusers-pluginorder'))
+    );
 
     // Check out if there are any plugins
     if (is_array($pluginOrder)) {
@@ -227,7 +231,13 @@ if ($feuser->isLoaded() && $feuser->get('idclient') == $client) {
                         }
                     } else {
                         if (is_array($plugTitle) || is_array($display)) {
-                            $form->add(i18n("WARNING"), sprintf(i18n("The plugin %s delivered an array for the displayed titles, but did not return an array for the contents."), $plugin));
+                            $form->add(
+                                i18n("WARNING"),
+                                sprintf(
+                                    i18n("The plugin %s delivered an array for the displayed titles, but did not return an array for the contents."),
+                                    $plugin
+                                )
+                            );
                         } else {
                             $form->add($plugTitle, $display);
                         }
@@ -256,9 +266,21 @@ if ($feuser->isLoaded() && $feuser->get('idclient') == $client) {
         $form->add(i18n("Group membership"), $sTemp);
 
         $oUser = new cApiUser($feuser->get('author'));
-        $form->add(i18n("Author"), $oUser->get('username') . " (" . cDate::formatDatetime($feuser->get('created')) . ")");
+        $form->add(
+            i18n("Author"),
+            sprintf(
+                '%s (%s)',
+                $oUser->get('username'), cDate::formatDatetime($feuser->get('created'))
+            )
+        );
         $oUser2 = new cApiUser($feuser->get('modifiedby'));
-        $form->add(i18n("Last modified by"), $oUser2->get('username') . " (" . cDate::formatDatetime($feuser->get('modified')) . ")");
+        $form->add(
+            i18n("Last modified by"),
+            sprintf(
+                '%s (%s)',
+                $oUser2->get('username'), cDate::formatDatetime($feuser->get('modified'))
+            )
+        );
     }
     $page->setContent($form);
     if (!empty($sReloadScript)) {
@@ -271,3 +293,6 @@ if (!isset($form)) {
 }
 
 $page->render();
+
+// This is used in frontenduser plugin, but the plugin has no translation files!
+$resetSelection = i18n("Reset selection");

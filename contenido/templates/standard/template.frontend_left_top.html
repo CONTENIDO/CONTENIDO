@@ -51,7 +51,7 @@ var buttonArray = [butUser, butGroups];
 
 function resizeFrame(arg, bIgnore) {
     if (arg == '') {
-      // Fetch links and store for later usage
+        // Fetch links and store for later usage
         var actionLink = document.getElementById('{ACTIONLINK}');
         var listoptionLink = document.getElementById('{LISTOPTIONLINK}');
         var pagingLink = document.getElementById('{PAGINGLINK}');
@@ -121,39 +121,40 @@ function hoverEffect(actButton, stat) {
 }
 
 function refresh() {
-    var sFilterParam = execFilter(1),
-        sActionsRowState = document.getElementById('m9').value;
-        sFilterRowState = document.getElementById('m17').value;
-    sFilterParam += '&frame=1&view='+selectedButton+'&actionrow='+sActionsRowState+'&filterrow='+sFilterRowState+'&page='+iPage;
-    window.location.href = sFilterParam;
+    // Get filter parameters and add the folding rows states
+    var filterParams = execFilter(1);
+    filterParams.view = selectedButton;
+    filterParams.actionrow = $('#frontend_left_top_actionrow_state').val();
+    filterParams.filterrow = $('#frontend_left_top_filterrow_state').val();
+
+    window.location.href = Con.UtilUrl.build('main.php', filterParams);
 }
 
-function execFilter(bGet) {
-    var multilink = "main.php?",
-        formelements = document.filter, i;
+/**
+ * Collects the filter form element values.
+ * Returns them if mode is 1, otherwise returns nothing.
+ *
+ * @param {Number} mode - Default is 0.
+ *      - If 1, returns the parameter values as an object.
+ *      - If 0, does not return anything, but executes multi link request to reload the frames.
+ * @return {Object|void}
+ */
+function execFilter(mode) {
+    var queryParams = Con.serializeForm($(document.filter));
 
-    for (i = 0; i < formelements.length; i++) {
-        if (i > 0 && formelements[i].name != "" && formelements[i].name != "area" && formelements[i].name != "frame" && formelements[i].value != "") {
-            multilink += "&";
-        }
-        if (formelements[i].name != "" && formelements[i].value != "" && formelements[i].name != "area" && formelements[i].name != "frame") {
-            multilink += formelements[i].name + "=" + formelements[i].value;
-        }
+    mode = (mode === undefined) ? 0 : mode;
+
+    if (mode === 1) {
+        queryParams.page = iPage;
+        return queryParams;
     }
 
-    if (bGet == 2 || bGet == 1) {
-        multilink+='&page='+iPage;
-    }
-
-    if (bGet == 1) {
-        return multilink+'&area=frontend';
-    } else {
-        Con.multiLink(
-            'left_bottom', multilink+'&area=frontend&frame=2',
-            'right_top', 'main.php?area=frontend&frame=3&contenido=' + Con.sid,
-            'right_bottom', 'main.php?area=frontend&frame=4&contenido=' + Con.sid
-        );
-    }
+    queryParams.frame = 2;
+    Con.multiLink(
+        'left_bottom', Con.UtilUrl.build('main.php', queryParams),
+        'right_top', 'main.php?area=frontend&frame=3&contenido=' + Con.sid,
+        'right_bottom', 'main.php?area=frontend&frame=4&contenido=' + Con.sid
+    );
 }
 
 function toggle_pager(sId) {
@@ -189,9 +190,10 @@ function frameLeftTopResizeInitCallback() {
 (function(Con, $) {
 
     function actionSwitchFrontendUser() {
-        var url = execFilter(1);
+        var filterParams = execFilter(1);
+        filterParams.frame = 2;
         Con.multiLink(
-            'left_bottom', url + '&frame=2',
+            'left_bottom', Con.UtilUrl.build('main.php', filterParams),
             'right_top', 'main.php?area=frontend&frame=3&contenido=' + Con.sid,
             'right_bottom', 'main.php?area=frontend&frame=4&contenido=' + Con.sid
         );
