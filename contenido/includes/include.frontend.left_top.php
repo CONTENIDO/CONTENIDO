@@ -158,13 +158,12 @@ if (isset($_GET['view']) && $_GET['view'] == $imgGroupId) {
     $tpl->set('s', 'IINIT', $imgUserId);
 }
 
-/*
- * Users Actions
- */
+// Users Actions
 $actionLink = "actionlink";
 $sActionUuid = '28cf9b31-e6d7-4657-a9a7-db31478e7a5c';
 
 $oActionRow = new cGuiFoldingRow($sActionUuid, i18n("Actions"), $actionLink);
+$oActionRow->setHiddenFieldId('frontend_left_top_actionrow_state');
 if (isset($_GET['actionrow']) && $_GET['actionrow'] == 'collapsed') {
     $oActionRow->setExpanded(false);
     $oUser->setProperty('expandstate', $sActionUuid, 'false');
@@ -191,12 +190,11 @@ $oLink->setClass("con_func_button addfunction");
 $oLink->setStyle('margin-left: 17px;margin-top:5px');
 $oActionRow->setContentData($oLink->render());
 
-/*
- * Users List Options
- */
+// Users List Options
 $sListOptionId = 'f081b6ab-370d-4fd8-984f-6b38590fe48b';
 $listOptionLink = "listoptionlink";
 $oListOptionRow = new cGuiFoldingRow($sListOptionId, i18n("List options"), $listOptionLink);
+$oListOptionRow->setHiddenFieldId('frontend_left_top_filterrow_state');
 $oListOptionRow->setExpanded(true);
 
 if (isset($_GET['filterrow']) && $_GET['filterrow'] == 'collapsed') {
@@ -253,6 +251,7 @@ $oTextboxFilter = new cHTMLTextbox('filter', $requestFilter, 20);
 $oTextboxFilter->setClass('text_medium');
 
 $tplFilter = new cTemplate();
+$tplFilter->set('s', 'AREA', $area);
 $tplFilter->set('s', 'ITEMS_PER_PAGE', $oSelectItemsPerPage->render());
 $tplFilter->set('s', 'SORT_BY', $oSelectSortBy->render());
 $tplFilter->set('s', 'SORT_ORDER', $oSelectSortOrder->render());

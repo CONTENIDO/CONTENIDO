@@ -30,37 +30,41 @@ function frontendusers_groupselect_display(): string
 
     $iIdFrontendUser = cSecurity::toInteger($_REQUEST['idfrontenduser'] ?? '0');
 
-    //render select
+    // Get groups
     $feGroups = new cApiFrontendGroupCollection();
     $feGroups->setWhere('idclient', $client);
     $feGroups->query();
-
     $aFEGroups = [];
-
     while ($feGroup = $feGroups->next()) {
         $aFEGroups[$feGroup->get('idfrontendgroup')] = $feGroup->get('groupname');
     }
 
+    // Build select
     $oSelect = new cHTMLSelectElement('groupselect[]');
+    $oSelect->setClass('con_block');
+    $oSelect->setID('frontendusers_groupselect');
     $oSelect->autoFill($aFEGroups);
     $oSelect->setMultiselect();
     $oSelect->setSize(5);
     $oSelect->setStyle('width:265px;');
 
-    //mark groups
+    // Mark selected groups
     $oFEGroupMemberCollection = new cApiFrontendGroupMemberCollection;
     $oFEGroupMemberCollection->setWhere('idfrontenduser', $iIdFrontendUser);
     $oFEGroupMemberCollection->addResultField('idfrontendgroup');
     $oFEGroupMemberCollection->query();
-
     $aFEGroup = [];
     while ($oFEGroup = $oFEGroupMemberCollection->next()) {
         $aFEGroup[] = $oFEGroup->get('idfrontendgroup');
     }
-
     $oSelect->setDefault($aFEGroup);
 
-    return $oSelect->render();
+    // Reset button
+    $button = new cHTMLButton('reset_groupselect', i18n("Reset selection"));
+    $button->setEvent('onclick', '$(\'#frontendusers_groupselect\').val([]);');
+    $button->setMode('button');
+
+    return $oSelect->render() . '<br>' . $button->render();
 }
 
 /**

@@ -114,7 +114,7 @@ class cApiFrontendUserCollection extends ItemCollection
     }
 
     /**
-     * Returns the frontend user for the login attempt case by the username.
+     * Returns the frontend user for the login attempt case by the username and the client id.
      * The login criteria are:
      * - Username must exist.
      * - User has to be assigned to a client.
@@ -131,6 +131,29 @@ class cApiFrontendUserCollection extends ItemCollection
 
         $where = $this->db->prepare(
             "`username` = '%s' AND `idclient` = %d AND `active` = 1",
+            $username,
+            $clientId
+        );
+
+        return ($this->select($where) && ($item = $this->next()) !== false)
+            ? $item
+            : null;
+    }
+
+    /**
+     * Returns the frontend user by the username and the client id.
+     *
+     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function fetchByUsernameAndClientId(string $username, int $clientId): ?cApiFrontendUser
+    {
+        if (trim($username) === '') {
+            return null;
+        }
+
+        $where = $this->db->prepare(
+            "`username` = '%s' AND `idclient` = %d",
             $username,
             $clientId
         );

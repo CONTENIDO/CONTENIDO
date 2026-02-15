@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-15 09:52+0100\n"
+"POT-Creation-Date: 2026-02-15 11:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -835,7 +835,7 @@ msgid "Field of the file name is empty!"
 msgstr ""
 
 #: classes/module/class.module.template.handler.php:315
-#: includes/include.frontend.user_edit.php:175
+#: includes/include.frontend.user_edit.php:180
 #: includes/include.frontend.group_edit.php:120
 #: includes/include.frontend.group_edit.php:146
 #: includes/include.pretplcfg_edit.php:45 includes/include.mod_script.php:172
@@ -2196,13 +2196,13 @@ msgid "You may now set a new password"
 msgstr ""
 
 #: classes/class.password.request.php:307
-#: includes/include.frontend.user_edit.php:200
+#: includes/include.frontend.user_edit.php:205
 #: includes/include.rights_left_top.php:95
 msgid "User name"
 msgstr ""
 
 #: classes/class.password.request.php:312
-#: includes/include.frontend.user_edit.php:201
+#: includes/include.frontend.user_edit.php:206
 #: includes/include.mycontenido_settings.php:156
 #: includes/include.rights_create.php:182
 #: includes/include.rights_overview.php:235
@@ -3394,7 +3394,7 @@ msgstr ""
 
 #: templates/standard/template.con_left_top_art_search.html:66
 #: templates/standard/template.con_meta_edit_form.html:105
-#: includes/include.frontend.user_edit.php:259
+#: includes/include.frontend.user_edit.php:264
 #: includes/include.upl_edit.php:104
 msgid "Author"
 msgstr ""
@@ -4479,34 +4479,34 @@ msgstr ""
 msgid "Could not set new password: Passwords don't match"
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:188
+#: includes/include.frontend.user_edit.php:193
 #: ../data/config/local/cfg_actions.inc.php:106
 #: ../data/config/production/cfg_actions.inc.php:106
 #: ../data/config/test/cfg_actions.inc.php:106
 msgid "Edit user"
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:202
+#: includes/include.frontend.user_edit.php:207
 msgid "New password (again)"
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:203
+#: includes/include.frontend.user_edit.php:208
 #: includes/include.lang_edit.php:230
 msgid "Active"
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:230
+#: includes/include.frontend.user_edit.php:235
 msgid "WARNING"
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:230
+#: includes/include.frontend.user_edit.php:235
 #, php-format
 msgid ""
 "The plugin %s delivered an array for the displayed titles, but did not "
 "return an array for the contents."
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:253
+#: includes/include.frontend.user_edit.php:258
 #: includes/include.con_left_top.php:244
 #: includes/include.tplcfg_edit_form.php:294
 #: includes/include.tpl_edit_form.php:79 includes/include.tpl_edit_form.php:149
@@ -4518,14 +4518,18 @@ msgstr ""
 msgid "none"
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:256
+#: includes/include.frontend.user_edit.php:261
 #: includes/include.rights_overview.php:441
 msgid "Group membership"
 msgstr ""
 
-#: includes/include.frontend.user_edit.php:261
+#: includes/include.frontend.user_edit.php:266
 #: includes/include.upl_edit.php:105
 msgid "Last modified by"
+msgstr ""
+
+#: includes/include.frontend.user_edit.php:281
+msgid "Reset selection"
 msgstr ""
 
 #: includes/include.upl_left_top.php:37 includes/include.mod_new.php:25
