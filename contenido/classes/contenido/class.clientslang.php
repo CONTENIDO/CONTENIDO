@@ -205,9 +205,8 @@ class cApiClientLanguage extends Item
 {
 
     /**
-     * Id of client
-     *
-     * @var int
+     * @var int Id of client
+     * @deprecated [2026-02-14] Since CONTENIDO 4.10.2, use `$item->get('idclient')` instead!
      */
     public $idclient;
 
@@ -235,25 +234,36 @@ class cApiClientLanguage extends Item
         if ($clientLanguageId !== false) {
             $this->loadByPrimaryKey($clientLanguageId);
         } elseif ($clientId !== false && $languageId !== false) {
-            /*
-             * One way, but the other should be faster $oCollection = new
-             * cApiClientLanguageCollection; $oCollection->setWhere('idclient',
-             * $clientId); $oCollection->setWhere('idlang', $languageId);
-             * $oCollection->query(); if ($oItem = $oCollection->next()) {
-             * $this->loadByPrimaryKey($oItem->get($oItem->getPrimaryKeyName())); }
-             */
-
-            // Query the database
-            $sSQL = "SELECT %s FROM %s WHERE idclient = '%d' AND idlang = '%d'";
-            $this->db->query($sSQL, $this->getPrimaryKeyName(), $this->table, $clientId, $languageId);
-            if ($this->db->nextRecord()) {
-                $this->loadByPrimaryKey($this->db->f($this->getPrimaryKeyName()));
-            }
+            $this->loadByClientIdAndLanguageId(cSecurity::toInteger($clientId), cSecurity::toInteger($languageId));
         }
     }
 
     /**
+     * Load a client language item by client and language id.
+     *
+     * @throws cDbException
+     * @since CONTENIDO 4.10.2
+     */
+    public function loadByClientIdAndLanguageId(int $clientId, int $languageId): bool
+    {
+        $this->db->query(
+            "SELECT * FROM `%s` WHERE `idclient` = '%d' AND `idlang` = '%d'",
+            $this->table,
+            $clientId,
+            $languageId
+        );
+        if ($this->db->nextRecord()) {
+            $this->loadByRecordSet($this->db->toArray());
+            $this->idclient = $this->get('idclient');
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @inheritDoc
+     * @todo Remove this method once the property `$this->idclient` has been removed!
      */
     public function loadByPrimaryKey($value)
     {
@@ -323,7 +333,7 @@ class cApiClientLanguage extends Item
     public function getPropertiesByType($type)
     {
         $oPropertyColl = $this->_getPropertiesCollectionInstance();
-        return $oPropertyColl->getValuesByType($this->getPrimaryKeyName(), $this->idclient, $type);
+        return $oPropertyColl->getValuesByType($this->getPrimaryKeyName(), $this->get('idclient'), $type);
     }
 
     /**
@@ -369,26 +379,43 @@ class cApiClientLanguage extends Item
         // Runtime on-demand allocation of the properties object
         if (!is_object($this->_oPropertyCollection)) {
             $this->_oPropertyCollection = new cApiPropertyCollection();
-            $this->_oPropertyCollection->changeClient($this->idclient);
+            $this->_oPropertyCollection->changeClient($this->get('idclient'));
         }
         return $this->_oPropertyCollection;
     }
 
     /**
-     * User-defined setter for clients lang fields.
-     *
      * @inheritDoc
      */
     public function setField($name, $value, $safe = true)
     {
         switch ($name) {
-            case 'idlang':
+            case 'idclientslang':
             case 'idclient':
+            case 'idlang':
                 $value = cSecurity::toInteger($value);
                 break;
         }
 
         return parent::setField($name, $value, $safe);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getField($name, $safe = true)
+    {
+        $value = parent::getField($name, $safe);
+
+        switch ($name) {
+            case 'idclientslang':
+            case 'idclient':
+            case 'idlang':
+                $value = cSecurity::toInteger($value);
+                break;
+        }
+
+        return $value;
     }
 
 }

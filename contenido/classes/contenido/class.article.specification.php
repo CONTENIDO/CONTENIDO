@@ -68,6 +68,18 @@ class cApiArticleSpecificationCollection extends ItemCollection
     }
 
     /**
+     * Returns all language-independent article specifications by client.
+     *
+     * @return cApiArticleSpecification[]
+     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function fetchByClient(int $clientId, string $orderBy = ''): array
+    {
+        return $this->fetchByClientLang($clientId, 0, $orderBy);
+    }
+
+    /**
      * Sets the online status of an article specification.
      *
      * @param int $online The online status `0` or `1`, default is `0`.
@@ -127,4 +139,44 @@ class cApiArticleSpecification extends Item
         }
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function setField($name, $value, $safe = true)
+    {
+        switch ($name) {
+            case 'idartspec':
+            case 'client':
+            case 'lang':
+            case 'online':
+            case 'artspecdefault':
+                $value = cSecurity::toInteger($value);
+                if (in_array($name, ['online', 'artspecdefault'])) {
+                    $value = $value ? 1 : 0;
+                }
+                break;
+        }
+
+        return parent::setField($name, $value, $safe);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getField($name, $safe = true)
+    {
+        $value = parent::getField($name, $safe);
+
+        switch ($name) {
+            case 'idartspec':
+            case 'client':
+            case 'lang':
+            case 'online':
+            case 'artspecdefault':
+                $value = cSecurity::toInteger($value);
+                break;
+        }
+
+        return $value;
+    }
 }

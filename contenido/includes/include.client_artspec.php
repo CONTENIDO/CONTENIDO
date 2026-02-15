@@ -15,20 +15,40 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * @var cPermission $perm
  * @var cGuiNotification $notification
- * @var array $cfg
- * @var string $area
- * @var int $frame
- * @var int $idartspec
  */
+
+$perm = cRegistry::getPerm();
+$cfg = cRegistry::getConfig();
+$area = cRegistry::getArea();
+$frame = cRegistry::getFrame();
 
 $page = new cGuiPage('client_artspec');
 
+$selectedClientId = cSecurity::toInteger($_REQUEST['idclient'] ?? '0');
+$selectedClientLanguageId = cSecurity::toInteger($_REQUEST['idclientslang'] ?? '0');
+$action = $_REQUEST['action'] ?? '';
+$idartspec = cSecurity::toInteger($_REQUEST['idartspec'] ?? '0');
 $online = cSecurity::toInteger($_GET['online'] ?? '0');
 $online = $online === 1 ? 1 : 0;
 
-$action = $action ?? '';
+$selectedClient = cBackendClientHelper::requireClient($selectedClientId);
+if (!$selectedClient) {
+    return;
+}
+
+if (!cBackendClientHelper::requireClientHasLanguages($selectedClient)) {
+    return;
+}
+
+if ($selectedClientLanguageId >= 1) {
+    $selectedClientLanguage = cBackendClientHelper::requireClientLanguage($selectedClientLanguageId);
+    if (!$selectedClientLanguage) {
+        return;
+    }
+} else {
+    $selectedClientLanguage = null;
+}
 
 if ($action == 'client_artspec_save') {
     if (!$perm->have_perm_area_action($area, $action)) {
@@ -36,7 +56,7 @@ if ($action == 'client_artspec_save') {
     } else {
         // It is an update if idartspec exists, otherwise it is a new entry.
         $_idArtSpec = isset($_POST['idartspec']) ? cSecurity::toInteger($_POST['idartspec']) : null;
-        cCreateOrUpdateArtSpec($_POST['artspectext'], $online, $_idArtSpec);
+        cCreateOrUpdateArtSpec($selectedClient, $_POST['artspectext'], $online, $selectedClientLanguage, $_idArtSpec);
     }
 }
 
@@ -64,15 +84,21 @@ if ($action == 'client_artspec_default') {
     }
 }
 
+// Language selection form
+$clientLanguageForm = new cGuiClientLanguageForm($selectedClient, $selectedClientLanguage);
+
 $artSpecs = cGetArtSpecs(
-    cRegistry::getClientId(),
-    cRegistry::getLanguageId()
+    $selectedClient->getId(),
+    $selectedClientLanguage ? $selectedClientLanguage->get('idlang') : 0
 );
 
 $list = new cGuiList();
 
-$list->setCell(1, 1, i18n("Article specification"));
-$list->setCell(1, 2, i18n("Options"));
+$list->setClass('con_block col_sm')
+    ->setColumnClass(1, 'width70')
+    ->setColumnClass(2, 'width30 text_right')
+    ->setCell(1, 1, i18n("Article specification"))
+    ->setCell(1, 2, i18n("Options"));
 
 $count = 2;
 
@@ -103,21 +129,26 @@ if (!empty($artSpecs)) {
         ->setContent(cHTMLImage::img($imagesPath . 'delete.gif', i18n('Delete')));
 
     foreach ($artSpecs as $id => $artSpecItem) {
-        $link->setCustom('idartspec', $id);
-        $olink->setCustom('idartspec', $id);
-        $defLink->setCustom('idartspec', $id);
-        $dlink->setCustom('idartspec', $id);
+        foreach ([$link, $olink, $defLink, $dlink] as $_link) {
+            $_link->setCustom('idartspec', $id);
+            $_link->setCustom('idclient', $selectedClient->getId());
+            $_link->setCustom('idclientslang', $selectedClientLanguage ? $selectedClientLanguage->getId() : 0);
+        }
 
         if ($action == 'client_artspec_edit' && $idartspec == $id) {
             $form = new cHTMLForm('artspec');
             $form->setVar('area', $area);
             $form->setVar('frame', $frame);
             $form->setVar('idartspec', $id);
+            $form->setVar('idclient', $selectedClient->getId());
+            $form->setVar('idclientslang', $selectedClientLanguage ? $selectedClientLanguage->getId() : 0);
             $form->setVar('action', 'client_artspec_save');
             $form->setVar('online', $artSpecItem['online']);
             $inputBox = new cHTMLTextbox('artspectext', conHtmlentities(stripslashes($artSpecItem['artspec'])));
             $form->appendContent($inputBox->render());
-            $form->appendContent(cHTMLButton::image($imagesPath . 'submit.gif', i18n('Save'), ['class' => 'con_img_button']));
+            $form->appendContent(
+                cHTMLButton::image($imagesPath . 'submit.gif', i18n('Save'), ['class' => 'con_img_button'])
+            );
 
             $list->setCell($count, 1, $form->render());
         } else {
@@ -134,9 +165,13 @@ if (!empty($artSpecs)) {
         }
 
         if ($artSpecItem['artspecdefault'] == 0) {
-            $defLink->setContent(cHTMLImage::img($imagesPath . 'artikel_spez_inakt.gif', i18n("Make this article specification default")));
+            $defLink->setContent(
+                cHTMLImage::img($imagesPath . 'artikel_spez_inakt.gif', i18n("Make this article specification default"))
+            );
         } else {
-            $defLink->setContent(cHTMLImage::img($imagesPath . 'artikel_spez_akt.gif', i18n("This is the default article specification")));
+            $defLink->setContent(
+                cHTMLImage::img($imagesPath . 'artikel_spez_akt.gif', i18n("This is the default article specification"))
+            );
         }
 
         $controls->setContent([
@@ -157,11 +192,14 @@ $form->setTableClass('generic con_block col_sm');
 $form->setVar('area', $area);
 $form->setVar('frame', $frame);
 $form->setVar('action', 'client_artspec_save');
+$form->setVar('idclient', $selectedClient->getId());
+$form->setVar('idclientslang', $selectedClientLanguage ? $selectedClientLanguage->getId() : 0);
 $form->setHeader(i18n("Create new article specification"));
 $inputBox = new cHTMLTextbox('artspectext');
 $form->add(i18n("Specification name"), $inputBox->render());
 
 $content = [];
+$content[] = $clientLanguageForm->render();
 if (!empty($list)) {
     // Wrap the list with a block
     $block = new cHTMLDiv($list->render(), 'con_block');

@@ -823,20 +823,33 @@ function addArtspec($artspectext, $online)
 {
     cDeprecated("Function addArtspec() is deprecated since CONTENIDO 4.10.2, use cCreateOrUpdateArtSpec() instead.");
     $idArtSpec = isset($_POST['idartspec']) ? cSecurity::toInteger($_POST['idartspec']) : null;
-    cCreateOrUpdateArtSpec($artspectext, $online, $idArtSpec);
+
+    $client = new cApiClient();
+    $client->loadByPrimaryKey(cSecurity::toInteger($_REQUEST['idclient'] ?? '0'));
+
+    $clientLanguage = new cApiClientLanguage();
+    $clientLanguage->loadByPrimaryKey(cSecurity::toInteger($_REQUEST['idclientslang'] ?? '0'));
+
+    cCreateOrUpdateArtSpec($client, $artspectext, $online, $clientLanguage, $idArtSpec);
 }
 
 /**
- * Creates new article specification for current client & language or updates existing one.
+ * Creates a new article specification for the current client and language or updates an existing one.
  *
  * @param string $artsSecText Specification text
  * @param int $online Online status (1 or 0)
+ * @param ?cApiClientLanguage $clientLanguage Client language to create the article specification for.
+ *      If omitted, value 0 will be used to create or update a language-independent article specification.
  * @param ?int $idArtSpec Id of article specification to update. If omitted, a new entry will be created.
- * @return bool
  * @since CONTENIDO 4.10.2
  */
-function cCreateOrUpdateArtSpec(string $artsSecText, int $online, ?int $idArtSpec = null): bool
-{
+function cCreateOrUpdateArtSpec(
+    cApiClient $client,
+    string $artsSecText,
+    int $online,
+    ?cApiClientLanguage $clientLanguage = null,
+    ?int $idArtSpec = null
+): bool {
     try {
         if ($idArtSpec) {
             // Update existing article specification
@@ -846,14 +859,14 @@ function cCreateOrUpdateArtSpec(string $artsSecText, int $online, ?int $idArtSpe
                 $artSpec->set('online', $online);
                 return $artSpec->store();
             } else {
-                throw new Exception('Could not load article specification by id ' .$idArtSpec);
+                throw new Exception(sprintf('Could not load article specification by id %d', $idArtSpec));
             }
         } else {
             // Add new article specification
             $artSpecColl = new cApiArticleSpecificationCollection();
             $artSpec = $artSpecColl->createNewItem();
-            $artSpec->set('client', cRegistry::getClientId());
-            $artSpec->set('lang', cRegistry::getLanguageId());
+            $artSpec->set('client', $client->getId());
+            $artSpec->set('lang', $clientLanguage ? $clientLanguage->get('idlang') : 0);
             $artSpec->set('artspec', $artsSecText);
             $artSpec->set('online', $online);
             $artSpec->set('artspecdefault', 0);
@@ -865,7 +878,6 @@ function cCreateOrUpdateArtSpec(string $artsSecText, int $online, ?int $idArtSpe
 
     return false;
 }
-
 
 /**
  * @deprecated [2024-02-24] Since CONTENIDO 4.10.2, use {@see cDeleteArtSpec()} instead!

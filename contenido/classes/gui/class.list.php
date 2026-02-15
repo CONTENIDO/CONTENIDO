@@ -24,29 +24,67 @@ class cGuiList
 {
 
     /**
-     *
-     * @todo names of protected members should have a leading underscore
      * @var array
      */
     protected $cells;
 
     /**
-     * Constructor to create an instance of this class.
+     * @var string
+     * @since CONTENIDO 4.10.2
      */
-    public function __construct()
+    protected $class = '';
+
+    /**
+     * @var string[]
+     * @since CONTENIDO 4.10.2
+     */
+    protected $columnClasses = [];
+
+    /**
+     * Constructor to create an instance of this class.
+     *
+     * @param string $class The CSS class name for the list to set.
+     *      Since CONTENIDO 4.10.2
+     */
+    public function __construct(string $class = '')
     {
         $this->cells = [];
+        $this->setClass($class);
     }
 
     /**
-     *
+     * @param string $class The CSS class name for the list to set.
+     * @since CONTENIDO 4.10.2
+     */
+    public function setClass(string $class): self
+    {
+        $this->class = $class;
+
+        return $this;
+    }
+
+    /**
+     * @param int $column The column position to set the CSS class for.
+     * @param string $class The CSS class name for the column to set.
+     * @since CONTENIDO 4.10.2
+     */
+    public function setColumnClass(int $column, string $class): self
+    {
+        $this->columnClasses[$column] = $class;
+
+        return $this;
+    }
+
+    /**
      * @param string|int $item
      * @param string|int $cell
      * @param string $value
      */
-    public function setCell($item, $cell, $value)
+    public function setCell($item, $cell, $value): self
     {
         $this->cells[$item][$cell] = $value;
+
+        return $this;
     }
 
     /**
@@ -56,32 +94,34 @@ class cGuiList
     public function render(bool $print = false)
     {
         $cfg = cRegistry::getConfig();
-        $backendPath = cRegistry::getBackendPath();
+        $templatesPath = cRegistry::getBackendPath() . $cfg['path']['templates'];
 
         $tpl = new cTemplate();
+        $tpl->set('s', 'CLASS', $this->class);
+
         $tpl2 = new cTemplate();
 
         $colcount = 0;
 
         if (is_array($this->cells)) {
             foreach ($this->cells as $row => $cells) {
-                $thefont = '';
-                $unne = '';
-
                 $colcount++;
-
-                $content = "";
-                $count = 0;
-
+                $content = '';
                 foreach ($cells as $key => $value) {
-                    $count++;
                     $tpl2->reset();
 
                     $tpl2->set('s', 'CONTENT', $value);
+                    $tpl2->set('s', 'CLASS', $this->columnClasses[$key] ?? '');
                     if ($colcount == 1) {
-                        $content .= $tpl2->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['generic_list_head'], true);
+                        $content .= $tpl2->generate(
+                            $templatesPath . $cfg['templates']['generic_list_head'],
+                            true
+                        );
                     } else {
-                        $content .= $tpl2->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['generic_list_row'], true);
+                        $content .= $tpl2->generate(
+                            $templatesPath . $cfg['templates']['generic_list_row'],
+                            true
+                        );
                     }
                 }
 
@@ -90,7 +130,7 @@ class cGuiList
             }
         }
 
-        $rendered = $tpl->generate($backendPath . $cfg['path']['templates'] . $cfg['templates']['generic_list'], true);
+        $rendered = $tpl->generate($templatesPath . $cfg['templates']['generic_list'], true);
 
         if ($print) {
             echo $rendered;

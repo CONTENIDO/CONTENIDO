@@ -67,6 +67,12 @@ class cGuiTableForm
     public $formname;
 
     /**
+     * @var string
+     * @since CONTENIDO 4.10.2
+     */
+    protected $formClass = '';
+
+    /**
      *
      * @var string
      */
@@ -160,6 +166,17 @@ class cGuiTableForm
     public function setVar($name, $value)
     {
         $this->formvars[$name] = $value;
+    }
+
+    /**
+     * Set the CSS class for the form.
+     *
+     * @param string $formClass
+     * @since CONTENIDO 4.10.2
+     */
+    public function setFormClass(string $formClass)
+    {
+        $this->formClass = $formClass;
     }
 
     /**
@@ -380,6 +397,7 @@ class cGuiTableForm
         $tpl->set('s', 'JSEXTRA', $this->renderJsExtraAttribute());
 
         $tpl->set('s', 'FORMNAME', $this->formname);
+        $tpl->set('s', 'FORMCLASS', $this->formClass);
         $tpl->set('s', 'METHOD', $this->formmethod);
         $tpl->set('s', 'ACTION', $this->formaction);
 
