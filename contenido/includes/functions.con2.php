@@ -67,14 +67,14 @@ function conGenerateCode(
  *
  * @param int $idart ID of the article
  * @param int $idlang ID of the language
- * @return mixed idartlang of the article or false if nothing was found
- * @throws cDbException|cInvalidArgumentException
+ * @return false|int idartlang of the article or false if nothing was found
+ * @throws cDbException
  */
 function getArtLang($idart, $idlang)
 {
     $idartlang = (new cApiArticleLanguageCollection())
         ->getIdByArticleIdAndLanguageId($idart, $idlang);
-    return $idartlang ? $idartlang : false;
+    return $idartlang ?: false;
 }
 
 /**
@@ -85,6 +85,7 @@ function getArtLang($idart, $idlang)
  */
 function conGetAvailableMetaTagTypes()
 {
+    // TODO Use `cApiMetaTypeCollection::fetchAll()` or replace call of this function against it.
     $oMetaTypeColl = new cApiMetaTypeCollection();
     $oMetaTypeColl->select();
 

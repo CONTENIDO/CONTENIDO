@@ -57,6 +57,24 @@ class cApiMetaTypeCollection extends ItemCollection
         return $oItem;
     }
 
+    /**
+     * Returns all available meta-tag type entries.
+     *
+     * @return cApiMetaType[]
+     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function fetchAll(): array
+    {
+        $this->select();
+
+        $entries = [];
+        while ($entry = $this->next()) {
+            $entries[] = clone $entry;
+        }
+        return $entries;
+    }
+
 }
 
 /**
@@ -83,17 +101,36 @@ class cApiMetaType extends Item
     }
 
     /**
-     * User-defined setter for article language fields.
-     *
      * @inheritDoc
      */
     public function setField($name, $value, $safe = true)
     {
-        if ('maxlength' == $name) {
-            $value = cSecurity::toInteger($value);
+        switch ($name) {
+            case 'idmetatype':
+            case 'maxlength':
+                $value = cSecurity::toInteger($value);
+                break;
         }
 
         return parent::setField($name, $value, $safe);
+    }
+
+    /**
+     * @inheritDoc
+     * @since CONTENIDO 4.10.2
+     */
+    public function getField($name, $safe = true)
+    {
+        $value = parent::getField($name, $safe);
+
+        switch ($name) {
+            case 'idmetatype':
+            case 'maxlength':
+                $value = cSecurity::toInteger($value);
+                break;
+        }
+
+        return $value;
     }
 
 }
