@@ -71,7 +71,7 @@ function conEditFirstTime(
     $sitemapprio = 0.5,
     $changefreq = ''
 ): int {
-    // Additional globals from send form ($_POST)
+    // Additional globals from the send form ($_POST)
     global $urlname, $page_title;
     global $redirect, $redirect_url, $external_redirect;
     global $time_move_cat; // Used to indicate "move to cat"
@@ -85,6 +85,7 @@ function conEditFirstTime(
     $lang = cRegistry::getLanguageId();
     $auth = cRegistry::getAuth();
 
+    $urlname = cSecurity::toString($urlname ?? '');
     // Add slashes because single quotes will crash the db
     $page_title = addslashes($page_title ?? '');
     $title = stripslashes($title);
@@ -99,7 +100,7 @@ function conEditFirstTime(
     }
 
     $versioning = new cContentVersioning();
-    // Create article entry
+    // Create the article entry
     $oArtColl = new cApiArticleCollection();
     $oArt = $oArtColl->create($client);
     $idart = cSecurity::toInteger($oArt->get('idart'));
@@ -150,11 +151,12 @@ function conEditFirstTime(
             'changefreq' => $changefreq
         ];
         $oArtLang = $oArtLangColl->create($parameters);
-        $lastId = $oArtLang->get('idartlang');
+        $lastArticleLanguageId = $oArtLang->get('idartlang');
         $availableTags = conGetAvailableMetaTagTypes();
         foreach ($availableTags as $key => $value) {
+            // TODO $value is an entry from `con_meta_tag_type` table, and it has no `name` field!
             $tmpValue = isset($value['name']) && isset($_POST['META' . $value['name']]) ? $_POST['META' . $value['name']] : '';
-            conSetMetaValue($lastId, $key, $tmpValue);
+            conSetMetaValue($lastArticleLanguageId, $key, $tmpValue);
         }
     }
 
@@ -236,7 +238,7 @@ function conEditFirstTime(
                 'idart' => $idart,
                 'isstart' => $isStart,
                 'idtpl' => $idtpl,
-                'idartlang' => $lastId,
+                'idartlang' => $lastArticleLanguageId,
                 'idlang' => $idlang,
                 'title' => $title,
                 'summary' => $summary,
@@ -319,7 +321,7 @@ function conEditArt(
     $changefreq = 'nothing'
 )
 {
-    // Additional globals from send form ($_POST)
+    // Additional globals from the send form ($_POST)
     global $urlname, $page_title;
     global $redirect, $redirect_url, $external_redirect;
     global $time_move_cat; // Used to indicate "move to cat"
@@ -339,11 +341,12 @@ function conEditArt(
     $oArtLang = new cApiArticleLanguage($idartlang);
     $locked = cSecurity::toInteger($oArtLang->get('locked'));
 
-    // abort editing if article is locked and user is no admin
+    // Abort editing if the article is locked and the user is no admin
     if ($locked && !$isAdmin) {
         return $idart;
     }
 
+    $urlname = cSecurity::toString($urlname ?? '');
     // Add slashes because single quotes will crash the db
     $page_title = addslashes($page_title ?? '');
     $title = stripslashes($title);
