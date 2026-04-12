@@ -1357,13 +1357,13 @@ function strAssignTemplate($idcat, $client, $idTplCfg)
  *      If nothing is wrong false will be returned.
  * @throws cDbException|cException
  */
-function strCheckTreeForErrors(array $addCats = [], array $ignoreCats = [])
+function strCheckTreeForErrors(array $addCats = [], array $ignoreCats = []): bool|array
 {
     $errorMessages = [];
 
     // Get all categories into memory
     $cats = new cApiCategoryCollection();
-    $cats->select("idclient = '" . cRegistry::getCategoryId() . "'");
+    $cats->select("idclient = '" . cRegistry::getClientId() . "'");
 
     $catArray = [];
     // first add the ones from the parameters
