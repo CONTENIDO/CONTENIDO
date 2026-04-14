@@ -1105,12 +1105,23 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
             ),
         ]);
 
-        $this->makeFormRow([
+        $wrapperContent[] = $this->makeFormRow([
+            new cHTMLLabel(i18n('Image width'), $this->_getElementId('teaser_image_width')),
+            new cHTMLTextbox(
+                'teaser_image_width',
+                $this->getSetting('teaser_image_width'),
+                0,
+                0,
+                $this->_getElementId('teaser_image_width')
+            ),
+        ]);
+
+        $wrapperContent[] = $this->makeFormRow([
             new cHTMLLabel(i18n('Image scale'), $this->_getElementId('teaser_image_crop')),
             $this->_generateCropSelect(),
         ]);
 
-        $this->makeFormRow([
+        $wrapperContent[] = $this->makeFormRow([
             new cHTMLLabel(i18n("Use original image"), $this->_getElementId('teaser_image_original')),
             new cHTMLCheckbox(
                 'teaser_image_original',
@@ -1130,7 +1141,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
             ),
         ]);
 
-        $this->makeFormRow([
+        $wrapperContent[] = $this->makeFormRow([
             $wrapperContent[] = new cHTMLLabel(i18n("Text source"), $this->_getElementId('teaser_source_text')),
             $wrapperContent[] = $this->_generateTypeSelect(
                 'teaser_source_text',
@@ -1139,7 +1150,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
             ),
         ]);
 
-        $this->makeFormRow([
+        $wrapperContent[] = $this->makeFormRow([
             new cHTMLLabel(i18n('Image source'), $this->_getElementId('teaser_source_image')),
             $this->_generateTypeSelect(
                 'teaser_source_image',
@@ -1148,7 +1159,7 @@ class cContentTypeTeaser extends cContentTypeAbstractTabbed
             ),
         ]);
 
-        $this->makeFormRow([
+        $wrapperContent[] =$this->makeFormRow([
             new cHTMLLabel(i18n('Date source'), $this->_getElementId('teaser_source_date')),
             $this->_generateTypeSelect(
                 'teaser_source_date',
