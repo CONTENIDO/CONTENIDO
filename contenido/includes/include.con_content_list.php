@@ -840,6 +840,7 @@ if ('tinymce4' === $wysiwygeditor) {
 }
 $page->set('s', 'TINY_OPTIONS', $sConfigInlineEdit);
 $page->set('s', 'TINY_FULLSCREEN', $sConfigFullscreen);
+
 $page->set('s', 'IDARTLANG', $idartlang);
 $page->set('s', 'CLOSE', html_entity_decode(i18n('Close editor'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
 $page->set('s', 'SAVE', html_entity_decode(i18n('Close editor and save changes'), ENT_COMPAT | ENT_HTML401, cRegistry::getEncoding()));
@@ -866,7 +867,9 @@ $breadcrumb = renderBackendBreadcrumb($syncoptions, true, true);
 $page->set('s', 'CATEGORY', $breadcrumb);
 if (count($result) <= 0) {
     $page->displayInfo(i18n('Article has no raw data'));
+    $page->set('s', 'HIDE_EXPORT', 'style="display:none;"');
 } else {
+    $page->set('s', 'HIDE_EXPORT', '');
     foreach ($result as $type => $typeIdValue) {
         foreach ($typeIdValue as $typeId => $value) {
             if (($articleType == 'editable' || $articleType == 'current' && ($versioningState == $versioning::STATE_DISABLED || $versioningState == $versioning::STATE_SIMPLE))) {
@@ -906,8 +909,11 @@ $page->set('s', 'IDCLIENT', $client);
 if ($isLocked && !$isAdmin) {
     $page->displayWarning(i18n('This article is currently frozen and can not be edited!'));
 }
-
-$code = _processCmsTags($list, $result, true, $page->render(NULL, true), $articleType, $versioningState, $selectedArticle->get('version'), $isLocked, $isAdmin);
+if (count($result) <= 0) {
+    $code = $page->render(NULL, true);
+} else {
+    $code = _processCmsTags($list, $result, true, $page->render(NULL, true), $articleType, $versioningState, $selectedArticle->get('version'), $isLocked, $isAdmin);
+}
 
 if ($code == '0601') {
     markSubMenuItem('1');
