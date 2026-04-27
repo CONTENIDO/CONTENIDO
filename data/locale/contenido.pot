@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-14 11:45+0200\n"
+"POT-Creation-Date: 2026-04-27 12:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1242,7 +1242,7 @@ msgid "Included articles"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:946
-#: classes/content_types/class.content.type.teaser.php:1192
+#: classes/content_types/class.content.type.teaser.php:1181
 msgid "Unknown article"
 msgstr ""
 
@@ -1296,34 +1296,30 @@ msgid "Image height"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:1109
-msgid "Image width"
-msgstr ""
-
-#: classes/content_types/class.content.type.teaser.php:1120
 msgid "Image scale"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:1125
+#: classes/content_types/class.content.type.teaser.php:1114
 msgid "Use original image"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:1134
+#: classes/content_types/class.content.type.teaser.php:1123
 msgid "Content types"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:1136
+#: classes/content_types/class.content.type.teaser.php:1125
 msgid "Headline source"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:1145
+#: classes/content_types/class.content.type.teaser.php:1134
 msgid "Text source"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:1154
+#: classes/content_types/class.content.type.teaser.php:1143
 msgid "Image source"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:1163
+#: classes/content_types/class.content.type.teaser.php:1152
 msgid "Date source"
 msgstr ""
 
