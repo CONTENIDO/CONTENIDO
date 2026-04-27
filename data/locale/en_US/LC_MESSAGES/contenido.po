@@ -1,18 +1,19 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: CONTENIDO 4.10\n"
+"Project-Id-Version: CONTENIDO 4.11\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-14 11:45+0200\n"
-"PO-Revision-Date: 2026-04-14 11:57+0200\n"
-"Last-Translator: Murat Purc <murat@purc.de>\n"
+"POT-Creation-Date: 2026-04-27 12:17+0200\n"
+"PO-Revision-Date: 2026-04-27 14:00+0200\n"
+"Last-Translator: Ortwin Pinke <translations@ortwinpinke.de>\n"
 "Language-Team: CONTENIDO Translators <translators@contenido.de>\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-KeywordsList: i18n;trans;gettext\n"
 "X-Poedit-Basepath: ../../../../contenido\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 "X-Generator: Poedit 3.0.1\n"
 
 #: xml/navigation.xml:9 xml/navigation.xml:18 xml/navigation.xml:58
@@ -1240,7 +1241,7 @@ msgid "Included articles"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:946
-#: classes/content_types/class.content.type.teaser.php:1192
+#: classes/content_types/class.content.type.teaser.php:1181
 msgid "Unknown article"
 msgstr ""
 
@@ -1294,34 +1295,30 @@ msgid "Image height"
 msgstr ""
 
 #: classes/content_types/class.content.type.teaser.php:1109
-msgid "Image width"
-msgstr ""
-
-#: classes/content_types/class.content.type.teaser.php:1120
 msgid "Image scale"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:1125
+#: classes/content_types/class.content.type.teaser.php:1114
 msgid "Use original image"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:1134
+#: classes/content_types/class.content.type.teaser.php:1123
 msgid "Content types"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:1136
+#: classes/content_types/class.content.type.teaser.php:1125
 msgid "Headline source"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:1145
+#: classes/content_types/class.content.type.teaser.php:1134
 msgid "Text source"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:1154
+#: classes/content_types/class.content.type.teaser.php:1143
 msgid "Image source"
 msgstr ""
 
-#: classes/content_types/class.content.type.teaser.php:1163
+#: classes/content_types/class.content.type.teaser.php:1152
 msgid "Date source"
 msgstr ""
 

@@ -904,6 +904,7 @@
 ../data/config/test/config.templates.php
 ../data/config/production/config.autoloader.php
 ../data/config/production/config.http_check.php
+../data/config/production/config.local.php
 ../data/config/production/cfg_sql.inc.php
 ../data/config/production/config.misc.php
 ../data/config/production/config.chains.php
