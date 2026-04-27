@@ -949,14 +949,6 @@ class cSystemtest
     /**
      * @return bool true if the test passed and false if not
      */
-    public function testMySQLExtension(): bool
-    {
-        return $this->isPHPExtensionLoaded('mysql') == self::CON_EXTENSION_AVAILABLE;
-    }
-
-    /**
-     * @return bool true if the test passed and false if not
-     */
     public function testMySQLiExtension(): bool
     {
         return $this->isPHPExtensionLoaded('mysqli') == self::CON_EXTENSION_AVAILABLE;
@@ -998,7 +990,7 @@ class cSystemtest
      * @return int|string 1 if the test passed and > 1 if not, or the connection error message.
      * @throws cDbException|cInvalidArgumentException
      */
-    public function testMySQL(string $host, string $username, string $password, array $options = [])
+    public function testMySQL(string $host, string $username, string $password, array $options = []): int|string
     {
         list($db, $status) = $this->doMySQLConnect($host, $username, $password);
 
