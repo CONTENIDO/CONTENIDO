@@ -424,7 +424,7 @@ class ContentUserForumModule
 
                     $record['FORUM'] = str_replace('\\', '', $value['forum']);
 
-                    if (($value['editedby'] != '') && ($value['editedat'] != '0000-00-00 00:00:00')) {
+                    if ($value['editedby'] != '' && $value['editedat'] != '0000-00-00 00:00:00' && $value['editedat'] != NULL) {
                         // string manipulation for edittime
                         $arrTmp = explode(' ', $value['editedat']);
                         $edittime = cString::getPartOfString($arrTmp[1], 0, 5);
