@@ -814,16 +814,28 @@ abstract class cDbDriverHandler
     }
 
     /**
-     *
+     * @param bool $withDbPrefix only tables with prefix from $cfg['sql']['sqlprefix]
      * @return ?array {@see cDbDriverAbstract::getTableNames()}
      */
-    public function getTableNames(): ?array
+    public function getTableNames($withDbPrefix = false): ?array
     {
         if (!$this->connect()) {
             return NULL;
         }
 
-        return $this->getDriver()->getTableNames();
+        $tableNames = $this->getDriver()->getTableNames();
+
+        if ($withDbPrefix && count($tableNames) > 0) {
+            $prefix = cRegistry::getConfigValue('sql', 'sqlprefix') . '_';
+
+            foreach ($tableNames as $key => $value) {
+                if (!str_starts_with($value['table_name'], $prefix)) {
+                    array_splice($tableNames, $key, 1);
+                }
+            }
+        }
+
+        return $tableNames;
     }
 
     /**

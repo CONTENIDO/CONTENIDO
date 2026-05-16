@@ -406,7 +406,7 @@ class cSystemtest
         }
 
         if ($dbConResult == self::CON_MYSQL_OK) {
-            list($result, $data) = $this->testDatabaseTables();
+            list($result, $data) = $this->testDatabaseTables(true);
             if ($result) {
                 $this->storeResult(true, self::C_SEVERITY_ERROR, "", "", i18n("Database check was ok"));
             } else {
@@ -1040,6 +1040,7 @@ class cSystemtest
      * The check will be skipped, if the system test runs for a setup and the
      * setup-type is 'setup'.
      *
+     * @param bool $withDbPrefix only tables with prefix from $cfg['sql']['sqlprefix]
      * @return array Result array like:
      *      [
      *          // True on success, false in case of found errors
@@ -1062,7 +1063,7 @@ class cSystemtest
      * @throws cDbException
      * @since CONTENIDO 4.10.2
      */
-    public function testDatabaseTables(): array
+    public function testDatabaseTables($withDbPrefix = false): array
     {
         // There is nothing to do if the setup is a new installation
         if ($this->_setupType === 'setup') {
@@ -1075,7 +1076,7 @@ class cSystemtest
         } else {
             $db = getSetupMySQLDBConnection(true);
         }
-        $tableNameData = $db->getTableNames();
+        $tableNameData = $db->getTableNames($withDbPrefix);
         if (empty($tableNameData)) {
             return [true, []];
         }
