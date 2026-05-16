@@ -255,7 +255,7 @@ class ArticleForumRightBottom extends cGuiPage
             $userColl = new cApiUserCollection();
             $user = $userColl->loadItem($cont['editedby'])->get('username');
 
-            if (($cont['editedby'] != '') && ($cont['editedat'] != '') && $cont['editedat'] != '0000-00-00 00:00:00' && $cont['editedat'] != NULL) {
+            if (!cDate::isEmptyDate($cont['editedby'])) {
                 $edit_information = (UserForum::i18n("EDITED") . $editdate . ' ' . UserForum::i18n("FROM") . $user);
                 $edit_information = "<em>$edit_information</em>";
             } else {

@@ -373,7 +373,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
             $created = $sart['created'];
             $modified = $sart['lastmodified'];
 
-            if ($modified === '0000-00-00 00:00:00' || is_null($modified)) {
+            if (cDate::isEmptyDate($modified)) {
                 $modified = i18n("not modified yet");
             } else {
                 $modified = date($dateformat, strtotime($modified));
@@ -390,7 +390,7 @@ if (is_numeric($idcat) && ($idcat >= 0)) {
                 $sortkey = '&nbsp;';
             }
 
-            $published = ($published != '0000-00-00 00:00:00' && !is_null($published)) ? date($dateformat, strtotime($published)) : $lngNotYetPublished;
+            $published = (cDate::isEmptyDate($published)) ? date($dateformat, strtotime($published)) : $lngNotYetPublished;
             $created = date($dateformat, strtotime($created));
             $articleAltText = "idart" . '&#58; ' . $idart . ' ' . "idcatart" . '&#58; ' . $idcatart . ' ' . "idartlang" . '&#58; ' . $idartlang;
 

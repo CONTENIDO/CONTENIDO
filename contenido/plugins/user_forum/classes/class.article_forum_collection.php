@@ -312,7 +312,7 @@ class ArticleForumCollection extends ItemCollection
         ) {
             // load timestamp from db to check if the article was already
             // edited.
-            if ($this->item->getField('editedat') === '0000-00-00 00:00:00' || $this->item->getField('editedat') === NULL) {
+            if (cDate::isEmptyDate($this->item->getField('editedat'))) {
                 // case : never edited
                 $timeStamp = date('Y-m-d H:i:s', time());
             } else {
