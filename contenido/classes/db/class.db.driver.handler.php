@@ -817,7 +817,7 @@ abstract class cDbDriverHandler
      * @param bool $withDbPrefix only tables with prefix from $cfg['sql']['sqlprefix]
      * @return ?array {@see cDbDriverAbstract::getTableNames()}
      */
-    public function getTableNames($withDbPrefix = false): ?array
+    public function getTableNames(bool $withDbPrefix = false): ?array
     {
         if (!$this->connect()) {
             return NULL;
