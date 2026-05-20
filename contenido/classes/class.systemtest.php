@@ -1063,7 +1063,7 @@ class cSystemtest
      * @throws cDbException
      * @since CONTENIDO 4.10.2
      */
-    public function testDatabaseTables($withDbPrefix = false): array
+    public function testDatabaseTables(bool $withDbPrefix = false): array
     {
         // There is nothing to do if the setup is a new installation
         if ($this->_setupType === 'setup') {
