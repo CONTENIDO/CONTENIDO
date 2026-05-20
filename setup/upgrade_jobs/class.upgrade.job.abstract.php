@@ -90,7 +90,7 @@ abstract class cUpgradeJobAbstract
         $this->_version = $version;
         $this->_oDb = $db;
         $this->_aCfg = (is_array($cfg)) ? $cfg : $GLOBALS['cfg'];
-        $this->_aCfgClient = (is_array($cfgClient)) ? $cfg : $GLOBALS['cfgClient'];
+        $this->_aCfgClient = (is_array($cfgClient)) ? $cfgClient : $GLOBALS['cfgClient'];
         $this->_setupType = $_SESSION['setuptype'] ?? '';
         // set default configuration for DB connection
         cDb::setDefaultConfiguration($cfg['db']);
