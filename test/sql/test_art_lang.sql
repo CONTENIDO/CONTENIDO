@@ -15,7 +15,7 @@ CREATE TABLE `!PREFIX!_art_lang`
     `lastmodified`      datetime     NOT NULL default CURRENT_TIMESTAMP,
     `author`            varchar(32)           default NULL,
     `modifiedby`        varchar(32)           default NULL,
-    `published`         datetime     NOT NULL default CURRENT_TIMESTAMP,
+    `published`         datetime              default NULL,
     `publishedby`       varchar(32)           default NULL,
     `online`            tinyint(1) NOT NULL default '0',
     `redirect`          int(6) NOT NULL default '0',
