@@ -121,14 +121,18 @@ class cSecurity
     }
 
     /**
-     * Convert a string to an integer.
+     * Convert a value to an integer
      *
      * @param mixed $value Input value, e.g. a string
-     * @return int Type casted input string
+     * @return int Type casted input
      */
-    public static function toInteger($value): int
+    public static function toInteger(mixed $value): int
     {
-        return is_int($value) ? $value : (int) $value;
+        return match (gettype($value)) {
+            'integer' => $value,
+            'boolean', 'double', 'string' => intval($value),
+            default => 0,
+        };
     }
 
     /**
