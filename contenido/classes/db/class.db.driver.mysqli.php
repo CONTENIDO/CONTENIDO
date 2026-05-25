@@ -91,10 +91,9 @@ class cDbDriverMysqli extends cDbDriverAbstract
         }
 
         // set existing option flags
-        if (isset($connectConfig['options']) && is_array($connectConfig['options'])) {
-            foreach ($connectConfig['options'] as $optKey => $optVal) {
-                mysqli_options($dbHandler, $optKey, $optVal);
-            }
+        $options = $this->prepareOptionFlags($connectConfig['options'] ?? []);
+        foreach ($options as $optKey => $optVal) {
+            mysqli_options($dbHandler, $optKey, $optVal);
         }
 
         if (cString::findFirstPos($connectConfig['host'], ':') !== false) {
@@ -478,6 +477,25 @@ class cDbDriverMysqli extends cDbDriverAbstract
         /** @var mysqli $linkId */
         $linkId = $this->_handler->getLinkId();
         mysqli_close($linkId);
+    }
+
+    protected function prepareOptionFlags(mixed $options): array
+    {
+        if (!isset($options) || is_array($options)) {
+            return [];
+        }
+
+        foreach ($options as $optKey => $optVal) {
+            if ($optKey === MYSQLI_INIT_COMMAND) {
+                // Merge multiple entries for initialization commands to 'SQL_A; SQL_B; SQL_C;'
+                if (is_array($optVal)) {
+                    $optVal = implode(';', array_map(fn($item) => rtrim($item, ';'), $optVal));
+                }
+            }
+            $options[$optKey] = $optVal;
+        }
+
+        return $options;
     }
 
 }

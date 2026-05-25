@@ -84,6 +84,20 @@ function getSetupMySQLDBConnection($full = true): cDb
         unset($cfgDb['connection']['database']);
     }
 
+    // Ensure to set the setup language for database messages
+    if (in_array($_SESSION['language'] ?? '', ['de_DE', 'en_US'])) {
+        $command = sprintf("SET lc_messages = '%s';", $_SESSION['language']);
+        $initCommand = $cfgDb['connection']['options'][MYSQLI_INIT_COMMAND] ?? null;
+        if (is_string($initCommand)) {
+            $initCommand = [$initCommand, $command];
+        } elseif (is_array($initCommand)) {
+            $initCommand[] = $command;
+        } else {
+            $initCommand = [$command];
+        }
+        $cfgDb['connection']['options'][MYSQLI_INIT_COMMAND] = $initCommand;
+    }
+
     return new cDb($cfgDb);
 }
 

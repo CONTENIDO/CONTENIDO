@@ -123,7 +123,10 @@ function dbUpgradeTable(
 
     // Set default charset
     $cfg = cRegistry::getConfig();
-    $parameter['CHARSET'] = 'DEFAULT CHARSET=' . $cfg['db']['connection']['charset'];
+    $parameter['CHARSET'] = sprintf(
+        'DEFAULT CHARSET=%s',
+        !empty($cfg['db']['connection']['charset']) ? $cfg['db']['connection']['charset'] : CON_DB_CHARSET
+    );
 
     if (!dbTableExists($db, $table)) {
         $sql = "CREATE TABLE `" . $db->escape($table) . "` (`" . $db->escape($field) . "` $type " . $parameter['NULL'] . " " . $parameter['DEFAULT'] . " " . $parameter['KEY'] . ") " . $parameter['CHARSET'] . ';';

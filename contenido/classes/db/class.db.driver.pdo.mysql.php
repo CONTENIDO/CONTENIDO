@@ -34,6 +34,16 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cDbDriverPdoMysql extends cDbDriverAbstract
 {
     /**
+     * Mapping of common mysqli options to PDO options.
+     */
+    private array $optionMapping = [
+        MYSQLI_OPT_CONNECT_TIMEOUT => PDO::ATTR_TIMEOUT,
+        MYSQLI_INIT_COMMAND => PDO::MYSQL_ATTR_INIT_COMMAND,
+        MYSQLI_OPT_LOCAL_INFILE => PDO::MYSQL_ATTR_LOCAL_INFILE,
+        MYSQLI_READ_DEFAULT_FILE => PDO::MYSQL_ATTR_READ_DEFAULT_FILE,
+    ];
+
+    /**
      * @var ?PDO
      */
     protected $_pdo;
@@ -63,9 +73,23 @@ class cDbDriverPdoMysql extends cDbDriverAbstract
 
         $dsn = sprintf('mysql:host=%s;dbname=%s;charset=%s', $connectConfig['host'], $connectConfig['database'], $connectConfig['charset'] ?? 'utf8');
 
+        // Prepare options. PDO can't handle multiple init commands, extract the first init command
+        // and use the rest after creating the connection.
+        $options = $this->prepareOptionFlags($connectConfig['options'] ?? []);
+        if (!empty($options[PDO::MYSQL_ATTR_INIT_COMMAND]) && is_array($options[PDO::MYSQL_ATTR_INIT_COMMAND])) {
+            $initOption = array_shift($options[PDO::MYSQL_ATTR_INIT_COMMAND]);
+            $execOptions = $options[PDO::MYSQL_ATTR_INIT_COMMAND];
+            $options[PDO::MYSQL_ATTR_INIT_COMMAND] = $initOption;
+        } else {
+            $execOptions = [];
+        }
+
         try {
-            $this->_pdo = new PDO($dsn, $connectConfig['user'], $connectConfig['password']);
+            $this->_pdo = new PDO($dsn, $connectConfig['user'], $connectConfig['password'], $options);
             $this->_pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            foreach ($execOptions as $execOption) {
+                $this->_pdo->exec($execOption);
+            }
         } catch (PDOException $e) {
             $this->_handler->halt('Connection failed: ' . $e->getMessage());
             return NULL;
@@ -340,4 +364,23 @@ class cDbDriverPdoMysql extends cDbDriverAbstract
     {
         $this->_pdo = null;
     }
+
+    protected function prepareOptionFlags(mixed $options): array
+    {
+        if (!isset($options) || is_array($options)) {
+            return [];
+        }
+
+        $newOptions = [];
+
+        foreach ($options as $optKey => $optVal) {
+            $pdoOptKey = $this->optionMapping[$optKey] ?? NULL;
+            if ($pdoOptKey) {
+                $newOptions[$optKey] = $optVal;
+            }
+        }
+
+        return $newOptions;
+    }
+
 }
