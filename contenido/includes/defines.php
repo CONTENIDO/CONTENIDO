@@ -19,7 +19,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 defined('CON_VERSION') || define('CON_VERSION', '4.10.2-dev');
 
 // Minimum supported PHP version
-define('CON_MIN_PHP_VERSION', '7.1');
+define('CON_MIN_PHP_VERSION', '8.0');
 
 // Not supported MySQL SQL modes
 if (!defined('CON_DB_NOT_SUPPORTED_SQL_MODES')) {
