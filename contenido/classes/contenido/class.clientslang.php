@@ -193,6 +193,50 @@ class cApiClientLanguageCollection extends ItemCollection
 
         return $list;
     }
+
+    /**
+     * Returns a list with all clients and languages.
+     *
+     * @return array<int, array{
+     *     idlang: int,
+     *     langname: string,
+     *     idclient: int,
+     *     clientname: string
+     * }>
+     * @throws cDbException
+     * @since CONTENIDO 4.10.2
+     */
+    public function getAllClientsAndLanguages(): array
+    {
+        $sql = 'SELECT
+                l.idlang AS idlang,
+                l.name AS langname,
+                c.name AS clientname,
+                c.idclient AS idclient
+             FROM
+                 `%s` AS l, `%s` AS cl, `%s` AS c
+             WHERE
+                l.idlang = cl.idlang AND cl.idclient = c.idclient';
+
+        $this->db->query(
+            $sql,
+            cDb::getTableName('lang'),
+            $this->table,
+            cDb::getTableName('clients')
+        );
+
+        $list = [];
+        while ($this->db->nextRecord()) {
+            $list[] = [
+                'idlang' => $this->db->f('idlang'),
+                'langname' => $this->db->f('langname'),
+                'idclient' => $this->db->f('idclient'),
+                'clientname' => $this->db->f('clientname')
+            ];
+        }
+
+        return $list;
+    }
 }
 
 /**

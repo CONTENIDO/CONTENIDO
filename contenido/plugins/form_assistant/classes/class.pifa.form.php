@@ -357,16 +357,7 @@ class PifaForm extends Item
     }
 
     /**
-     * Getter for protected prop.
-     *
-     * @return string
-     */
-    public function getLastError(): string
-    {
-        return $this->lasterror;
-    }
-
-    /**
+     * Sets form values from send form (depending on method).
      */
     public function fromForm()
     {
