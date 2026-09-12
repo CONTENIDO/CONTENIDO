@@ -23,7 +23,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class ArticleForumItem extends Item
 {
 
-    protected $cfg;
+    protected array $cfg;
 
     protected $db;
 
@@ -34,13 +34,4 @@ class ArticleForumItem extends Item
 
         parent::__construct(cDb::getTableName('user_forum'), 'id_user_forum');
     }
-
-    /**
-     * returns current config
-     */
-    public function getCfg()
-    {
-        return $this->cfg;
-    }
-
 }
