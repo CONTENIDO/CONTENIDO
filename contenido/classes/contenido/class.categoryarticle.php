@@ -287,6 +287,21 @@ class cApiCategoryArticleCollection extends ItemCollection
 
         return $this->db->affectedRows();
     }
+
+    /**
+     * Checks if an article is assigned to multiple categories.
+     *
+     * @param int $articleId Article-Id
+     * @throws cDbException
+     * @since CONTENIDO 4.10.2
+     */
+    public function isArtincleInMultipleUse(int $articleId): bool
+    {
+        $this->db->query('SELECT `idart` FROM `%s` WHERE `idart` = %d', $this->table, $articleId);
+
+        return $this->db->affectedRows() > 1;
+    }
+
 }
 
 /**

@@ -62,18 +62,12 @@ function getAvailableContentTypes($idartlang)
 }
 
 /**
- * Checks if an article is assigned to multiple categories
- *
- * @param int $idart Article-Id
- * @return bool Article assigned to multiple categories
- * @throws cDbException
+ * @deprecated [2026-09-12] Since CONTENIDO 4.10.2, use {@see cApiCategoryArticleCollection::isArtincleInMultipleUse()} instead
  */
 function isArtInMultipleUse($idart): bool
 {
-    $db = cRegistry::getDb();
-    $db->query('SELECT `idart` FROM `%s` WHERE idart = %d', cDb::getTableName('cat_art'), $idart);
-
-    return $db->affectedRows() > 1;
+    cDeprecated("The function isArtInMultipleUse() is deprecated since CONTENIDO 4.10.2, use cApiCategoryArticleCollection::isArtincleInMultipleUse() instead.");
+    return (new cApiCategoryArticleCollection())->isArtincleInMultipleUse(cSecurity::toInteger($idart));
 }
 
 /**
@@ -81,6 +75,7 @@ function isArtInMultipleUse($idart): bool
  */
 function isAlphanumeric($test, $umlauts = true)
 {
+    cDeprecated("The function isArtInMultipleUse() is deprecated since 2015-05-21, use cString::isAlphanumeric() instead.");
     return cString::isAlphanumeric($test, $umlauts);
 }
 
@@ -89,6 +84,7 @@ function isAlphanumeric($test, $umlauts = true)
  */
 function isUtf8($input)
 {
+    cDeprecated("The function isUtf8() is deprecated since 2015-05-21, use cString::isUtf8() instead.");
     return cString::isUtf8($input);
 }
 
@@ -97,6 +93,7 @@ function isUtf8($input)
  */
 function getCanonicalMonth($month)
 {
+    cDeprecated("The function isUtf8() is deprecated since 2023-02-10, use cDate::getCanonicalMonth() instead.");
     return cDate::getCanonicalMonth($month);
 }
 
@@ -105,6 +102,7 @@ function getCanonicalMonth($month)
  */
 function getCanonicalDay($weekday)
 {
+    cDeprecated("The function isUtf8() is deprecated since 2023-02-10, use cDate::getCanonicalDay() instead.");
     return cDate::getCanonicalDay($weekday);
 }
 
@@ -113,6 +111,7 @@ function getCanonicalDay($weekday)
  */
 function displayDatetime($timestamp = "", $date = false, $time = false)
 {
+    cDeprecated("The function isUtf8() is deprecated since 2023-02-10, use cDate::formatDatetime() instead.");
     return cDate::formatDatetime(
         cSecurity::toString($timestamp),
         cSecurity::toBoolean($date),
@@ -140,13 +139,11 @@ function getIdForArea($area)
 }
 
 /**
- * Returns the parent id of passed area
- *
- * @param mixed $area
- * @throws cDbException
+ * @deprecated [2026-09-12] Since CONTENIDO 4.10.2, use {@see cApiAreaCollection::getParentAreaId()} instead.
  */
 function getParentAreaId($area): int
 {
+    cDeprecated("The function getParentAreaId() is deprecated since CONTENIDO 4.10.2, use cApiAreaCollection::getParentAreaId() instead.");
     return cSecurity::toInteger((new cApiAreaCollection())->getParentAreaId($area));
 }
 
@@ -289,7 +286,7 @@ function getLanguageNamesByClient($client): array
  */
 function set_magic_quotes_gpc(&$code)
 {
-    cDeprecated('The function set_magic_quotes_gpc() is deprecated and is not needed any longer');
+    cDeprecated('The function set_magic_quotes_gpc() is deprecated since 2015-05-21 and is not needed any longer');
 
     $cfg = cRegistry::getConfig();
     if (!$cfg['simulate_magic_quotes']) {
@@ -301,48 +298,13 @@ function set_magic_quotes_gpc(&$code)
 }
 
 /**
- * Returns a list with all clients and languages.
- *
- * @return array
- *         Indexed array where the value is an associative array as follows:
- *         <pre>
- *         - $arr[0]['idlang']
- *         - $arr[0]['langname']
- *         - $arr[0]['idclient']
- *         - $arr[0]['clientname']
- *         </pre>
- * @throws cDbException
+ * @deprecated [2026-09-12] Since CONTENIDO 4.10.2, use {@see cApiClientLanguageCollection::getAllClientsAndLanguages()} instead
+ * See {@see cApiClientLanguageCollection::getAllClientsAndLanguages()}.
  */
 function getAllClientsAndLanguages(): array
 {
-    $db = cRegistry::getDb();
-
-    $sql = 'SELECT
-                l.idlang AS idlang,
-                l.name AS langname,
-                c.name AS clientname,
-                c.idclient AS idclient
-             FROM
-                 `%s` AS l, `%s` AS cl, `%s` AS c
-             WHERE
-                l.idlang = cl.idlang AND cl.idclient = c.idclient';
-    $db->query(
-        $sql,
-        cDb::getTableName('lang'),
-        cDb::getTableName('clients_lang'),
-        cDb::getTableName('clients')
-    );
-
-    $aRs = [];
-    while ($db->nextRecord()) {
-        $aRs[] = [
-            'idlang' => $db->f('idlang'),
-            'langname' => $db->f('langname'),
-            'idclient' => $db->f('idclient'),
-            'clientname' => $db->f('clientname')
-        ];
-    }
-    return $aRs;
+    cDeprecated("The function getAllClientsAndLanguages() is deprecated since CONTENIDO 4.10.2, use cApiClientLanguageCollection::getAllClientsAndLanguages() instead.");
+    return (new cApiClientLanguageCollection())->getAllClientsAndLanguages();
 }
 
 function getmicrotime(): float
@@ -733,21 +695,7 @@ function getSystemPropertiesByType($type): array
 }
 
 /**
- * Returns effective setting for a property.
- *
- * The order is: System => Client => Client (language) => Group => User
- *
- * System properties can be overridden by the group, and group properties
- * can be overridden by the user.
- *
- * NOTE: If you provide a default value (other than empty string), then it will be returned back
- *       in case of not existing or empty setting.
- *
- * @param string $type The type of the item
- * @param string $name The name of the item
- * @param mixed $default Optional default value
- * @return bool|string Setting value or false
- * @throws cDbException|cException
+ * See {@see cEffectiveSetting::get()}
  */
 function getEffectiveSetting($type, $name, $default = '')
 {
@@ -755,15 +703,7 @@ function getEffectiveSetting($type, $name, $default = '')
 }
 
 /**
- * Returns the current effective settings for a type of properties.
- *
- * The order is: System => Client => Group => User
- *
- * System properties can be overridden by the group, and group properties can be overridden by the user.
- *
- * @param string $type The type of the item
- * @return array Value
- * @throws cDbException|cException
+ * See {@see cEffectiveSetting::getByType()}
  */
 function getEffectiveSettingsByType($type): array
 {
@@ -1635,6 +1575,8 @@ function cDeprecated(string $message = '')
  */
 function getNamedFrame($frame)
 {
+    cDeprecated("The function getNamedFrame() is deprecated since 2015-05-21, is no longer supported (no replacement).");
+
     switch ($frame) {
         case 1:
             return 'left_top';

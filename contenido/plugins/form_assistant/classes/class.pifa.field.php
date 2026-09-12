@@ -245,7 +245,7 @@ class PifaField extends Item
     /**
      * The file that was transmitted in case of INPUTFILE.
      *
-     * @var array
+     * @var ?array
      */
     private $_file = null;
 
@@ -301,7 +301,7 @@ class PifaField extends Item
      */
     public function getField($name, $safe = true)
     {
-        if (is_null($this->values[$name])) {
+        if (!isset($this->values[$name])) {
             return '';
         }
         $value = parent::getField($name, $safe);
@@ -309,14 +309,6 @@ class PifaField extends Item
             $value = stripslashes($value);
         }
         return $value;
-    }
-
-    /**
-     * Getter for protected prop.
-     */
-    public function getLastError()
-    {
-        return $this->lasterror;
     }
 
     /**
@@ -341,7 +333,7 @@ class PifaField extends Item
     /**
      * keys: name, tmp_name
      *
-     * @return array the $_file
+     * @return ?array the $_file
      */
     public function getFile()
     {
@@ -962,7 +954,7 @@ class PifaField extends Item
      *
      * @param int $fieldTypeId
      */
-    public static function getFieldTypeName($fieldTypeId)
+    public static function getFieldTypeName($fieldTypeId): string
     {
         $fieldTypeId = cSecurity::toInteger($fieldTypeId);
         $fieldTypeNames = self::getFieldTypeNames();
@@ -1054,7 +1046,7 @@ class PifaField extends Item
 
                 return null;
 
-            // TODO For some filed types I havn't yet decided which data
+            // TODO For some filed types I haven't yet decided which data
             // type to use.
             case self::PROCESSBAR:
             case self::SLIDER:

@@ -189,22 +189,14 @@ class cRightsAreasHelper
 
     /**
      * Returns a list with all clients and languages, alias for
-     * {@see getAllClientsAndLanguages()}
+     * {@see cApiClientLanguageCollection::getAllClientsAndLanguages()}.
      *
      * @return array
      * @throws cDbException
      */
     public function getAllClientsAndLanguages(): array
     {
-        $result = getAllClientsAndLanguages();
-        // Cast the values to their proper types
-        foreach ($result as $pos => $entry) {
-            $result[$pos]['idlang'] = cSecurity::toInteger($entry['idlang']);
-            $result[$pos]['langname'] = cSecurity::toString($entry['langname']);
-            $result[$pos]['idclient'] = cSecurity::toInteger($entry['idclient']);
-            $result[$pos]['clientname'] = cSecurity::toString($entry['clientname']);
-        }
-        return $result;
+        return (new cApiClientLanguageCollection())->getAllClientsAndLanguages();
     }
 
     /**

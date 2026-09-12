@@ -229,6 +229,15 @@ abstract class cItemBaseAbstract extends cGenericDb
     }
 
     /**
+     * Get the last occurred error.
+     * @since CONTENIDO 4.10.2
+     */
+    public function getLastError(): string
+    {
+        return $this->lasterror;
+    }
+
+    /**
      * Prepares the statement for execution and returns it back.
      * The function can be called with a statement and replacement parameters,
      * see {@see cDbDriverHandler::prepare()} for more details.
