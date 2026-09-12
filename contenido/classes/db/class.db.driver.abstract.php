@@ -232,4 +232,9 @@ abstract class cDbDriverAbstract
      */
     abstract public function disconnect();
 
+    /**
+     * Prepares the options for the database driver.
+     * @param mixed $options Database connection options (null, array, or string)
+     */
+    abstract protected function prepareOptionFlags(mixed $options): array;
 }

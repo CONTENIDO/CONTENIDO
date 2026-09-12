@@ -254,24 +254,18 @@ class cSystemtest
      *     'headline' => $headline, //the headline of the message
      *     'message' => $message //the message
      * ];
-     *
-     * @var array
      */
-    protected $_messages = [];
+    protected array $_messages = [];
 
     /**
      * The stored config array
-     *
-     * @var array
      */
-    protected $_config;
+    protected array $_config;
 
     /**
      * Setup type, in case the system test runs during a setup.
-     *
-     * @var string
      */
-    protected $_setupType;
+    protected string $_setupType;
 
     /**
      * Constructor to create an instance of this class.
@@ -293,7 +287,7 @@ class cSystemtest
      *      with standard settings.
      * @throws cDbException|cException|cInvalidArgumentException
      */
-    public function runTests(bool $testFileSystem = true)
+    public function runTests(bool $testFileSystem = true): void
     {
         $this->storeResult($this->testPHPVersion(), self::C_SEVERITY_ERROR, sprintf(i18n("PHP Version lower than %s"), CON_MIN_PHP_VERSION), sprintf(i18n("CONTENIDO requires PHP %s or higher as it uses functionality first introduced with this version. Please update your PHP version."), CON_MIN_PHP_VERSION), i18n("The PHP version is higher than ") . CON_MIN_PHP_VERSION);
         $this->storeResult($this->testFileUploadSetting(), self::C_SEVERITY_WARNING, i18n("File uploads disabled"), sprintf(i18n("Your PHP version is not configured for file uploads. You can't upload files using CONTENIDO's file manager unless you configure PHP for file uploads. See %s for more information"), '<a target="_blank" href="https://www.php.net/manual/en/ini.core.php#ini.file-uploads">https://www.php.net/manual/en/ini.core.php#ini.file-uploads</a>'), i18n("PHP file upload is enabled"));
@@ -381,7 +375,8 @@ class cSystemtest
                     self::C_SEVERITY_ERROR,
                     i18n("MySQL database connect failed"),
                     sprintf(
-                        i18n("Setup was unable to connect to the MySQL Server (Server %s, Username %s). Please correct the MySQL data and try again.<br><br>The error message given was: %s"), $this->_config['db']['connection']['host'],
+                        i18n("Setup was unable to connect to the MySQL Server (Server %s, Username %s). Please correct the MySQL data and try again.<br><br>The error message given was: %s"),
+                        $this->_config['db']['connection']['host'],
                         $this->_config['db']['connection']['user'],
                         $message
                     )
@@ -457,8 +452,7 @@ class cSystemtest
         string $errorMessage = '',
         string $successHeadline = '',
         string $successMessage = ''
-    )
-    {
+    ): void {
         if ($result) {
             $this->_messages[] = [
                 'result' => $result,
@@ -486,14 +480,14 @@ class cSystemtest
 
     /**
      * Returns an array with information about the file, especially the file owner.
-     * Wrapper for @param string $sFilename The path to the file
+     * Wrapper for @param string $filename The path to the file
      * @return array|bool The file info array or false if the file can't be accessed
      * @see cFileHandler::typeOwnerInfo()
      *
      */
-    protected function getFileInfo($sFilename)
+    protected function getFileInfo(string $filename): bool|array
     {
-        return cFileHandler::typeOwnerInfo(cSecurity::toString($sFilename));
+        return cFileHandler::typeOwnerInfo($filename);
     }
 
     /**
@@ -501,7 +495,7 @@ class cSystemtest
      *
      * @param string $filename The path to the file
      */
-    protected function canWriteFile($filename): bool
+    protected function canWriteFile(string $filename): bool
     {
         clearstatcache();
         if (cFileHandler::exists($filename)) {
@@ -516,19 +510,19 @@ class cSystemtest
      *
      * @param string $dirname The path to the directory
      */
-    protected function canWriteDir($dirname): bool
+    protected function canWriteDir(string $dirname): bool
     {
         clearstatcache();
         return cDirHandler::exists($dirname) && cFileHandler::writeable($dirname);
     }
 
     /**
-     * Returns the current user which runs the PHP interpreter
+     * Returns the current user who runs the PHP interpreter.
      *
      * @return int|bool ID or false if unable to determine the user
      * @throws cInvalidArgumentException
      */
-    protected function getServerUID()
+    protected function getServerUID(): bool|int
     {
         if (function_exists('posix_getuid')) {
             return posix_getuid();
@@ -560,7 +554,7 @@ class cSystemtest
      * @return int|bool ID or false if unable to determine the group
      * @throws cInvalidArgumentException
      */
-    protected function getServerGID()
+    protected function getServerGID(): bool|int
     {
         if (function_exists('posix_getgid')) {
             return posix_getgid();
@@ -653,7 +647,7 @@ class cSystemtest
      * @param string $setting A PHP setting
      * @return false|string The value of the PHP setting or NULL if ini_get is disabled
      */
-    protected function getPHPIniSetting(string $setting)
+    protected function getPHPIniSetting(string $setting): bool|string
     {
         // Avoid errors if ini_get is in the disable_functions directive
         return @ini_get($setting);
@@ -664,7 +658,7 @@ class cSystemtest
      *
      * @param string $val A string in the form of '12K', '12M' or '12G'
      */
-    protected function getAsBytes($val): int
+    protected function getAsBytes(string $val): int
     {
         if (cString::getStringLength($val) == 0) {
             return 0;
@@ -730,7 +724,7 @@ class cSystemtest
      * @param string $extension A PHP extension
      * @return int Returns one of the CON_EXTENSION constants
      */
-    public function isPHPExtensionLoaded($extension): int
+    public function isPHPExtensionLoaded(string $extension): int
     {
         return extension_loaded($extension) ? self::CON_EXTENSION_AVAILABLE : self::CON_EXTENSION_UNAVAILABLE;
     }
@@ -798,7 +792,7 @@ class cSystemtest
      *
      * @return bool true if the test passed and false if not
      */
-    public function testMagicQuotesSybaseSetting()
+    public function testMagicQuotesSybaseSetting(): bool
     {
         return !$this->getPHPIniSetting('magic_quotes_sybase');
     }
@@ -963,7 +957,7 @@ class cSystemtest
     }
 
     /**
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     public function testMySQLModeStrict(string $host, string $username, string $password, array $options = []): bool
     {
@@ -996,9 +990,9 @@ class cSystemtest
 
     /**
      * @return int|string 1 if the test passed and > 1 if not, or the connection error message.
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
-    public function testMySQL(string $host, string $username, string $password, array $options = [])
+    public function testMySQL(string $host, string $username, string $password, array $options = []): int|string
     {
         list($db, $status) = $this->doMySQLConnect($host, $username, $password);
 
@@ -1032,7 +1026,7 @@ class cSystemtest
        string $username,
        string $password,
        string $database
-   ) {
+   ): int {
        list($db, $status) = $this->doMySQLConnect($host, $username, $password, $database);
 
        if (!$db instanceof cDb) {
@@ -1470,10 +1464,10 @@ class cSystemtest
     /**
      * Checks the available image resizer classes and functions
      *
-     * @return int
-     *         Returns one of the CON_IMAGERESIZE constants
+     * @return int Returns one of the CON_IMAGERESIZE constants
+     * @throws cException|cInvalidArgumentException
      */
-    public function checkImageResizer()
+    public function checkImageResizer(): int
     {
         $iGDStatus = $this->isPHPExtensionLoaded('gd');
 
@@ -1511,14 +1505,19 @@ class cSystemtest
         string $charset = '',
         string $collation = '',
         string $engine = ''
-    ) {
+    ): void {
         switch ($setupType) {
             case 'setup':
 
                 try {
                     $db = getSetupMySQLDBConnection(false);
                 } catch (cDbException $e) {
-                    $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("Could not connect to MySQL database", "setup"), $e->getMessage());
+                    $this->storeResult(
+                        false,
+                        cSystemtest::C_SEVERITY_ERROR,
+                        i18n("Could not connect to MySQL database"),
+                        $e->getMessage()
+                    );
                     return;
                 }
 
@@ -1534,49 +1533,107 @@ class cSystemtest
                     $db->query("SHOW TABLES LIKE '%s_actions'", $databasePrefix);
 
                     if ($db->nextRecord()) {
-                        $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("MySQL database already exists and seems to be filled", "setup"), sprintf(i18n("Setup checked the database %s and found the table %s. It seems that you already have a CONTENIDO installation in this database. If you want to install anyways, change the database prefix. If you want to upgrade from a previous version, choose 'upgrade' as setup type.", "setup"), $databaseName, sprintf("%s_actions", $databasePrefix)));
+                        $this->storeResult(
+                            false,
+                            cSystemtest::C_SEVERITY_ERROR, i18n("MySQL database already exists and seems to be filled"),
+                            sprintf(
+                                i18n("Setup checked the database %s and found the table %s. It seems that you already have a CONTENIDO installation in this database. If you want to install anyways, change the database prefix. If you want to upgrade from a previous version, choose 'upgrade' as setup type."),
+                                $databaseName,
+                                sprintf("%s_actions", $databasePrefix)
+                            )
+                        );
                         return;
                     }
 
                     // Check if data already exists
                     $db->query("SHOW TABLES LIKE '%s_test'", $databasePrefix);
                     if ($db->nextRecord()) {
-                        $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("MySQL test table already exists in the database", "setup"), sprintf(i18n("Setup checked the database %s and found the test table %s. Please remove it before continuing.", "setup"), $databaseName, sprintf("%s_test", $databasePrefix)));
+                        $this->storeResult(
+                            false,
+                            cSystemtest::C_SEVERITY_ERROR,
+                            i18n("MySQL test table already exists in the database"),
+                            sprintf(
+                                i18n("Setup checked the database %s and found the test table %s. Please remove it before continuing."),
+                                $databaseName,
+                                sprintf("%s_test", $databasePrefix)
+                            )
+                        );
                         return;
                     }
 
                     // Good, table doesn't exist. Check for database permissions
                     $status = checkMySQLTableCreation($db, $databaseName, sprintf("%s_test", $databasePrefix));
                     if (!$status) {
-                        $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("Unable to create tables in the selected MySQL database", "setup"), sprintf(i18n("Setup tried to create a test table in the database %s and failed. Please assign table creation permissions to the database user you entered, or ask an administrator to do so.", "setup"), $databaseName));
+                        $this->storeResult(
+                            false,
+                            cSystemtest::C_SEVERITY_ERROR,
+                            i18n("Unable to create tables in the selected MySQL database"),
+                            sprintf(
+                                i18n("Setup tried to create a test table in the database %s and failed. Please assign table creation permissions to the database user you entered, or ask an administrator to do so."),
+                                $databaseName
+                            )
+                        );
                         return;
                     }
 
                     // Good, we could create a table. Now remove it again
                     $status = checkMySQLDropTable($db, $databaseName, sprintf("%s_test", $databasePrefix));
                     if (!$status) {
-                        $this->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Unable to remove the test table", "setup"), sprintf(i18n("Setup tried to remove the test table %s in the database %s and failed due to insufficient permissions. Please remove the table %s manually.", "setup"), sprintf("%s_test", $databasePrefix), $databaseName, sprintf("%s_test", $databasePrefix)));
+                        $this->storeResult(
+                            false,
+                            cSystemtest::C_SEVERITY_WARNING,
+                            i18n("Unable to remove the test table"),
+                            sprintf(
+                                i18n("Setup tried to remove the test table %s in the database %s and failed due to insufficient permissions. Please remove the table %s manually."),
+                                sprintf("%s_test", $databasePrefix),
+                                $databaseName,
+                                sprintf("%s_test", $databasePrefix)
+                            )
+                        );
                     }
                 } else {
                     $db->connect();
                     // Check if database can be created
                     $status = checkMySQLDatabaseCreation($db, $databaseName, $charset, $collation);
                     if (!$status) {
-                        $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("Unable to create the database in the MySQL server", "setup"), sprintf(i18n("Setup tried to create a test database and failed. Please assign database creation permissions to the database user you entered, ask an administrator to do so, or create the database manually.", "setup")));
+                        $this->storeResult(
+                            false,
+                            cSystemtest::C_SEVERITY_ERROR,
+                            i18n("Unable to create the database in the MySQL server"),
+                            i18n("Setup tried to create a test database and failed. Please assign database creation permissions to the database user you entered, ask an administrator to do so, or create the database manually.")
+                        );
                         return;
                     }
 
                     // Check for database permissions
                     $status = checkMySQLTableCreation($db, $databaseName, sprintf("%s_test", $databasePrefix));
                     if (!$status) {
-                        $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("Unable to create tables in the selected MySQL database", "setup"), sprintf(i18n("Setup tried to create a test table in the database %s and failed. Please assign table creation permissions to the database user you entered, or ask an administrator to do so.", "setup"), $databaseName));
+                        $this->storeResult(
+                            false,
+                            cSystemtest::C_SEVERITY_ERROR,
+                            i18n("Unable to create tables in the selected MySQL database"),
+                            sprintf(
+                                i18n("Setup tried to create a test table in the database %s and failed. Please assign table creation permissions to the database user you entered, or ask an administrator to do so."),
+                                $databaseName
+                            )
+                        );
                         return;
                     }
 
                     // Good, we could create a table. Now remove it again
                     $status = checkMySQLDropTable($db, $databaseName, sprintf("%s_test", $databasePrefix));
                     if (!$status) {
-                        $this->storeResult(false, cSystemtest::C_SEVERITY_WARNING, i18n("Unable to remove the test table", "setup"), sprintf(i18n("Setup tried to remove the test table %s in the database %s and failed due to insufficient permissions. Please remove the table %s manually.", "setup"), sprintf("%s_test", $databasePrefix), $databaseName, sprintf("%s_test", $databasePrefix)));
+                        $this->storeResult(
+                            false,
+                            cSystemtest::C_SEVERITY_WARNING,
+                            i18n("Unable to remove the test table"),
+                            sprintf(
+                                i18n("Setup tried to remove the test table %s in the database %s and failed due to insufficient permissions. Please remove the table %s manually."),
+                                sprintf("%s_test", $databasePrefix),
+                                $databaseName,
+                                sprintf("%s_test", $databasePrefix)
+                            )
+                        );
                     }
                 }
                 break;
@@ -1586,7 +1643,15 @@ class cSystemtest
                 // Check if the database exists
                 $status = checkMySQLDatabaseExists($db, $databaseName);
                 if (!$status) {
-                    $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("No data found for the upgrade", "setup"), sprintf(i18n("Setup tried to locate the data for the upgrade, however, the database %s doesn't exist. You need to copy your database first before running setup.", "setup"), $databaseName));
+                    $this->storeResult(
+                        false,
+                        cSystemtest::C_SEVERITY_ERROR,
+                        i18n("No data found for the upgrade"),
+                        sprintf(
+                            i18n("Setup tried to locate the data for the upgrade, however, the database %s doesn't exist. You need to copy your database first before running setup."),
+                            $databaseName
+                        )
+                    );
                     return;
                 }
 
@@ -1596,7 +1661,15 @@ class cSystemtest
                 $sql = "SHOW TABLES LIKE '%s_actions'";
                 $db->query(sprintf($sql, $databasePrefix));
                 if (!$db->nextRecord()) {
-                    $this->storeResult(false, cSystemtest::C_SEVERITY_ERROR, i18n("No data found for the upgrade", "setup"), sprintf(i18n("Setup tried to locate the data for the upgrade, however, the database %s contains no tables. You need to copy your database first before running setup.", "setup"), $databaseName));
+                    $this->storeResult(
+                        false,
+                        cSystemtest::C_SEVERITY_ERROR,
+                        i18n("No data found for the upgrade"),
+                        sprintf(
+                            i18n("Setup tried to locate the data for the upgrade, however, the database %s contains no tables. You need to copy your database first before running setup."),
+                            $databaseName
+                        )
+                    );
                     return;
                 }
 
