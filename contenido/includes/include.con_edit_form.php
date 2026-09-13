@@ -748,7 +748,7 @@ if ($perm->have_perm_area_action($area, 'con_edit') || $perm->have_perm_area_act
     // Author (Creator)
     $page->set('s', 'AUTHOR_CREATOR', i18n("Author (Creator)"));
     $oAuthor = new cApiUser();
-    $oAuthor->loadUserByUsername($tmp_author);
+    $oAuthor->loadUserByUsername(cSecurity::toString($tmp_author));
     if ($oAuthor->values && '' != $oAuthor->get('realname')) {
         $authorRealname = $oAuthor->get('realname');
     } else {
@@ -758,7 +758,7 @@ if ($perm->have_perm_area_action($area, 'con_edit') || $perm->have_perm_area_act
 
     // Author (Modifier)
     $oModifiedBy = new cApiUser();
-    $oModifiedBy->loadUserByUsername($tmp_modifiedby);
+    $oModifiedBy->loadUserByUsername(cSecurity::toString($tmp_modifiedby));
     if ($oModifiedBy->values && '' != $oModifiedBy->get('realname')) {
         $modifiedByRealname = $oModifiedBy->get('realname');
     } else {
@@ -797,7 +797,7 @@ if ($perm->have_perm_area_action($area, 'con_edit') || $perm->have_perm_area_act
     // Publisher
     $page->set('s', 'PUBLISHER', i18n("Publisher"));
     $oPublishedBy = new cApiUser();
-    $oPublishedBy->loadUserByUsername($tmp_publishedby);
+    $oPublishedBy->loadUserByUsername(cSecurity::toString($tmp_publishedby));
     if ($oPublishedBy->values && '' != $oPublishedBy->get('realname')) {
         $publishedByRealname = $oPublishedBy->get('realname');
     } else {

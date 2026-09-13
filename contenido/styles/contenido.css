@@ -2511,7 +2511,7 @@ input[type=image].vAlignMiddle {
 #cat_navbar,
 td.con_navbar,
 .con_navbar {
-    height: 25px;
+    min-height: 25px;
     line-height: 16px;
     vertical-align: middle;
     border: 1px solid #B3B3B3 !important;
