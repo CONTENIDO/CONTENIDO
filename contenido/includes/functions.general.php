@@ -1469,7 +1469,7 @@ function cWarning(...$arguments)
         ->build();
 
     try {
-        cFileHandler::write($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, true);
+        cFileHandler::write($cfg['path']['contenido_logs'] . $cfg['log_file_names']['error_log'], $msg, true);
     } catch (cInvalidArgumentException $e) {
     }
 
@@ -1509,7 +1509,7 @@ function cError(...$arguments)
         ->build();
 
     try {
-        cFileHandler::write($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, true);
+        cFileHandler::write($cfg['path']['contenido_logs'] . $cfg['log_file_names']['error_log'], $msg, true);
     } catch (cInvalidArgumentException $e) {
     }
 
@@ -1540,13 +1540,13 @@ function cLogError(string $message)
         ->build();
 
     try {
-        cFileHandler::write($cfg['path']['contenido_logs'] . 'errorlog.txt', $msg, true);
+        cFileHandler::write($cfg['path']['contenido_logs'] . $cfg['log_file_names']['error_log'], $msg, true);
     } catch (cInvalidArgumentException $e) {
     }
 }
 
 /**
- * Writes a note to deprecatedlog.txt
+ * Writes a note to $cfg['log_file_names']['deprecated_log']
  *
  * @param string $message Optional message (e.g. "Use function XYZ instead")
  */
@@ -1565,7 +1565,7 @@ function cDeprecated(string $message = '')
         ->build();
 
     try {
-        cFileHandler::write($cfg['path']['contenido_logs'] . 'deprecatedlog.txt', $msg, true);
+        cFileHandler::write($cfg['path']['contenido_logs'] . $cfg['log_file_names']['deprecated_log'], $msg, true);
     } catch (cInvalidArgumentException $e) {
     }
 }

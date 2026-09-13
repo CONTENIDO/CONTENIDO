@@ -161,7 +161,7 @@ class SIWECOS extends Item
     {
         if (getSystemProperty('debug', 'debug_for_plugins') == 'true') {
             $cfg = cRegistry::getConfig();
-            $destination = $cfg['path']['contenido_logs'] . 'errorlog.txt';
+            $destination = $cfg['path']['contenido_logs'] . $cfg['log_file_names']['error_log'];
             $writer = cLogWriter::factory('file', ['destination' => $destination]);
             $log = new cLog($writer);
             $log->err($e->getMessage());
@@ -171,8 +171,6 @@ class SIWECOS extends Item
 
     /**
      * Creates a notification widget in order to display an exception message in backend.
-     *
-     * @param Exception $e
      */
     public static function notifyException(Exception $e): string
     {

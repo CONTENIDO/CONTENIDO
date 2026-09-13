@@ -17,8 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Debug object to show info on screen.
  * In case you cannot output directly to screen when debugging a live system,
- * this object writes
- * the info to a file located in /data/log/debug.log.
+ * this object writes* the info to a file located in /data/log/$cfg['log_file_names']['debug_log'].
  *
  * @package    Core
  * @subpackage Debug

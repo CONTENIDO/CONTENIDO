@@ -111,10 +111,8 @@ class cDebug
 
     /**
      * Prints a debug message if the settings allow it.
-     * The debug messages will be
-     * in a textarea in the header and in the file debuglog.txt. All messages are
-     * immediately
-     * written to the filesystem, but they will only show up when
+     * The debug messages will be in a textarea in the header and in the file `$cfg['log_file_names']['debug_log']`.
+     * All messages are immediately written to the filesystem, but they will only show up when
      * cDebug::showAll() is called.
      *
      * @param string $message
@@ -180,7 +178,10 @@ class cDebug
             } elseif (getSystemProperty('debug', 'debug_to_screen') == 'true') {
                 self::$_defaultDebuggerName = self::DEBUGGER_VISIBLE_ADV;
             }
-            if ((getSystemProperty('debug', 'debug_to_screen') == 'true') && (getSystemProperty('debug', 'debug_to_file') == 'true')) {
+            if (
+                getSystemProperty('debug', 'debug_to_screen') == 'true'
+                && getSystemProperty('debug', 'debug_to_file') == 'true'
+            ) {
                 self::$_defaultDebuggerName = self::DEBUGGER_VISIBLE_AND_FILE;
             }
         } catch (cDbException $e) {

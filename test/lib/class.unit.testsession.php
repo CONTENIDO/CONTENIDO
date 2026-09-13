@@ -14,7 +14,7 @@
 
 /**
  * Session class for unit tests, creates no session and no cookie.
- * Prevents running unit tests from creating errorlog.txt entries like`:
+ * Prevents running unit tests from creating `$cfg['log_file_names']['error_log']` entries like`:
  * `PHP Warning:  ini_set(): A session is active.`
  *
  * Still provides the feature to set and retrieve values, but does not

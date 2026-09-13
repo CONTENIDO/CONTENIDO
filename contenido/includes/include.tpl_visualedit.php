@@ -201,6 +201,4 @@ $code = preg_replace("/<\/head(.*)>/i", $headCode . '</head\\1>', $code);
 $code = preg_replace("/<body(.*)>/i", "<body\\1>" . $form . $actionControl, $code);
 $code = preg_replace("/<\/body(.*)>/i", '</form></body\\1>', $code);
 
-#mp_d(htmlspecialchars($code));
-
 eval("?>\n" . $code . "\n<?php\n");

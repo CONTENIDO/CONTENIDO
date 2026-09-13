@@ -12,11 +12,13 @@
  * @link       https://www.contenido.org
  */
 
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
 /**
  * Exception thrown when adding an element to a full container.
  * You should use this CONTENIDO exception instead of the standard PHP
  * {@link OverflowException}.
- * This exception type is logged to data/logs/exception.txt.
+ * This exception type is logged to data/logs/$cfg['log_file_names']['exception_log'].
  */
 class cOverflowException extends cRuntimeException
 {

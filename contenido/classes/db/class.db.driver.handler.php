@@ -1012,7 +1012,7 @@ abstract class cDbDriverHandler
                 $this->logger = new cLog(
                     cLogWriter::factory(
                         'file',
-                        ['destination' => $cfg['path']['contenido_logs'] . 'dbstatements.txt'],
+                        ['destination' => $cfg['path']['contenido_logs'] . $cfg['log_file_names']['db_statements_log']],
                     )
                 );
             } catch (cInvalidArgumentException $e) {

@@ -12,12 +12,14 @@
  * @link       https://www.contenido.org
  */
 
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
 /**
  * Exception thrown if a callback refers to an undefined function or if some
  * arguments are missing.
  * You should use this CONTENIDO exception instead of the standard PHP
  * {@link BadFunctionCallException}.
- * This exception type is logged to data/logs/exception.txt.
+ * This exception type is logged to data/logs/$cfg['log_file_names']['exception_log'].
  */
 class cBadFunctionCallException extends cLogicException
 {

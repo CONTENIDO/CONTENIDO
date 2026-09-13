@@ -12,12 +12,14 @@
  * @link       https://www.contenido.org
  */
 
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
 /**
  * Exception thrown when an illegal index was requested.
  * This represents errors that should be detected at compile time.
  * You should use this CONTENIDO exception instead of the standard PHP
  * {@link OutOfRangeException}.
- * This exception type is logged to data/logs/exception.txt.
+ * This exception type is logged to data/logs/$cfg['log_file_names']['exception_log'].
  */
 class cOutOfRangeException extends cLogicException
 {
