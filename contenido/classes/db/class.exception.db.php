@@ -16,7 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Exception thrown if there is some fault in database connection.
- * This exception type is logged to data/logs/exception.txt.
+ * This exception type is logged to data/logs/$cfg['log_file_names']['exception_log'].
  *
  * @package    Core
  * @subpackage Database

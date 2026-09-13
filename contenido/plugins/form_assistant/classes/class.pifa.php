@@ -127,7 +127,7 @@ class Pifa
             $cfg = cRegistry::getConfig();
 
             $log = new cLog(cLogWriter::factory('file', [
-                'destination' => $cfg['path']['contenido_logs'] . 'errorlog.txt'
+                'destination' => $cfg['path']['contenido_logs'] . $cfg['log_file_names']['error_log']
             ]));
 
             $log->err($e->getMessage());

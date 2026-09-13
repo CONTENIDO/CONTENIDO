@@ -12,9 +12,11 @@
  * @link       https://www.contenido.org
  */
 
+defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
+
 /**
  * Exception thrown if a file could not be found.
- * This exception type is logged to data/logs/exception.txt.
+ * This exception type is logged to data/logs/$cfg['log_file_names']['exception_log'].
  */
 class cFileNotFoundException extends cRuntimeException
 {

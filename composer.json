@@ -39,6 +39,7 @@
         "ext-mbstring": "*",
         "ext-mysqli": "*",
         "ext-simplexml": "*",
-        "ext-zip": "*"
+        "ext-zip": "*",
+        "mrclay/minify": "^4.0"
     }
 }

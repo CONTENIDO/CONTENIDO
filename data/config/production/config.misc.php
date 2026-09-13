@@ -79,6 +79,19 @@ $cfg['frontend']['session'] = [
     'cookie_samesite' =>  $cfg['cookie']['samesite'] ?? null,
 ];
 
+// @since CONTENIDO 4.10.2
+// (array) Associative list of log file names being used by CONTENIDO
+$cfg['log_file_names'] = [
+    'contenido_log' => 'contenido.txt',
+    'db_statements_log' => 'db_statements.txt',
+    'debug_log' => 'debug.txt',
+    'deprecated_log' => 'deprecated.txt',
+    'error_log' => 'errorlog.txt',
+    'exception_log' => 'exception.txt',
+    'security_log' => 'security.txt',
+    'setup_log' => 'setuplog.txt',
+];
+
 // (bool) Use Pseudo-Cron?
 $cfg['use_pseudocron'] = true;
 
@@ -187,7 +200,7 @@ $cfg['default_perms']['directory'] = 0775;
 // (int) octal value (with a leading zero!) for use in chmod
 $cfg['default_perms']['file'] = 0664;
 
-// (bool) Use heap table to accelerate statitics (off by default)
+// (bool) Use heap table to accelerate statistics (off by default)
 $cfg['statistics_heap_table'] = false;
 
 
@@ -209,7 +222,7 @@ $cfg['php_settings']['display_startup_errors'] = false;
 $cfg['php_settings']['log_errors'] = true;
 
 // (string) Path to log file
-$cfg['php_settings']['error_log'] = $cfg['path']['contenido_logs'] . 'errorlog.txt';
+$cfg['php_settings']['error_log'] = $cfg['path']['contenido_logs'] . $cfg['log_file_names']['error_log'];
 
 // (string) valid PHP timezone https://php.net/manual/en/timezones.php
 $cfg['php_settings']['date.timezone'] = '';
@@ -513,7 +526,7 @@ $cfg['client_template']['default_extension'] = 'html';
 $cfg['system_log']['number_of_lines'] = 100;
 
 // Allowed log file names
-$cfg['system_log']['allowed_filenames'] = ['deprecatedlog.txt', 'errorlog.txt', 'exception.txt', 'security.txt', 'setuplog.txt'];
+$cfg['system_log']['allowed_filenames'] = array_values($cfg['log_file_names']);
 
 // Default memory limit in bytes in case of not determining it via the PHP setting memory_limit
 $cfg['system_log']['default_memory_limit'] = 67108864; // 67108864 = 64 MB

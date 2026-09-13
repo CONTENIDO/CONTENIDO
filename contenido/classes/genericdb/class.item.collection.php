@@ -60,7 +60,7 @@ abstract class ItemCollection extends cItemBaseAbstract
     /**
      * Iterator object for the next() method
      *
-     * @var Item|object
+     * @var TItem|object
      */
     protected $_iteratorItem;
 
@@ -122,7 +122,7 @@ abstract class ItemCollection extends cItemBaseAbstract
     /**
      * Item class instance
      *
-     * @var Item|object
+     * @var TItem|object
      */
     protected $_itemClassInstance;
 
@@ -813,7 +813,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      * Returns the key (table field to use for JOIN clause) for the
      * reverse join partner.
      *
-     * @param Item|object $joinPartnerObj Join partner instance
+     * @param TItem|object $joinPartnerObj Join partner instance
      * @param string $className Join partner class name
      * @return  string  Join partner key (table field)
      */
@@ -935,7 +935,7 @@ abstract class ItemCollection extends cItemBaseAbstract
     /**
      * Advances to the next item in the database.
      *
-     * @return Item|object|false Next object, or false if no more objects
+     * @return TItem|object|false Next object, or false if no more objects
      * @throws cDbException|cException
      */
     public function next()
@@ -985,7 +985,7 @@ abstract class ItemCollection extends cItemBaseAbstract
     /**
      * Fetches the result set related to current loaded primary key as an object.
      *
-     * @return Item|object
+     * @return TItem|object
      * @throws cException
      */
     public function fetchObject(string $className)
@@ -1141,7 +1141,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      *    $results = [
      *        '123' => [
      *            'class' => (string) Class name in lower-case
-     *            'object' => (Item|object) The object instance
+     *            'object' => (TItem|object) The object instance
      *            'items' => (Item[]|object[]|null) Recursive structure
      *        ],
      *        ...
@@ -1169,9 +1169,7 @@ abstract class ItemCollection extends cItemBaseAbstract
     }
 
     /**
-     * Returns the amount of returned items
-     *
-     * @return int Number of rows
+     * Returns the number of rows.
      */
     public function count(): int
     {
@@ -1182,7 +1180,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      * Loads a single record by its id.
      *
      * @param string|int $id The primary key of the item to load.
-     * @return Item|object The loaded item
+     * @return TItem|object The loaded item
      * @throws cException
      */
     public function fetchById($id)
@@ -1200,7 +1198,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      *
      * @param mixed $mItem The primary key of the item to load or a recordset with item data
      *         (array) to inject to the item object.
-     * @return Item|object The newly created object
+     * @return TItem|object The newly created object
      * @throws cException If item class is not set
      */
     public function loadItem($mItem)
@@ -1226,10 +1224,10 @@ abstract class ItemCollection extends cItemBaseAbstract
     /**
      * Creates an empty item instance and returns it back.
      *
-     * @return Item|object The newly created object.
+     * @return TItem|object The newly created object.
      * @since CONTENIDO 4.10.2
      */
-    protected function getIteratorItemInstance(): object
+    protected function getIteratorItemInstance()
     {
         if (!is_object($this->_iteratorItem)) {
             $this->_iteratorItem = new $this->_itemClass();
@@ -1243,7 +1241,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      *
      * @param string|array $data [optional] Parameter for direct input of primary key value
      *      (string) or multiple column name - value pairs
-     * @return Item|object The newly created object
+     * @return TItem|object The newly created object
      * @throws cInvalidArgumentException|cDbException|cException
      */
     public function createNewItem($data = NULL)
@@ -1293,7 +1291,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      * Contrary to {@see ItemCollection::createNewItem()} this function accepts a previous set item instance,
      * generates the database entry out of it, and sets the primary key value with the inserted id.
      *
-     * @param Item|object $item The instance of a Item class to save in the database.
+     * @param TItem|object $item The instance of a Item class to save in the database.
      * @since CONTENIDO 4.10.2
      */
     public function insertNewItem($item): bool
@@ -1334,9 +1332,9 @@ abstract class ItemCollection extends cItemBaseAbstract
     /**
      * Inserts a new item entry by using an existing item entry.
      *
-     * @param Item|object $srcItem Source Item instance to copy
+     * @param TItem|object $srcItem Source Item instance to copy
      * @param array $fieldsToOverwrite Associative list of fields to overwrite.
-     * @return Item|object|NULL
+     * @return TItem|object|NULL
      * @throws cDbException|cException
      * @throws cInvalidArgumentException If Item class doesn't match the defined _itemClass property
      *      or passed Item instance has no loaded recordset

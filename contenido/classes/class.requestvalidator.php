@@ -126,6 +126,9 @@ class cRequestValidator
         $installationPath = str_replace('\\', '/', realpath(__DIR__ . '/../..'));
         $configPath = $installationPath . '/data/config/' . CON_ENVIRONMENT;
 
+        // TODO The log file name 'security.txt' is defined in 'config.misc.php',
+        //      see `$cfg['log_file_names'][''security_log'']`.
+        //      But the configuration is not loaded at the early state where this class is used!
         $this->_logPath = $installationPath . '/data/logs/security.txt';
 
         // check config and logging path

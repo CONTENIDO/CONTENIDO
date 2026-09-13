@@ -18,7 +18,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * cException is the base class for all exceptions.
  * You should use this CONTENIDO exception instead of the standard PHP
  * {@link Exception}.
- * This exception type is logged to data/logs/exception.txt.
+ * This exception type is logged to data/logs/$cfg['log_file_names']['exception_log'].
  * If there is a more specific and more appropriate subclass, use the subclass!
  */
 class cException extends Exception
@@ -57,7 +57,7 @@ class cException extends Exception
         $writer = cLogWriter::factory(
             'File',
             [
-                'destination' => $cfg['path']['contenido_logs'] . 'exception.txt',
+                'destination' => $cfg['path']['contenido_logs'] . $cfg['log_file_names']['exception_log'],
             ]
         );
         $this->_logger = new cLog($writer);

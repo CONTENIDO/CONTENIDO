@@ -15,7 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * Clears CONTENIDO standard errorlog.txt
+ * Clears CONTENIDO standard `$cfg['log_file_names']['error_log']`.
  *
  * @return string Message if clearing was successful or not
  * @throws cException|cInvalidArgumentException
@@ -31,9 +31,9 @@ function emptyLogFile(): string
 
     $tmp_notification = '';
 
-    // clear errorlog.txt
+    // clear error_log
     $cfg = cRegistry::getConfig();
-    $filename = $cfg['path']['contenido_logs'] . 'errorlog.txt';
+    $filename = $cfg['path']['contenido_logs'] . $cfg['log_file_names']['error_log'];
 
     if (cFileHandler::exists($filename) && is_writeable($filename)) {
         cFileHandler::truncate($filename);

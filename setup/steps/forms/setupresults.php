@@ -29,6 +29,8 @@ class cSetupResults extends cSetupMask
      */
     public function __construct($step)
     {
+        $cfg = cRegistry::getConfig();
+
         $this->setHeader(i18n("Results", "setup"));
 
         if (!isset($_SESSION['install_failedchunks']) && !isset($_SESSION['install_failedupgradetable']) && !isset($_SESSION['configsavefailed'])) {
@@ -68,7 +70,7 @@ class cSetupResults extends cSetupMask
             parent::__construct("templates/setup/forms/setupresultsfail.tpl", $step);
             $this->_stepTemplateClass->set('s', 'TITLE', i18n("Setup Results", "setup"));
 
-            $this->_stepTemplateClass->set('s', 'DESCRIPTION', sprintf(i18n("An error occurred during installation. Please take a look at the file %s (located in &quot;data/logs/&quot;) for more information.", "setup"), 'setuplog.txt'));
+            $this->_stepTemplateClass->set('s', 'DESCRIPTION', sprintf(i18n("An error occurred during installation. Please take a look at the file %s (located in &quot;data/logs/&quot;) for more information.", "setup"), $cfg['log_file_names']['setup_log']));
 
             switch ($_SESSION['setuptype']) {
                 case 'setup':

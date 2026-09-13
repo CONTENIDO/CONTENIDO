@@ -17,8 +17,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * Debug object to write info to a file.
  * In case you cannot output directly to screen when debugging a live system,
- * this object writes
- * the info to a file located in /data/logs/debug.log.
+ * this object writes the info to a file located in /data/logs/$cfg['log_file_names']['debug_log'].
  *
  * @package    Core
  * @subpackage Debug
@@ -73,7 +72,7 @@ class cDebugFile implements cDebugInterface
     {
         $cfg = cRegistry::getConfig();
         $this->_sPathToLogs = $cfg['path']['contenido_logs'];
-        $this->_sFileName = 'debug.log';
+        $this->_sFileName = $cfg['log_file_names']['debug_log'];
         $this->_sPathToFile = $this->_sPathToLogs . $this->_sFileName;
     }
 

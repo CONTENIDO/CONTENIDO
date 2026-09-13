@@ -44,7 +44,7 @@ class Solr
 
         // create name of logfile
         $cfg = cRegistry::getConfig();
-        $filename = $cfg['path']['contenido_logs'] . 'errorlog.txt';
+        $filename = $cfg['path']['contenido_logs'] . $cfg['log_file_names']['error_log'];
 
         // extend message with optional prefix
         $prefix = number_format($delta * 1000) . 'ms: ';
@@ -73,7 +73,7 @@ class Solr
         $cfg = cRegistry::getConfig();
 
         $log = new cLog(cLogWriter::factory('file', [
-            'destination' => $cfg['path']['contenido_logs'] . 'errorlog.txt'
+            'destination' => $cfg['path']['contenido_logs'] . $cfg['log_file_names']['error_log']
         ]));
 
         $log->err($e->getMessage());

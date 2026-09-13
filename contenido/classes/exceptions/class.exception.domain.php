@@ -16,7 +16,7 @@
  * Exception thrown if a value does not adhere to a defined valid data domain.
  * You should use this CONTENIDO exception instead of the standard PHP
  * {@link DomainException}.
- * This exception type is logged to data/logs/exception.txt.
+ * This exception type is logged to data/logs/$cfg['log_file_names']['exception_log'].
  */
 class cDomainException extends cLogicException
 {

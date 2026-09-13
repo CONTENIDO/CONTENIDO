@@ -1145,72 +1145,77 @@ class cSystemtest
     {
         $status = true;
 
-        $files = [
-            // check files
-            [
-                'filename' => $this->_config['path']['contenido_logs'] . 'errorlog.txt',
+        $files = [];
+
+        // Add log files to check
+        foreach ($this->_config['log_file_names'] as $fileName) {
+            $files[] =             [
+                'filename' => $this->_config['path']['contenido_logs'] . $fileName,
                 'severity' => self::C_SEVERITY_WARNING
-            ],
+            ];
+        }
+
+        // Add other files
+        $files = array_merge(
+            $files,
             [
-                'filename' => $this->_config['path']['contenido_logs'] . 'setuplog.txt',
-                'severity' => self::C_SEVERITY_WARNING
-            ],
-            [
-                'filename' => $this->_config['path']['contenido_cronlog'] . 'pseudo-cron.log',
-                'severity' => self::C_SEVERITY_WARNING
-            ],
-            [
-                'filename' => $this->_config['path']['contenido_cronlog'] . 'session_cleanup.php.job',
-                'severity' => self::C_SEVERITY_WARNING
-            ],
-            [
-                'filename' => $this->_config['path']['contenido_cronlog'] . 'send_reminder.php.job',
-                'severity' => self::C_SEVERITY_WARNING
-            ],
-            [
-                'filename' => $this->_config['path']['contenido_cronlog'] . 'optimize_database.php.job',
-                'severity' => self::C_SEVERITY_WARNING
-            ],
-            [
-                'filename' => $this->_config['path']['contenido_cronlog'] . 'move_old_stats.php.job',
-                'severity' => self::C_SEVERITY_WARNING
-            ],
-            [
-                'filename' => $this->_config['path']['contenido_cronlog'] . 'move_articles.php.job',
-                'severity' => self::C_SEVERITY_WARNING
-            ],
-            [
-                'filename' => $this->_config['path']['contenido_cronlog'] . 'linkchecker.php.job',
-                'severity' => self::C_SEVERITY_WARNING
-            ],
-            [
-                'filename' => $this->_config['path']['contenido_cronlog'] . 'run_newsletter_job.php.job',
-                'severity' => self::C_SEVERITY_WARNING
-            ],
-            [
-                'filename' => $this->_config['path']['contenido_cronlog'] . 'setfrontenduserstate.php.job',
-                'severity' => self::C_SEVERITY_WARNING
-            ],
-            [
-                'filename' => $this->_config['path']['contenido_cronlog'] . 'advance_workflow.php.job',
-                'severity' => self::C_SEVERITY_WARNING
-            ],
-            [
-                'filename' => $this->_config['path']['contenido_cache'],
-                'severity' => self::C_SEVERITY_WARNING,
-                'dir' => true
-            ],
-            [
-                'filename' => $this->_config['path']['contenido_temp'],
-                'severity' => self::C_SEVERITY_WARNING,
-                'dir' => true
-            ],
-            [
-                'filename' => $this->_config['path']['contenido_config'] . 'config.php',
-                'severity' => self::C_SEVERITY_ERROR,
-                'config' => $testConfig
+                [
+                    'filename' => $this->_config['path']['contenido_cronlog'] . 'pseudo-cron.log',
+                    'severity' => self::C_SEVERITY_WARNING
+                ],
+                [
+                    'filename' => $this->_config['path']['contenido_cronlog'] . 'session_cleanup.php.job',
+                    'severity' => self::C_SEVERITY_WARNING
+                ],
+                [
+                    'filename' => $this->_config['path']['contenido_cronlog'] . 'send_reminder.php.job',
+                    'severity' => self::C_SEVERITY_WARNING
+                ],
+                [
+                    'filename' => $this->_config['path']['contenido_cronlog'] . 'optimize_database.php.job',
+                    'severity' => self::C_SEVERITY_WARNING
+                ],
+                [
+                    'filename' => $this->_config['path']['contenido_cronlog'] . 'move_old_stats.php.job',
+                    'severity' => self::C_SEVERITY_WARNING
+                ],
+                [
+                    'filename' => $this->_config['path']['contenido_cronlog'] . 'move_articles.php.job',
+                    'severity' => self::C_SEVERITY_WARNING
+                ],
+                [
+                    'filename' => $this->_config['path']['contenido_cronlog'] . 'linkchecker.php.job',
+                    'severity' => self::C_SEVERITY_WARNING
+                ],
+                [
+                    'filename' => $this->_config['path']['contenido_cronlog'] . 'run_newsletter_job.php.job',
+                    'severity' => self::C_SEVERITY_WARNING
+                ],
+                [
+                    'filename' => $this->_config['path']['contenido_cronlog'] . 'setfrontenduserstate.php.job',
+                    'severity' => self::C_SEVERITY_WARNING
+                ],
+                [
+                    'filename' => $this->_config['path']['contenido_cronlog'] . 'advance_workflow.php.job',
+                    'severity' => self::C_SEVERITY_WARNING
+                ],
+                [
+                    'filename' => $this->_config['path']['contenido_cache'],
+                    'severity' => self::C_SEVERITY_WARNING,
+                    'dir' => true
+                ],
+                [
+                    'filename' => $this->_config['path']['contenido_temp'],
+                    'severity' => self::C_SEVERITY_WARNING,
+                    'dir' => true
+                ],
+                [
+                    'filename' => $this->_config['path']['contenido_config'] . 'config.php',
+                    'severity' => self::C_SEVERITY_ERROR,
+                    'config' => $testConfig
+                ],
             ]
-        ];
+        );
 
         $frontendFiles = [
             'cache',

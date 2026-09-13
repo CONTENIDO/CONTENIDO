@@ -18,13 +18,13 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * Generates the step display.
  *
  * @param int $iCurrentStep The current step to display active.
- * @return  string
  */
-function cGenerateSetupStepsDisplay($iCurrentStep)
+function cGenerateSetupStepsDisplay($iCurrentStep): string
 {
     if (!defined('CON_SETUP_STEPS')) {
         return '';
     }
+
     $sStepsPath = '';
     for ($i = 1; $i < CON_SETUP_STEPS + 1; $i++) {
         $sCssActive = '';
@@ -33,31 +33,30 @@ function cGenerateSetupStepsDisplay($iCurrentStep)
         }
         $sStepsPath .= '<span class="' . $sCssActive . '">&nbsp;' . cSecurity::toString($i) . '&nbsp;</span>&nbsp;&nbsp;&nbsp;';
     }
+
     return $sStepsPath;
 }
 
 /**
- * Logs general setup failures into setuplog.txt in logs directory.
+ * Logs general setup failures into `$cfg['log_file_names']['setup_log']` in logs directory.
  *
  * @param string $sErrorMessage Message to log in file
  * @throws cInvalidArgumentException
- * @global  array $cfg
  */
-function logSetupFailure(string $sErrorMessage)
+function logSetupFailure(string $sErrorMessage): void
 {
     $cfg = cRegistry::getConfig();
-    cFileHandler::write($cfg['path']['contenido_logs'] . 'setuplog.txt', $sErrorMessage . PHP_EOL . PHP_EOL, true);
+    cFileHandler::write($cfg['path']['contenido_logs'] . $cfg['log_file_names']['setup_log'], $sErrorMessage . PHP_EOL . PHP_EOL, true);
 }
 
 /**
- * Initializes clients configuration, if not done before
+ * Initializes clients configuration, if not done before.
+ *
  * @param bool $reset Flag to reset any existing client configuration
- * @throws cDbException
- * @throws cInvalidArgumentException
- * @global  array $cfg
+ * @throws cDbException|cInvalidArgumentException
  * @global  array $cfgClient
  */
-function setupInitializeCfgClient($reset = false)
+function setupInitializeCfgClient(bool $reset = false)
 {
     // NOTE: Use global here
     global $cfgClient;
@@ -89,7 +88,7 @@ function setupInitializeCfgClient($reset = false)
  * @param string $installationPath
  * @throws cException|cInvalidArgumentException
  */
-function setupCheckConfiguration(string $installationPath)
+function setupCheckConfiguration(string $installationPath): void
 {
     $configPath = $installationPath . '/data/config/' . CON_ENVIRONMENT;
     if (!cFileHandler::exists($configPath)) {
@@ -126,7 +125,7 @@ function setupCheckConfiguration(string $installationPath)
  * Initializes the configuration
  * @global $cfg
  */
-function setupInitializeConfig()
+function setupInitializeConfig(): void
 {
     // NOTE: Use global here
     global $cfg;
@@ -175,9 +174,8 @@ function setupInitializeConfig()
 
 /**
  * Updates the configuration and set PHP settings
- * @global $cfg
  */
-function setupUpdatePHPConfig()
+function setupUpdatePHPConfig(): void
 {
     $cfg = cRegistry::getConfig();
 
@@ -234,20 +232,21 @@ function setupIsHttpsRequest(): bool
 }
 
 /**
- * Stores setup request variables in session
- * @param array $request
+ * Stores setup request variables in session.
  */
-function takeoverRequestToSession(array $request)
+function takeoverRequestToSession(array $request): void
 {
     foreach ($request as $key => $value) {
         if ($key == 'c') {
             // c = setup controller to process
             continue;
         }
-        if (($value != '' && $key != 'dbpass' && $key != 'adminpass' && $key != 'adminpassrepeat') ||
+        if (
+            ($value != '' && $key != 'dbpass' && $key != 'adminpass' && $key != 'adminpassrepeat') ||
             ($key == 'dbpass' && $request['dbpass_changed'] == 'true') ||
             ($key == 'adminpass' && $request['adminpass_changed'] == 'true') ||
-            ($key == 'adminpassrepeat' && $request['adminpassrepeat_changed'] == 'true')) {
+            ($key == 'adminpassrepeat' && $request['adminpassrepeat_changed'] == 'true')
+        ) {
             if ($key === 'dboptions') {
                 $_SESSION[$key] = [];
                 foreach ($value as $subKey => $subValue) {

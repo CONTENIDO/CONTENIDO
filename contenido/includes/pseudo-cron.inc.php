@@ -192,7 +192,7 @@ if ($PC_debug) {
 function logMessage(string $msg, string $PC_writeDir, string $PC_useLog, bool $PC_debug)
 {
     if ($PC_useLog == 1) {
-        $logfile = $PC_writeDir . "pseudo-cron.log";
+        $logfile = $PC_writeDir . 'pseudo-cron.log';
 
         if (cFileHandler::writeable($logfile)) {
             $file = fopen($logfile, "ab");
