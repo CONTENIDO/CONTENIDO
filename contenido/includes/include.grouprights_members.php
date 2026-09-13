@@ -67,7 +67,7 @@ if ($action === 'group_addmember' && $perm->have_perm_area_action($area, $action
             $myUser = new cApiUser();
 
             if (!$myUser->loadByPrimaryKey($value)) {
-                $myUser->loadUserByUsername($value);
+                $myUser->loadUserByUsername(cSecurity::toString($value));
             }
 
             if ($myUser->getField('user_id') == '') {

@@ -412,6 +412,9 @@ class cApiUser extends Item
      */
     public function loadUserByUserID(string $userId): bool
     {
+        if (empty($userId)) {
+            return false;
+        }
         return $this->loadByPrimaryKey($userId);
     }
 
@@ -424,6 +427,9 @@ class cApiUser extends Item
      */
     public function loadUserByUsername(string $username): bool
     {
+        if (empty($username)) {
+            return false;
+        }
         return $this->loadBy('username', $username);
     }
 
@@ -436,6 +442,9 @@ class cApiUser extends Item
      */
     public static function userExists(string $userId): bool
     {
+        if (empty($userId)) {
+            return false;
+        }
         return (new cApiUser())->loadByPrimaryKey($userId);
     }
 
@@ -448,6 +457,9 @@ class cApiUser extends Item
      */
     public static function usernameExists(string $username): bool
     {
+        if (empty($username)) {
+            return false;
+        }
         return (new cApiUser())->loadBy('username', $username);
     }
 
