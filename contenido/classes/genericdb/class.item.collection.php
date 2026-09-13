@@ -21,7 +21,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage GenericDB@
- * @template Item
+ * @template TItem as Item
  */
 abstract class ItemCollection extends cItemBaseAbstract
 {
@@ -1212,10 +1212,7 @@ abstract class ItemCollection extends cItemBaseAbstract
             ));
         }
 
-        if (!is_object($this->_iteratorItem)) {
-            $this->_iteratorItem = new $this->_itemClass();
-        }
-        $obj = clone $this->_iteratorItem;
+        $obj = $this->getIteratorItemInstance();
 
         if (is_array($mItem)) {
             $obj->loadByRecordSet($mItem);
@@ -1224,6 +1221,21 @@ abstract class ItemCollection extends cItemBaseAbstract
         }
 
         return $obj;
+    }
+
+    /**
+     * Creates an empty item instance and returns it back.
+     *
+     * @return Item|object The newly created object.
+     * @since CONTENIDO 4.10.2
+     */
+    protected function getIteratorItemInstance(): object
+    {
+        if (!is_object($this->_iteratorItem)) {
+            $this->_iteratorItem = new $this->_itemClass();
+        }
+
+        return clone $this->_iteratorItem;
     }
 
     /**
@@ -1273,6 +1285,50 @@ abstract class ItemCollection extends cItemBaseAbstract
         }
 
         return $this->loadItem($primaryKeyValue);
+    }
+
+    /**
+     * Inserts the passed item as a new entry in the database.
+     *
+     * Contrary to {@see ItemCollection::createNewItem()} this function accepts a previous set item instance,
+     * generates the database entry out of it, and sets the primary key value with the inserted id.
+     *
+     * @param Item|object $item The instance of a Item class to save in the database.
+     * @since CONTENIDO 4.10.2
+     */
+    public function insertNewItem($item): bool
+    {
+        $data = $item->toArray(false);
+
+        $this->_executeCallbacks(self::CREATE_BEFORE, $this->_itemClass, $data);
+
+        $db = $this->_getSecondDBInstance();
+
+        // Prepare the primary key value and the data depending on the type of $data
+        if (array_key_exists($this->getPrimaryKeyName(), $data)) {
+            unset($data[$this->getPrimaryKeyName()]);
+        }
+
+        // Build the insert statement and execute it
+        $sql = $db->buildInsert($this->table, $data);
+        $db->query($sql);
+
+        if ($db->affectedRows() == 0) {
+            $this->_executeCallbacks(self::CREATE_FAILURE, $this->_itemClass, $data);
+
+            return false;
+        } else {
+            $lastInsertedId = $db->getDriver()->getLastInsertedId();
+            if ($lastInsertedId !== null) {
+                $data[$this->getPrimaryKeyName()] = $lastInsertedId;
+                $item->loadByRecordSet($data);
+                $this->_executeCallbacks(self::CREATE_SUCCESS, $this->_itemClass, $data);
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -30,6 +30,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  *
  * @package    Core
  * @subpackage Database
+ * @since CONTENIDO 4.10.2
  */
 class cDbDriverPdoMysql extends cDbDriverAbstract
 {
@@ -201,6 +202,19 @@ class cDbDriverPdoMysql extends cDbDriverAbstract
         /** @var PDOStatement $queryId */
         $queryId = $this->_handler->getQueryId();
         return ($queryId) ? $queryId->columnCount() : 0;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getLastInsertedId(): int|string|null
+    {
+        try {
+            return $this->_pdo->lastInsertId();
+        } catch (PDOException $e) {
+            $this->_handler->halt('Connection failed: ' . $e->getMessage());
+            return null;
+        }
     }
 
     /**

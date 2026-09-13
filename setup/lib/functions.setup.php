@@ -169,6 +169,7 @@ function setupInitializeConfig()
         'haltBehavior' => 'report',
         'haltMsgPrefix' => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] . ' ' : '',
         'enableProfiling' => false,
+        'logStatements' => false,
     ];
 }
 

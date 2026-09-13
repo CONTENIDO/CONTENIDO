@@ -72,12 +72,12 @@ class cApiActionlogCollection extends ItemCollection
      */
     public function create($userId, $clientId, $languageId, $actionId, $categoryArticleId, $logtimestamp = '')
     {
-        $item = $this->createNewItem();
-
         if (empty($logtimestamp)) {
             $logtimestamp = date('Y-m-d H:i:s');
         }
 
+        $item = new cApiActionlog();
+        $item->enableNotLoaded();
         $item->set('user_id', $userId);
         $item->set('idclient', $clientId);
         $item->set('idlang', $languageId);
@@ -85,7 +85,7 @@ class cApiActionlogCollection extends ItemCollection
         $item->set('idcatart', $categoryArticleId);
         $item->set('logtimestamp', $logtimestamp);
 
-        $item->store();
+        $this->insertNewItem($item);
 
         return $item;
     }

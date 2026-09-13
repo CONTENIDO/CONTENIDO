@@ -274,6 +274,18 @@ class cDbDriverMysqli extends cDbDriverAbstract
 
     /**
      * @inheritdoc
+     * @since CONTENIDO 4.10.2
+     */
+    public function getLastInsertedId(): int|string|null
+    {
+        /** @var mysqli $linkId */
+        $linkId = $this->_handler->getLinkId();
+
+        return ($linkId) ? mysqli_insert_id($linkId) : null;
+    }
+
+    /**
+     * @inheritdoc
      * @return void|cDbDriverMysqli If aggregated handler has no query id, this object is returned,
      *         otherwise void.
      * @todo check if $this should be returned

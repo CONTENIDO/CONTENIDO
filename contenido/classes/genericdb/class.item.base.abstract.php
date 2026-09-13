@@ -16,8 +16,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 
 /**
  * Class cItemBaseAbstract.
- * Base class with common features for database based items and item
- * collections.
+ * Base class with common features for database based items and item collections.
  *
  * NOTE:
  * Because of required downwards compatibility all protected/private member
@@ -30,35 +29,35 @@ abstract class cItemBaseAbstract extends cGenericDb
 {
 
     /**
-     * @var cDb Database instance, contains the database object
+     * Database instance, contains the database object
      */
-    protected $db;
+    protected cDb $db;
 
     /**
-     * @var cDb Second DB instance, is required for some additional queries without
-     *     losing a current existing query result.
+     * Second DB instance, is required for some additional queries without
+     * losing a current existing query result.
      */
-    protected $secondDb;
+    protected ?cDb $secondDb;
 
     /**
-     * @var cApiPropertyCollection Property collection instance
+     * Property collection instance
      */
-    protected $properties;
+    protected ?cApiPropertyCollection $properties;
 
     /**
-     * @var cItemCache Item cache instance
+     * Item cache instance
      */
-    protected $_oCache;
+    protected cItemCache $_oCache;
 
     /**
-     * @var array GenericDB settings, see `$cfg['sql']`
+     * GenericDB settings, see `$cfg['sql']`
      */
-    protected $_settings;
+    protected array $_settings = [];
 
     /**
-     * @var string Storage of the source table to use for the information
+     * Storage of the source table to use for the information
      */
-    protected $table;
+    protected string $table = '';
 
     /**
      * @deprecated [2015-05-04] Class variable primaryKey is deprecated, use getPrimaryKeyName() instead
@@ -67,9 +66,9 @@ abstract class cItemBaseAbstract extends cGenericDb
     private $primaryKey;
 
     /**
-     * @var string Storage of the primary key name
+     * Storage of the primary key name
      */
-    protected $_primaryKeyName;
+    protected string $_primaryKeyName = '';
 
     /**
      * @deprecated [2015-05-05] Class variable virgin is deprecated, use negated result of isLoaded() instead
@@ -78,19 +77,19 @@ abstract class cItemBaseAbstract extends cGenericDb
     private $virgin = true;
 
     /**
-     * @var bool
+     * Is the item (entity) loaded from the database?
      */
-    protected $_loaded = false;
+    protected bool $_loaded = false;
 
     /**
-     * @var string Storage of the last occurred error
+     * Storage of the last occurred error
      */
-    protected $lasterror = '';
+    protected string $lasterror = '';
 
     /**
-     * @var string Classname of current instance
+     * Classname of current instance
      */
-    protected $_className;
+    protected string $_className = '';
 
     /**
      * Constructor to create an instance of this class.
@@ -162,7 +161,19 @@ abstract class cItemBaseAbstract extends cGenericDb
      */
     public function isLoaded(): bool
     {
-        return (bool)$this->_loaded;
+        return $this->_loaded;
+    }
+
+    /**
+     * Enables the usage of a new item being not loaded from the database.
+     * This function is meant to
+     * @since CONTENIDO 4.10.2
+     */
+    public function enableNotLoaded(): static
+    {
+        $this->_setLoaded(true);
+
+        return $this;
     }
 
     /**

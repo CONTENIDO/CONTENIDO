@@ -93,6 +93,7 @@ $cfg['db'] = [
     'haltBehavior'    => 'report', // (string) Feasible values are 'yes', 'no' or 'report'
     'haltMsgPrefix'   => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] . ' ' : '',
     'enableProfiling' => false, // (bool) Flag to enable profiling
+    'logStatements'   => false, // (bool) Flag to log statements
 ];
 
 /* Section 3: UTF-8 flag

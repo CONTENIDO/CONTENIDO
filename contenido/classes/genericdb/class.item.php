@@ -522,6 +522,7 @@ abstract class Item extends cItemBaseAbstract
 
     /**
      * Returns current item data as an associative array.
+     * TODO Function should return an empty array instead of `false`.
      *
      * @return array|false
      */
@@ -536,6 +537,7 @@ abstract class Item extends cItemBaseAbstract
         foreach ($this->values as $name => $value) {
             $return[$name] = $this->getField($name);
         }
+
         return $return;
     }
 

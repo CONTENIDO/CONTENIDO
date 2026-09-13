@@ -24,70 +24,69 @@ abstract class cDbDriverHandler
 {
 
     /**
-     *
      * @var string
      */
     public const HALT_YES = 'yes';
 
     /**
-     *
      * @var string
      */
     public const HALT_NO = 'no';
 
     /**
-     *
      * @var string
      */
     public const HALT_REPORT = 'report';
 
     /**
-     *
      * @var string
      */
     public const FETCH_NUMERIC = 'numeric';
 
     /**
-     *
      * @var string
      */
     public const FETCH_ASSOC = 'assoc';
 
     /**
-     *
      * @var string
      */
     public const FETCH_BOTH = 'both';
 
     /**
-     * @var ?cDbDriverAbstract Loader database driver.
+     * Loader database driver.
      */
-    protected $_driver = NULL;
+    protected ?cDbDriverAbstract $_driver = NULL;
 
     /**
-     * @var string Driver type
+     * Logger instance.
      */
-    protected $_driverType = '';
+    protected ?cLog $logger = null;
 
     /**
-     * @var array Default database connection for all instances
+     * Driver type
      */
-    protected static $_defaultDbCfg = [];
+    protected string $_driverType = '';
 
     /**
-     * @var array Associative list of database connections
+     * Default database connection for all instances
      */
-    protected static $_connectionCache = [];
+    protected static array $_defaultDbCfg = [];
 
     /**
-     * @var array Associative list of database tables metadata
+     * Associative list of database connections
      */
-    protected static $_metaCache = [];
+    protected static array $_connectionCache = [];
 
     /**
-     * @var array Database connection configuration for current instance
+     * Associative list of database tables metadata
      */
-    protected $_dbCfg = [];
+    protected static array $_metaCache = [];
+
+    /**
+     * Database connection configuration for current instance
+     */
+    protected array $_dbCfg = [];
 
     /**
      * Halt status during occurred errors.
@@ -95,15 +94,25 @@ abstract class cDbDriverHandler
      * - "yes" (halt with message)
      * - "no" (ignore errors quietly)
      * - "report" (ignore error, but spit a warning)
-     *
-     * @var string
      */
-    protected $_haltBehaviour = 'no';
+    protected string $_haltBehaviour = 'no';
 
     /**
-     * @var string Text to prepend to the halt message
+     * Text to prepend to the halt message
      */
-    protected $_haltMsgPrefix = '';
+    protected string $_haltMsgPrefix = '';
+
+    /**
+     * Flag to enable profiling.
+     * @since CONTENIDO 4.10.2
+     */
+    protected bool $profilingEnabled = false;
+
+    /**
+     * Flag to log statements.
+     * @since CONTENIDO 4.10.2
+     */
+    protected bool $loggingEnabled = false;
 
     /**
      * @var int|null|object|resource|mixed Database connection link id.
@@ -111,9 +120,9 @@ abstract class cDbDriverHandler
     protected $_linkId = NULL;
 
     /**
-     * @var array Profile data array
+     * Profile data array
      */
-    protected static $_profileData = [];
+    protected static array $_profileData = [];
 
     /**
      * Constructor to create an instance of this class.
@@ -123,15 +132,22 @@ abstract class cDbDriverHandler
      * Uses default connection settings, passed $options['connection'] settings
      * will overwrite connection settings for current instance.
      *
-     * @param array $options [optional] Associative options as follows:
-     *      - $options['haltBehavior'] (string) Optional, halt behavior on occurred errors
-     *      - $options['haltMsgPrefix'] (string) Optional, Text to prepend to the halt message
-     *      - $options['enableProfiling'] (bool) Optional, flag to enable profiling
-     *      - $options['connection'] (array) Optional, associative connection settings
-     *      - $options['connection']['host'] (string) Hostname or ip
-     *      - $options['connection']['database'] (string) Database name
-     *      - $options['connection']['user'] (string) User name
-     *      - $options['connection']['password'] (string) User password
+     * @param array{
+     *     connection: array{
+     *         host: string,
+     *         database: string,
+     *         user: string,
+     *         password: string,
+     *         charset: string,
+     *         options: array<int, string>
+     *     },
+     *     engine: string,
+     *     haltBehavior: 'yes'|'no'|'report',
+     *     haltMsgPrefix: string,
+     *     enableProfiling: bool,
+     *     logStatements: bool
+     * } $options The database connection configuration array is optional,
+     *      if ommited, it will be loaded from `$cfg['db']`.
      * @throws cDbException
      */
     public function __construct(array $options = [])
@@ -153,6 +169,14 @@ abstract class cDbDriverHandler
 
         if (isset($this->_dbCfg['haltMsgPrefix']) && is_string($this->_dbCfg['haltMsgPrefix'])) {
             $this->_haltMsgPrefix = $this->_dbCfg['haltMsgPrefix'];
+        }
+
+        if (isset($this->_dbCfg['enableProfiling']) && is_bool($this->_dbCfg['enableProfiling'])) {
+            $this->profilingEnabled = $this->_dbCfg['enableProfiling'];
+        }
+
+        if (isset($this->_dbCfg['logStatements']) && is_bool($this->_dbCfg['logStatements'])) {
+            $this->loggingEnabled = $this->_dbCfg['logStatements'];
         }
 
         $cfg = cRegistry::getConfig();
@@ -247,11 +271,20 @@ abstract class cDbDriverHandler
     #endregion ABSTRACT
 
     /**
-     * Checks if profiling was enabled via configuration.
+     * Checks if profiling is enabled.
      */
     public function isProfilingEnabled(): bool
     {
-        return cSecurity::toBoolean($this->_dbCfg['enableProfiling'] ?? '0');
+        return $this->profilingEnabled;
+    }
+
+    /**
+     * Checks if logging of queries is enabled.
+     * @since CONTENIDO 4.10.2
+     */
+    public function isLoggingEnabled(): bool
+    {
+        return $this->loggingEnabled;
     }
 
     /**
@@ -267,7 +300,7 @@ abstract class cDbDriverHandler
      *
      * @throws cDbException
      */
-    public function loadDriver()
+    public function loadDriver(): void
     {
         if ($this->_driver != NULL) {
             return;
@@ -306,10 +339,8 @@ abstract class cDbDriverHandler
 
     /**
      * Setter for default database configuration, the connection values.
-     *
-     * @param array $defaultDbCfg
      */
-    public static function setDefaultConfiguration(array $defaultDbCfg)
+    public static function setDefaultConfiguration(array $defaultDbCfg): void
     {
         self::$_defaultDbCfg = $defaultDbCfg;
     }
@@ -318,9 +349,9 @@ abstract class cDbDriverHandler
      * Returns connection from connection cache
      *
      * @param array $data^Connection data array
-     * @return mixed Either The connection (object, resource, integer) or NULL
+     * @return mixed Either The connection or `null`, see {@see cDbDriverAbstract::connect()}.
      */
-    protected function _getConnection(array $data)
+    protected function _getConnection(array $data): mixed
     {
         if (empty($data)) {
             return NULL;
@@ -334,9 +365,9 @@ abstract class cDbDriverHandler
      * Stores connection in connection cache
      *
      * @param array $data Connection data array
-     * @param mixed $connection The connection to store in cache
+     * @param mixed $connection The connection to store in cache, see {@see cDbDriverAbstract::connect()}.
      */
-    protected function _setConnection(array $data, $connection)
+    protected function _setConnection(array $data, mixed $connection): void
     {
         $hash = md5($this->_driverType . '-' . json_encode($data));
         self::$_connectionCache[$hash] = $connection;
@@ -345,9 +376,9 @@ abstract class cDbDriverHandler
     /**
      * Removes connection from cache
      *
-     * @param mixed $connection The connection to remove in cache
+     * @param mixed $connection The connection to remove in cache, see {@see cDbDriverAbstract::connect()}.
      */
-    protected function _removeConnection($connection)
+    protected function _removeConnection(mixed $connection): void
     {
         foreach (self::$_connectionCache as $hash => $res) {
             if ($res == $connection) {
@@ -360,12 +391,8 @@ abstract class cDbDriverHandler
 
     /**
      * Adds an entry to the profile data.
-     *
-     * @param int|float $timeStart
-     * @param int|float $timeEnd
-     * @param string $statement
      */
-    protected static function _addProfileData($timeStart, $timeEnd, string $statement)
+    protected static function _addProfileData(float|int $timeStart, float|int $timeEnd, string $statement): void
     {
         self::$_profileData[] = [
             'time' => $timeEnd - $timeStart,
@@ -376,9 +403,10 @@ abstract class cDbDriverHandler
     /**
      * Returns collected profile data.
      *
-     * @return array Profile data array like:
-     *         - $arr[$i]['time'] (float) Elapsed time to execute the query
-     *         - $arr[$i]['query'] (string) The query itself
+     * @return array<int, <array{
+     *     time: float,
+     *     query: string
+     * }> Profile data array containing execution metrics.
      */
     public static function getProfileData(): array
     {
@@ -512,10 +540,8 @@ abstract class cDbDriverHandler
 
     /**
      * Sets the halt behaviour.
-     *
-     * @return void
      */
-    protected function _setHaltBehaviour(string $haltBehaviour)
+    protected function _setHaltBehaviour(string $haltBehaviour): void
     {
         switch ($haltBehaviour) {
             case self::HALT_YES:
@@ -674,6 +700,10 @@ abstract class cDbDriverHandler
             $this->free();
         }
 
+        if ($this->isLoggingEnabled()) {
+            $this->logStatement($statement);
+        }
+
         $timeStart = $this->isProfilingEnabled() ? microtime(true) : 0;
 
         $this->getDriver()->query($statement);
@@ -714,7 +744,7 @@ abstract class cDbDriverHandler
 
     /**
      * @see cDbDriverAbstract::getResultObject()
-     *
+     * @return object
      */
     public function getResultObject(?string $className = NULL)
     {
@@ -917,11 +947,9 @@ abstract class cDbDriverHandler
     }
 
     /**
-     * Returns current record set as a object
-     *
-     * @return stdClass
+     * Returns current record set as an object.
      */
-    public function toObject()
+    public function toObject(): stdClass
     {
         return (object) $this->toArray();
     }
@@ -939,7 +967,7 @@ abstract class cDbDriverHandler
      * @param string $message The message to use for error handling
      * @throws cDbException
      */
-    public function halt(string $message)
+    public function halt(string $message): void
     {
         if ($this->_haltBehaviour == self::HALT_REPORT) {
             $this->reportHalt($this->_haltMsgPrefix . $message);
@@ -955,7 +983,7 @@ abstract class cDbDriverHandler
      * Concatenates a detailed error message and invoke PHP's error_log()
      * method.
      */
-    public function reportHalt(string $message)
+    public function reportHalt(string $message): void
     {
         $errorNumber = $this->getErrorNumber();
         $errorMessage = $this->getErrorMessage();
@@ -970,6 +998,29 @@ abstract class cDbDriverHandler
 
         $message = sprintf("Database failure: %s (%s) - %s\n", $errorNumber, $errorMessage, $message);
         cWarning(__FILE__, __LINE__, $message);
+    }
+
+    /**
+     * Logs the database statement.
+     * @since CONTENIDO 4.10.2
+     */
+    protected function logStatement(string $statement): void
+    {
+        if (!isset($this->logger)) {
+            try {
+                $cfg = cRegistry::getConfig();
+                $this->logger = new cLog(
+                    cLogWriter::factory(
+                        'file',
+                        ['destination' => $cfg['path']['contenido_logs'] . 'dbstatements.txt'],
+                    )
+                );
+            } catch (cInvalidArgumentException $e) {
+                return;
+            }
+        }
+
+        $this->logger->log($this->_driverType . ': ' . $statement);
     }
 
     /**
