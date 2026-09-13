@@ -32,12 +32,12 @@ class ArticleForumRightBottom extends cGuiPage
     /**
      * @var int
      */
-    private $indentFactor = 20;
+    private int $indentFactor = 20;
 
     /**
      * @var ArticleForumCollection
      */
-    protected $collection;
+    protected ArticleForumCollection $collection;
 
     /**
      *
@@ -52,17 +52,19 @@ class ArticleForumRightBottom extends cGuiPage
 
     protected function formatTimeString(string $timeStamp): array
     {
-        $nullString = '0';
-        if ($timeStamp == '0000-00-00 00:00:00') {
+        if ($timeStamp == '0000-00-00 00:00:00' || $timeStamp == NULL) {
             return [];
         } else {
             $ar = (date_parse($timeStamp));
-            // if elements are smaller than 2 digits add a '0' at front. e.g
-            // 2:10 -> 02:10
-            (cString::getStringLength($ar['day']) < 2) ? $ar['day'] = $nullString . $ar['day'] : '';
-            (cString::getStringLength($ar['month']) < 2) ? $ar['month'] = $nullString . $ar['month'] : '';
-            (cString::getStringLength($ar['minute']) < 2) ? $ar['minute'] = $nullString . $ar['minute'] : '';
-            (cString::getStringLength($ar['hour']) < 2) ? $ar['hour'] = $nullString . $ar['hour'] : '';
+
+            if (!$ar) {
+                return [];
+            }
+
+            $ar['day'] = str_pad($ar['day'], 2, '0', STR_PAD_LEFT);
+            $ar['month'] = str_pad($ar['month'], 2, '0', STR_PAD_LEFT);
+            $ar['minute'] = str_pad($ar['minute'], 2, '0', STR_PAD_LEFT);
+            $ar['hour'] = str_pad($ar['hour'], 2, '0', STR_PAD_LEFT);
         }
 
         return $ar;
@@ -74,8 +76,9 @@ class ArticleForumRightBottom extends cGuiPage
      *
      * @param string $emailAddr
      * @param string $realName
+     * @return cHTMLLink
      */
-    protected function checkValidEmail($emailAddr, $realName): cHTMLLink
+    protected function checkValidEmail(string $emailAddr, string $realName): cHTMLLink
     {
         $regex = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
         // Run the preg_match() function on regex against the email address
@@ -187,7 +190,7 @@ class ArticleForumRightBottom extends cGuiPage
      * @return ArticleForumRightBottom|cHTMLTable
      * @throws cException
      */
-    public function getMenu(&$result, $mod = null)
+    public function getMenu(array &$result, $mod = null): cHTMLTable|ArticleForumRightBottom|static
     {
         $area = cRegistry::getArea();
         $table = new cHTMLTable();
@@ -252,7 +255,7 @@ class ArticleForumRightBottom extends cGuiPage
             $userColl = new cApiUserCollection();
             $user = $userColl->loadItem($cont['editedby'])->get('username');
 
-            if (($cont['editedby'] != '') && ($cont['editedat'] != '') && $cont['editedat'] != '0000-00-00 00:00:00') {
+            if (!cDate::isEmptyDate($cont['editedby'])) {
                 $edit_information = (UserForum::i18n("EDITED") . $editdate . ' ' . UserForum::i18n("FROM") . $user);
                 $edit_information = "<em>$edit_information</em>";
             } else {
@@ -472,7 +475,7 @@ class ArticleForumRightBottom extends cGuiPage
      * @return ArticleForumRightBottom|cHTMLTable
      * @throws cException
      */
-    public function getForum($categoryId, $artickleId, $languageId)
+    public function getForum(int $categoryId, int $artickleId, int $languageId): cHTMLTable|ArticleForumRightBottom|static
     {
         $arrUsers = $this->collection->getExistingForum();
 
@@ -480,7 +483,7 @@ class ArticleForumRightBottom extends cGuiPage
         $this->collection->getTreeLevel($categoryId, $artickleId, $languageId, $arrUsers, $forumStruct);
 
         $result = [];
-        $this->normalizeArray($forumStruct, $result);
+        UserForum::normalizeArray($forumStruct, $result);
 
         return $this->getMenu($result);
     }
@@ -489,16 +492,17 @@ class ArticleForumRightBottom extends cGuiPage
      * @param array|mixed $forumStruct
      * @param array $result
      * @param int $level
-     * TODO Code is redundant with {@see ArticleForumCollection::normalizeArray()}
+     *
+     * @deprecated [2026/05/12] since CONTENIDO 4.11.0, use {@see UserForum::normalizeArray()} instead!
      */
-    protected function normalizeArray($forumStruct, &$result, $level = 0)
+    public function normalizeArray(mixed $forumStruct, array &$result, int $level = 0): void
     {
         if (is_array($forumStruct)) {
             foreach ($forumStruct as $key => $value) {
                 $value['level'] = $level;
                 unset($value['children']);
                 $result[$key] = $value;
-                $this->normalizeArray($forumStruct[$key]['children'], $result, $level + 1);
+                UserForum::normalizeArray($value['children'], $result, $level + 1);
             }
         }
     }

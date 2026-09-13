@@ -232,6 +232,8 @@ function convertDateValuesToDateTimeValue(cDb $db, string $table, string $field,
  * Converts a table field value of type date to a datetime format ('YYYY-MM-DD HH:MM:SS'),
  * if the value is null (null or empty string).
  *
+ * @todo [2026/05/12] do we still need this. Default datetime handling has changed. If not, deprecate this function
+ *
  * @param string $defaultDateTime - Format has to be 'YYYY-MM-DD HH:MM:SS'.
  *     You can also use 'CURRENT_TIMESTAMP' or 'NOW()' to update the field to current timestamp.
  * @throws cDbException

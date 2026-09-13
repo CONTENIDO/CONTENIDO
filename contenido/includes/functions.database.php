@@ -20,7 +20,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @return array Associative array where the key and the value is the index name
  * @throws cDbException
  */
-function dbGetIndexes(cDb $db, string $table)
+function dbGetIndexes(cDb $db, string $table): array
 {
     $sql = 'SHOW INDEX FROM ' . $db->escape($table);
     $db->query($sql);
@@ -71,17 +71,17 @@ function dbGetIndexes(cDb $db, string $table)
  * @throws cDbException
  */
 function dbUpgradeTable(
-    cDb $db,
+    cDb    $db,
     string $table,
-    $field,
-    $type,
-    $null,
-    $key,
-    $default,
-    $extra,
-    $upgradeStatement,
-    $bRemoveIndexes = false
-    ): bool
+    string $field,
+    string $type,
+    string $null,
+    string $key,
+    string $default,
+    string $extra,
+    string $upgradeStatement,
+    bool   $bRemoveIndexes = false
+): bool
 {
     global $columnCache;
     global $tableCache;
@@ -146,7 +146,7 @@ function dbUpgradeTable(
     }
 
     // Remove all keys, as they are being recreated during an upgrade
-    if ($bRemoveIndexes == true) {
+    if ($bRemoveIndexes) {
         $indexes = dbGetIndexes($db, $table);
         foreach ($indexes as $index) {
             $sql = '';
@@ -282,51 +282,4 @@ function dbGetColumns(cDb $db, string $table): array
     $columnCache[$table] = $structure;
 
     return $structure;
-}
-
-/**
- * @deprecated [2015-05-21] This method is no longer supported (no replacement)
- */
-function dbGetPrimaryKeyName($db, $table)
-{
-    cDeprecated('This method is deprecated and is not needed any longer');
-
-    $sReturn = '';
-    $structure = dbGetColumns($db, $table);
-
-    if (is_array($structure)) {
-        foreach ($structure as $mykey => $value) {
-            if ($value['Key'] == 'PRI') {
-                $sReturn = $mykey;
-            }
-        }
-    }
-
-    return $sReturn;
-}
-
-/**
- * Checks if passed database version supports the SQL-mode 'MYSQL40'.
- * MySQL up to 5.7 and MariaDB supports SQL-Mode 'MYSQL40', but not MySQL.
- *
- * @param string $version The SQL server version string, e.g. '5.7.37-nmm1-log', '8.0.1-dmr-log', or '10.4.11-MariaDB'
- * @param ?cDb $db The database instance
- */
-function dbSupportsSqlModeMYSQL40(string $version = '', ?cDb $db = null): bool
-{
-    if (empty($version) && !is_object($db)) {
-        return false;
-    }
-
-    if (empty($version)) {
-        // Get the SQL server version
-        $db->query('SELECT VERSION() AS version');
-        $version = $db->nextRecord() ? $db->f('version') : '';
-    }
-
-    if (stripos($version, 'MariaDB') !== false) {
-        return true;
-    }
-
-    return (version_compare($version, '8.0') < 0);
 }
