@@ -115,7 +115,8 @@ function initializeVariables()
         ],
         'haltBehavior' => 'report',
         'haltMsgPrefix' => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] . ' ' : '',
-        'enableProfiling' => false
+        'enableProfiling' => false,
+        'logStatements' => false,
     ];
     $_SESSION['setuptype'] = 'setup';
     $_SESSION['dbname'] = '';

@@ -464,7 +464,8 @@ class cCLISetup
             'engine' => $this->_settings['db']['engine'],
             'haltBehavior' => 'report',
             'haltMsgPrefix' => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] . ' ' : '',
-            'enableProfiling' => false
+            'enableProfiling' => false,
+            'logStatements' => false,
         ];
         if (!empty($this->_settings['db']['option_mysqli_init_command'])) {
             $cfg['db']['connection']['options'][MYSQLI_INIT_COMMAND] = $this->_settings['db']['option_mysqli_init_command'];

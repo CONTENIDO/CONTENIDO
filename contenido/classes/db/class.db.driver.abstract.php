@@ -15,8 +15,7 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * This class contains abstract method definitions for each database driver in
- * CONTENIDO.
+ * This class contains abstract method definitions for each database driver in CONTENIDO.
  *
  * @package    Core
  * @subpackage Database
@@ -143,6 +142,13 @@ abstract class cDbDriverAbstract
      * @return int Number of fields
      */
     abstract public function numFields(): int;
+
+    /**
+     * Returns the inserted id for an AUTO_INCREMENT column by the last query.
+     * Returns `null` if the query did not update an AUTO_INCREMENT value.
+     * @since CONTENIDO 4.10.2
+     */
+    abstract public function getLastInsertedId(): int|string|null;
 
     /**
      * Discard the query result
