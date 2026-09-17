@@ -219,14 +219,7 @@ class cApiOnlineUserCollection extends ItemCollection
      */
     public function getNumberOfUsers(): int
     {
-        $sql = 'SELECT COUNT(*) AS cnt FROM `%s`';
-        $result = $this->db->query($sql, $this->table);
-        $this->_lastSQL = $sql;
-        if ($result) {
-            $this->db->nextRecord();
-            return cSecurity::toInteger($this->db->f('cnt'));
-        }
-        return 0;
+        return $this->countAll();
     }
 
     /**

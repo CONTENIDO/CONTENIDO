@@ -27,13 +27,8 @@ if ($cfg['debug']['disable_plugins'] === false) {
     include_once($pluginFolder . 'pim/includes/config.plugin.php');
 
     // Load all active plugins
-    $pluginColl = new PimPluginCollection();
-    $pluginColl->setWhere('active', 1);
-    $pluginColl->setOrder('executionorder ASC');
-    $pluginColl->query();
-
-    while ($plugin = $pluginColl->next()) {
-        $pluginName = $plugin->get('folder');
+    foreach ((new PimPluginCollection())->fetchAllActive() as $pimPlugin) {
+        $pluginName = $pimPlugin->get('folder');
 
         if (is_dir($pluginFolder . $pluginName . '/')) {
             $plugins[] = $pluginName;

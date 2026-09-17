@@ -102,32 +102,22 @@ class PimPluginViewDependencies
     }
 
     /**
-     * Get dependencies from installed plugins
+     * Get dependencies from installed plugin.
      *
-     * @param int $pluginId Id of defined plugin
-     * @return string|false Plugin dependencies
+     * @return ?string Plugin dependencies
      * @throws cException|cInvalidArgumentException
      */
-    public function getPluginDependenciesInstalled(int $pluginId = 0)
+    public function getPluginDependenciesInstalled(PimPlugin $pimPlugin): ?string
     {
-        // Return false if no idplugin variable is defined
-        if ($pluginId == 0) {
-            return false;
-        }
-
         // Get folder name from defined plugin
-        $pimPluginColl = new PimPluginCollection();
-        $pimPluginColl->setWhere('idplugin', $pluginId);
-        $pimPluginColl->query();
-        $pimPluginSql = $pimPluginColl->next();
-        $folderName = $pimPluginSql->get('folder');
-
-        // Reset the query so we can use PimPluginCollection later again...
-        $pimPluginColl->resetQuery();
+        if (!$pimPlugin->isLoaded()) {
+            return null;
+        }
+        $folderName = $pimPlugin->get('folder');
 
         // Skip the plugin if it has no plugin.xml file
         if (!cFileHandler::exists(PimPluginHelper::getPluginConfigFile($folderName))) {
-            return false;
+            return null;
         }
 
         // Read plugin.xml files from existing plugins at contenido/plugins dir

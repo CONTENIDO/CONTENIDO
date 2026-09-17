@@ -1169,11 +1169,29 @@ abstract class ItemCollection extends cItemBaseAbstract
     }
 
     /**
-     * Returns the number of rows.
+     * Returns the number of rows from the last statement.
      */
     public function count(): int
     {
         return $this->db->numRows();
+    }
+
+    /**
+     * Returns the number of all entries from the table.
+     *
+     * @throws cDbException
+     * @since CONTENIDO 4.10.2
+     */
+    public function countAll(): int
+    {
+        $sql = 'SELECT COUNT(*) AS cnt FROM `%s`';
+        $result = $this->db->query($sql, $this->table);
+        $this->_lastSQL = $sql;
+        if ($result) {
+            $this->db->nextRecord();
+            return cSecurity::toInteger($this->db->f('cnt'));
+        }
+        return 0;
     }
 
     /**

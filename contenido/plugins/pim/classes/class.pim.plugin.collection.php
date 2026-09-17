@@ -95,6 +95,46 @@ class PimPluginCollection extends ItemCollection
     }
 
     /**
+     * Returns all plugin entries.
+     *
+     * @return PimPlugin[]
+     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function fetchAll(bool $sortByExecutionOrder = false): array
+    {
+        if (!$sortByExecutionOrder) {
+            $this->select();
+        } else {
+            $this->select('', '', '`executionorder` ASC');
+        }
+
+        $entries = [];
+        while ($entry = $this->next()) {
+            $entries[] = clone $entry;
+        }
+        return $entries;
+    }
+
+    /**
+     * Returns all active plugin entries ordered by the execution order.
+     *
+     * @return PimPlugin[]
+     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function fetchAllActive(): array
+    {
+        $this->select('`active` = 1', '', '`executionorder` ASC');
+
+        $entries = [];
+        while ($entry = $this->next()) {
+            $entries[] = clone $entry;
+        }
+        return $entries;
+    }
+
+    /**
      * Get the next id in table *_plugins
      *
      * @throws cDbException
@@ -196,15 +236,10 @@ class PimPlugin extends Item
     {
         $pluginsDir = PimPluginHelper::getPluginsFolderPath();
 
-        // Get uuid from selected plugin
         $pimPluginColl = new PimPluginCollection();
-        $pimPluginColl->setWhere('idplugin', $this->get('idplugin'));
-        $pimPluginColl->query();
-        $pimPluginSql = $pimPluginColl->next();
-        $uuidBase = $pimPluginSql->get('uuid');
 
-        // Reset query, so we can use PimPluginCollection later again...
-        $pimPluginColl->resetQuery();
+        // Get uuid from current plugin
+        $uuidBase = $this->get('uuid');
 
         // Read all dirs
         $dirs = cDirHandler::read($pluginsDir);
@@ -271,16 +306,10 @@ class PimPlugin extends Item
     {
         $pluginsDir = PimPluginHelper::getPluginsFolderPath();
 
-        // Get uuid from the selected plugin
         $pimPluginColl = new PimPluginCollection();
-        $pimPluginColl->setWhere('idplugin', $this->get('idplugin'));
-        $pimPluginColl->query();
-        $pimPluginSql = $pimPluginColl->next();
-        $folderName = $pimPluginSql->get('folder');
-        $uuidBase = $pimPluginSql->get('uuid');
 
-        // Reset query so we can use PimPluginCollection later again...
-        $pimPluginColl->resetQuery();
+        // Get folder name from current plugin
+        $folderName = $this->get('folder');
 
         // Skip plugin if it has no plugin.xml file
         if (!cFileHandler::exists(PimPluginHelper::getPluginConfigFile($folderName))) {
@@ -353,8 +382,8 @@ class PimPlugin extends Item
         $this->store();
 
         // move the other plugins up or down
-        $pluginColl = new PimPluginCollection();
-        $pluginColl->select(
+        $pimPluginColl = new PimPluginCollection();
+        $pimPluginColl->select(
             sprintf(
                 '`executionorder` >= %d AND `executionorder` <= %d AND `idplugin` != %d',
                 min($newOrder, $oldOrder),
@@ -365,15 +394,15 @@ class PimPlugin extends Item
             'executionorder'
         );
 
-        while ($plugin = $pluginColl->next()) {
+        while ($pimPlugin = $pimPluginColl->next()) {
             if ($newOrder < $oldOrder) {
                 // increment the execution order after we moved the plugin up
-                $plugin->set('executionorder', $plugin->get('executionorder') + 1);
-                $plugin->store();
+                $pimPlugin->set('executionorder', $pimPlugin->get('executionorder') + 1);
+                $pimPlugin->store();
             } elseif ($oldOrder < $newOrder) {
                 // decrement the execution value after we moved the plugin down
-                $plugin->set('executionorder', $plugin->get('executionorder') - 1);
-                $plugin->store();
+                $pimPlugin->set('executionorder', $pimPlugin->get('executionorder') - 1);
+                $pimPlugin->store();
             }
         }
 
@@ -383,7 +412,6 @@ class PimPlugin extends Item
     /**
      * Check if the plugin exists and is active.
      *
-     * @param string $pluginName
      * @return bool true iv available, false if it is not available
      * @throws cDbException|cException
      */
