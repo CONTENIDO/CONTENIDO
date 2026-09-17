@@ -448,11 +448,11 @@ abstract class cCodeGeneratorAbstract
     {
         global $containerinf;
 
-        $data = $this->_getTemplateData();
-
         if (empty($this->_feDebugOptions)) {
             return;
         }
+
+        $data = $this->_getTemplateData();
 
         if ($this->_getFeDebugOption('container_display')) {
             $this->_modulePrefix[] = 'if ($frontend_debug[\'container_display\']) echo "<!-- START CONTAINER ' . $containerinf[$data['idlay']][$containerNumber]['name'] . ' (' . $containerNumber . ') -->";';
