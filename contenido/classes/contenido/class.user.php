@@ -87,7 +87,6 @@ class cApiUserCollection extends ItemCollection
      */
     public function fetchAccessibleUsers(array $perms, bool $includeAdmins = false, string $orderBy = ''): array
     {
-        $users = [];
         $limit = [];
         $where = '';
 
@@ -125,11 +124,8 @@ class cApiUserCollection extends ItemCollection
         }
 
         $this->select($where, '', $this->escape($orderBy));
-        while ($oItem = $this->next()) {
-            $users[] = clone $oItem;
-        }
 
-        return $users;
+        return $this->getItemsArray();
     }
 
     /**
@@ -165,14 +161,9 @@ class cApiUserCollection extends ItemCollection
      */
     public function fetchAvailableUsers(string $orderBy = '`realname` ASC'): array
     {
-        $users = [];
-
         $this->select('', '', $this->escape($orderBy));
-        while ($oItem = $this->next()) {
-            $users[] = clone $oItem;
-        }
 
-        return $users;
+        return $this->getItemsArray();
     }
 
     /**
@@ -184,8 +175,6 @@ class cApiUserCollection extends ItemCollection
      */
     public function fetchSystemAdmins(bool $forceActive = false): array
     {
-        $users = [];
-
         $where = "`perms` LIKE '%sysadmin%'";
         if ($forceActive === true) {
             $where .= " AND (`valid_from` <= NOW() OR `valid_from` = '0000-00-00 00:00:00')"
@@ -193,11 +182,8 @@ class cApiUserCollection extends ItemCollection
         }
 
         $this->select($where);
-        while ($item = $this->next()) {
-            $users[] = clone $item;
-        }
 
-        return $users;
+        return $this->getItemsArray();
     }
 
     /**
@@ -263,14 +249,9 @@ class cApiUserCollection extends ItemCollection
      */
     public function fetchClientAdmins(int $clientId): array
     {
-        $users = [];
-
         $this->select("`perms` LIKE '%admin[" . $clientId . "]%'");
-        while ($item = $this->next()) {
-            $users[] = clone $item;
-        }
 
-        return $users;
+        return $this->getItemsArray();
     }
 }
 

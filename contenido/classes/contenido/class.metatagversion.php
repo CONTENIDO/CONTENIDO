@@ -110,7 +110,8 @@ class cApiMetaTagVersionCollection extends ItemCollection
             sprintf('`idartlang` = %d AND `version` = %d', $articleLanguageId, $version),
             '`idmetatype`'
         );
-        return iterator_to_array($this->getItems(), false);
+
+        return $this->getItemsArray();
     }
 
     /**

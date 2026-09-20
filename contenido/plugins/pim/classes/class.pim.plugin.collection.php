@@ -109,11 +109,7 @@ class PimPluginCollection extends ItemCollection
             $this->select('', '', '`executionorder` ASC');
         }
 
-        $entries = [];
-        while ($entry = $this->next()) {
-            $entries[] = clone $entry;
-        }
-        return $entries;
+        return $this->getItemsArray();
     }
 
     /**
@@ -127,11 +123,7 @@ class PimPluginCollection extends ItemCollection
     {
         $this->select('`active` = 1', '', '`executionorder` ASC');
 
-        $entries = [];
-        while ($entry = $this->next()) {
-            $entries[] = clone $entry;
-        }
-        return $entries;
+        return $this->getItemsArray();
     }
 
     /**

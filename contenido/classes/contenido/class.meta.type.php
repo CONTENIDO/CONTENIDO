@@ -68,7 +68,7 @@ class cApiMetaTypeCollection extends ItemCollection
     {
         $this->select();
 
-        return iterator_to_array($this->getItems(), false);
+        return $this->getItemsArray();
     }
 
 }

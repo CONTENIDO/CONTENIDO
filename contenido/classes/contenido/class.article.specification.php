@@ -60,11 +60,8 @@ class cApiArticleSpecificationCollection extends ItemCollection
         $this->select(sprintf(
             "`client` = %d AND `lang` = %d", $clientId, $languageId
         ), '', $this->escape($orderBy));
-        $entries = [];
-        while ($entry = $this->next()) {
-            $entries[] = clone $entry;
-        }
-        return $entries;
+
+        return $this->getItemsArray();
     }
 
     /**

@@ -82,13 +82,9 @@ class cApiGroupCollection extends ItemCollection
             return [];
         }
 
-        $groups = [];
         $this->select(sprintf("`group_id` IN (%s)", implode(',', $ids)));
-        while ($oItem = $this->next()) {
-            $groups[] = clone $oItem;
-        }
 
-        return $groups;
+        return $this->getItemsArray();
     }
 
     /**
@@ -114,7 +110,6 @@ class cApiGroupCollection extends ItemCollection
      */
     public function fetchAccessibleGroups(array $perms): array
     {
-        $groups = [];
         $limit = [];
         $where = '';
 
@@ -137,11 +132,8 @@ class cApiGroupCollection extends ItemCollection
         }
 
         $this->select($where);
-        while ($oItem = $this->next()) {
-            $groups[] = clone $oItem;
-        }
 
-        return $groups;
+        return $this->getItemsArray();
     }
 
     /**

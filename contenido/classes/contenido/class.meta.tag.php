@@ -91,7 +91,7 @@ class cApiMetaTagCollection extends ItemCollection
             $articleLanguageId
         ));
 
-        return iterator_to_array($this->getItems(), false);
+        return $this->getItemsArray();
     }
 
     /**

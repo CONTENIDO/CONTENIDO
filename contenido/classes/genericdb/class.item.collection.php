@@ -971,7 +971,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      *     // Do something with $myItem...
      * }
      * </code>
-     * @return \Generator|Item[]
+     * @return Generator Containing Item instances.
      * @throws cDbException|cException
      * @since CONTENIDO 4.10.2
      */
@@ -980,6 +980,18 @@ abstract class ItemCollection extends cItemBaseAbstract
         while ($entry = $this->next()) {
             yield $entry;
         }
+    }
+
+    /**
+     * Similar to {@see ItemCollection::getItems()} but it returns an array of Items instaed of a Generator.
+     *
+     * @return Item[]
+     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function getItemsArray(): array
+    {
+        return iterator_to_array($this->getItems(), false);
     }
 
     /**

@@ -169,11 +169,8 @@ class cApiSystemPropertyCollection extends ItemCollection
         }
 
         $this->select('', '', $this->escape($orderBy));
-        $props = [];
-        while ($property = $this->next()) {
-            $props[] = clone $property;
-        }
-        return $props;
+
+        return $this->getItemsArray();
     }
 
     /**
@@ -227,11 +224,8 @@ class cApiSystemPropertyCollection extends ItemCollection
         }
 
         $this->select($this->db->prepare("`type` = '%s'", $type));
-        $props = [];
-        while ($property = $this->next()) {
-            $props[] = clone $property;
-        }
-        return $props;
+
+        return $this->getItemsArray();
     }
 
     /**
