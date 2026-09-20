@@ -472,14 +472,22 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
      */
     protected function _getBasicMetaTags(): array
     {
+        static $metaTypes = null;
+        if (null === $metaTypes) {
+            $metaTypes = (new cApiMetaTypeCollection())->fetchAll();
+        }
+
+        $metaTagItems = (new cApiMetaTagCollection())
+            ->fetchByArticleLanguagwId(cSecurity::toInteger($this->_idartlang));
+
         // collect all available meta-tag entries with non-empty values
         $metaTags = [];
-        foreach (conGetAvailableMetaTagTypes() as $key => $value) {
-            $metaValue = conGetMetaValue($this->_idartlang, $key);
-            if (0 < cString::getStringLength($metaValue)) {
+        foreach ($metaTypes as $metaType) {
+            $metaTag = array_find($metaTagItems, fn($item) => $item->get('idmetatype') === $metaType->getId());
+            if ($metaTag && cString::getStringLength($metaTag->get('metavalue') ?? '') > 0) {
                 $metaTags[] = [
-                    $value['fieldname'] => $value['metatype'],
-                    'content' => $metaValue
+                    $metaType->get('fieldname') => $metaType->get('metatype'),
+                    'content' => $metaTag->get('metavalue')
                 ];
             }
         }

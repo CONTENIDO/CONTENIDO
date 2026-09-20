@@ -45,3 +45,24 @@ if (!function_exists('is_countable')) {
         return (is_array($var) || $var instanceof \Countable);
     }
 }
+
+if (!function_exists('array_find')) {
+    /**
+     * Returns the first element satisfying a callback function
+     * array_find polyfill for PHP < 8.4.
+     *
+     * @link https://www.php.net/manual/en/function.array-find.php
+     * @param array $array The array that should be searched.
+     * @return callable $callback The callback function to call to check each element, which must be of the following signature:
+     */
+    function array_find(array $array, callable $callback): mixed {
+        foreach ($array as $key => $value) {
+            if ($callback($value, $key)) {
+                return $value;
+            }
+        }
+
+        return null;
+    }
+}
+

@@ -78,6 +78,23 @@ class cApiMetaTagCollection extends ItemCollection
     }
 
     /**
+     * Returns all meta-tag entries by article language.
+     *
+     * @return cApiMetaTag[]
+     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function fetchByArticleLanguagwId(int $articleLanguageId): array
+    {
+        $this->select(sprintf(
+            '`idartlang` = %d',
+            $articleLanguageId
+        ));
+
+        return iterator_to_array($this->getItems(), false);
+    }
+
+    /**
      * Returns meta-tag ids (idmetatag) by the passed article language id.
      *
      * @param int $articleLanguageId Article language id
@@ -148,6 +165,7 @@ class cApiMetaTag extends Item
     public function setField($name, $value, $safe = true)
     {
         switch ($name) {
+            case 'idmetatag':
             case 'idmetatype':
             case 'idartlang':
                 $value = cSecurity::toInteger($value);
@@ -155,6 +173,25 @@ class cApiMetaTag extends Item
         }
 
         return parent::setField($name, $value, $safe);
+    }
+
+    /**
+     * @inheritDoc
+     * @since CONTENIDO 4.10.2
+     */
+    public function getField($name, $safe = true)
+    {
+        $value = parent::getField($name, $safe);
+
+        switch ($name) {
+            case 'idmetatag':
+            case 'idmetatype':
+            case 'idartlang':
+                $value = cSecurity::toInteger($value);
+                break;
+        }
+
+        return $value;
     }
 
     /**
