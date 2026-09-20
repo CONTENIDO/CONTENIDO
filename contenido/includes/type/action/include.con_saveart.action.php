@@ -85,8 +85,9 @@ if (
         $tmp_notification = $notification->returnNotification("ok", i18n("Changes saved"));
 
         // if meta-tag 'robots' is available add value 'index, follow'
-        $availableTags = conGetAvailableMetaTagTypes();
-        if (array_key_exists('robots', $availableTags)) {
+        $metaTypeService = new cMetaTypeService();
+        $metaType = $metaTypeService->getByMetaType('robots');
+        if ($metaType) {
             conSetMetaValue($idartlang, 'robots', 'index, follow');
         }
     } else {

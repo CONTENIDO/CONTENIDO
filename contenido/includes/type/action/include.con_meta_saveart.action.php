@@ -35,9 +35,13 @@ cInclude('includes', 'functions.con2.php');
 if ($perm->have_perm_area_action($area, 'con_meta_edit') || $perm->have_perm_area_action_item($area, 'con_meta_edit', $idcat)) {
     $oldData = [];
 
-    $availableTags = conGetAvailableMetaTagTypes();
-    foreach ($availableTags as $key => $value) {
-        $oldData[$value['metatype']] = conGetMetaValue($idartlang, $key);
+    $metaTypeService = new cMetaTypeService();
+    $metaTagItems = (new cApiMetaTagCollection())
+        ->fetchByArticleLanguagwId(cSecurity::toInteger($this->_idartlang));
+
+    foreach ($metaTypeService->getAll() as $metaType) {
+        $metaTag = cMetaTypeService::findMetaTagByMetaType($metaType, $metaTagItems);
+        $oldData[$metaType->get('metatype')] = cSecurity::toString($metaTag?->get('value') ?? '');
     }
 
     $artLang = new cApiArticleLanguage(cSecurity::toInteger($idartlang));
@@ -88,26 +92,28 @@ if ($perm->have_perm_area_action($area, 'con_meta_edit') || $perm->have_perm_are
         $version = $artLangVersion->get('version');
     }
 
-    foreach ($availableTags as $key => $value) {
-        if ($value['metatype'] == 'robots') {
-            conSetMetaValue($idartlang, $key, $robots);//, $version);
-            $newData[$value['metatype']] = $robots;
-        } elseif ($value['metatype'] == 'date' || $value['metatype'] == 'expires') {
+    foreach ($metaTypeService->getAll(true) as $metaType) {
+        $_metaType = $metaType->get('metatype');
+
+        if ($_metaType === 'robots') {
+            conSetMetaValue($idartlang, $metaType->getId(), $robots);//, $version);
+            $newData[$_metaType] = $robots;
+        } elseif ($_metaType === 'date' || $_metaType === 'expires') {
             $atime = '';
-            $dateValue = $_POST['META' . $value['metatype']] ?? '';
+            $dateValue = $_POST['META' . $_metaType] ?? '';
             // fix store hours and minutes
             // if (is_int(strtotime($dateValue))) {
             // $atime = date('c', strtotime($dateValue));
             // }
             $atime = $dateValue;
-            conSetMetaValue($idartlang, $key, $atime, $version);
-            $newData[$value['metatype']] = $atime;
+            conSetMetaValue($idartlang, $metaType->getId(), $atime, $version);
+            $newData[$_metaType] = $atime;
         } else {
-            $contentMetaValue = $_POST['META' . $value['metatype']] ?? '';
+            $contentMetaValue = $_POST['META' . $_metaType] ?? '';
             $contentMetaValue = str_replace('"', '', $contentMetaValue);
 
-            conSetMetaValue($idartlang, $key, $contentMetaValue, $version);
-            $newData[$value['metatype']] = $contentMetaValue;
+            conSetMetaValue($idartlang, $metaType->getId(), $contentMetaValue, $version);
+            $newData[$_metaType] = $contentMetaValue;
         }
     }
 
@@ -118,8 +124,12 @@ if ($perm->have_perm_area_action($area, 'con_meta_edit') || $perm->have_perm_are
     // Add a new Meta Tag in DB
     $validMeta = true;
     if (!empty($METAmetatype) && preg_match('/^([a-zA-Z])([a-zA-Z0-9\.\:\-\_]*$)/', $METAmetatype)) {
-        $metaTypeColl = new cApiMetaTypeCollection();
-        $metaTypeColl->create($METAmetatype, $METAfieldtype, $METAmaxlength, $METAfieldname);
+        $metaTypeService->addNew(
+            $METAmetatype,
+            $METAfieldtype ?? '',
+            cSecurity::toInteger($METAmaxlength),
+            $METAfieldname ?? ''
+        );
     } elseif (!empty($METAmetatype)) {
         $validMeta = false;
     }

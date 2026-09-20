@@ -82,26 +82,25 @@ function getArtLang($idart, $idlang)
  *
  * @return array Associative meta-tags list
  * @throws cDbException|cException
+ * @deprecated [2026-09-20] Since CONTENIDO 4.10.2, use {@see cMetaTypeService::getAll()} instead
  */
 function conGetAvailableMetaTagTypes()
 {
-    // TODO Use `cApiMetaTypeCollection::fetchAll()` or replace call of this function against it.
-    $oMetaTypeColl = new cApiMetaTypeCollection();
-    $oMetaTypeColl->select();
+    cDeprecated("The function conGetAvailableMetaTagTypes() is deprecated since CONTENIDO 4.10.2, use cMetaTypeService::getAll() instead.");
 
-    $aMetaTypes = [];
-    while ($oMetaType = $oMetaTypeColl->next()) {
-        $rs = $oMetaType->toArray();
-        $aMetaTypes[$rs['idmetatype']] = [
-            'metatype' => $rs['metatype'],
-            'fieldtype' => $rs['fieldtype'],
-            'maxlength' => $rs['maxlength'],
-            'fieldname' => $rs['fieldname'],
-            'idmetatype' => $rs['idmetatype'],
+    $metaTypeService = new cMetaTypeService();
+    $metaTypes = [];
+    foreach ($metaTypeService->getAll() as $metaType) {
+        $metaTypes[$metaType->getId()] = [
+            'metatype' => $metaType->get('metatype'),
+            'fieldtype' => $metaType->get('fieldtype'),
+            'maxlength' => $metaType->get('maxlength'),
+            'fieldname' => $metaType->get('fieldname'),
+            'idmetatype' => $metaType->getId(),
         ];
     }
 
-    return $aMetaTypes;
+    return $metaTypes;
 }
 
 /**

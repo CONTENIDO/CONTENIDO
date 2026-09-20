@@ -247,7 +247,6 @@ $tpl->set('s', 'PAGE_TITLE', conHtmlSpecialChars(cSecurity::unFilter(stripslashe
 $tpl->set('s', 'ALIAS', cSecurity::unFilter(stripslashes($art->getField('urlname'))));
 
 // Assign Meta-Tags elements
-$availableTags = conGetAvailableMetaTagTypes();
 $managedTypes = [
     'author',
     'description',
@@ -261,21 +260,26 @@ $managedTypes = [
 $metaPreview = [];
 
 // Set meta-tags values
-foreach ($availableTags as $key => $value) {
-    $contentMetaValue = conGetMetaValue($art->getField('idartlang'), $key, $art->getField('version'));
+$metaTypeService = new cMetaTypeService();
+foreach ($metaTypeService->getAll() as $metaType) {
+    $contentMetaValue = conGetMetaValue(
+        $art->getField('idartlang'),
+        $metaType->getId(),
+        $art->getField('version')
+    );
     $contentMetaValue = str_replace('"', '', $contentMetaValue);
 
     $metaPreview[] = [
-        'fieldname' => $value['fieldname'],
-        'name' => $value['metatype'],
+        'fieldname' => $metaType->get('fieldname'),
+        'name' => $metaType->get('metatype'),
         'content' => cSecurity::unFilter(stripslashes($contentMetaValue))
     ];
 
     // Set meta values to inputs
-    if (in_array($value['metatype'], $managedTypes)) {
-        if ($value['metatype'] == 'robots') {
-            if (conGetMetaValue($art->getField('idartlang'), $key) == '') {
-                conSetMetaValue($art->getField('idartlang'), $key, 'index, follow');
+    if (in_array($metaType->get('metatype'), $managedTypes)) {
+        if ($metaType->get('metatype') == 'robots') {
+            if (conGetMetaValue($art->getField('idartlang'), $metaType->getId()) == '') {
+                conSetMetaValue($art->getField('idartlang'), $metaType->getId(), 'index, follow');
 
                 $i = 0;
                 foreach ($metaPreview as $k => $metaRow) {
@@ -293,31 +297,34 @@ foreach ($availableTags as $key => $value) {
                 $tpl->set('s', cString::toUpperCase($instruction), 'checked');
             }
         } else {
-            $metaType = conHtmlSpecialChars(cSecurity::unFilter(stripslashes($contentMetaValue)));
-            $tpl->set('s', cString::toUpperCase($value['metatype']), str_replace('\\', '', $metaType));
+            $metaTypeValue = conHtmlSpecialChars(cSecurity::unFilter(stripslashes($contentMetaValue)));
+            $tpl->set(
+                's',
+                cString::toUpperCase($metaType->get('metatype')), str_replace('\\', '', $metaTypeValue)
+            );
         }
 
         continue;
     }
 
     // Create add and edit MetaTag form BLOCK
-    switch ($value['fieldtype']) {
+    switch ($metaType->get('fieldtype')) {
         case 'text':
             $element = '<input ' . $disabled . '
                             class="metaTag"
                             type="text"
-                            name="META' . $value['metatype'] . '"
-                            id="META' . $value['metatype'] . '"
+                            name="META' . $metaType->get('metatype') . '"
+                            id="META' . $metaType->get('metatype') . '"
                             size="24"
-                            maxlength=' . $value['maxlength'] . '
+                            maxlength=' . $metaType->get('maxlength') . '
                             value="' . conHtmlSpecialChars($contentMetaValue) . '">';
 
             break;
         case 'textarea':
             $element = '<textarea ' . $disabled . '
                             class="metaTag"
-                            name="META' . $value['metatype'] . '"
-                            id="META' . $value['metatype'] . '"
+                            name="META' . $metaType->get('metatype') . '"
+                            id="META' . $metaType->get('metatype') . '"
                             rows="3"
                         >' . cSecurity::unFilter(stripslashes($contentMetaValue)) . '</textarea>';
 
@@ -326,10 +333,10 @@ foreach ($availableTags as $key => $value) {
             $element = '<input ' . $disabled . '
                             class="metaTag datepickerTextbox"
                             type="text"
-                            name="META' . $value['metatype'] . '"
-                            id="META' . $value['metatype'] . '"
+                            name="META' . $metaType->get('metatype') . '"
+                            id="META' . $metaType->get('metatype') . '"
                             size="24"
-                            maxlength=' . $value['maxlength'] . '
+                            maxlength=' . $metaType->get('maxlength') . '
                             value="' . conHtmlSpecialChars($contentMetaValue) . '">';
 
             break;
@@ -339,7 +346,7 @@ foreach ($availableTags as $key => $value) {
     $tpl->set('d', 'ARTICLE_ID', $idart);
     $tpl->set('d', 'CAT_ID', $idcat);
     $tpl->set('d', 'METAFIELDTYPE', $element);
-    $tpl->set('d', 'METATITLE', $value['metatype'] . ':');
+    $tpl->set('d', 'METATITLE', $metaType->get('metatype') . ':');
 
     if ($versioning->getState() == $versioning::STATE_SIMPLE && $articleType == 'current'
         || $versioning->getState() == $versioning::STATE_ADVANCED && $articleType == 'editable'
@@ -351,7 +358,7 @@ foreach ($availableTags as $key => $value) {
             "Con.showConfirmation('" .
             i18n('Are you sure to delete this Meta tag?') . "' ,
                     function() {
-                        deleteMetaTag(" . $value['idmetatype'] . "," . $idart . "," . $idcat . "," . $art->getField('idartlang') . ");
+                        deleteMetaTag(" . $metaType->getId() . "," . $idart . "," . $idcat . "," . $art->getField('idartlang') . ");
                     }
             ); "
         );
