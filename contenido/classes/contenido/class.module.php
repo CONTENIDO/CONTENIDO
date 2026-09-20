@@ -583,6 +583,15 @@ class cApiModule extends Item
                 if ($value == '') {
                     $value = i18n('- Unnamed module -');
                 }
+                break;
+            case 'deletable':
+            case 'static':
+                $value = ($value == 1) ? 1 : 0;
+                break;
+            case 'idmod':
+            case 'idclient':
+                $value = cSecurity::toInteger($value);
+                break;
         }
 
         return $value;
@@ -894,6 +903,7 @@ class cApiModule extends Item
             case 'static':
                 $value = ($value == 1) ? 1 : 0;
                 break;
+            case 'idmod':
             case 'idclient':
                 $value = cSecurity::toInteger($value);
                 break;

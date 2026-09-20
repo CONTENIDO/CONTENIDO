@@ -213,7 +213,7 @@ function tplBrowseLayoutForContainers($idlay): string
  * the list of found container numbers.
  *
  * @param int $idlay
- * @return array
+ * @return int[]
  * @throws cInvalidArgumentException|cDbException|cException
  */
 function tplGetContainerNumbersInLayout($idlay): array
@@ -226,7 +226,7 @@ function tplGetContainerNumbersInLayout($idlay): array
         $containerNumbers = explode('&', $containerNumbersStr);
     }
 
-    return $containerNumbers;
+    return array_map('intval', $containerNumbers);
 }
 
 /**

@@ -1224,6 +1224,38 @@ abstract class ItemCollection extends cItemBaseAbstract
     }
 
     /**
+     * Loads multiple records by ids at once.
+     *
+     * @param string[]|int[] $ids The primary keys of the items to load.
+     * @return TItem[]|object[] The loaded item
+     * @throws cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function fetchByIds(array $ids): array
+    {
+        $ids = array_map(function ($id) {
+            if (is_numeric($id)) {
+                return (int) $id;
+            } elseif (is_string($id)) {
+                return sprintf("'%s'", $this->escape($id));
+            } else {
+                return null;
+            }
+        }, $ids);
+        $ids = array_unique(array_filter($ids));
+
+        if (empty($ids)) {
+            return [];
+        }
+
+        $this->select(
+            $this->prepare('`%s` IN (%s)', $this->getPrimaryKeyName(), implode(',', $ids))
+        );
+
+        return $this->getItemsArray();
+    }
+
+    /**
      * Loads a single object from the database.
      *
      * @param mixed $mItem The primary key of the item to load or a recordset with item data

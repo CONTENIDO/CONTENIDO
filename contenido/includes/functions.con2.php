@@ -26,11 +26,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  * @param int $idart Id of article
  * @param int $lang Id of language
  * @param int $client Id of client
- * @param bool $layout [optional] Layout-ID of alternate Layout (if false, use associated layout)
+ * @param int|bool $layout [optional] Layout-ID of alternate Layout (if false, use associated layout)
  * @param bool $save [optional] Flag to persist generated code in database
  * @param bool $contype [optional] Flag to enable/disable replacement of CMS_TAGS[].
  * @param bool $editable [optional] deprecated?
- * @param int|NULL $version [optional] version number if article is a revision, else NULL;
+ * @param ?int $version [optional] version number if article is a revision, else NULL;
  * @return string The generated code or "0601" if neither article nor category configuration was found.
  * @throws cDbException|cException|cInvalidArgumentException
  */
@@ -55,6 +55,16 @@ function conGenerateCode(
     if (isset($frontend_debug) && is_array($frontend_debug)) {
         $codeGen->setFrontendDebugOptions($frontend_debug);
     }
+
+    $idcat = cSecurity::toInteger($idcat);
+    $idart = cSecurity::toInteger($idart);
+    $lang = cSecurity::toInteger($lang);
+    $client = cSecurity::toInteger($client);
+    $layout = is_numeric($layout) ? cSecurity::toInteger($layout) : null;
+    $save = cSecurity::toBoolean($save);
+    $contype = cSecurity::toBoolean($contype);
+    $editable = cSecurity::toBoolean($editable);
+    $version = is_numeric($version) ? cSecurity::toInteger($version) : null;
 
     $code = $codeGen->generate($idcat, $idart, $lang, $client, $layout, $save, $contype, $editable, $version);
 
