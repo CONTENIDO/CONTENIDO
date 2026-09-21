@@ -55,8 +55,6 @@ class cApiLanguageCollection extends ItemCollection
         $item->set('encoding', $encoding, false);
         $item->set('direction', $direction, false);
         $item->set('author', $author ?? $auth->getUserId(), false);
-        $item->set('created', date('Y-m-d H:i:s'), false);
-        $item->set('lastmodified', '0000-00-00 00:00:00', false);
         $item->store();
 
         return $item;

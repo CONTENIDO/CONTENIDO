@@ -80,7 +80,7 @@ class cApiTemplateConfigurationCollection extends ItemCollection
             $created = date('Y-m-d H:i:s');
         }
         if (empty($lastModified)) {
-            $lastModified = '0000-00-00 00:00:00';
+            $lastModified = date('Y-m-d H:i:s');
         }
 
         $item = $this->createNewItem();
