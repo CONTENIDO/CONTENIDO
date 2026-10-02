@@ -493,7 +493,7 @@ class cDbDriverMysqli extends cDbDriverAbstract
 
     protected function prepareOptionFlags(mixed $options): array
     {
-        if (!isset($options) || is_array($options)) {
+        if (!isset($options) || !is_array($options)) {
             return [];
         }
 
