@@ -64,13 +64,13 @@ $cfg['path']['wysiwyg_html']            = $cfg['path']['all_wysiwyg_html'] . $cf
 /* Section 2: Database settings
 * ----------------------------
 *
-* Database settings for MySQLi/MySQL. Note that we don't support other databases.
+* Database settings for MySQLi. Note that we don't support other databases.
 */
 
 // (string) The prefix for all CONTENIDO system tables, usually 'con'
 $cfg['sql']['sqlprefix'] = '{MYSQL_PREFIX}';
 
-// (string) Database extension/driver to use, feasible values are 'mysqli' or 'mysql'
+// (string) Database extension/driver to use, feasible value is 'mysqli'
 $cfg['database_extension'] = '{DB_EXTENSION}';
 
 // (array) Extended database settings. This settings will be used from CONTENIDO 4.9.0.

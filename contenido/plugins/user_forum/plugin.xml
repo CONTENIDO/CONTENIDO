@@ -9,10 +9,10 @@
         <copyright>four for business AG</copyright>
         <mail>claus.schunk@4fb.de</mail>
         <website>https://www.4fb.de</website>
-        <version>2.0.4</version>
+        <version>2.0.5</version>
     </general>
-    <requirements php="7.1">
-        <contenido minversion="4.10.2-dev"/>
+    <requirements php="8.0">
+        <contenido minversion="4.11.0"/>
     </requirements>
     <contenido>
         <areas>

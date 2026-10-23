@@ -14,11 +14,6 @@
 
 defined('CON_FRAMEWORK') || die ('Illegal call: Missing framework initialization - request aborted.');
 
-function hasMySQLExtension(): bool
-{
-    return isPHPExtensionLoaded('mysql') === CON_EXTENSION_AVAILABLE;
-}
-
 function hasMySQLiExtension(): bool
 {
     return isPHPExtensionLoaded('mysqli') === CON_EXTENSION_AVAILABLE;
@@ -63,8 +58,6 @@ function doMySQLSelectDB($linkid, string $database): bool
 
     if (CON_SETUP_MYSQLI === $extension) {
         return @mysqli_select_db($linkid, $database);
-    } elseif (CON_SETUP_MYSQL === $extension) {
-       return (bool)@mysql_select_db($database, $linkid);
     } else {
         return false;
     }
@@ -108,8 +101,6 @@ function getMySQLDatabaseExtension(): ?string
 {
     if (hasMySQLiExtension()) {
         return CON_SETUP_MYSQLI;
-    } elseif (hasMySQLExtension()) {
-        return CON_SETUP_MYSQL;
     } else {
         return null;
     }
