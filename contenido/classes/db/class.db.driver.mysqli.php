@@ -499,9 +499,16 @@ class cDbDriverMysqli extends cDbDriverAbstract
 
         foreach ($options as $optKey => $optVal) {
             if ($optKey === MYSQLI_INIT_COMMAND) {
-                // Merge multiple entries for initialization commands to 'SQL_A; SQL_B; SQL_C;'
+                // Merge multiple entries for initialization commands `["SET a = '1'", "SET a = '2'"]`
+                // to one command `"SET a = '1', b = '2'"`.
                 if (is_array($optVal)) {
-                    $optVal = implode(';', array_map(fn($item) => rtrim($item, ';'), $optVal));
+                    $optVal = implode(
+                        ', ',
+                        array_map(
+                            fn($item) => str_replace('SET ', '', rtrim($item, ';')),
+                            $optVal)
+                    );
+                    $optVal = sprintf('SET %s', $optVal);
                 }
             }
             $options[$optKey] = $optVal;
