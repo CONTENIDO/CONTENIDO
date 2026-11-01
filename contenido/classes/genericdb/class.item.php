@@ -356,6 +356,12 @@ abstract class Item extends cItemBaseAbstract
             return false;
         }
 
+        if (!array_key_exists($name, $this->values)) {
+            $this->lasterror = sprintf('Field "%s" not found', $name);
+            cError($this->lasterror);
+            return false;
+        }
+
         if ($safe) {
             return $this->outFilter($this->values[$name]);
         } else {
