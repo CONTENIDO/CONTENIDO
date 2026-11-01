@@ -1492,7 +1492,7 @@ abstract class ItemCollection extends cItemBaseAbstract
         return $this->getIdsByWhereClause($where);
     }
 
-     /**
+    /**
      * Returns all specified fields of the records in the table that match
      * the criteria in the provided WHERE clause.
      *
