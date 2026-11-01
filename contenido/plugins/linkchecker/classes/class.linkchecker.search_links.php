@@ -17,16 +17,12 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cLinkcheckerSearchLinks
 {
-    /**
-     * @var string
-     */
-    private $mode = '';
+    private string $mode = '';
 
     /**
      * Link type mode, 1 = intern, 2 = extern, 3 = intern/extern
-     * @var int
      */
-    private $linkTypeMode = 0;
+    private int $linkTypeMode = 0;
 
     /**
      * cLinkcheckerSearchLinks constructor.
@@ -38,25 +34,22 @@ class cLinkcheckerSearchLinks
     }
 
     /**
-     * Setter method for mode
-     * mode:
+     * Setter method for mode, feasible value are:
      * - text (standard)
      * - redirect
      */
-    public function setMode(string $mode)
+    public function setMode(string $mode): void
     {
         $this->mode = $mode;
     }
 
     /**
-     * Setter method Link type mode
-     *
-     * mode:
+     * Setter method Link type mode, feasible value are:
      * - 1 = intern
      * - 2 = extern
      * - 3 = intern/extern
      */
-    public function setLinkTypeMode(int $linkTypeMode)
+    public function setLinkTypeMode(int $linkTypeMode): void
     {
         $this->linkTypeMode = $linkTypeMode;
     }

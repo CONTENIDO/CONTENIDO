@@ -20,7 +20,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cLinkcheckerHelper
 {
-
     /**
      * Regular expression for image types
      */

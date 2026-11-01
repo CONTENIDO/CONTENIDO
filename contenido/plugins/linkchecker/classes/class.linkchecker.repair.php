@@ -20,11 +20,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 class cLinkcheckerRepair
 {
     /**
-     * Typical link mistakes
-     *
-     * @var array
+     * @var string[] Typical link mistakes
      */
-    private $errorTypes = [
+    private array $errorTypes = [
         'htp://',
         'htttp://',
         'htps://',
@@ -35,12 +33,9 @@ class cLinkcheckerRepair
     ];
 
     /**
-     * Fixed link mistakes
-     * Keys are equivalent to $errorTypes
-     *
-     * @var array
+     * @var string[] Fixed link mistakes, keys are equivalent to $errorTypes
      */
-    private $correctTypes = [
+    private array $correctTypes = [
         'http://',
         'http://',
         'https://',
@@ -60,7 +55,7 @@ class cLinkcheckerRepair
         foreach ($this->errorTypes as $errorTypeKey => $errorType) {
             if (cString::getPartOfString($link, 0, cString::getStringLength($errorType)) == $errorType) {
                 $repairedRink = str_replace($errorType, $this->correctTypes[$errorTypeKey], $link);
-                return $this->_pingRepairedLink($repairedRink) ? $repairedRink : false;
+                return $this->pingRepairedLink($repairedRink) ? $repairedRink : false;
             }
         }
         return false;
@@ -69,7 +64,7 @@ class cLinkcheckerRepair
     /**
      * Test repaired link
      */
-    private function _pingRepairedLink(string $repairedRink): bool
+    private function pingRepairedLink(string $repairedRink): bool
     {
         $repairedRink = cSecurity::escapeString($repairedRink);
 
