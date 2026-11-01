@@ -174,8 +174,7 @@ if ($art->getField('created')) {
         || $versioning->getState() == $versioning::STATE_SIMPLE && $articleType != 'version'
         || $versioning->getState() == $versioning::STATE_DISABLED) {
         $tpl->set('s', 'DISABLED', '');
-        $tpl->set('s', 'REASON', '')
-;
+        $tpl->set('s', 'REASON', '');
     } else {
         $disabled = 'disabled="disabled"';
         $tpl->set('s', 'DISABLED', ' ' . $disabled);
@@ -185,14 +184,12 @@ if ($art->getField('created')) {
         $tpl->set('s', 'IS_DATETIMEPICKER_DISABLED', 0);
         $tpl->set('s', 'BUTTONIMAGE', 'but_ok.gif');
         $tpl->set('s', 'BUTTONDISABLE', $disabled);
-        $tpl->set('s', 'REASON', '')
-;
+        $tpl->set('s', 'REASON', '');
     } else {
         $tpl->set('s', 'IS_DATETIMEPICKER_DISABLED', 1);
         $tpl->set('s', 'BUTTONIMAGE', 'but_ok_off.gif');
         $tpl->set('s', 'BUTTONDISABLE', $disabled);
-        $tpl->set('s', 'REASON', '')
-;
+        $tpl->set('s', 'REASON', '');
     }
 }
 
@@ -614,11 +611,12 @@ $tpl2->set('s', 'METATITLE', i18n('New meta tag') . ' ' . $infoButton->render())
 $db->query("SHOW FIELDS FROM `%s`", cDb::getTableName('meta_type'));
 
 while ($db->nextRecord()) {
-    if ($db->f('Field') == 'idmetatype') {
+    $_field = $db->f('Field');
+    if ($_field == 'idmetatype') {
         continue;
     }
 
-    switch ($db->f('Field')) {
+    switch ($_field) {
         case 'fieldtype':
             $tpl2->set('d', 'METATITLE', i18n('Field Type'));
             break;
@@ -632,31 +630,26 @@ while ($db->nextRecord()) {
             $tpl2->set('d', 'METATITLE', i18n('Meta Attribute'));
             break;
         default:
-            $tpl2->set('d', 'METATITLE', i18n($db->f('Field')));
+            $tpl2->set('d', 'METATITLE', i18n($_field));
             break;
     }
 
-    if (is_array($result[$db->f('Field')])) {
-        $str = '<select id="META' . $db->f('Field') . '" name="META' . $db->f('Field') . '" ' . $disabled . '>';
-        foreach ($result[$db->f('Field')] as $item) {
-            $str .= '<option value="' . $item . '">' . $item . '</option>';
+    $_fieldKey = sprintf('META%s', $_field);
+
+    if (is_array($result[$_field])) {
+        $htmlElement = new cHTMLSelectElement($_fieldKey, '', $_fieldKey, !empty($disabled)); // $disabled: '' or 'disabled="disabled"'
+        foreach ($result[$_field] as $item) {
+            $htmlElement->appendOptionElement(new cHTMLOptionElement($item, $item));
         }
-        $str .= '<select>';
     } else {
-        $str = '<input
-                    type="text"
-                    ' . $disabled . '
-                    onblur="restoreOnBlur(this, \'' . $result[$db->f('Field')] . '\')"
-                    onfocus="clearOnFocus(this, \'' . $result[$db->f('Field')] . '\');"
-                    value="' . $result[$db->f('Field')] . '"
-                    maxlength="255"
-                    id="META' . $db->f('Field') . '"
-                    name="META' . $db->f('Field') . '"
-                    class="text_medium"
-                >';
+        $htmlElement = new cHTMLTextbox($_fieldKey, $result[$_field], 24, 255, $_fieldKey);
+        $htmlElement->setDisabled(!empty($disabled))
+            ->setClass('text_medium')
+            ->setEvent('onblur', "restoreOnBlur(this, '$result[$_field]');")
+            ->setEvent('onfocus', "clearOnFocus(this, '$result[$_field]');");
     }
 
-    $tpl2->set('d', 'METAFIELDTYPE', $str);
+    $tpl2->set('d', 'METAFIELDTYPE', $htmlElement->render());
     $tpl2->next();
 }
 
@@ -665,9 +658,9 @@ if (cPermission::checkSysadminPermission($auth->getPerms())) {
     // disable/grey out button if a non-editable version is selected
     if ($versioning->getState() == $versioning::STATE_SIMPLE && $articleType != 'current'
         || $versioning->getState() == $versioning::STATE_ADVANCED && $articleType != 'editable') {
-        $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new_off.png" id="addMetaDisabled" alt="">');
+        $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new_off.png" id="addMetaDisabled" title="">');
     } else {
-        $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new.gif" id="addMeta" alt="">');
+        $tpl->set('s', 'ADDMETABTN', '<img src="images/but_art_new.gif" id="addMeta" title="' . i18n("New meta tag") . '">');
     }
     $tpl->set('s', 'ADDNEWMETA', $tpl2->generate($cfg['path']['templates'] . $cfg['templates']['con_meta_addnew'], true));
 } else {
