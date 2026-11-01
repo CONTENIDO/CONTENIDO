@@ -34,7 +34,7 @@ if (cRegistry::getAppVar('pluginLinkcheckerIsCronjob') === null) {
 
 if (!cRegistry::getAppVar('pluginLinkcheckerIsCronjob')) {
     // Check permissions for linkchecker action
-    if (!$perm->have_perm_area_action($pluginName, 'linkchecker')) {
+    if (!$perm->hasAreaActionPermission($pluginName, 'linkchecker')) {
         cRegistry::addErrorMessage(i18n("No permissions"));
         $page = new cGuiPage('generic_page');
         $page->abortRendering();
@@ -191,7 +191,8 @@ $sCache_errors = $oCache->get($aCacheName['errors'], $requestMode);
 $requestLive = $_GET['live'] ?? '';
 if ($sCache_errors && $requestLive != 1) {
     $aErrors = unserialize($sCache_errors);
-} else { // If no cache exists
+} else {
+    // If no cache exists
 
     // Initializing cLinkCheckerSearchLinks class
     $searchLinks = new cLinkcheckerSearchLinks('text', $requestMode);
@@ -399,7 +400,7 @@ if (!cRegistry::getAppVar('pluginLinkcheckerIsCronjob')) {
                 $tpl2->set('s', 'ERRORS_ARTICLE', cSecurity::escapeString($aRow[$i]['nameart']));
                 $tpl2->set('s', 'ERRORS_ARTICLE_SHORT', $artNameShort);
                 $tpl2->set('s', 'ERRORS_CATID', cSecurity::toInteger($aRow[$i]['idcat']));
-                $tpl2->set('s', 'ERRORS_LANGARTID', cSecurity::toInteger($aRow[$i]['idartlang']));
+                $tpl2->set('s', 'ERRORS_LANGARTID', cSecurity::toInteger($aRow[$i]['idartlang'] ?? 0));
                 $tpl2->set('s', 'ERRORS_LINK', cSecurity::escapeString($aRow[$i]['url']));
                 $tpl2->set('s', 'ERRORS_LINK_ENCODE', base64_encode($aRow[$i]['url']));
                 $tpl2->set('s', 'ERRORS_LINK_SHORT', $linkShort);

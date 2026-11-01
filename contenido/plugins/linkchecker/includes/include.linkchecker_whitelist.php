@@ -25,7 +25,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 $pluginName = $cfg['pi_linkchecker']['pluginName'];
 
 // Check permissions for whitelist_view action
-if (!$perm->have_perm_area_action($pluginName, 'whitelist_view')) {
+if (!$perm->hasAreaActionPermission($pluginName, 'whitelist_view')) {
     cRegistry::addErrorMessage(i18n("No permissions"));
     $page = new cGuiPage('generic_page');
     $page->abortRendering();
@@ -69,7 +69,7 @@ while ($db->nextRecord()) {
 cRegistry::setAppVar('pluginLinkcheckerWhitelist', $whitelist);
 
 
-// Template- and languagevars
+// Template- and language variables
 $tpl->set('s', 'HEADLINE', i18n("Links at whitelist", $pluginName));
 $tpl->set('s', 'HEADLINE_DELETE', i18n("Delete", $pluginName));
 $tpl->set('s', 'HEADLINE_ENTRY', i18n("Entry", $pluginName));

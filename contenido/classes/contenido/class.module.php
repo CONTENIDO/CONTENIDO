@@ -976,7 +976,7 @@ class cApiModule extends Item
 
         foreach ($containerConfigurations as $key3 => $value3) {
             // Convert special characters and escape backslashes!
-            $tmp = conHtmlSpecialChars($value3);
+            $tmp = conHtmlSpecialChars(cSecurity::toString($value3));
             $tmp = str_replace('\\', '\\\\', $tmp);
 
             $CiCMS_Values[] = $CiCMS_Var . '[' . $key3 . '] = "' . $tmp . '";';

@@ -209,29 +209,25 @@ class cLinkcheckerTester
         }
 
         for ($i = 0; $i < count($aSearchIDInfosCat); $i++) {
-            if (is_array($aFind[$aSearchIDInfosCat[$i]['id']])
-                && $aFind[$aSearchIDInfosCat[$i]['id']]['startidart'] == 0
-            ) {
+            $curFindEntry = $aFind[$aSearchIDInfosCat[$i]['id']] ?? null;
+
+            if (is_array($curFindEntry) && $curFindEntry['startidart'] == 0) {
                 $aErrors['cat'][] = array_merge($aSearchIDInfosCat[$i], [
                     'error_type' => 'startart',
                 ]);
-            } elseif (is_array($aFind[$aSearchIDInfosCat[$i]['id']])
-                && $aFind[$aSearchIDInfosCat[$i]['id']]['online'] == 0
-            ) {
+            } elseif (is_array($curFindEntry) && $curFindEntry['online'] == 0) {
                 $aErrors['cat'][] = array_merge($aSearchIDInfosCat[$i], [
                     'error_type' => 'offline',
                 ]);
-            } elseif (!is_array($aFind[$aSearchIDInfosCat[$i]['id']])) {
+            } elseif (!is_array($curFindEntry)) {
                 $aErrors['cat'][] = array_merge($aSearchIDInfosCat[$i], [
                     'error_type' => 'unknown',
                 ]);
             }
 
-            if (is_array($aFind[$aSearchIDInfosCat[$i]['id']])
-                && $aFind[$aSearchIDInfosCat[$i]['id']]['startidart'] != 0
-            ) {
+            if (is_array($curFindEntry) && $curFindEntry['startidart'] != 0) {
                 $sql = "SELECT `idart` FROM `%s` WHERE `idartlang` = %d AND online = 1";
-                $db->query($sql, cDb::getTableName('art_lang'), $aFind[$aSearchIDInfosCat[$i]['id']]['startidart']);
+                $db->query($sql, cDb::getTableName('art_lang'), $curFindEntry['startidart']);
 
                 if ($db->numRows() == 0) {
                     $aErrors['cat'][] = array_merge($aSearchIDInfosCat[$i], [
@@ -343,7 +339,7 @@ class cLinkcheckerTester
                 $sDirname = cString::getPartOfString($sDBurl, 0, $iPos);
                 $sFilename = cString::getPartOfString($sDBurl, $iPos + 1);
 
-                // Check dbfs
+                // Check dbfs, use plain directory name and its decoded variant
                 $sql = "SELECT `iddbfs` FROM `:tab_dbfs`"
                     . " WHERE `dirname` IN (':dirname', '" . conHtmlEntityDecode($sDirname) . "')"
                     . " AND `filename` = ':filename'";
