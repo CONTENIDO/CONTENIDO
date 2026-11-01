@@ -16,174 +16,143 @@
 
 (function(Con, $) {
 
-    var NAME = 'subnav';
+    const NAME = 'subnav';
+    const ANCHOR_SELECTOR = '#navlist li a';
+    const ANCHOR_BY_ID_SELECTOR = '#navlist li#{id} a';
 
     /**
      * Subnav class
-     * @class  Subnav
+     * @class Subnav
      * @static
      */
-    var Subnav = {
+    const Subnav = {
 
         /**
          * Highlights the first tab by default by setting the class to 'current'.
          * Is called in subnavigation template.
+         *
          * @method init
          */
-        init: function() {
-            $('#navlist li:first a').attr('class', 'current');
+        init: function () {
+            $(ANCHOR_SELECTOR).first().addClass('current');
         },
 
         /**
          * Highlights the active tab.
+         *
          * @method clicked
-         * @param {Object} cElm Clicked a-element, resp. the tab to highlight.
-         * @param {Boolean} Whether to change highlight now (default is false)
+         * @param {?HTMLElement} element Clicked a-element, respectively the tab to highlight.
+         * @param {?Boolean} [changeNow] Whether to change highlight now (default is false)
          * @todo Consider new name ("highlight"?) and rename remaining instances.
          */
-        clicked: function(cElm, changeNow) {
-            var elem = ("string" === $.type(cElm)) ? $("#" + cElm + " a")[0] : cElm;
-            if (!elem) {
-                Con.log("Couldn't get menu element for " + cElm, NAME, "warn");
+        clicked: function (element, changeNow) {
+            if (!element) {
+                Con.log("Couldn't get menu element for unknown element", NAME, "warn");
                 return;
             }
 
-            var subnav = this;
-            if (true !== changeNow
-            && 'undefined' !== typeof(Con.getFrame("right_bottom"))) {
-                var tabHighlight = function() {
-                    // change selected tab when new tab loads
-                    var anchors = subnav._getAnchors(), i;
-                    for (i = 0; i < anchors.length; i++) {
-                        if (anchors[i] === elem) {
-                            anchors[i].className = 'current';
-                        } else {
-                            anchors[i].className = '';
-                        }
+            const rightBottomFrame = Con.getFrame("right_bottom");
+            const that = this;
+
+            const tabHighlight = function () {
+                // change selected tab when new tab loads
+                that._getAnchors().each(function () {
+                    if (this === element) {
+                        $(this).addClass('current');
+                    } else {
+                        $(this).removeClass('current');
                     }
-                };
+                });
+            };
 
-                // frame has an error
-                Con.getFrame("right_bottom").onerror = tabHighlight;
+            if (changeNow !== true && typeof (rightBottomFrame) !== 'undefined') {
+                // Frame error handler
+                rightBottomFrame.addEventListener('error', tabHighlight);
 
-                // frame changes
-                Con.getFrame("right_bottom").onunload = function() {
-                    if ('undefined' === typeof(Con.getFrame("right_bottom").stoppedUnload)
-                    || false === Con.getFrame("right_bottom").stoppedUnload) {
-                        Con.getFrame("right_bottom").stoppedUnload = false;
+                // Frame pagehide (unload) handler
+                rightBottomFrame.addEventListener('pagehide', function () {
+                    if (!rightBottomFrame.stoppedUnload) {
+                        rightBottomFrame.stoppedUnload = false;
                         tabHighlight();
                     }
-                }
+                });
             } else {
-                // fallback if right bottom frame does not exist
-                var anchors = this._getAnchors(), i;
-                for (i = 0; i < anchors.length; i++) {
-                    if (anchors[i] === elem) {
-                        anchors[i].className = 'current';
-                    } else {
-                        anchors[i].className = '';
-                    }
-                }
+                // Fallback if right bottom frame does not exist
+                tabHighlight();
             }
         },
 
         /**
          * Highlights the active tab.
          * @method clickedById
-         * @param {String}
-         *            cElm Clicked a-element, resp. the tab to highlight.
+         * @param {String} id Id of the tab element to highlight.
          * @todo Consider new name ("highlight"?) and rename remaining instances.
          */
-        clickedById: function(cElm) {
-            $('#navlist li a').attr('class', '');
-            $('#navlist li#' + cElm + ' a').attr('class', 'current');
+        clickedById: function (id) {
+            $(ANCHOR_SELECTOR).removeClass('current');
+            $(this._getIdSelector(id)).addClass('current');
         },
 
         /**
-         * Highlights a tab by its element id. Useful for highlighting from an outer
-         * frame.
+         * Highlights a tab by its element id. Useful for highlighting from an outer frame.
+         *
          * @method highlightById
-         * @param {String} id  Element id of tab to highlight
-         * @param {Object} frame
+         * @param {String} id Id of the tab element to highlight.
+         * @param {window|Document|null} [frame]
          *      Reference to frame holding the subnavigation:
          *      top.content.right.right_top (when there is a left/right frameset)
          *      top.content.right_top (when there is no left/right frameset)
          */
-        highlightById: function(id, frame) {
+        highlightById: function (id, frame) {
             this._reset(frame);
-            var elem = this._getAnchorById(id, frame);
-            if (elem) {
-                elem.className = 'current';
-            }
+            $(this._getIdSelector(id)).addClass('current');
         },
 
         /**
-         * Returns list of all found anchors within sub navigation
+         * Returns list of all found anchors within sub navigation.
+         *
          * @method _getAnchors
-         * @param {Object} [frame]  Optional, reference to frame handling the sub
-         *            navigation
-         * @return {Array} List of found HTMLElement
+         * @param {window|Document|null} [frame] Optional, reference to frame handling the sub navigation
+         * @return {jQuery|HTMLElement[]|any} List of found HTMLElement
          * @protected
          */
-        _getAnchors: function(frame) {
-            var obj = (frame) ? frame.document : document;
-            try {
-                var list = obj.getElementById("navlist").getElementsByTagName("a");
-                return list;
-            } catch (e) {
-                return [];
-            }
-        },
+        _getAnchors: function (frame) {
+            const obj = (frame) ? frame.document : document;
 
-        /**
-         * Returns anchor element by its id
-         * @method _getAnchorById
-         * @param {String}  id
-         * @param {Object}  [frame] Optional, reference to frame handling the sub
-         *            navigation
-         * @return {HTMLElement|null}
-         * @protected
-         */
-        _getAnchorById: function(id, frame) {
-            var obj = (frame) ? frame.document : document;
-            try {
-                var elem = obj.getElementById(id).getElementsByTagName('a')[0];
-                return elem;
-            } catch (e) {
-                return null;
-            }
+            return $(obj).find(ANCHOR_SELECTOR);
         },
 
         /**
          * Reset all tabs.
+         *
          * @method _reset
-         * @param {Object} [frame] Optional, reference to frame handling the sub
-         *            navigation
+         * @param {window|Document|null} [frame] Optional, reference to frame handling the sub navigation
          * @protected
          */
-        _reset: function(frame) {
+        _reset: function (frame) {
             frame = frame || null;
-            var anchors = this._getAnchors(frame), i;
-            for (i = 0; i < anchors.length; i++) {
-                anchors[i].className = '';
-            }
+            this._getAnchors(frame).removeClass('current');
         },
 
-        /*
-         * unhighlight: function() { var ul =
-         * this.frame.document.getElementById('navlist'), as =
-         * ul.getElementsByTagName('a'), i; for (i=0; i<=as.length; i++) { if
-         * (as[i]) { as[i].className = ''; } } },
+        /**
+         * Returns the selector for an anchor by id.
+         *
+         * @param {String} id The id of the sub navigation list item (element).
+         * @return {String}
+         * @protected
          */
+        _getIdSelector: function (id) {
+            return ANCHOR_BY_ID_SELECTOR.replace('{id}', id);
+        },
 
         /**
-         * Dummy method to avoid breakage.
+         * Dummy method to avoid breakage on old/deprecated `Subnav.click()` calls.
+         *
          * @method click
-         * @todo Locate remaining inline calls to Subnav.click() and remove them
+         * @todo Locate remaining inline calls to `Subnav.click()` and remove them
          */
-        'click': function() {
-            // console.log("remove me");
-            return;
+        'click': function () {
+            return false;
         }
     };
 
@@ -192,7 +161,7 @@
     // Bootstrap subnav module on document load
     $(function() {
         // Register click handler for all
-        $('#navlist li a').click(function() {
+        $(ANCHOR_SELECTOR).on('click', function() {
             Subnav.clicked(this);
         });
     });
