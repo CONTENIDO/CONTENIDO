@@ -971,7 +971,7 @@ abstract class ItemCollection extends cItemBaseAbstract
      *     // Do something with $myItem...
      * }
      * </code>
-     * @return \Generator|Item[]
+     * @return Generator Containing Item instances.
      * @throws cDbException|cException
      * @since CONTENIDO 4.10.2
      */
@@ -980,6 +980,18 @@ abstract class ItemCollection extends cItemBaseAbstract
         while ($entry = $this->next()) {
             yield $entry;
         }
+    }
+
+    /**
+     * Similar to {@see ItemCollection::getItems()} but it returns an array of Items instaed of a Generator.
+     *
+     * @return Item[]
+     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function getItemsArray(): array
+    {
+        return iterator_to_array($this->getItems(), false);
     }
 
     /**
@@ -1169,11 +1181,29 @@ abstract class ItemCollection extends cItemBaseAbstract
     }
 
     /**
-     * Returns the number of rows.
+     * Returns the number of rows from the last statement.
      */
     public function count(): int
     {
         return $this->db->numRows();
+    }
+
+    /**
+     * Returns the number of all entries from the table.
+     *
+     * @throws cDbException
+     * @since CONTENIDO 4.10.2
+     */
+    public function countAll(): int
+    {
+        $sql = 'SELECT COUNT(*) AS cnt FROM `%s`';
+        $result = $this->db->query($sql, $this->table);
+        $this->_lastSQL = $sql;
+        if ($result) {
+            $this->db->nextRecord();
+            return cSecurity::toInteger($this->db->f('cnt'));
+        }
+        return 0;
     }
 
     /**
@@ -1191,6 +1221,38 @@ abstract class ItemCollection extends cItemBaseAbstract
             $id = $this->escape($id);
         }
         return $this->loadItem($id);
+    }
+
+    /**
+     * Loads multiple records by ids at once.
+     *
+     * @param string[]|int[] $ids The primary keys of the items to load.
+     * @return TItem[]|object[] The loaded item
+     * @throws cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function fetchByIds(array $ids): array
+    {
+        $ids = array_map(function ($id) {
+            if (is_numeric($id)) {
+                return (int) $id;
+            } elseif (is_string($id)) {
+                return sprintf("'%s'", $this->escape($id));
+            } else {
+                return null;
+            }
+        }, $ids);
+        $ids = array_unique(array_filter($ids));
+
+        if (empty($ids)) {
+            return [];
+        }
+
+        $this->select(
+            $this->prepare('`%s` IN (%s)', $this->getPrimaryKeyName(), implode(',', $ids))
+        );
+
+        return $this->getItemsArray();
     }
 
     /**
@@ -1430,7 +1492,7 @@ abstract class ItemCollection extends cItemBaseAbstract
         return $this->getIdsByWhereClause($where);
     }
 
-     /**
+    /**
      * Returns all specified fields of the records in the table that match
      * the criteria in the provided WHERE clause.
      *
