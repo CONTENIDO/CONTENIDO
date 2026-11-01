@@ -19,17 +19,13 @@ class cLinkcheckerCategoryHelper
 {
     /**
      * List of group ids.
-     *
-     * @var ?array
      */
-    private static $_groupIds = null;
+    private static ?array $groupIds = null;
 
     /**
      * List of category ids.
-     *
-     * @var ?array
      */
-    private static $_categoryIds = null;
+    private static ?array $categoryIds = null;
 
     /**
      * @throws cDbException
@@ -46,30 +42,30 @@ class cLinkcheckerCategoryHelper
             $db = cRegistry::getDb();
         }
 
-        $group_ids = self::_getGroupIDs($db);
-        $group_ids[] = $db->escape($auth->getUserId());
+        $groupIds = self::getGroupIDs($db);
+        $groupIds[] = $db->escape($auth->getUserId());
 
-        if (!is_array(self::$_categoryIds)) {
-            $sqlInc = " `user_id` = '" . implode("' OR `user_id` = '", $group_ids) . "' ";
+        if (!is_array(self::$categoryIds)) {
+            $sqlInc = " `user_id` = '" . implode("' OR `user_id` = '", $groupIds) . "' ";
             $sql = "SELECT `idcat` FROM `%s` WHERE `idarea` = 6 AND `idaction` = 359 AND ($sqlInc)";
             $db->query($sql, cDb::getTableName('rights'));
 
-            self::$_categoryIds = [];
+            self::$categoryIds = [];
             while ($db->nextRecord()) {
-                self::$_categoryIds[$db->f('idcat')] = '';
+                self::$categoryIds[$db->f('idcat')] = '';
             }
         }
 
-        return array_key_exists($categoryId, self::$_categoryIds);
+        return array_key_exists($categoryId, self::$categoryIds);
     }
 
     /**
      * @throws cDbException
      */
-    private static function _getGroupIDs(cDB $db): array
+    private static function getGroupIDs(cDB $db): array
     {
-        if (is_array(self::$_groupIds)) {
-            return self::$_groupIds;
+        if (is_array(self::$groupIds)) {
+            return self::$groupIds;
         }
 
         $auth = cRegistry::getAuth();
@@ -77,11 +73,11 @@ class cLinkcheckerCategoryHelper
         $sql = "SELECT `group_id` FROM `%s` WHERE `user_id` = '%s'";
         $db->query($sql, cDb::getTableName('groupmembers'), $auth->getUserId());
 
-        self::$_groupIds = [];
+        self::$groupIds = [];
         while ($db->nextRecord()) {
-            self::$_groupIds[] = cSecurity::toInteger($db->f('group_id'));
+            self::$groupIds[] = cSecurity::toInteger($db->f('group_id'));
         }
 
-        return self::$_groupIds;
+        return self::$groupIds;
     }
 }
