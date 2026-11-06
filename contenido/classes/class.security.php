@@ -153,14 +153,14 @@ class cSecurity
     }
 
     /**
-     * Escaped a query-string with mysql_real_escape_string.
+     * Escaped a query-string with mysqli_real_escape_string.
      *
      * @param mixed $value Input value, e.g. a string
      * @param ?cDb $db CONTENIDO database object
      * @param bool $undoAddSlashes [optional; default: true] Flag for undo addslashes
      * @return string Converted string
      */
-    public static function escapeDB($value, ?cDb $db = null, bool $undoAddSlashes = true): string
+    public static function escapeDB(mixed $value, ?cDb $db = null, bool $undoAddSlashes = true): string
     {
         if (!is_object($db)) {
             return self::escapeString($value);

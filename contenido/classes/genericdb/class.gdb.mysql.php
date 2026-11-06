@@ -150,7 +150,7 @@ class cGenericDbDriverMysql extends cGenericDbDriver
      *
      * @return int|float|string
      */
-    private function _prepareInConditionValue($value)
+    private function _prepareInConditionValue(mixed $value): float|int|string
     {
         if (is_null($value)) {
             return 'NULL';
@@ -169,11 +169,11 @@ class cGenericDbDriverMysql extends cGenericDbDriver
      *
      * @return int|float|string
      */
-    private function _prepareValue($value)
+    private function _prepareValue(mixed $value): float|int|string
     {
-        // It should return 'NULL' for a NULL value, but we should stay downwards
-        // compatible for now.
-        if (is_int($value) || is_float($value)) {
+        if (is_null($value)) {
+            return 'NULL';
+        } else if (is_int($value) || is_float($value)) {
             return $value;
         } else {
             return $this->_prepareString((string) $value);

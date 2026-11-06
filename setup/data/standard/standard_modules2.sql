@@ -84,7 +84,7 @@ INSERT INTO `!PREFIX!_frame_files` (`idframefile`, `idarea`, `idframe`, `idfile`
 INSERT INTO `!PREFIX!_frame_files` (`idframefile`, `idarea`, `idframe`, `idfile`) VALUES (10101, 10065, 4, 10101);
 INSERT INTO `!PREFIX!_frame_files` (`idframefile`, `idarea`, `idframe`, `idfile`) VALUES (10102, 10066, 4, 10102);
 
-INSERT INTO `!PREFIX!_type` (idtype, `type`, code, description, status, author, created, lastmodified) VALUES ('100001', 'CMS_PIFAFORM', '', 'PIFA form', '0', '', NOW(), NOW());
+INSERT INTO `!PREFIX!_type` (idtype, `type`, code, description, status, author, created, lastmodified) VALUES ('100001', 'CMS_PIFAFORM', '', 'PIFA form', '0', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10103, 10061, '', 'pifa_show_form', '', '', 1);
 INSERT INTO `!PREFIX!_actions` (`idaction`, `idarea`, `alt_name`, `name`, `code`, `location`, `relevant`) VALUES (10104, 10061, '', 'pifa_store_form', '', '', 1);
@@ -132,7 +132,7 @@ INSERT INTO `!PREFIX!_files` (idfile, idarea, filename, filetype) VALUES (100008
 INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100006, 100003, 2, 100006);
 INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100007, 100003, 4, 100007);
 INSERT INTO `!PREFIX!_frame_files` (idframefile, idarea, idframe, idfile) VALUES (100008, 100003, 1, 100008);
-INSERT INTO `!PREFIX!_type` (idtype, `type`, code, description, status, author, created, lastmodified) VALUES ('100002', 'CMS_USERFORUM', '', 'User forum', '0', '', NOW(), NOW());
+INSERT INTO `!PREFIX!_type` (idtype, `type`, code, description, status, author, created, lastmodified) VALUES ('100002', 'CMS_USERFORUM', '', 'User forum', '0', '', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO `!PREFIX!_plugins_rel` VALUES(21, 100003, 3, 'area');
 INSERT INTO `!PREFIX!_plugins_rel` VALUES(22, 100002, 3, 'navs');
 INSERT INTO `!PREFIX!_plugins_rel` VALUES(23, 100002, 3, 'ctype');

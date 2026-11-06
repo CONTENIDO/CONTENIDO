@@ -29,7 +29,7 @@ class UserForum
      *
      * @var string
      */
-    private static $name = 'user_forum';
+    private static string $name = 'user_forum';
 
     /**
      */
@@ -76,4 +76,22 @@ class UserForum
         }
     }
 
+    /**
+     * cleanup of struct array
+     *
+     * @param mixed $forumStruct
+     * @param array $result
+     * @param int $level
+     */
+    public static function normalizeArray(mixed $forumStruct, array &$result, int $level = 0): void
+    {
+        if (is_array($forumStruct)) {
+            foreach ($forumStruct as $key => $value) {
+                $value['level'] = $level;
+                unset($value['children']);
+                $result[$key] = $value;
+                self::normalizeArray($value['children'], $result, $level + 1);
+            }
+        }
+    }
 }

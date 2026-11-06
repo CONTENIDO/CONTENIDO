@@ -194,7 +194,6 @@ return [
     'cDb' => 'contenido/classes/db/class.db.php',
     'cDbDriverAbstract' => 'contenido/classes/db/class.db.driver.abstract.php',
     'cDbDriverHandler' => 'contenido/classes/db/class.db.driver.handler.php',
-    'cDbDriverMysql' => 'contenido/classes/db/class.db.driver.mysql.php',
     'cDbDriverMysqli' => 'contenido/classes/db/class.db.driver.mysqli.php',
     'cDbDriverPdoMysql' => 'contenido/classes/db/class.db.driver.pdo.mysql.php',
     'cDbException' => 'contenido/classes/db/class.exception.db.php',
