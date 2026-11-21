@@ -146,6 +146,10 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
                 // process frontend debug
                 $this->processFrontendDebug($containerNumber, $module->isLoaded() ? $module : null);
 
+                $this->moduleSuffixes[] = '$cCurrentModule = null;';
+                $this->moduleSuffixes[] = '$cCurrentContainer = null;';
+
+
                 // replace new containers
                 $this->processCmsContainer($containerNumber);
             }
