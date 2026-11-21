@@ -15,9 +15,6 @@
 defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization - request aborted.');
 
 /**
- * @var array $cfg
- * @var int $lang
- * @var int $client
  * @var int $idmod
  */
 
@@ -25,9 +22,8 @@ global $t_orig, $t_trans;
 
 $action = $action ?? '';
 
-$langObj = new cApiLanguage($lang);
-
-$langString = $langObj->get('name') . ' (' . $lang . ')';
+$language = cRegistry::getLanguage();
+$languageLabel = sprintf('%s (%d)', $language->get('name'), cRegistry::getLanguageId());
 
 $readOnly = (getEffectiveSetting('client', 'readonly', 'false') === 'true');
 if ($readOnly) {
@@ -58,7 +54,11 @@ if ((!$readOnly) && $action == 'mod_translation_save') {
 }
 
 // Get the mi18n strings from module input/output
-$strings = $module->parseModuleForStringsLoadFromFile($cfg, $client, $lang);
+$strings = $module->parseModuleForStringsLoadFromFile(
+    cRegistry::getConfig(),
+    cRegistry::getClientId(),
+    cRegistry::getLanguageId()
+);
 if (!is_array($strings)) {
     $strings = [];
 }
@@ -124,22 +124,19 @@ $page->set('s', 'IDMOD', $idmod);
 $page->set('s', 'CURRENT', $current);
 $page->set('s', 'ROW', $row);
 $page->set('s', 'HEADER', sprintf(i18n("Translate module '%s'"), conHtmlSpecialChars($module->get('name'))));
-$page->set('s', 'TRANSLATION_FOR', sprintf(i18n("Translation for %s"), $langString));
+$page->set('s', 'TRANSLATION_FOR', sprintf(i18n("Translation for %s"), $languageLabel));
 $page->set('s', 'LAST_STRING', conHtmlSpecialChars($lastString));
 $page->set('s', 'LAST_TRANSLATION', conHtmlSpecialChars($lastTranslation));
 
 if ($readOnly) {
     $page->set('s', 'DISABLED', "disabled='disabled'");
-    $page->set('s', 'READONLY', '_off')
-;
+    $page->set('s', 'READONLY', '_off');
 } else {
-    $page->set('s', 'DISABLED', '')
-;
-    $page->set('s', 'READONLY', '')
-;
+    $page->set('s', 'DISABLED', '');
+    $page->set('s', 'READONLY', '');
 }
 
 $page->setMarkScript(2);
-$page->setEncoding($langObj->get('encoding'));
+$page->setEncoding($language->get('encoding'));
 
 $page->render();

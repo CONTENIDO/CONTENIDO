@@ -124,11 +124,6 @@ class cModuleHandler
     protected $languageId;
 
     /**
-     * @var array Language encoding list
-     */
-    protected static $encodingStore = [];
-
-    /**
      * Constructor to create an instance of this class.
      *
      * With this class you can create a new module, rename a module.
@@ -182,12 +177,7 @@ class cModuleHandler
             }
         }
 
-        if (!isset(self::$encodingStore[$languageId])) {
-            $cApiLanguage = new cApiLanguage($languageId);
-            self::$encodingStore[$languageId] = (string) $cApiLanguage->get('encoding');
-        }
-
-        return self::$encodingStore[$languageId];
+        return cSecurity::toString(cRegistry::getEncoding($languageId));
     }
 
     /**

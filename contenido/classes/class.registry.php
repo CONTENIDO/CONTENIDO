@@ -209,13 +209,13 @@ class cRegistry
     /**
      * Returns the loaded cApiLanguage object for the current language.
      *
-     * @param bool $reload Flag to re-instantiate an existing object.
+     * @param bool $forceRefresh Flag to re-instantiate an existing object.
      * @throws cInvalidArgumentException
      */
-    public static function getLanguage(bool $reload = false): cApiLanguage
+    public static function getLanguage(bool $forceRefresh = false): cApiLanguage
     {
         $id = self::getLanguageId();
-        if ($reload || !self::$_language instanceof cApiLanguage
+        if ($forceRefresh || !self::$_language instanceof cApiLanguage
             || (int) self::$_language->getId() !== $id) {
             self::$_language = self::_fetchItemObject('cApiLanguage', $id);
         }
@@ -257,13 +257,13 @@ class cRegistry
     /**
      * Returns the loaded cApiClient object for the current client.
      *
-     * @param bool $reload Flag to re-instantiate an existing object.
+     * @param bool $forceRefresh Flag to re-instantiate an existing object.
      * @throws cInvalidArgumentException
      */
-    public static function getClient(bool $reload = false): cApiClient
+    public static function getClient(bool $forceRefresh = false): cApiClient
     {
         $id = self::getClientId();
-        if ($reload || !self::$_client instanceof cApiClient
+        if ($forceRefresh || !self::$_client instanceof cApiClient
             || (int) self::$_client->getId() !== $id) {
             self::$_client = self::_fetchItemObject('cApiClient', $id);
         }
@@ -286,13 +286,13 @@ class cRegistry
     /**
      * Returns the loaded cApiArticle object for the current article.
      *
-     * @param bool $reload Flag to re-instantiate an existing object.
+     * @param bool $forceRefresh Flag to re-instantiate an existing object.
      * @throws cInvalidArgumentException
      */
-    public static function getArticle(bool $reload = false): cApiArticle
+    public static function getArticle(bool $forceRefresh = false): cApiArticle
     {
         $id = self::getArticleId();
-        if ($reload || !self::$_article instanceof cApiArticle
+        if ($forceRefresh || !self::$_article instanceof cApiArticle
             || (int) self::$_article->getId() !== $id) {
             self::$_article = self::_fetchItemObject('cApiArticle', $id);
         }
@@ -315,14 +315,14 @@ class cRegistry
     /**
      * Returns the loaded cApiArticleLanguage object for the current article.
      *
-     * @param bool $reload Flag to re-instantiate an existing object.
+     * @param bool $forceRefresh Flag to re-instantiate an existing object.
      * @throws cInvalidArgumentException
      */
-    public static function getArticleLanguage(bool $reload = false): cApiArticleLanguage
+    public static function getArticleLanguage(bool $forceRefresh = false): cApiArticleLanguage
     {
         $id = self::getArticleLanguageId();
         if (
-            $reload
+            $forceRefresh
             || !self::$_articleLanguage instanceof cApiArticleLanguage
             || (int) self::$_articleLanguage->getId() !== $id
         ) {
@@ -347,14 +347,14 @@ class cRegistry
     /**
      * Returns the loaded cApiCategory object for the current category.
      *
-     * @param bool $reload Flag to re-instantiate an existing object.
+     * @param bool $forceRefresh Flag to re-instantiate an existing object.
      * @throws cInvalidArgumentException
      */
-    public static function getCategory(bool $reload = false): cApiCategory
+    public static function getCategory(bool $forceRefresh = false): cApiCategory
     {
         $id = self::getCategoryId();
         if (
-            $reload
+            $forceRefresh
             || !self::$_category instanceof cApiCategory
             || (int) self::$_category->getId() !== $id
         ) {
@@ -379,13 +379,13 @@ class cRegistry
     /**
      * Returns the loaded cApiCategoryLanguage object for the current category.
      *
-     * @param bool $reload Flag to re-instantiate an existing object.
+     * @param bool $forceRefresh Flag to re-instantiate an existing object.
      * @throws cInvalidArgumentException
      */
-    public static function getCategoryLanguage(bool $reload = false): cApiCategoryLanguage
+    public static function getCategoryLanguage(bool $forceRefresh = false): cApiCategoryLanguage
     {
         $id = self::getCategoryLanguageId();
-        if ($reload || !self::$_categoryLanguage instanceof cApiCategoryLanguage
+        if ($forceRefresh || !self::$_categoryLanguage instanceof cApiCategoryLanguage
             || (int) self::$_categoryLanguage->getId() !== $id) {
             self::$_categoryLanguage = self::_fetchItemObject('cApiCategoryLanguage', $id);
         }
@@ -408,13 +408,13 @@ class cRegistry
     /**
      * Returns the loaded cApiCategoryArticle object for the current category/article relation.
      *
-     * @param bool $reload Flag to re-instantiate an existing object.
+     * @param bool $forceRefresh Flag to re-instantiate an existing object.
      * @throws cInvalidArgumentException
      */
-    public static function getCategoryArticle(bool $reload = false): cApiCategoryArticle
+    public static function getCategoryArticle(bool $forceRefresh = false): cApiCategoryArticle
     {
         $id = self::getCategoryArticleId();
-        if ($reload || !self::$_categoryArticle instanceof cApiCategoryArticle
+        if ($forceRefresh || !self::$_categoryArticle instanceof cApiCategoryArticle
             || (int) self::$_categoryArticle->getId() !== $id) {
             self::$_categoryArticle = self::_fetchItemObject('cApiCategoryArticle', $id);
         }
@@ -752,6 +752,38 @@ class cRegistry
                 $perm = new $permClass();
             }
         }
+
+        self::bootstrapEncodings();
+    }
+
+    /**
+     * Initializes the encoding array if it has been not initialized yet.
+     *
+     * @since CONTENIDO 4.10.2
+     */
+    final public static function bootstrapEncodings(bool $forceRefresh = false): void
+    {
+        // NOTE: The global variable is needed, since some parts still rely on it!
+        global $encoding;
+
+        $sess = self::getSession();
+        $sess->register('encoding');
+
+        $languageEncodings = self::getAppVar('languageEncodings', []);
+
+        if ($forceRefresh || $languageEncodings === []) {
+            try {
+                $languageCollection = new cApiLanguageCollection();
+                $languageEncodings = $languageCollection->getLanguageIdEncodingMap();
+            } catch (cDbException|cException $e) {
+                cError($e->getMessage());
+                $languageEncodings = [];
+            }
+
+            self::setAppVar('languageEncodings', $languageEncodings);
+        }
+
+        $encoding = $languageEncodings;
     }
 
     /**
@@ -933,26 +965,42 @@ class cRegistry
     /**
      * Returns the actual encoding (standard: utf-8)
      *
+     * @param ?int $languageId The id of the language to to get the encoding for.
+     *      Default language id is the curren used language in the system.
+     *      Since CONTENIDO 4.10.2.
      * @return string|bool Name of encoding or false if no language found
+     * TODO The return value should be `string|null` or the default value 'utf-8'
      */
-    public static function getEncoding()
+    public static function getEncoding(?int $languageId = null)
     {
-        $encodings = self::getAppVar('languageEncodings', []);
-        $id = self::getLanguageId();
+        $languageEncodings = self::getAppVar('languageEncodings', []);
+        $id = $languageId ?: self::getLanguageId();
 
-        if (!isset($encodings[$id])) {
+        if (!isset($languageEncodings[$id])) {
             try {
                 $apiLanguage = new cApiLanguage($id);
             } catch (cDbException|cException $e) {
+                cError($e->getMessage());
                 return false;
             }
             if ($apiLanguage->isLoaded()) {
-                $encodings[$id] = trim($apiLanguage->get('encoding'));
-                self::setAppVar('languageEncodings', $encodings);
+                $languageEncodings[$id] = trim($apiLanguage->get('encoding'));
+                self::setAppVar('languageEncodings', $languageEncodings);
             }
         }
 
-        return $encodings[$id] ?? false;
+        return $languageEncodings[$id] ?? false;
     }
 
+    /**
+     * Returns the list of all language ids and their related encodings.
+     *
+     * @return array<int, string> Key is the language and ans the value the encoding.
+     */
+    public static function getEncodings(bool $forceRefresh = false): array
+    {
+        self::bootstrapEncodings($forceRefresh);
+
+        return self::getAppVar('languageEncodings', []);
+    }
 }

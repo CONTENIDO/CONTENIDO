@@ -230,11 +230,8 @@ class cGuiPage
         $lang = cRegistry::getLanguageId();
         $cfg = cRegistry::getConfig();
 
-        // Try to extract the current CONTENIDO language
-        $clang = new cApiLanguage($lang);
-
-        if ($clang->isLoaded()) {
-            $this->setEncoding($clang->get('encoding'));
+        if (cRegistry::getEncoding($lang)) {
+            $this->setEncoding(cRegistry::getEncoding($lang));
         }
 
         // use default page base

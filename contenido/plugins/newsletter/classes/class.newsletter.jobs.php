@@ -85,9 +85,7 @@ class NewsletterJobCollection extends ItemCollection
             $oItem->set('type', $oNewsletter->get('type'));
             $oItem->set('use_cronjob', $oNewsletter->get('use_cronjob'));
 
-            $oLang = new cApiLanguage($languageId);
-            $oItem->set('encoding', $oLang->get('encoding'));
-            unset($oLang);
+            $oItem->set('encoding', cSecurity::toString(cRegistry::getEncoding($languageId)));
             $oItem->set('idart', $oNewsletter->get('idart'));
             $oItem->set('subject', $oNewsletter->get('subject'));
 

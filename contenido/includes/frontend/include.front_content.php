@@ -101,17 +101,6 @@ $perm = cRegistry::getPerm();
 // $sess->register('cfgClient');
 // $sess->register('errsite_idcat');
 // $sess->register('errsite_idart');
-$sess->register('encoding');
-
-// get encodings of all languages
-if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
-    $oLangColl = new cApiLanguageCollection();
-    $oLangColl->select('');
-    $encoding = [];
-    while ($oLang = $oLangColl->next()) {
-        $encoding[$oLang->get('idlang')] = $oLang->get('encoding');
-    }
-}
 
 // Check frontend globals
 // TODO Should be outsourced into startup process but requires a better detection (frontend or backend)

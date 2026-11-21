@@ -1045,7 +1045,7 @@ if (
 }
 
 // Generate template
-$clang = new cApiLanguage($lang);
+$language = cRegistry::getLanguage();
 
 if (isset($movesubtreeidcat) && $movesubtreeidcat != 0) {
     if (cString::getStringLength($sMoveSubtreeCatName) > 30) {
@@ -1070,5 +1070,5 @@ while ($chainEntry = $cecIterator->next()) {
 }
 $tpl->set('s', 'ADDITIONAL_PAGE_END', implode("\n", $additionalPageEnd));
 
-$tpl->setEncoding($clang->get('encoding'));
+$tpl->setEncoding($language->get('encoding'));
 $tpl->generate($cfg['path']['templates'] . $cfg['templates']['str_overview']);
