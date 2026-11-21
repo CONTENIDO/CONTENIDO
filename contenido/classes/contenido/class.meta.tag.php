@@ -84,7 +84,7 @@ class cApiMetaTagCollection extends ItemCollection
      * @throws cDbException|cException
      * @since CONTENIDO 4.10.2
      */
-    public function fetchByArticleLanguagwId(int $articleLanguageId): array
+    public function fetchByArticleLanguageId(int $articleLanguageId): array
     {
         $this->select(sprintf(
             '`idartlang` = %d',

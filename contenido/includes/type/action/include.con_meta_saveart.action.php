@@ -37,7 +37,7 @@ if ($perm->have_perm_area_action($area, 'con_meta_edit') || $perm->have_perm_are
 
     $metaTypeService = new cMetaTypeService();
     $metaTagItems = (new cApiMetaTagCollection())
-        ->fetchByArticleLanguagwId(cSecurity::toInteger($this->_idartlang));
+        ->fetchByArticleLanguageId(cSecurity::toInteger($this->_idartlang));
 
     foreach ($metaTypeService->getAll() as $metaType) {
         $metaTag = cMetaTypeService::findMetaTagByMetaType($metaType, $metaTagItems);

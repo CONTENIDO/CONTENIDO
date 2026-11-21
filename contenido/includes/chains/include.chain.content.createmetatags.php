@@ -95,7 +95,7 @@ function cecCreateMetatags(array $metaTags): array
         $iIdArtLangHomepage = cSecurity::toInteger($db->f('startidartlang'));
 
         $metaTagItems = (new cApiMetaTagCollection())
-            ->fetchByArticleLanguagwId(cSecurity::toInteger($iIdArtLangHomepage));
+            ->fetchByArticleLanguageId(cSecurity::toInteger($iIdArtLangHomepage));
 
         foreach ($metaTypes as $metaType) {
             $metaTag = cMetaTypeService::findMetaTagByMetaType($metaType, $metaTagItems);
@@ -110,7 +110,7 @@ function cecCreateMetatags(array $metaTags): array
     }
 
     $metaTagItems = (new cApiMetaTagCollection())
-        ->fetchByArticleLanguagwId(cSecurity::toInteger($idartlang));
+        ->fetchByArticleLanguageId(cSecurity::toInteger($idartlang));
 
     // Cycle through all meta-tags
     foreach ($metaTypes as $metaType) {

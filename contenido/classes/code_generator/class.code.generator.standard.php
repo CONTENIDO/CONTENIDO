@@ -476,7 +476,7 @@ class cCodeGeneratorStandard extends cCodeGeneratorAbstract
         $metaTypes = $metaTypeService->getAll();
 
         $metaTagItems = (new cApiMetaTagCollection())
-            ->fetchByArticleLanguagwId(cSecurity::toInteger($this->articleLanguageId));
+            ->fetchByArticleLanguageId(cSecurity::toInteger($this->articleLanguageId));
 
         // collect all available meta-tag entries with non-empty values
         $metaTags = [];
