@@ -25,7 +25,6 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class ArticleForumCollection extends ItemCollection
 {
-
     use cItemCollectionIdsByClientIdAndLanguageIdTrait;
 
     /**
@@ -40,20 +39,9 @@ class ArticleForumCollection extends ItemCollection
      */
     private $fkLanguageIdName = 'idlang';
 
-    /**
-     * @var array
-     */
-    protected $cfg = null;
+    protected array $cfg;
 
-    /**
-     * @var cDb
-     */
-    protected $db = null;
-
-    /**
-     * @var ArticleForumItem
-     */
-    protected $item = null;
+    protected ArticleForumItem $item;
 
     // contents array of translations from frontend module
     /**
@@ -95,7 +83,7 @@ class ArticleForumCollection extends ItemCollection
                 , art_lang.idart
                 , f.idcat
             FROM
-                `{$tabArtLang}` AS art_lang
+                `$tabArtLang` AS art_lang
                 , `$this->table` AS  f
             WHERE
                 art_lang.idart = f.idart
@@ -177,27 +165,9 @@ class ArticleForumCollection extends ItemCollection
         $forumStruct = [];
         $this->getTreeLevel($categoryId, $articleId, $languageId, $users, $forumStruct);
         $result = [];
-        $this->normalizeArray($forumStruct, $result);
+        ArticleForumHelper::normalizeArray($forumStruct, $result);
 
         return $result;
-    }
-
-    /**
-     * @param array|mixed $forumStruct
-     * @param array $result
-     * @param int $level
-     * TODO Code is redundant with {@see ArticleForumRightBottom::normalizeArray()}
-     */
-    public function normalizeArray($forumStruct, &$result, $level = 0)
-    {
-        if (is_array($forumStruct)) {
-            foreach ($forumStruct as $key => $value) {
-                $value['level'] = $level;
-                unset($value['children']);
-                $result[$key] = $value;
-                $this->normalizeArray($forumStruct[$key]['children'], $result, $level + 1);
-            }
-        }
     }
 
     /**
@@ -258,6 +228,7 @@ class ArticleForumCollection extends ItemCollection
         }
 
         while ($db->nextRecord()) {
+            $_id = $db->f('id_user_forum');
             $record = $db->getRecord();
             $this->prepareRecord($record);
 
@@ -266,15 +237,15 @@ class ArticleForumCollection extends ItemCollection
                 $record['realname'] = $users[$record['userid']]['realname'];
             }
 
-            $forumStruct[$db->f('id_user_forum')] = $record;
+            $forumStruct[$_id] = $record;
 
             $this->getTreeLevel(
                 $categoryId,
                 $articleId,
                 $languageId,
                 $users,
-                $forumStruct[$db->f('id_user_forum')]['children'],
-                $db->f('id_user_forum'),
+                $forumStruct[$_id]['children'],
+                $_id,
                 $frontend
             );
         }
@@ -622,10 +593,18 @@ class ArticleForumCollection extends ItemCollection
         }
 
         $forumStruct = [];
-        $this->getTreeLevel($categoryId, $articleId, $languageId, $users, $forumStruct, 0, $frontend);
+        $this->getTreeLevel(
+            $categoryId,
+            $articleId,
+            $languageId,
+            $users,
+            $forumStruct,
+            0,
+            $frontend
+        );
 
         $result = [];
-        $this->normalizeArray($forumStruct, $result);
+        ArticleForumHelper::normalizeArray($forumStruct, $result);
 
         return $result;
     }
@@ -820,6 +799,9 @@ class ArticleForumCollection extends ItemCollection
         foreach (['forum', 'forum_quote'] as $field) {
             $record[$field] = nl2br($record[$field]);
         }
-    }
 
+        if (!isset($record['children'])) {
+            $record['children'] = [];
+        }
+    }
 }

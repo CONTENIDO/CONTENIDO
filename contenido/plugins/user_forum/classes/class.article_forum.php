@@ -17,22 +17,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class contains feature for db queries.
  *
- *
  * @package    Plugin
  * @subpackage UserForum
- */
-
-defined('CON_FRAMEWORK') or die('Illegal call');
-
-/**
- * Class ArticleForum
  */
 class ArticleForum extends Item
 {
     /**
      * ArticleForum constructor.
      *
-     * @param bool $id
+     * @param int|string|false $id
      * @throws cDbException|cException
      */
     public function __construct($id = false)
@@ -43,5 +36,4 @@ class ArticleForum extends Item
             $this->loadByPrimaryKey($id);
         }
     }
-
 }

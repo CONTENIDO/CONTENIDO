@@ -24,16 +24,9 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class ArticleForumLeftBottom extends cGuiPage
 {
+    protected ArticleForumCollection $_collection;
 
-    /**
-     * @var ArticleForumCollection
-     */
-    protected $_collection;
-
-    /**
-     * @var cGuiMenu
-     */
-    protected $_guiMenu;
+    protected cGuiMenu $_guiMenu;
 
     /**
      * ArticleForumLeftBottom constructor.
@@ -127,5 +120,4 @@ class ArticleForumLeftBottom extends cGuiPage
             $this->_guiMenu->setActions($id, 'delete', $link);
         }
     }
-
 }

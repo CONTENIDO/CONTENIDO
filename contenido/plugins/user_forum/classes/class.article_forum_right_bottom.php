@@ -17,27 +17,14 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class contains builds the content of the right frame.
  *
- *
  * @package    Plugin
  * @subpackage UserForum
  */
-
-
-/**
- * Class ArticleForumRightBottom
- */
 class ArticleForumRightBottom extends cGuiPage
 {
+    private int $indentFactor = 20;
 
-    /**
-     * @var int
-     */
-    private $indentFactor = 20;
-
-    /**
-     * @var ArticleForumCollection
-     */
-    protected $collection;
+    protected ArticleForumCollection $collection;
 
     /**
      *
@@ -71,11 +58,8 @@ class ArticleForumRightBottom extends cGuiPage
     /**
      * this function returns an inactive link or an link with mail-to directive
      * if the given mail address is valid
-     *
-     * @param string $emailAddr
-     * @param string $realName
      */
-    protected function checkValidEmail($emailAddr, $realName): cHTMLLink
+    protected function checkValidEmail(string $emailAddr, string $realName): cHTMLLink
     {
         $regex = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
         // Run the preg_match() function on regex against the email address
@@ -243,7 +227,7 @@ class ArticleForumRightBottom extends cGuiPage
             $dislikeButton = new cHTMLImage($cfg['path']['images'] . 'dislike.png');
 
             // valid email
-            $maili = $this->checkValidEmail($cont['email'], $cont['realname']);
+            $maili = $this->checkValidEmail($cont['email'] ?? '', $cont['realname'] ?? '');
             $text = $cont['forum'];
 
             $arrEditedAtDate = $this->formatTimeString($cont['editedat']);
@@ -480,27 +464,9 @@ class ArticleForumRightBottom extends cGuiPage
         $this->collection->getTreeLevel($categoryId, $artickleId, $languageId, $arrUsers, $forumStruct);
 
         $result = [];
-        $this->normalizeArray($forumStruct, $result);
+        ArticleForumHelper::normalizeArray($forumStruct, $result);
 
         return $this->getMenu($result);
-    }
-
-    /**
-     * @param array|mixed $forumStruct
-     * @param array $result
-     * @param int $level
-     * TODO Code is redundant with {@see ArticleForumCollection::normalizeArray()}
-     */
-    protected function normalizeArray($forumStruct, &$result, $level = 0)
-    {
-        if (is_array($forumStruct)) {
-            foreach ($forumStruct as $key => $value) {
-                $value['level'] = $level;
-                unset($value['children']);
-                $result[$key] = $value;
-                $this->normalizeArray($forumStruct[$key]['children'], $result, $level + 1);
-            }
-        }
     }
 
     /**
@@ -611,5 +577,4 @@ class ArticleForumRightBottom extends cGuiPage
                 throw new Exception('$_GET["action"] type ' . $_REQUEST['action'] . ' not implemented');
         }
     }
-
 }
