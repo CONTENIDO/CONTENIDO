@@ -6,7 +6,7 @@ CONTENIDO is a free and open-source web content management system from Germany.
 
 ----
 
-## CONTENIDO Version 4.10.1
+## CONTENIDO Version 4.11.0-alpha
 
 **Licence:**
 
@@ -33,7 +33,7 @@ No Warranty - take a look at the GPL at the end of this file.
 | Version          | Description                           |
 |------------------|---------------------------------------|
 | >= 7.1 && < 8.0  | Latest release fully functional       |
-| >= 7.1 && <= 8.4 | Develop branch mostly functional (\*) |
+| >= 8.0 && <= 8.4 | Develop branch mostly functional (\*) |
 
 (*) With PHP error reporting set to `error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT`
 
