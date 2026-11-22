@@ -22,10 +22,7 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class ArticleForumItem extends Item
 {
-
-    protected $cfg;
-
-    protected $db;
+    protected array $cfg;
 
     public function __construct()
     {
@@ -38,9 +35,8 @@ class ArticleForumItem extends Item
     /**
      * returns current config
      */
-    public function getCfg()
+    public function getCfg(): array
     {
         return $this->cfg;
     }
-
 }

@@ -17,13 +17,11 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class contains the features of the contenttype CMS_USERFORUM.
  *
- *
  * @package    Plugin
  * @subpackage UserForum
  */
 class cContentTypeUserForum extends cContentTypeAbstractTabbed
 {
-
     /**
      * Initialize class attributes and handles store events.
      *
@@ -232,5 +230,4 @@ class cContentTypeUserForum extends cContentTypeAbstractTabbed
     {
         return '';
     }
-
 }

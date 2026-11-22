@@ -17,19 +17,15 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
 /**
  * This class contains plugin settings.
  *
- *
  * @package    Plugin
  * @subpackage UserForum
  */
 class UserForum
 {
-
     /**
-     * name of this plugin
-     *
-     * @var string
+     * Name of this plugin
      */
-    private static $name = 'user_forum';
+    private static string $name = 'user_forum';
 
     /**
      */
@@ -75,5 +71,4 @@ class UserForum
             return $key;
         }
     }
-
 }

@@ -32,6 +32,7 @@ $pluginClassesPath = cRegistry::getBackendPath(true) . $cfg['path']['plugins'] .
 cAutoload::addClassmapConfig([
     'ArticleForumCollection' => $pluginClassesPath . '/class.article_forum_collection.php',
     'ArticleForum' => $pluginClassesPath . '/class.article_forum.php',
+    'ArticleForumHelper' => $pluginClassesPath . '/class.article_forum_helper.php',
     'ArticleForumLeftBottom' => $pluginClassesPath . '/class.article_forum_left_bottom.php',
     'ArticleForumRightBottom' => $pluginClassesPath . '/class.article_forum_right_bottom.php',
     'ArticleForumItem' => $pluginClassesPath . '/class.article_forum_item.php',
