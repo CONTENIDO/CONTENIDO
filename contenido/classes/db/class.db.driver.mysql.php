@@ -157,6 +157,46 @@ class cDbDriverMysql extends cDbDriverAbstract
 
     /**
      * @inheritDoc
+     * @deprecated Function is not implemeted, because mysql is not sdupprted.
+     * @since CONTENIDO 4.10.2
+     */
+    public function beginTransaction(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @inheritDoc
+     * @deprecated Function is not implemeted, because mysql is not sdupprted.
+     * @since CONTENIDO 4.10.2
+     */
+    public function inTransaction(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @inheritDoc
+     * @deprecated Function is not implemeted, because mysql is not sdupprted.
+     * @since CONTENIDO 4.10.2
+     */
+    public function commit(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @inheritDoc
+     * @deprecated Function is not implemeted, because mysql is not sdupprted.
+     * @since CONTENIDO 4.10.2
+     */
+    public function rollBack(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @inheritDoc
      */
     public function nextRecord(): bool
     {

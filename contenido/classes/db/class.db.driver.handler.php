@@ -585,6 +585,109 @@ abstract class cDbDriverHandler
     }
 
     /**
+     * Starts a database transaction.
+     *
+     * @since CONTENIDO 4.10.2
+     */
+    public function beginTransaction(): bool
+    {
+        if (!$this->connect()) {
+            return false;
+        }
+
+        return $this->getDriver()->beginTransaction();
+    }
+
+    /**
+     * Checks if inside a transaction.
+     *
+     * @since CONTENIDO 4.10.2
+     */
+    public function inTransaction(): bool
+    {
+        if (!$this->connect()) {
+            return false;
+        }
+
+        return $this->getDriver()->inTransaction();
+    }
+
+    /**
+     * Commits the current database transaction.
+     *
+     * @since CONTENIDO 4.10.2
+     */
+    public function commitTransaction(): bool
+    {
+        if (!$this->connect()) {
+            return false;
+        }
+
+        return $this->getDriver()->commit();
+    }
+
+    /**
+     * Rolls back the current database transaction.
+     *
+     * @since CONTENIDO 4.10.2
+     */
+    public function rollbackTransaction(): bool
+    {
+        if (!$this->connect()) {
+            return false;
+        }
+
+        return $this->getDriver()->rollBack();
+    }
+
+    /**
+     * Executes a callback inside a database transaction.
+     *
+     * The database handler is passed to the callback. Its return value is
+     * returned after the transaction has been committed.
+     *
+     * @throws Throwable
+     */
+    public function wrapInTransaction(callable $callback)
+    {
+        if (!$this->beginTransaction()) {
+            throw new cDbException('Could not start database transaction.');
+        }
+
+        try {
+            $result = $callback($this);
+
+            if (!$this->commitTransaction()) {
+                throw new cDbException('Could not commit database transaction.');
+            }
+
+            return $result;
+        } catch (Throwable $e) {
+            try {
+                if (!$this->rollbackTransaction()) {
+                    throw new cDbException(
+                        'Could not roll back database transaction after failure: ' . $e->getMessage(),
+                        (int)$e->getCode(),
+                        $e
+                    );
+                }
+            } catch (Throwable $rollbackException) {
+                if ($rollbackException === $e) {
+                    throw $rollbackException;
+                }
+
+                throw new cDbException(
+                    'Could not roll back database transaction: ' . $rollbackException->getMessage(),
+                    (int)$rollbackException->getCode(),
+                    $e
+                );
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
      * @see cDbDriverAbstract::buildInsert()
      */
     public function buildInsert(string $tableName, array $fields): string

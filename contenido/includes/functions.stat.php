@@ -44,54 +44,42 @@ function statsDisplayInfo($id, $type, $x, $y, $w, $h)
  * Archives the current statistics
  *
  * @param string $yearMonth String with the desired archive date (YYYYMM)
- * @throws cDbException
+ * @throws Throwable|cInvalidArgumentException
  */
-function statsArchive($yearMonth)
+function statsArchive(string $yearMonth): void
 {
     $yearMonth = preg_replace('/\s/', '0', $yearMonth);
 
+    if (!preg_match('/\A(?!0000)[0-9]{4}(?:0[1-9]|1[0-2])\z/', $yearMonth)) {
+        throw new cInvalidArgumentException(sprintf('%s: Invalid year month %s', __METHOD__, $yearMonth));
+    }
+
     $db = cRegistry::getDb();
-    $db2 = cRegistry::getDb();
 
-    $sql = 'SELECT `idcatart`, `idlang`, `idclient`, `visited`, `visitdate` FROM `%s`';
-    $db->query($sql, cDb::getTableName('stat'));
+    $db->wrapInTransaction(static function (cDbDriverHandler $db) use ($yearMonth): void {
+        $db->query(
+            "INSERT INTO `%s` (`archived`, `idcatart`, `idlang`, `idclient`, `visited`, `visitdate`)
+             SELECT '%s', `idcatart`, `idlang`, `idclient`, `visited`, `visitdate`
+             FROM `%s`",
+            cDb::getTableName('stat_archive'),
+            $yearMonth,
+            cDb::getTableName('stat')
+        );
 
-    while ($db->nextRecord()) {
-        $insertSQL = $db2->buildInsert(cDb::getTableName('stat_archive'), [
-            'archived' => $yearMonth,
-            'idcatart' => cSecurity::toInteger($db->f(0)),
-            'idlang' => cSecurity::toInteger($db->f(1)),
-            'idclient' => cSecurity::toInteger($db->f(2)),
-            'visited' => cSecurity::toInteger($db->f(3)),
-            'visitdate' => $db->f(4)
-        ]);
-        $db2->query($insertSQL);
-    }
+        $db->query('DELETE FROM `%s`', cDb::getTableName('stat'));
 
-    $sql = 'TRUNCATE TABLE `%s`';
-    $db->query($sql, cDb::getTableName('stat'));
-
-    // Recreate empty stats
-    $sql = 'SELECT
-                A.idcatart, B.idclient, C.idlang
-            FROM
-                `%s` AS A INNER JOIN
-                `%s` AS B ON A.idcat = B.idcat INNER JOIN
-                `%s` AS C ON A.idcat = C.idcat ';
-    $db->query(
-        $sql, cDb::getTableName('cat_art'),
-        cDb::getTableName('cat'), cDb::getTableName('cat_lang')
-    );
-
-    while ($db->nextRecord()) {
-        $insertSQL = $db2->buildInsert(cDb::getTableName('stat'), [
-            'idcatart' => cSecurity::toInteger($db->f(0)),
-            'idlang' => cSecurity::toInteger($db->f(2)),
-            'idclient' => cSecurity::toInteger($db->f(1)),
-            'visited' => 0,
-        ]);
-        $db2->query($insertSQL);
-    }
+        $db->query(
+            'INSERT INTO `%s` (`idcatart`, `idlang`, `idclient`, `visited`)
+             SELECT A.`idcatart`, C.`idlang`, B.`idclient`, 0
+             FROM `%s` AS A
+             INNER JOIN `%s` AS B ON A.`idcat` = B.`idcat`
+             INNER JOIN `%s` AS C ON A.`idcat` = C.`idcat`',
+            cDb::getTableName('stat'),
+            cDb::getTableName('cat_art'),
+            cDb::getTableName('cat'),
+            cDb::getTableName('cat_lang')
+        );
+    });
 }
 
 /**

@@ -61,6 +61,9 @@ class cDbDriverMysqli extends cDbDriverAbstract
         254 => 'enum'
     ];
 
+    /** Whether a database transaction is currently active. */
+    private bool $isInTransaction = false;
+
     /**
      * @inheritdoc
      */
@@ -208,6 +211,62 @@ class cDbDriverMysqli extends cDbDriverAbstract
         $this->_handler->setErrorMessage($this->getErrorMessage());
 
         return $queryId !== false;
+    }
+
+    /**
+     * @inheritDoc
+     * @since CONTENIDO 4.10.2
+     */
+    public function beginTransaction(): bool
+    {
+        /** @var mysqli $linkId */
+        $linkId = $this->_handler->getLinkId();
+
+        $result = mysqli_begin_transaction($linkId);
+        $this->isInTransaction = $result;
+
+        return $result;
+    }
+
+    /**
+     * @inheritDoc
+     * @since CONTENIDO 4.10.2
+     */
+    public function inTransaction(): bool
+    {
+        return $this->isInTransaction;
+    }
+
+    /**
+     * @inheritDoc
+     * @since CONTENIDO 4.10.2
+     */
+    public function commit(): bool
+    {
+        /** @var mysqli $linkId */
+        $linkId = $this->_handler->getLinkId();
+
+        $result = mysqli_commit($linkId);
+        $this->isInTransaction = !$result;
+
+        return $result;
+    }
+
+    /**
+     * @inheritDoc
+     * @since CONTENIDO 4.10.2
+     */
+    public function rollBack(): bool
+    {
+        /** @var mysqli $linkId */
+        $linkId = $this->_handler->getLinkId();
+
+        $result = mysqli_rollback($linkId);
+        if ($result) {
+            $this->isInTransaction = false;
+        }
+
+        return $result;
     }
 
     /**
