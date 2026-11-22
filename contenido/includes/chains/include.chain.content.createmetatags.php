@@ -126,8 +126,8 @@ function cecCreateMetatags(array $metaTags): array
                 $articleLanguage->loadByArticleAndLanguageId($idart, $lang);
 
                 $lastModifier = $articleLanguage->getField('modifiedby');
-                $oUser = new cApiUser(md5($lastModifier));
-                $lastModifierName = $oUser->getRealName();
+                $user = $lastModifier ? new cApiUser(md5($lastModifier)) : null;
+                $lastModifierName = $user ? $user->getRealName() : '';
 
                 $iCheck = checkIfMetaTagExists($metaTags, 'author');
                 $metaTags[$iCheck]['name'] = 'author';
