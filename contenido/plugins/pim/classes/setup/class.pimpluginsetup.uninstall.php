@@ -318,17 +318,11 @@ class PimPluginSetupUninstall extends PimPluginSetup
      */
     protected function writeNewExecutionOrder(): bool
     {
-        // Lowest executionorder is one
-        $i = 1;
-
         $pimPluginColl = new PimPluginCollection();
-        $pimPluginColl->setOrder('`executionorder` ASC');
-        $pimPluginColl->query();
-        while ($pimPluginSql = $pimPluginColl->next()) {
-            $pimPluginSql->set('executionorder', $i);
-            $pimPluginSql->store();
-
-            $i++;
+        $i = 1;
+        foreach ($pimPluginColl->fetchAll(true) as $pimPlugin) {
+            $pimPlugin->set('executionorder', $i++);
+            $pimPlugin->store();
         }
 
         return true;

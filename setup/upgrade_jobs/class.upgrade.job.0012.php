@@ -44,13 +44,12 @@ class cUpgradeJob_0012 extends cUpgradeJobAbstract
             $pluginRelColl = new PimPluginRelationsCollection();
 
             // Initializing PimPluginCollection
-            $pluginColl = new PimPluginCollection();
+            $pimPluginColl = new PimPluginCollection();
 
             // Get all installed plugins
-            $pluginColl->select();
-            while ($plugin = $pluginColl->next()) {
+            foreach ($pimPluginColl->fetchAll() as $pimPlugin) {
                 // Get path to plugin.xml
-                $pluginXmlPath = $cfg['path']['contenido'] . $cfg['path']['plugins'] . cSecurity::escapeString($plugin->get('folder')) . DIRECTORY_SEPARATOR . 'plugin.xml';
+                $pluginXmlPath = PimPluginHelper::getPluginConfigFile($pimPlugin->get('folder'));
 
                 // Load plugin.xml and get xml strings
                 $xml = simplexml_load_string(file_get_contents($pluginXmlPath));
@@ -68,7 +67,7 @@ class cUpgradeJob_0012 extends cUpgradeJobAbstract
 
                     // Set a relation
                     if ($actionId !== false) {
-                        $pluginRelColl->create($actionId->get('idaction'), $plugin->get('idplugin'), 'action');
+                        $pluginRelColl->create($actionId->get('idaction'), $pimPlugin->get('idplugin'), 'action');
                     }
                 }
             }

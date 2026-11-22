@@ -251,14 +251,13 @@ if (!class_exists('NewsletterJobCollection')) {
             $oNewsletters->query();
 
             if (($oNewsletter = $oNewsletters->next()) !== false) {
-                $oLanguage = new cApiLanguage($lang);
                 $aRecipients = []; // Needed, as used by reference
                 $oNewsletter->sendDirect(
                     $aSettings['HandlerID'],
                     $recipient->get('idnewsrcp'),
                     false,
                     $aRecipients,
-                    $oLanguage->get('encoding')
+                    cSecurity::toString(cRegistry::getEncoding($lang))
                 );
                 $sMessage .= mi18n("WELCOME_NEWSLETTER");
             }

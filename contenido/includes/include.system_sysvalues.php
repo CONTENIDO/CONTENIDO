@@ -168,11 +168,11 @@ $oClientColl->select();
 $sClients = '';
 
 while ($oItem = $oClientColl->next()) {
-    $iIdClient = cSecurity::toInteger($oItem->get('idclient'));
+    $_clientId = cSecurity::toInteger($oItem->get('idclient'));
 
-    if (systemHavePerm($iIdClient)) {
-        $htmlpath = $cfgClient[$iIdClient]['path']['htmlpath'];
-        $frontendpath = $cfgClient[$iIdClient]['path']['frontend'];
+    if (systemHavePerm($_clientId)) {
+        $htmlpath = $cfgClient[$_clientId]['path']['htmlpath'];
+        $frontendpath = $cfgClient[$_clientId]['path']['frontend'];
 
         $oTpl2 = new cTemplate();
         $oTpl2->set('s', 'HEADLINE', i18n('Client') . ' ' . $oItem->get('name') . ' (' . $oItem->get('idclient') . ')');
@@ -186,27 +186,24 @@ while ($oItem = $oClientColl->next()) {
         $oTpl2->set('d', 'VALUE', $frontendpath);
         $oTpl2->next();
 
-        $oClientLanguageColl = new cApiClientLanguageCollection();
-        $oClientLanguageColl->setWhere('idclient', $iIdClient);
-        $oClientLanguageColl->query();
+        $languages = (new cApiClientLanguageCollection())->getAllLanguagesByClient($_clientId);
 
-        $aLanguages = [];
-
-        if ($oClientLanguageColl->count() > 0) {
-            while ($oClientLang = $oClientLanguageColl->next()) {
-                $iIdLang = $oClientLang->get('idlang');
-
-                $oLang = new cApiLanguage($iIdLang);
-                $aLanguages[$iIdLang] = $oLang->get('name') . ' (' . $iIdLang . ', ' . $oLang->get('encoding') . ')';
-            }
-
-            $sLanguages = implode(', ', $aLanguages);
-        } else {
-            $sLanguages = i18n('No languages were found for this client');
+        $languagesLabels = [];
+        foreach ($languages as $languageId => $language) {
+            $languagesLabels[$languageId] = sprintf(
+                '%s (%d, %s)',
+                $language['name'],
+                $languageId,
+                $language['encoding']
+            );
         }
 
+        $languagesLabels = $languagesLabels === []
+            ? i18n('No languages were found for this client')
+            : implode(', ', $languagesLabels);
+
         $oTpl2->set('d', 'NAME', i18n('language(s)'));
-        $oTpl2->set('d', 'VALUE', $sLanguages);
+        $oTpl2->set('d', 'VALUE', $languagesLabels);
         $oTpl2->next();
 
         $sClients .= $oTpl2->generate($cfg['path']['templates'] . $cfg['templates']['system_variables_block'], 1) . '<br>';

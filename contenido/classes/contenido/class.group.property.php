@@ -219,11 +219,8 @@ class cApiGroupPropertyCollection extends ItemCollection
         }
 
         $this->select($this->db->prepare("`group_id` = '%s' AND `type` = '%s'", $this->_groupId, $type));
-        $props = [];
-        while ($property = $this->next()) {
-            $props[] = clone $property;
-        }
-        return $props;
+
+        return $this->getItemsArray();
     }
 
     /**
@@ -239,11 +236,8 @@ class cApiGroupPropertyCollection extends ItemCollection
         }
 
         $this->select($this->db->prepare("`group_id` = '%s'", $this->_groupId));
-        $props = [];
-        while ($property = $this->next()) {
-            $props[] = clone $property;
-        }
-        return $props;
+
+        return $this->getItemsArray();
     }
 
     /**

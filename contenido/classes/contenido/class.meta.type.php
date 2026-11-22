@@ -68,11 +68,7 @@ class cApiMetaTypeCollection extends ItemCollection
     {
         $this->select();
 
-        $entries = [];
-        while ($entry = $this->next()) {
-            $entries[] = clone $entry;
-        }
-        return $entries;
+        return $this->getItemsArray();
     }
 
 }

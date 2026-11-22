@@ -117,6 +117,23 @@ class cApiLanguageCollection extends ItemCollection
         return $item->isLoaded() ? $item->get('name') : i18n('No language');
     }
 
+    /**
+     * Returns the list of all language ids and their related encodings.
+     *
+     * @return array<int, string> Key is the language and ans the value the encoding.
+     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function getLanguageIdEncodingMap(): array
+    {
+        $languageIdEncodingMap = [];
+        $this->select();
+        foreach ($this->getItems() as $language) {
+            $languageIdEncodingMap[$language->get('idlang')] = $language->get('encoding');
+        }
+
+        return $languageIdEncodingMap;
+    }
 }
 
 /**
@@ -171,12 +188,31 @@ class cApiLanguage extends Item
     public function setField($name, $value, $safe = true)
     {
         switch ($name) {
+            case 'idlang':
             case 'active':
                 $value = cSecurity::toInteger($value);
                 break;
         }
 
         return parent::setField($name, $value, $safe);
+    }
+
+    /**
+     * @inheritDoc
+     * @since CONTENIDO 4.10.2
+     */
+    public function getField($name, $safe = true)
+    {
+        $value = parent::getField($name, $safe);
+
+        switch ($name) {
+            case 'idlang':
+            case 'active':
+                $value = cSecurity::toInteger($value);
+                break;
+        }
+
+        return $value;
     }
 
     /**

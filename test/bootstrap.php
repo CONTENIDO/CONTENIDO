@@ -117,19 +117,6 @@ cApiCecHook::execute('Contenido.Frontend.AfterLoadPlugins');
 
 $db = cRegistry::getDb();
 
-$sess->register('encoding');
-
-// Initialize encodings
-if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
-    // Get encodings of all languages
-    $encoding = [];
-    $oLangColl = new cApiLanguageCollection();
-    $oLangColl->select('');
-    while ($oLang = $oLangColl->next()) {
-        $encoding[$oLang->get('idlang')] = $oLang->get('encoding');
-    }
-}
-
 // Update UriBuilder, set http base path
 cUri::getInstance()->getUriBuilder()->setHttpBasePath(cRegistry::getFrontendUrl());
 

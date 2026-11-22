@@ -143,6 +143,42 @@ class cDbDriverPdoMysql extends cDbDriverAbstract
     }
 
     /**
+     * @inheritDoc
+     * @since CONTENIDO 4.10.2
+     */
+    public function beginTransaction(): bool
+    {
+        return $this->_pdo->beginTransaction();
+    }
+
+    /**
+     * @inheritDoc
+     * @since CONTENIDO 4.10.2
+     */
+    public function inTransaction(): bool
+    {
+        return $this->_pdo->inTransaction();
+    }
+
+    /**
+     * @inheritDoc
+     * @since CONTENIDO 4.10.2
+     */
+    public function commit(): bool
+    {
+        return $this->_pdo->commit();
+    }
+
+    /**
+     * @inheritDoc
+     * @since CONTENIDO 4.10.2
+     */
+    public function rollBack(): bool
+    {
+        return $this->_pdo->rollBack();
+    }
+
+    /**
      * @inheritdoc
      */
     public function nextRecord(): bool

@@ -163,13 +163,9 @@ class cApiUserPropertyCollection extends ItemCollection
             return $this->_fetchByUserIdFromCache();
         }
 
-        $sql = $this->db->prepare("user_id = '%s'", $this->_userId);
-        $this->select($sql);
-        $props = [];
-        while ($property = $this->next()) {
-            $props[] = clone $property;
-        }
-        return $props;
+        $this->select($this->db->prepare("`user_id` = '%s'", $this->_userId));
+
+        return $this->getItemsArray();
     }
 
     /**
@@ -184,13 +180,9 @@ class cApiUserPropertyCollection extends ItemCollection
      */
     public function fetchByTypeName($type, $name): array
     {
-        $sql = $this->db->prepare("type = '%s' AND name = '%s'", $type, $name);
-        $this->select($sql);
-        $props = [];
-        while ($property = $this->next()) {
-            $props[] = clone $property;
-        }
-        return $props;
+        $this->select($this->db->prepare("`type` = '%s' AND `name` = '%s'", $type, $name));
+
+        return $this->getItemsArray();
     }
 
     /**
@@ -228,13 +220,9 @@ class cApiUserPropertyCollection extends ItemCollection
             return $this->_fetchByUserIdTypeFromCache($type);
         }
 
-        $sql = $this->db->prepare("user_id = '%s' AND type = '%s'", $this->_userId, $type);
-        $this->select($sql);
-        $props = [];
-        while ($property = $this->next()) {
-            $props[] = clone $property;
-        }
-        return $props;
+        $this->select($this->db->prepare("`user_id` = '%s' AND `type` = '%s'", $this->_userId, $type));
+
+        return $this->getItemsArray();
     }
 
     /**
@@ -244,8 +232,9 @@ class cApiUserPropertyCollection extends ItemCollection
      */
     public function deleteByUserIdTypeName($type, $name): bool
     {
-        $sql = $this->db->prepare("user_id = '%s' AND type = '%s' AND name = '%s'", $this->_userId, $type, $name);
+        $sql = $this->db->prepare("`user_id` = '%s' AND `type` = '%s' AND `name` = '%s'", $this->_userId, $type, $name);
         $this->select($sql);
+
         return $this->_deleteSelected();
     }
 
@@ -256,8 +245,8 @@ class cApiUserPropertyCollection extends ItemCollection
      */
     public function deleteByUserIdType($type): bool
     {
-        $sql = $this->db->prepare("user_id = '%s' AND type = '%s'", $this->_userId, $type);
-        $this->select($sql);
+        $this->select($this->db->prepare("`user_id` = '%s' AND `type` = '%s'", $this->_userId, $type));
+
         return $this->_deleteSelected();
     }
 
@@ -268,8 +257,8 @@ class cApiUserPropertyCollection extends ItemCollection
      */
     public function deleteByUserId(): bool
     {
-        $sql = $this->db->prepare("user_id = '%s'", $this->_userId);
-        $this->select($sql);
+        $this->select($this->db->prepare("`user_id` = '%s'", $this->_userId));
+
         return $this->_deleteSelected();
     }
 
@@ -299,8 +288,7 @@ class cApiUserPropertyCollection extends ItemCollection
     protected function _loadFromCache()
     {
         self::$_entries = [];
-        $sql = $this->db->prepare("user_id = '%s'", $this->_userId);
-        $this->select($sql);
+        $this->select($this->db->prepare("user_id = '%s'", $this->_userId));
         while ($property = $this->next()) {
             $data = $property->toArray();
             self::$_entries[$data['iduserprop']] = $data;

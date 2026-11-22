@@ -93,9 +93,8 @@ $noResults = false;
 
 $db = cRegistry::getDb();
 
-$langobj = new cApiLanguage($lang);
-
-$langstring = $langobj->get('name') . ' (' . $lang . ')';
+$language = cRegistry::getLanguage();
+$languageLabel = sprintf('%s (%d)', $language->get('name'), $lang);
 
 // Initialize $_REQUEST with common used keys to prevent PHP 'Undefined array key' warnings
 foreach (['dellang', 'editlang', 'editstring', 'elemperpage', 'extralang', 'filter', 'modtrans', 'page', 'search', 'sortby', 'sortmode'] as $_key) {
@@ -104,12 +103,12 @@ foreach (['dellang', 'editlang', 'editstring', 'elemperpage', 'extralang', 'filt
     }
 }
 
-$aTmpExtraLanguages = $_REQUEST['extralang'];
+$tmpExtraLanguages = $_REQUEST['extralang'] ?? [];
 $extraLanguages = [];
-if (is_array($aTmpExtraLanguages)) {
-    foreach ($aTmpExtraLanguages as $idlang) {
-        if ($idlang != $_REQUEST['dellang']) {
-            $extraLanguages[] = $idlang;
+if (is_array($tmpExtraLanguages)) {
+    foreach ($tmpExtraLanguages as $_languageId) {
+        if ($_languageId != $_REQUEST['dellang']) {
+            $extraLanguages[] = $_languageId;
         }
     }
 }
@@ -173,8 +172,8 @@ if ($action == 'con_translate_edit') {
             }
 
             foreach ($savemodtranslations as $hash => $stringtranslations) {
-                foreach ($stringtranslations as $idlang => $modlangtranslation) {
-                    $contenidoTranslateFromFile = new cModuleFileTranslation($module, false, $idlang);
+                foreach ($stringtranslations as $_languageId => $modlangtranslation) {
+                    $contenidoTranslateFromFile = new cModuleFileTranslation($module, false, $_languageId);
                     $fileTranslations = $contenidoTranslateFromFile->getTranslationArray();
 
                     $hashparts = explode('_', $hash);
@@ -217,9 +216,9 @@ foreach ($moduleObjects as $entry) {
     // Get the mi18n strings from modul input/output
     $strings = $module->parseModuleForStringsLoadFromFile($cfg, $client, $lang);
 
-    foreach ($allLanguages as $idlang) {
+    foreach ($allLanguages as $_languageId) {
         // Get the strings from translation file
-        $contenidoTranslateFromFile = new cModuleFileTranslation($module, false, $idlang);
+        $contenidoTranslateFromFile = new cModuleFileTranslation($module, false, $_languageId);
         $fileTranslations = $contenidoTranslateFromFile->getTranslationArray();
 
         $translations = [];
@@ -235,12 +234,12 @@ foreach ($moduleObjects as $entry) {
             $hash = $idmod . '_' . md5($string);
             $currentTranslation = $translations[$hash] ?? '';
             if (isset($allTranslations[$hash])) {
-                $allTranslations[$hash]['translations'][$idlang] = $currentTranslation;
+                $allTranslations[$hash]['translations'][$_languageId] = $currentTranslation;
             } else {
                 $allTranslations[$hash] = [
                     'string' => $string,
                     'translations' => [
-                        $idlang => $currentTranslation
+                        $_languageId => $currentTranslation
                     ],
                     'idmod' => $idmod
                 ];
@@ -269,7 +268,7 @@ if ($search != '' || ($filter != '' && $filter != -1)) {
             if (cString::findFirstPosCI($aTranslation['string'], $search) !== false) {
                 $bFoundSearch = true;
             }
-            foreach ($aTranslation['translations'] as $idlang => $langTranslation) {
+            foreach ($aTranslation['translations'] as $_languageId => $langTranslation) {
                 if (cString::findFirstPosCI($langTranslation, $search) !== false) {
                     $bFoundSearch = true;
                 }
@@ -349,12 +348,12 @@ if (is_array($allLanguages)) {
     $langNames = [];
     $countExtraLangOptions = 0;
     while ($db->nextRecord()) {
-        $idlang = $db->f('idlang');
-        $langString = conHtmlSpecialChars($db->f('name')) . " (" . $db->f('idlang') . ")";
-        $langNames[$idlang] = $langString;
-        if (!in_array($idlang, $allLanguages)) {
-            $option = new cHTMLOptionElement($langString, $idlang);
-            $selectExtraLangs->addOptionElement($idlang, $option);
+        $_languageId = $db->f('idlang');
+        $languageLabel = conHtmlSpecialChars(sprintf('%s (%d)', $db->f('name'), $_languageId));
+        $langNames[$_languageId] = $languageLabel;
+        if (!in_array($_languageId, $allLanguages)) {
+            $option = new cHTMLOptionElement($languageLabel, $_languageId);
+            $selectExtraLangs->addOptionElement($_languageId, $option);
             $countExtraLangOptions++;
         }
     }
@@ -474,7 +473,7 @@ $tableHeaders = [
     addSortImages($i++, i18n('Module name')),
     addSortImages($i++, i18n('In use by')),
     addSortImages($i++, i18n('Translation ID')),
-    addSortImages($i++, i18n('Current language') . ': ' . $langstring)
+    addSortImages($i++, i18n('Current language') . ': ' . $languageLabel)
 ];
 foreach ($extraLanguages as $idExtraLang) {
     $delImage = new cHTMLImage('images/but_cancel.gif');
@@ -775,5 +774,5 @@ if (!$noResults) {
 }
 
 $page->setMarkScript(2);
-$page->setEncoding($langobj->get('encoding'));
+$page->setEncoding($language->get('encoding'));
 $page->render();

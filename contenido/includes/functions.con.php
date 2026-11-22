@@ -152,11 +152,13 @@ function conEditFirstTime(
         ];
         $oArtLang = $oArtLangColl->create($parameters);
         $lastArticleLanguageId = $oArtLang->get('idartlang');
-        $availableTags = conGetAvailableMetaTagTypes();
-        foreach ($availableTags as $key => $value) {
-            // TODO $value is an entry from `con_meta_tag_type` table, and it has no `name` field!
-            $tmpValue = isset($value['name']) && isset($_POST['META' . $value['name']]) ? $_POST['META' . $value['name']] : '';
-            conSetMetaValue($lastArticleLanguageId, $key, $tmpValue);
+        $metaTypeService = new cMetaTypeService();
+        foreach ($metaTypeService->getAll() as $metaType) {
+            conSetMetaValue(
+                $lastArticleLanguageId,
+                $metaType->getId(),
+                $metaType->get('metatype') && $_POST['META' . $metaType->get('metatype')] ?? ''
+            );
         }
     }
 

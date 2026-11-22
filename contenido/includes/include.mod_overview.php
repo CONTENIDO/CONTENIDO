@@ -101,6 +101,8 @@ $allModules = $cModuleSearch->getModules();
 
 $iItemCount = $elemPerPage > 0 ? $cModuleSearch->getModulCount() : 0;
 
+$emcoding = cSecurity::toString(cRegistry::getEncoding($lang));
+
 foreach ($allModules as $idmod => $module) {
     if ($perm->have_perm_item($area, $idmod) ||
         $perm->have_perm_area_action('mod_translate', 'mod_translation_save') ||
@@ -111,9 +113,18 @@ foreach ($allModules as $idmod => $module) {
             ->setLink('javascript:void(0)')
             ->setAttribute('data-action', 'show_module');
 
-        $moduleName = (cString::getStringLength(trim($module['name'])) > 0) ? $module['name'] : i18n("- Unnamed module -");
-        $sName = mb_convert_encoding(cString::stripSlashes(conHtmlSpecialChars($moduleName)), cRegistry::getLanguage()->get('encoding')); //$cApiModule->get('name');
-        $descr = mb_convert_encoding(cString::stripSlashes(str_replace("'", "&#39;", conHtmlSpecialChars(nl2br($module ['description'])))), cRegistry::getLanguage()->get('encoding'));
+        $moduleName = cString::getStringLength(trim($module['name'])) > 0
+            ? $module['name']
+            : i18n("- Unnamed module -");
+        $sName = mb_convert_encoding(
+            cString::stripSlashes(conHtmlSpecialChars($moduleName)), $emcoding
+        );
+        $descr = mb_convert_encoding(
+            cString::stripSlashes(
+                str_replace("'", "&#39;", conHtmlSpecialChars(nl2br($module['description'])))
+            ),
+            $emcoding
+        );
 
         // Do not check modules (or don't force it) - so, let's take a look into the database
         $sModuleError = $module['error']; //$cApiModule->get('error');

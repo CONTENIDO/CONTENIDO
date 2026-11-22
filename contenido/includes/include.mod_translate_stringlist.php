@@ -56,8 +56,6 @@ foreach ($translationArray as $key => $value) {
     $rowCount++;
 }
 
-$clang = new cApiLanguage($lang);
-
-$page->setEncoding($clang->get('encoding'));
+$page->setEncoding(cSecurity::toString(cRegistry::getEncoding($lang)));
 
 $page->render();

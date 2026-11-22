@@ -134,11 +134,8 @@ class cApiTemplateCollection extends ItemCollection
     public function fetchByIdLay($layoutId): array
     {
         $this->select(sprintf('`idlay` = %d', $layoutId));
-        $entries = [];
-        while ($entry = $this->next()) {
-            $entries[] = clone $entry;
-        }
-        return $entries;
+
+        return $this->getItemsArray();
     }
 
     /**

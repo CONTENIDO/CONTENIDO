@@ -310,6 +310,7 @@ return [
     'cLogWriter' => 'contenido/classes/log/class.log.writer.php',
     'cLogWriterFile' => 'contenido/classes/log/class.log.writer.file.php',
     'cMailer' => 'contenido/classes/class.mailer.php',
+    'cMetaTypeService' => 'contenido/classes/services/class.meta.type.service.php',
     'cModuleFileTranslation' => 'contenido/classes/module/class.module.filetranslation.php',
     'cModuleHandler' => 'contenido/classes/module/class.module.handler.php',
     'cModuleLog' => 'contenido/classes/log/class.modulelog.php',

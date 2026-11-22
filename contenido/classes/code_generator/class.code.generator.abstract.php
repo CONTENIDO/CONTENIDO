@@ -25,146 +25,88 @@ abstract class cCodeGeneratorAbstract
 
     /**
      * CONTENIDO database instance.
-     *
-     * @var cDb
      */
-    protected $_db;
+    protected cDb $db;
 
     /**
-     * Frontend debug options.
-     *
+     * @var string[] Frontend debug options.
      * @see $frontend_debug in __FRONTEND_PATH__/data/config/config.php
-     * @var array
      */
-    protected $_feDebugOptions = [];
+    protected array $feDebugOptions = [];
 
     /**
      * Collected CSS data for the current template.
-     *
-     * @var string
      */
-    protected $_cssData = '';
+    protected string $cssData = '';
 
     /**
      * Collected JS data for the current template.
-     *
-     * @var string
      */
-    protected $_jsData = '';
+    protected string $jsData = '';
 
     /**
      * Template name.
-     *
-     * @var string
      */
-    protected $_tplName = '';
+    protected string $templateName = '';
+
+    protected ?int $categoryId = null;
+
+    protected ?int $articleId = null;
+
+    protected ?int $languageId = null;
+
+    protected ?int $clientId = null;
 
     /**
-     * Category id.
-     *
-     * @var int
+     * ID of layout to process.
      */
-    protected $_idcat;
-
-    /**
-     * Article id.
-     *
-     * @var int
-     */
-    protected $_idart;
-
-    /**
-     * Language id.
-     *
-     * @var int
-     */
-    protected $_lang;
-
-    /**
-     * Client id.
-     *
-     * @var int
-     */
-    protected $_client;
-
-    /**
-     * Flag to process layout.
-     *
-     * @var bool
-     */
-    protected $_layout;
+    protected ?int $layoutId = null;
 
     /**
      * Flag to persist generated code.
-     *
-     * @var bool
      */
-    protected $_save;
+    protected bool $isSaveCode = false;
+
+    protected ?int $articleLanguageId = null;
+
+    protected ?int $templateConfigurationId = null;
 
     /**
-     * Article language id.
-     *
-     * @var int
+     * Page title, usually from article language table.
      */
-    protected $_idartlang;
+    protected string $pageTitle = '';
 
     /**
-     * Template configuration id.
-     *
-     * @var int
+     * Layout code, initially with container tags which will be replaced by module output.
      */
-    protected $_idtplcfg;
+    protected string $layoutCode = '';
 
     /**
-     * Page title.
-     * Usually from article language table.
-     *
-     * @var string
+     * @var string[] Module output code prefix.
      */
-    protected $_pageTitle;
-
-    /**
-     * Layout code.
-     * Initially with container tags which will be replaced by module output.
-     *
-     * @var string
-     */
-    protected $_layoutCode = '';
-
-    /**
-     * Module output code prefix.
-     *
-     * @var array
-     */
-    protected $_modulePrefix = [];
+    protected array $modulePrefixes = [];
 
     /**
      * Module output code.
-     *
-     * @var string
      */
-    protected $_moduleCode = '';
+    protected string $moduleCode = '';
 
     /**
-     * Module output code suffix.
-     *
-     * @var array
+     * @var string[] Module output code suffix.
      */
-    protected $_moduleSuffix = [];
+    protected array $moduleSuffixes = [];
 
     /**
      * Article language.
-     *
-     * @var cApiArticleLanguage
      */
-    protected $_oArtLang;
+    protected ?cApiArticleLanguage $articleLanguage = null;
 
     /**
      * Constructor to create an instance of this class.
      */
     public function __construct()
     {
-        $this->_db = cRegistry::getDb();
+        $this->db = cRegistry::getDb();
     }
 
     /**
@@ -174,20 +116,20 @@ abstract class cCodeGeneratorAbstract
      * @see $frontend_debug in __FRONTEND_PATH__/data/config/config.php
      *         located in clients frontend directory
      */
-    public function setFrontendDebugOptions(array $debugOptions)
+    public function setFrontendDebugOptions(array $debugOptions): void
     {
-        $this->_feDebugOptions = $debugOptions;
+        $this->feDebugOptions = $debugOptions;
     }
 
     /**
      * Generates the code for a specific article (article for a client in a language).
      *
-     * @param int $idcat
-     * @param int $idart
-     * @param int $lang
-     * @param int $client
-     * @param bool $layout [optional] This params purpose is unclear.
-     * @param bool $save [optional] Flag to persist generated code.
+     * @param int $categoryId
+     * @param int $articleId
+     * @param int $languageId
+     * @param int $clientId
+     * @param ?int $layoutId [optional] The id of layout to process. Use associated layout if not set.
+     * @param bool $isSaveCode [optional] Flag to persist generated code.
      * @param bool $contype [optional] Flag to enable/disable replacement of CMS_TAGS[].
      * @param bool $editable [optional]
      * @param ?int $version [optional]
@@ -196,64 +138,58 @@ abstract class cCodeGeneratorAbstract
      * @throws cDbException|cException|cInvalidArgumentException
      */
     public function generate(
-        $idcat,
-        $idart,
-        $lang,
-        $client,
-        $layout = false,
-        $save = true,
-        $contype = true,
-        $editable = true,
-        $version = NULL
-    )
-    {
-        $this->_idcat = cSecurity::toInteger($idcat);
-        $this->_idart = cSecurity::toInteger($idart);
-        $this->_lang = cSecurity::toInteger($lang);
-        $this->_client = cSecurity::toInteger($client);
-        $this->_layout = cSecurity::toBoolean($layout);
-        $this->_save = cSecurity::toBoolean($save);
+        int $categoryId,
+        int $articleId,
+        int $languageId,
+        int $clientId,
+        ?int $layoutId = null,
+        bool $isSaveCode = true,
+        bool $contype = true,
+        bool $editable = true,
+        ?int $version = null
+    ): string {
+        $this->categoryId = $categoryId;
+        $this->articleId = $articleId;
+        $this->languageId = $languageId;
+        $this->clientId = $clientId;
+        $this->layoutId = $layoutId;
+        $this->isSaveCode = $isSaveCode;
 
-        $this->_oArtLang = new cApiArticleLanguage();
-        $this->_oArtLang->loadByArticleAndLanguageId($this->_idart, $this->_lang);
-        if (!$this->_oArtLang->isLoaded()) {
-            throw new cInvalidArgumentException('Couldn\'t load article language for idart=' . $this->_idart . 'AND idlang=' . $this->_lang);
+        $this->articleLanguage = new cApiArticleLanguage();
+        $this->articleLanguage->loadByArticleAndLanguageId($this->articleId, $this->languageId);
+        if (!$this->articleLanguage->isLoaded()) {
+            throw new cInvalidArgumentException('Could not load article language for idart=' . $this->articleId . 'AND idlang=' . $this->languageId);
         }
 
-        $this->_idartlang = $this->_oArtLang->get('idartlang');
-        $this->_pageTitle = stripslashes($this->_oArtLang->get('pagetitle'));
+        $this->articleLanguageId = $this->articleLanguage->get('idartlang');
+        $this->pageTitle = stripslashes($this->articleLanguage->get('pagetitle'));
 
         return $this->_generate($contype, $editable, $version);
     }
 
     /**
-     * Generates the code for a specific article (article for a client in a
-     * language).
+     * Generates the code for a specific article (article for a client in a language).
      *
-     * @param bool $contype [optional]
-     *         Flag to enable/disable replacement of CMS_TAGS[].
-     * @param bool $editable [optional]
-     * @param bool $version [optional]
-     * @return string
-     *         The generated code.
+     * @param bool $contype Flag to enable/disable replacement of CMS_TAGS[].
+     * @return string The generated code.
      */
-    abstract function _generate($contype = true, $editable = true, $version = NULL): string;
+    abstract function _generate(bool $contype = true, bool $editable = true, ?int $version = null): string;
 
     /**
      * Returns the template configuration id, either by configured article or by configured category.
      *
      * @throws cDbException|cInvalidArgumentException
      */
-    protected function _getTemplateConfigurationId(): ?int
+    protected function getTemplateConfigurationId(): ?int
     {
         // get configuration for article
-        $idtplcfg = conGetTemplateConfigurationIdForArticle($this->_idart, $this->_idcat, $this->_lang, $this->_client);
+        $idtplcfg = conGetTemplateConfigurationIdForArticle($this->articleId, $this->categoryId, $this->languageId, $this->clientId);
         if (is_numeric($idtplcfg) && $idtplcfg != 0) {
             // article is configured
             cDebug::out("configuration for article found: $idtplcfg");
         } else {
             // check whether category is configured
-            $idtplcfg = conGetTemplateConfigurationIdForCategory($this->_idcat, $this->_lang, $this->_client);
+            $idtplcfg = conGetTemplateConfigurationIdForCategory($this->categoryId, $this->languageId, $this->clientId);
             if (NULL !== $idtplcfg) {
                 // category is configured
                 cDebug::out("configuration for category found: $idtplcfg");
@@ -267,14 +203,14 @@ abstract class cCodeGeneratorAbstract
      * Will be invoked, if code generation wasn't able to find a configured
      * article or category.
      *
-     * @param int $idcatart
-     *         Category article id.
+     * @param int $categoryArticleId Category article id.
      * @todo This method is not required as it is only used in the standard code generator.
      */
-    abstract protected function _processNoConfigurationError($idcatart);
+    abstract protected function processNoConfigurationError(int $categoryArticleId): void;
 
     /**
      * Returns array containing used layout, template and template name.
+     * Returns array with default values (0 for int ans '' for string), if no entry was found.
      *
      * @return array{
      *     'idlang': int,
@@ -283,32 +219,33 @@ abstract class cCodeGeneratorAbstract
      * }
      * @throws cDbException|cInvalidArgumentException
      */
-    protected function _getTemplateData(): array
+    protected function getTemplateData(): array
     {
         // get IDLAY and IDMOD array
-        $sql = "SELECT
-                    a.idlay AS idlay
-                    , a.idtpl AS idtpl
-                    , a.name AS name
+        $this->db->query(
+            "SELECT
+                    a.idlay AS idlay, a.idtpl AS idtpl, a.name AS name
                 FROM
-                    `%s` AS a
-                    , `%s` AS b
+                    `%s` AS a, `%s` AS b
                 WHERE
-                    b.idtplcfg = %d
-                    AND b.idtpl = a.idtpl
-                ;";
+                    b.idtplcfg = %d AND b.idtpl = a.idtpl
+                ;",
+            cDb::getTableName('tpl'),
+            cDb::getTableName('tpl_conf'),
+            $this->templateConfigurationId
+        );
+        $this->db->nextRecord();
+        $data = $this->db->toArray();
 
-        $this->_db->query($sql, cDb::getTableName('tpl'), cDb::getTableName('tpl_conf'), $this->_idtplcfg);
-        $this->_db->nextRecord();
-        $data = $this->_db->toArray();
-
-        if ($this->_layout !== false) {
-            $data['idlay'] = $this->_layout;
+        if ($this->layoutId) {
+            $data['idlay'] = $this->layoutId;
         }
 
-        $idLay = $data['idlay'] ?? '0';
-        $idTpl = $data['idtpl'] ?? '0';
-        cDebug::out("Using Layout: $idLay and Template: $idTpl for generation of code.");
+        $data['idlay'] = cSecurity::toInteger($data['idlay'] ?? '0');
+        $data['idtpl'] = cSecurity::toInteger($data['idtpl'] ?? '0');
+        $data['name'] = $data['name'] ?? '';
+
+        cDebug::out("Using Layout: {$data['idlay']} and Template: {$data['idtpl']} for generation of code.");
 
         return $data;
     }
@@ -321,7 +258,7 @@ abstract class cCodeGeneratorAbstract
      * @param bool $editable [optional]
      * @throws cDbException|cException
      */
-    protected function _processCmsTags($contentList, $saveKeywords = true, $editable = true)
+    protected function processCmsTags($contentList, $saveKeywords = true, $editable = true): void
     {
         // NOTE: Variables below are required in included/evaluated content type codes!
         global $db, $db2, $sess, $cfg, $code, $cfgClient, $encoding;
@@ -330,11 +267,11 @@ abstract class cCodeGeneratorAbstract
         // content type codes within backend edit mode!
         global $edit, $editLink, $belang;
 
-        $idcat = $this->_idcat;
-        $idart = $this->_idart;
-        $lang = $this->_lang;
-        $client = $this->_client;
-        $idartlang = $this->_idartlang;
+        $idcat = $this->categoryId;
+        $idart = $this->articleId;
+        $lang = $this->languageId;
+        $client = $this->clientId;
+        $idartlang = $this->articleLanguageId;
 
         if (!is_object($db2)) {
             $db2 = cRegistry::getDb();
@@ -362,7 +299,7 @@ abstract class cCodeGeneratorAbstract
             // Find all Content Types and the Content-IDs CMS_{type}[{number}] values, e.g. CMS_HTML[1]
             $tmp = preg_match_all(
                 sprintf('/(%s\[(\d+)\])/', preg_quote($type, '/')),
-                $this->_layoutCode,
+                $this->layoutCode,
                 $matches
             );
 
@@ -375,8 +312,8 @@ abstract class cCodeGeneratorAbstract
             $search = [];
             $replacements = [];
 
-            $typeClassName = $this->_getContentTypeClassName($contentType);
-            $typeCodeFile = $this->_getContentTypeCodeFilePathName(cString::toLowerCase($contentType));
+            $typeClassName = $this->getContentTypeClassName($contentType);
+            $typeCodeFile = $this->getContentTypeCodeFilePathName(cString::toLowerCase($contentType));
             $tmp = '';
 
             foreach ($contentIds as $contentId) {
@@ -402,125 +339,154 @@ abstract class cCodeGeneratorAbstract
                 $keycode[$contentType][$contentId] = $tmp;
             }
 
-            $this->_layoutCode = str_ireplace($search, $replacements, $this->_layoutCode);
+            $this->layoutCode = str_ireplace($search, $replacements, $this->layoutCode);
         }
     }
 
     /**
      * Processes and adds or replaces title tag for an article.
      */
-    abstract protected function _processCodeTitleTag(): string;
+    abstract protected function processCodeTitleTag(): string;
 
     /**
      * Processes and adds or replaces all meta-tags for an article.
      */
-    abstract protected function _processCodeMetaTags(): string;
+    abstract protected function processCodeMetaTags(): string;
 
     /**
      * Replaces all container/module configuration tags (CMS_VALUE[n] values)
      * by their settings.
      *
-     * @param int $containerNumber
-     *         Container number
-     * @param string $containerCfg
-     *         A string being formatted like a concatenated query
+     * @param int $containerNumber Container number
+     * @param string $containerCfg A string being formatted like a concatenated query
      *         parameter, e.g. param1=value1&param2=value2...
-     * @return string
-     *         Concatenated PHP code containing CMS_VALUE variables and their values
+     * @return string Concatenated PHP code containing CMS_VALUE variables and their values
      */
-    protected function _processCmsValueTags($containerNumber, $containerCfg): string
+    protected function processCmsValueTags(int $containerNumber, string $containerCfg): string
     {
-        return cApiModule::processContainerOutputCode($containerNumber, $containerCfg, $this->_moduleCode);
+        return cApiModule::processContainerOutputCode($containerNumber, $containerCfg, $this->moduleCode);
     }
 
     /**
      * Extends container code by adding several debug features,
      * if enabled and configured.
      *
-     * @param int $containerNumber
-     *         Container number (the id attribute in container tag).
-     * @param array $module
-     *         Recordset as associative array of related module (container code).
-     *
+     * @param int $containerNumber Container number (the id attribute in container tag).
+     * @param ?cApiModule $module Mdule item instance
      * @throws cDbException|cInvalidArgumentException
      */
-    protected function _processFrontendDebug($containerNumber, array $module)
+    protected function processFrontendDebug(int $containerNumber, ?cApiModule $module = null): void
     {
         global $containerinf;
 
-        $data = $this->_getTemplateData();
-
-        if (empty($this->_feDebugOptions)) {
+        if (empty($this->feDebugOptions) || !$module) {
             return;
         }
 
-        if ($this->_getFeDebugOption('container_display')) {
-            $this->_modulePrefix[] = 'if ($frontend_debug[\'container_display\']) echo "<!-- START CONTAINER ' . $containerinf[$data['idlay']][$containerNumber]['name'] . ' (' . $containerNumber . ') -->";';
+        $data = $this->getTemplateData();
+
+        if ($this->getFeDebugOption('container_display')) {
+            $this->modulePrefixes[] = 'if ($frontend_debug[\'container_display\']) echo "<!-- START CONTAINER ' . $containerinf[$data['idlay']][$containerNumber]['name'] . ' (' . $containerNumber . ') -->";';
         }
 
-        if ($this->_getFeDebugOption('module_display')) {
-            $this->_modulePrefix[] = 'if ($frontend_debug[\'module_display\']) echo "<!-- START MODULE ' . $module['name'] . ' (' . $module['idmod'] . ') -->";';
+        if ($this->getFeDebugOption('module_display')) {
+            $this->modulePrefixes[] = 'if ($frontend_debug[\'module_display\']) echo "<!-- START MODULE ' . $module->get('name') . ' (' . $module->getId() . ') -->";';
         }
 
-        if ($this->_getFeDebugOption('module_timing')) {
-            $this->_modulePrefix[] = '$modTime' . $containerNumber . ' = -getmicrotime(true);';
-            $this->_moduleSuffix[] = '$modTime' . $containerNumber . ' += getmicrotime(true);';
+        if ($this->getFeDebugOption('module_timing')) {
+            $this->modulePrefixes[] = '$modTime' . $containerNumber . ' = -getmicrotime(true);';
+            $this->moduleSuffixes[] = '$modTime' . $containerNumber . ' += getmicrotime(true);';
         }
 
-        if ($this->_getFeDebugOption('module_display')) {
-            $this->_moduleSuffix[] = 'if ($frontend_debug[\'module_display\']) echo "<!-- END MODULE ' . $module['name'] . ' (' . $module['idmod'] . ')";';
-            if ($this->_getFeDebugOption('module_timing')) {
-                $this->_moduleSuffix[] = 'if ($frontend_debug[\'module_timing\']) echo(" AFTER " . $modTime' . $containerNumber . ');';
+        if ($this->getFeDebugOption('module_display')) {
+            $this->moduleSuffixes[] = 'if ($frontend_debug[\'module_display\']) echo "<!-- END MODULE ' . $module->get('name') . ' (' . $module->getId() . ')";';
+            if ($this->getFeDebugOption('module_timing')) {
+                $this->moduleSuffixes[] = 'if ($frontend_debug[\'module_timing\']) echo(" AFTER " . $modTime' . $containerNumber . ');';
             }
-            $this->_moduleSuffix[] = 'if ($frontend_debug[\'module_display\']) echo " -->";';
+            $this->moduleSuffixes[] = 'if ($frontend_debug[\'module_display\']) echo " -->";';
         }
-        if ($this->_getFeDebugOption('container_display')) {
-            $this->_moduleSuffix[] = 'if ($frontend_debug[\'container_display\']) echo "<!-- END CONTAINER ' . $containerinf[$data['idlay']][$containerNumber]['name'] . ' (' . $containerNumber . ') -->";';
+        if ($this->getFeDebugOption('container_display')) {
+            $this->moduleSuffixes[] = 'if ($frontend_debug[\'container_display\']) echo "<!-- END CONTAINER ' . $containerinf[$data['idlay']][$containerNumber]['name'] . ' (' . $containerNumber . ') -->";';
         }
     }
 
+    protected function processGeneralFrontendDebug(int $layoutId, int $templateId): void
+    {
+        if (!$this->getFeDebugOption('general_information')) {
+            return;
+        }
+
+        $debugPrefix = '';
+
+        $debugPrefix .= "<?php\nif (\$frontend_debug['general_information']) {\n";
+        $debugPrefix .= "\techo(\"<!-- \\n\\n\");\n";
+
+        $layout = new cApiLayout($layoutId);
+        $layoutName = $layout->get('name');
+        $debugPrefix .= "\techo(\"Layout: " . $layoutName . " (" . $layoutId . ")\\n\");\n";
+
+        $debugPrefix .= "\techo(\"Template: " . $this->templateName . " (" . $templateId . ")\\n\");\n";
+
+        $article = new cApiArticleLanguage($this->articleLanguageId);
+        $catart = new cApiCategoryArticle();
+        $cat = new cApiCategoryLanguage();
+        $cat->loadByCategoryIdAndLanguageId($this->categoryId, $article->get('idlang'));
+        $catart->loadByMany([
+            'idcat' => $cat->get('idcat'),
+            'idart' => $article->get('idart')
+        ]);
+        $language = new cApiLanguage($article->get('idlang'));
+        $debugPrefix .= "\techo(\"Language: " . $language->get('idlang') . " (" . $language->get('name') . ")\\n\");\n";
+
+        $debugPrefix .= "\techo(\"Category: " . $cat->get('idcat') . " (" . $cat->get('name') . ")\\n\");\n";
+
+        $articleName = $article->get('title');
+        $debugPrefix .= "\techo(\"Article: " . $articleName . " (catart = " . $catart->get('idcatart') . ", artlang = " . $this->articleLanguageId . ", art = " . $article->get('idart') . ")\\n\");\n";
+
+        $debugPrefix .= "\techo(\"\\n--> \\n\");\n";
+        $debugPrefix .= "}\n?>";
+
+        $this->layoutCode = $debugPrefix . $this->layoutCode;
+    }
+
     /**
-     * Replaces container tag in layout by the parsed container code
-     * (module code).
+     * Replaces container tag in layout by the parsed container code (module code).
      *
-     * @param int $containerNumber
-     *         Container number (the id attribute in container tag).
+     * @param int $containerNumber Container number (the id attribute in container tag).
      */
-    protected function _processCmsContainer($containerNumber)
+    protected function processCmsContainer(int $containerNumber): void
     {
         $cmsContainer = "CMS_CONTAINER[$containerNumber]";
 
         // replace new container (<container id="n"..>) against old one
         // (CMS_CONTAINER[n])
-        $this->_layoutCode = preg_replace("/<container( +)id=\\\"$containerNumber\\\"(.*)>(.*)<\/container>/Uis", $cmsContainer, $this->_layoutCode);
-        $this->_layoutCode = preg_replace("/<container( +)id=\\\"$containerNumber\\\"(.*)\/>/i", $cmsContainer, $this->_layoutCode);
+        $this->layoutCode = preg_replace("/<container( +)id=\\\"$containerNumber\\\"(.*)>(.*)<\/container>/Uis", $cmsContainer, $this->layoutCode);
+        $this->layoutCode = preg_replace("/<container( +)id=\\\"$containerNumber\\\"(.*)\/>/i", $cmsContainer, $this->layoutCode);
 
         // concatenate final container/module output code,
         // but generate PHP code only if there is something to generate
-        $modulePrefix = trim(implode("\n", $this->_modulePrefix));
+        $modulePrefix = trim(implode("\n", $this->modulePrefixes));
         if (!empty($modulePrefix)) {
             $modulePrefix = "<?php\n" . $modulePrefix . "\n?>";
         }
-        $moduleSuffix = trim(implode("\n", $this->_moduleSuffix));
+        $moduleSuffix = trim(implode("\n", $this->moduleSuffixes));
         if (!empty($moduleSuffix)) {
             $moduleSuffix = "<?php\n" . $moduleSuffix . "\n?>";
         }
-        $moduleOutput = $modulePrefix . $this->_moduleCode . $moduleSuffix;
+        $moduleOutput = $modulePrefix . $this->moduleCode . $moduleSuffix;
 
         // replace container (CMS_CONTAINER[n]) against the container code
-        $this->_layoutCode = str_ireplace($cmsContainer, $moduleOutput, $this->_layoutCode);
-        // $this->_layoutCode = addslashes($this->_layoutCode);
+        $this->layoutCode = str_ireplace($cmsContainer, $moduleOutput, $this->layoutCode);
+        // $this->layoutCode = addslashes($this->layoutCode);
     }
 
     /**
      * Returns array of all CMS_* vars being used by current article and language
      *
-     * @param bool $editable [optional]
-     * @param ?int $version [optional]
      * @return array Like $arr[type][typeid] = value;
      * @throws cDbException
      */
-    protected function _getUsedCmsTypesData($editable = true, $version = NULL): array
+    protected function getUsedCmsTypesData(bool $editable = true, ?int $version = null): array
     {
         $return = [];
 
@@ -528,13 +494,13 @@ abstract class cCodeGeneratorAbstract
         if ($version == NULL) {
             $sql = "SELECT * FROM `%s` AS A, `%s` AS B, `%s` AS C
                     WHERE A.idtype = C.idtype AND A.idartlang = B.idartlang AND B.idart = %d AND B.idlang = %d";
-            $sql = $this->_db->prepare(
+            $sql = $this->db->prepare(
                 $sql,
                 cDb::getTableName('content'),
                 cDb::getTableName('art_lang'),
                 cDb::getTableName('type'),
-                $this->_idart,
-                $this->_lang
+                $this->articleId,
+                $this->languageId
             );
         } elseif (is_numeric($version)) {
             $sql = 'SELECT b.type as type, a.typeid as typeid, a.value as value
@@ -549,20 +515,20 @@ abstract class cCodeGeneratorAbstract
                     AND a.idartlang = %d
                     AND (a.deleted < 1 OR a.deleted IS NULL)
                     ORDER BY a.idtype, a.typeid;';
-            $sql = $this->_db->prepare(
+            $sql = $this->db->prepare(
                 $sql,
                 cDb::getTableName('content_version'),
                 cDb::getTableName('type'),
                 cDb::getTableName('content_version'),
-                $this->_idartlang,
+                $this->articleLanguageId,
                 $version,
-                $this->_idartlang
+                $this->articleLanguageId
             );
         }
 
-        $this->_db->query($sql);
-        while ($this->_db->nextRecord()) {
-            $return[$this->_db->f('type')][$this->_db->f('typeid')] = $this->_db->f('value');
+        $this->db->query($sql);
+        while ($this->db->nextRecord()) {
+            $return[$this->db->f('type')][$this->db->f('typeid')] = $this->db->f('value');
         }
 
         return $return;
@@ -571,37 +537,27 @@ abstract class cCodeGeneratorAbstract
     /**
      * Resets module related variables.
      */
-    protected function _resetModule()
+    protected function resetModule()
     {
-        $this->_modulePrefix = [];
-        $this->_moduleCode = '';
-        $this->_moduleSuffix = [];
+        $this->modulePrefixes = [];
+        $this->moduleCode = '';
+        $this->moduleSuffixes = [];
     }
 
     /**
-     * Returns the classname for a content type.
-     *
      * @see cTypeGenerator::getContentTypeClassName()
      */
-    protected function _getContentTypeClassName(string $type): string
+    protected function getContentTypeClassName(string $type): string
     {
         return cTypeGenerator::getContentTypeClassName($type);
     }
 
     /**
-     * Returns the full path to the include file name of a content type.
-     *
-     * @param string $type
-     *         Content type, e.g. CMS_HTMLHEAD
-     * @return string
-     *         The full path e.g.
-     *         {path_to_contenido_includes}/type/code/include.CMS_HTMLHEAD.code.php
-     *         for content type CMS_HTMLHEAD
+     * @see cTypeGenerator::getContentTypeCodeFilePathName()
      */
-    protected function _getContentTypeCodeFilePathName($type): string
+    protected function getContentTypeCodeFilePathName(string $type): string
     {
-        $cfg = cRegistry::getConfig();
-        return cRegistry::getBackendPath() . $cfg['path']['includes'] . 'type/code/include.' . $type . '.code.php';
+        return cTypeGenerator::getContentTypeCodeFilePathName($type);
     }
 
     /**
@@ -611,7 +567,7 @@ abstract class cCodeGeneratorAbstract
      * @return string Cleaned code
      * @throws cInvalidArgumentException
      */
-    protected function _stripWhitespace($code): string
+    protected function stripWhitespace(string $code): string
     {
         $cfg = cRegistry::getConfig();
 
@@ -644,24 +600,18 @@ abstract class cCodeGeneratorAbstract
 
     /**
      * Getter for frontend debug option (see global variable $frontend_debug)
-     * @param string $key
-     *
-     * @return bool
      */
-    protected function _getFeDebugOption($key): bool
+    protected function getFeDebugOption(string $key): bool
     {
-        return cSecurity::toBoolean($this->_feDebugOptions[$key] ?? '0');
+        return cSecurity::toBoolean($this->feDebugOptions[$key] ?? '0');
     }
 
     /**
-     * Getter for article language.
-     *
-     * @return cApiArticleLanguage
-     *         The aggregated article language object.
-     * @todo deprecate me
+     * @deprecated [2026-09-20] Since CONTENIDO 4.10.2, use {@see cCodeGeneratorAbstract::articleLanguage} instead
      */
-    protected function getArtLangObject()
+    protected function getArtLangObject(): ?cApiArticleLanguage
     {
-        return $this->_oArtLang;
+        cDeprecated("The function isArtInMultipleUse() is deprecated since CONTENIDO 4.10.2, use cCodeGeneratorAbstract::articleLanguage instead.");
+        return $this->articleLanguage;
     }
 }

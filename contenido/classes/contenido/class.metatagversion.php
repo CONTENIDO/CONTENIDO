@@ -98,6 +98,23 @@ class cApiMetaTagVersionCollection extends ItemCollection
     }
 
     /**
+     * Returns all meta-tag entries by article language.
+     *
+     * @return cApiMetaTagVersion[]
+     * @throws cDbException|cException
+     * @since CONTENIDO 4.10.2
+     */
+    public function fetchByArticleLanguagwIdAndVersion(int $articleLanguageId, int $version): array
+    {
+        $this->select(
+            sprintf('`idartlang` = %d AND `version` = %d', $articleLanguageId, $version),
+            '`idmetatype`'
+        );
+
+        return $this->getItemsArray();
+    }
+
+    /**
      * Returns idmetatagversions by where-clause
      *
      * @return int[]
@@ -203,13 +220,37 @@ class cApiMetaTagVersion extends Item
     public function setField($name, $value, $safe = true)
     {
         switch ($name) {
-            case 'idmetatype':
+            case 'idmetatagversion':
+            case 'idmetatag':
             case 'idartlang':
+            case 'idmetatype':
+            case 'version':
                 $value = cSecurity::toInteger($value);
                 break;
         }
 
         return parent::setField($name, $value, $safe);
+    }
+
+    /**
+     * @inheritDoc
+     * @since CONTENIDO 4.10.2
+     */
+    public function getField($name, $safe = true)
+    {
+        $value = parent::getField($name, $safe);
+
+        switch ($name) {
+            case 'idmetatagversion':
+            case 'idmetatag':
+            case 'idartlang':
+            case 'idmetatype':
+            case 'version':
+                $value = cSecurity::toInteger($value);
+                break;
+        }
+
+        return $value;
     }
 
 }

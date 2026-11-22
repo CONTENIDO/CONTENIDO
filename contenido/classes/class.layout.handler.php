@@ -247,8 +247,7 @@ class cLayoutHandler
             }
         }
 
-        $cApiLanguage = new cApiLanguage($languageId);
-        $this->_encoding = $cApiLanguage->get('encoding');
+        $this->_encoding = cSecurity::toString(cRegistry::getEncoding($languageId));
     }
 
     /**

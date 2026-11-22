@@ -30,13 +30,11 @@ class cUpgradeJob_0010 extends cUpgradeJobAbstract
     {
         plugin_include('pim', 'classes/class.pim.plugin.collection.php');
 
-        $pluginColl = new PimPluginCollection();
-        $pluginColl->select();
+        $pimPluginColl = new PimPluginCollection();
         $i = 1;
-        while ($plugin = $pluginColl->next()) {
-            $plugin->set('executionorder', $i);
+        foreach ($pimPluginColl->fetchAll() as $plugin) {
+            $plugin->set('executionorder', $i++);
             $plugin->store();
-            $i++;
         }
     }
 

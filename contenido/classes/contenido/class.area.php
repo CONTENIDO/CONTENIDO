@@ -90,12 +90,12 @@ class cApiAreaCollection extends ItemCollection
      */
     public function getIdareasByAreaNameOrParentId($nameOrId): array
     {
-        $sql = "SELECT idarea FROM `%s` AS a WHERE a.name = '%s' OR a.parent_id = '%s' ORDER BY idarea";
+        $sql = "SELECT `idarea` FROM `%s` AS a WHERE a.name = '%s' OR a.parent_id = '%s' ORDER BY `idarea`";
         $this->db->query($sql, $this->table, $nameOrId, $nameOrId);
 
         $ids = [];
         while ($this->db->nextRecord()) {
-            $ids[] = cSecurity::toInteger($this->db->f('idarea'));
+            $ids[] = $this->db->f('idarea');
         }
 
         return $ids;
@@ -134,7 +134,7 @@ class cApiAreaCollection extends ItemCollection
 
         $areaIds = [];
         while ($this->db->nextRecord()) {
-            $areaIds[] = cSecurity::toInteger($this->db->f('idarea'));
+            $areaIds[] = $this->db->f('idarea');
         }
 
         return $areaIds;
@@ -143,21 +143,22 @@ class cApiAreaCollection extends ItemCollection
     /**
      * Returns all areas available in the system.
      *
-     * @return array<int, string> Array with id and name entries
+     * @return array<int, array{name: string}> Map of area IDs to their corresponding names.
+     *      Format: [idarea => ['name' => 'area_name']]
      * @throws cDbException|cException
      */
     public function getAvailableAreas(): array
     {
         $this->select();
 
-        $aAreas = [];
-        while ($oItem = $this->next()) {
-            $aAreas[cSecurity::toInteger($oItem->get('idarea'))] = [
-                'name' => $oItem->get('name')
+        $areas = [];
+        while ($ite = $this->next()) {
+            $areas[$ite->get('idarea')] = [
+                'name' => $ite->get('name')
             ];
         }
 
-        return $aAreas;
+        return $areas;
     }
 
     /**
@@ -217,13 +218,36 @@ class cApiArea extends Item
     }
 
     /**
-     * User-defined setter for area fields.
-     *
+     * @inheritdoc
+     * @throws cException
+     */
+    public function getField($name, $safe = true)
+    {
+        $value = parent::getField($name, $safe);
+
+        switch ($name) {
+            case 'idarea':
+                $value = cSecurity::toInteger($value);
+                break;
+            case 'online':
+            case 'menuless':
+            case 'relevant':
+                $value = ($value == 1) ? 1 : 0;
+                break;
+        }
+
+        return $value;
+    }
+
+    /**
      * @inheritDoc
      */
     public function setField($name, $value, $safe = true)
     {
         switch ($name) {
+            case 'idarea':
+                $value = cSecurity::toInteger($value);
+                break;
             case 'online':
             case 'menuless':
             case 'relevant':

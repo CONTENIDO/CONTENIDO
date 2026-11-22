@@ -1698,21 +1698,15 @@ function sendEncodingHeader($db, array $cfg, $lang, $contentType = 'text/html')
     }
 
     if ($use_encoding != false) {
-        $aLanguageEncodings = [];
-
-        $oLangColl = new cApiLanguageCollection();
-        $oLangColl->select();
-        while ($oItem = $oLangColl->next()) {
-            $aLanguageEncodings[$oItem->get('idlang')] = $oItem->get('encoding');
-        }
-
         $charset = 'utf-8';
-        if (isset($aLanguageEncodings[$lang])) {
-            if (in_array($aLanguageEncodings[$lang], $cfg['AvailableCharsets'])) {
-                $charset = $aLanguageEncodings[$lang];
-            }
+        $languageEncodings = cRegistry::getEncodings();
+        if (
+            isset($languageEncodings[$lang])
+            && in_array($languageEncodings[$lang], $cfg['AvailableCharsets'])
+        ) {
+            $charset = $languageEncodings[$lang];
         }
-        header('Content-Type: ' . $contentType . '; charset=' . $charset);
+        header(sprintf('Content-Type: %s; charset=%s', $contentType, $charset));
     }
 }
 

@@ -39,19 +39,6 @@ cInclude('includes', 'functions.pathresolver.php');
 $idartlang = cSecurity::toInteger($_REQUEST['idartlang'] ?? '0');
 $idArtLangVersion = $_REQUEST['idArtLangVersion'] ?? '';
 
-$sess->register('encoding');
-
-// Initialize encodings
-if (!isset($encoding) || !is_array($encoding) || count($encoding) == 0) {
-    // Get encodings of all languages
-    $encoding = [];
-    $oLangColl = new cApiLanguageCollection();
-    $oLangColl->select('');
-    while ($oLang = $oLangColl->next()) {
-        $encoding[$oLang->get('idlang')] = $oLang->get('encoding');
-    }
-}
-
 $edit = 'true';
 $scripts = '';
 // export only these content types

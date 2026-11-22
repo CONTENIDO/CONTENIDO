@@ -119,22 +119,15 @@ class cApiUserPasswordRequestCollection extends ItemCollection
      */
     public function fetchAvailableRequests($userId = false, string $orderBy = '`id_pwreq` ASC'): array
     {
+        $orderBy = $this->escape($orderBy);
+
         if (!$userId) {
-            $this->select('', '', $this->escape($orderBy));
+            $this->select('', '', $orderBy);
         } else {
-            $this->select(
-                sprintf("user_id = '%s'", $this->escape($userId)),
-                '',
-                $this->escape($orderBy)
-            );
+            $this->select(sprintf("`user_id` = '%s'", $this->escape($userId)), '', $orderBy);
         }
 
-        $requests = [];
-        while ($item = $this->next()) {
-            $requests[] = clone $item;
-        }
-
-        return $requests;
+        return $this->getItemsArray();
     }
 
     /**

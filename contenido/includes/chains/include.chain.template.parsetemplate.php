@@ -49,11 +49,7 @@ function cecParseTemplate($template, cTemplate $templateObj): string
 
     // Fixme: Creates an error on backend login form, since we have no language there, see main.loginform.php
     $languageId = cRegistry::getLanguageId();
-    if ($languageId) {
-        $encoding = cRegistry::getLanguage()->get('encoding');
-    } else {
-        $encoding = 'utf-8';
-    }
+    $encoding = $languageId ? cSecurity::toString(cRegistry::getEncoding($languageId)) : 'utf-8';
     $frameNr = (!empty($frame) && is_numeric($frame)) ? $frame : 0;
 
     // Default meta-tags

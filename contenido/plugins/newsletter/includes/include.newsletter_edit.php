@@ -151,9 +151,6 @@ if ($action === 'news_create' && $perm->have_perm_area_action($area, 'news_creat
         $testNewsGroupId = 0;
     }
 
-    // Get language for encoding
-    $oLanguage = new cApiLanguage($lang);
-
     // Send test newsletter
     $oNewsletter = new Newsletter($idnewsletter);
     $aRecipients = [];
@@ -170,7 +167,7 @@ if ($action === 'news_create' && $perm->have_perm_area_action($area, 'news_creat
             $sEMail,
             $name,
             true,
-            $oLanguage->get('encoding')
+            cSecurity::toString(cRegistry::getEncoding($lang))
         );
         if ($bSend) {
             $aRecipients[] = $name . " (" . $sEMail . ")";
@@ -183,7 +180,7 @@ if ($action === 'news_create' && $perm->have_perm_area_action($area, 'news_creat
             false,
             $testNewsGroupId,
             $aRecipients,
-            $oLanguage->get('encoding')
+            cSecurity::toString(cRegistry::getEncoding($lang))
         );
     }
     unset($oUser);

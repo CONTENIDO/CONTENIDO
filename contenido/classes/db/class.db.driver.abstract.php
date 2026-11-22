@@ -107,6 +107,34 @@ abstract class cDbDriverAbstract
     abstract public function query(string $statement): bool;
 
     /**
+     * Starts a database transaction.
+     *
+     * @since CONTENIDO 4.10.2
+     */
+    abstract public function beginTransaction(): bool;
+
+    /**
+     * Checks if inside a transaction.
+     *
+     * @since CONTENIDO 4.10.2
+     */
+    abstract public function inTransaction(): bool;
+
+    /**
+     * Commits the current database transaction.
+     *
+     * @since CONTENIDO 4.10.2
+     */
+    abstract public function commit(): bool;
+
+    /**
+     * Rolls back the current database transaction.
+     *
+     * @since CONTENIDO 4.10.2
+     */
+    abstract public function rollBack(): bool;
+
+    /**
      * Moves the result to the next record, if exists and returns the status of the movement
      *
      * @return bool Flag about move status true on success or false

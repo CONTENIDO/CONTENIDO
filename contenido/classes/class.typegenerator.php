@@ -23,53 +23,39 @@ defined('CON_FRAMEWORK') || die('Illegal call: Missing framework initialization 
  */
 class cTypeGenerator
 {
-
     /**
-     * @var array
-     */
-    private $cfg = NULL;
-
-    /**
-     * @deprecated [2023-01-26] Since CONTENIDO 4.10.2, is not needed anymore
-     */
-    private static $db = NULL;
-
-    /**
-     * Article content helper
      * @since CONTENIDO 4.10.2
-     * @var cArticleContentHelper
      */
-    private static $articleContentHelper = NULL;
+    private static ?cArticleContentHelper $articleContentHelper = NULL;
 
-    /**
-     * @var array
-     */
-    private static $a_content = [];
+    private static array $a_content = [];
 
-    /**
-     * @var int
-     */
-    private $_idart = NULL;
+    private int $articleId;
 
-    /**
-     * @var int
-     */
-    private $_idlang = NULL;
+    private int $languageId;
 
     /**
      * Constructor to create an instance of this class.
      *
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
     public function __construct()
     {
-        $this->_idart = cRegistry::getArticleId(true);
-        $this->_idlang = cRegistry::getLanguageId();
-        $this->cfg = cRegistry::getConfig();
+        $this->articleId = cRegistry::getArticleId(true);
+        $this->languageId = cRegistry::getLanguageId();
 
-        if (!isset(self::$a_content[$this->_idart])) {
+        if (!isset(self::$a_content[$this->articleId])) {
             $this->fillContent();
         }
+    }
+
+    /**
+     * @deprecated [2026-09-20] Since CONTENIDO 4.10.2, use {@see cTypeGenerator::getContentTypeClassName()} instead
+     */
+    protected function _getContentTypeClassName(string $type): string
+    {
+        cDeprecated("The function _getContentTypeClassName() is deprecated since CONTENIDO 4.10.2, use cTypeGenerator::getContentTypeClassName() instead.");
+        return self::getContentTypeClassName($type);
     }
 
     /**
@@ -77,15 +63,6 @@ class cTypeGenerator
      *
      * @param string $type Content type, e.g. CMS_HTMLHEAD
      * @return string The classname e.g. cContentTypeHtmlhead for content type CMS_HTMLHEAD
-     */
-    protected function _getContentTypeClassName(string $type): string
-    {
-        return 'cContentType' . ucfirst(cString::toLowerCase(str_replace('CMS_', '', $type)));
-    }
-
-    /**
-     * Returns the content type class name for a type, e.g. the class name
-     * for the type 'CMS_HTML' will be `cContentTypeHtml`.
      */
     public static function getContentTypeClassName(string $type): string
     {
@@ -98,43 +75,50 @@ class cTypeGenerator
     /**
      * Returns the full path to the include file name of a content type.
      *
-     * @param string $type
-     *         Content type, e.g. CMS_HTMLHEAD
-     * @return string
-     *         The full path e.g.
+     * @param string $type Content type, e.g. CMS_HTMLHEAD
+     * @return string The full path e.g.
      *         {path_to_contenido_includes}/type/code/include.CMS_HTMLHEAD.code.php
      *         for content type CMS_HTMLHEAD
+     * @since CONTENIDO 4.10.2
      */
-    protected function _getContentTypeCodeFilePathName($type)
+    public static function getContentTypeCodeFilePathName(string $type): string
     {
-        return cRegistry::getBackendPath() . $this->cfg['path']['includes'] . 'type/code/include.' . $type . '.code.php';
+        $cfg = cRegistry::getConfig();
+
+        return cRegistry::getBackendPath() . $cfg['path']['includes'] . 'type/code/include.' . $type . '.code.php';
+    }
+
+    /**
+     * @deprecated [2026-09-20] Since CONTENIDO 4.10.2, use {@see cTypeGenerator::getContentTypeCodeFilePathName()} instead
+     */
+    protected function _getContentTypeCodeFilePathName($type): string
+    {
+        cDeprecated("The function _getContentTypeCodeFilePathName() is deprecated since CONTENIDO 4.10.2, use cTypeGenerator::getContentTypeCodeFilePathName() instead.");
+        return self::getContentTypeCodeFilePathName($type);
     }
 
     /**
      * Fill content from db for current article
      *
-     * @throws cDbException|cInvalidArgumentException
+     * @throws cDbException
      */
-    private function fillContent()
+    private function fillContent(): void
     {
-        self::$a_content[$this->_idart] = [];
+        self::$a_content[$this->articleId] = [];
 
         if (!isset(self::$articleContentHelper)) {
             self::$articleContentHelper = new cArticleContentHelper();
         }
 
-        self::$a_content[$this->_idart] = self::$articleContentHelper->getContentByIdArtAndIdLang(
-            $this->_idart, $this->_idlang
+        self::$a_content[$this->articleId] = self::$articleContentHelper->getContentByIdArtAndIdLang(
+            $this->articleId, $this->languageId
         );
     }
 
     /**
-     * @param string $type
-     * @param int $index
-     * @return string
      * @throws cDbException|cException
      */
-    private function _processCmsTags($type, $index)
+    private function processCmsTags(string $type, int $index): string
     {
         $oTypeColl = new cApiTypeCollection();
         $oTypeColl->select();
@@ -149,10 +133,10 @@ class cTypeGenerator
             if ($type === $typeItem->type) {
                 $items[] = $typeItem->type;
 
-                $typeClassName = $this->_getContentTypeClassName($typeItem->type);
-                $typeCodeFile = $this->_getContentTypeCodeFilePathName($typeItem->type);
+                $typeClassName = self::getContentTypeClassName($typeItem->type);
+                $typeCodeFile = self::getContentTypeCodeFilePathName($typeItem->type);
 
-                $settings = self::$a_content[$this->_idart][$typeItem->type][$index] ?? '';
+                $settings = self::$a_content[$this->articleId][$typeItem->type][$index] ?? '';
                 /** @var cContentTypeAbstract $cTypeObject */
                 $cTypeObject = new $typeClassName($settings, $index, $items);
                 if (cRegistry::isBackendEditMode()) {
@@ -171,16 +155,11 @@ class cTypeGenerator
     /**
      * Helper function to call a private function
      *
-     * @param string $type
-     * @param int $index
-     *
-     * @return string
-     *
      * @throws cDbException|cException
      */
-    public function getGeneratedCmsTag($type, $index)
+    public function getGeneratedCmsTag(string $type, int $index): string
     {
-        return $this->_processCmsTags($type, $index);
+        return $this->processCmsTags($type, $index);
     }
 
 }

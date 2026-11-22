@@ -115,12 +115,11 @@ $tempTplPath = PimPluginHelper::getPluginsFolderPath() . 'pim/templates';
 $installedPluginFoldernames = [];
 
 // get all installed plugins
-$oItem = new PimPluginCollection();
-$oItem->select(NULL, NULL, 'executionorder');
+$pimPluginColl = new PimPluginCollection();
+$allPimPlugins = $pimPluginColl->fetchAll(true);
 $pluginsInstalled = '';
 
-while ($plugin = $oItem->next()) {
-
+foreach ($allPimPlugins as $plugin) {
     // initialization new template class
     $pagePlugins = new cTemplate();
 
@@ -131,7 +130,7 @@ while ($plugin = $oItem->next()) {
     $navSubView->setPluginFoldername($plugin->get('folder'));
 
     // display plugin dependencies
-    $pagePlugins->set('s', 'DEPENDENCIES', $pluginDependenciesView->getPluginDependenciesInstalled($idplugin));
+    $pagePlugins->set('s', 'DEPENDENCIES', $pluginDependenciesView->getPluginDependenciesInstalled($plugin));
 
     // display navigation entries
     $pagePlugins->set('s', 'NAVSUB', $navSubView->getNavSubentries());
@@ -278,7 +277,7 @@ $page->set('s', 'LANG_REMOVE_PLUGIN_CONFIRMATION', i18n('Are you sure you want t
 $page->set('s', 'LANG_SELECTION_UNINSTALL_SQL_INFO', i18n('With the selection `execute plugin_uninstall.sql` any database tables/entries of the plugin will be removed from the database.', 'pim'));
 
 // Set information about installed plugins
-$page->set('s', 'INSTALLED_PLUGINS', $oItem->count());
+$page->set('s', 'INSTALLED_PLUGINS', count($allPimPlugins));
 $page->set('s', 'PLUGINS_INSTALLED', $pluginsInstalled);
 $page->set('s', 'PLUGINS_EXTRACTED', $pluginsExtracted);
 
