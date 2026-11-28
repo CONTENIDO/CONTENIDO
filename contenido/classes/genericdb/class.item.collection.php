@@ -1523,18 +1523,25 @@ abstract class ItemCollection extends cItemBaseAbstract
         } else {
             // Escape fields
             $escapedFields = array_map([$db, 'escape'], $fields);
-            $fieldsSql = '`' . implode('`, `', $escapedFields) . '`';
+            $fieldsSql = sprintf('`%s`', implode('`, `', $escapedFields));
         }
 
-        $where = empty($where) ? '' : 'WHERE ' . $where;
-        $groupBy = empty($groupBy) ? '' : ' GROUP BY ' . $groupBy;
-        $orderBy = empty($orderBy) ? '' : ' ORDER BY ' . $orderBy;
-        $limit = empty($limit) ? '' : ' LIMIT ' . $limit;
+        $selectParts = array_filter([
+            // Enable line below to add the source as a prefix to the SQL comment
+            //sprintf("-- %s\n", __METHOD__),
+            'SELECT',
+            $fieldsSql,
+            'FROM',
+            sprintf('`%s`', $this->table),
+            empty($where) ? '' : sprintf(' WHERE %s', $where),
+            empty($groupBy) ? '' : sprintf(' GROUP BY %s', $groupBy),
+            empty($orderBy) ? '' : sprintf(' ORDER BY %s', $orderBy),
+            empty($limit) ? '' : sprintf(' LIMIT %s', $limit),
+        ]);
 
         // Get all fields
         $entries = [];
-        $sql = 'SELECT ' . $fieldsSql . ' FROM `' . $this->table . '`' . $where . $groupBy . $orderBy . $limit;
-        $db->query($sql);
+        $db->query(implode(' ', $selectParts));
         while ($db->nextRecord()) {
             $data = [];
             foreach ($fields as $field) {

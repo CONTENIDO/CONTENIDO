@@ -49,7 +49,7 @@ $page->addScript('jquery/plugins/timepicker.js');
 $page->addScript('include.upl_edit.js');
 
 //get language js files
-if (($lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)) != 'en') {
+if (($lang_short = cString::getPartOfString(cString::toLowerCase($belang), 0, 2)) !== 'en') {
     $page->addScript('jquery/plugins/timepicker-' . $lang_short . '.js');
     $page->addScript('jquery/plugins/datepicker-' . $lang_short . '.js');
 }
