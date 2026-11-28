@@ -699,8 +699,15 @@ $tpl->set('s', 'META_TAGS', $tpl2->generate($cfg['path']['templates'] . 'templat
 
 // Assign bottom js values
 if (0 != $idart && 0 != $idcat) {
-    $script = 'artObj.setProperties("' . $idart . '", "' . $art->getField('idartlang') . '", "';
-    $script .= $idcat . '", "' . $idcatlang . '", "' . $idcatart . '", "' . $lang . '");';
+    $script = sprintf(
+        'artObj.setProperties(%d, %d, %d, %d, %d, %d);',
+        $idart,
+        $art->getField('idartlang'),
+        $idcat,
+        $idcatlang,
+        $idcatart,
+        $lang
+    );
 } else {
     $script = 'artObj.reset();';
 }
